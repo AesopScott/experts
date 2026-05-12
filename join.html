@@ -811,32 +811,38 @@
 
   <script>
     const FOUNDING_EXPERTS = [
-      { name: "Dr. Maya Chen",  domain: "ai",         label: "AI & Automation",             tier: "Founding Expert" },
-      { name: "Marcus Bell",    domain: "finance",    label: "Finance & Investing",          tier: "Founding Expert" },
-      { name: "Nora Kim",       domain: "marketing",  label: "Marketing, Sales & Growth",    tier: "Founding Expert" },
-      { name: "Dana Wright",    domain: "leadership", label: "Leadership & Management",      tier: "Founding Expert" },
-      { name: "Ari Fox",        domain: "design",     label: "Design, Creative & Gaming",    tier: "Founding Expert" },
-      { name: "Owen Patel",     domain: "ai",         label: "AI & Automation",             tier: "Expert" },
-      { name: "Lena Brooks",    domain: "ai",         label: "AI & Automation",             tier: "Expert" },
-      { name: "Anika Rao",      domain: "finance",    label: "Finance & Investing",          tier: "Expert" },
-      { name: "Jonah Price",    domain: "finance",    label: "Finance & Investing",          tier: "Expert" },
-      { name: "Caleb Stone",    domain: "marketing",  label: "Marketing, Sales & Growth",    tier: "Expert" },
-      { name: "Mei Tan",        domain: "marketing",  label: "Marketing, Sales & Growth",    tier: "Expert" },
-      { name: "Hugo Bennett",   domain: "leadership", label: "Leadership & Management",      tier: "Expert" },
-      { name: "Farah Nasser",   domain: "leadership", label: "Leadership & Management",      tier: "Expert" },
-      { name: "Jules Rivera",   domain: "design",     label: "Design, Creative & Gaming",    tier: "Expert" },
-      { name: "Mina Park",      domain: "design",     label: "Design, Creative & Gaming",    tier: "Expert" },
-      { name: "Theo Ramirez",   domain: "ai",         label: "AI & Automation",             tier: "Contributor" },
-      { name: "Priya Shah",     domain: "ai",         label: "AI & Automation",             tier: "Contributor" },
-      { name: "Elena Foster",   domain: "finance",    label: "Finance & Investing",          tier: "Contributor" },
-      { name: "Samir Haddad",   domain: "finance",    label: "Finance & Investing",          tier: "Contributor" },
-      { name: "Victor Hale",    domain: "marketing",  label: "Marketing, Sales & Growth",    tier: "Contributor" },
-      { name: "Isabel Cruz",    domain: "marketing",  label: "Marketing, Sales & Growth",    tier: "Contributor" },
-      { name: "Miles Ortega",   domain: "leadership", label: "Leadership & Management",      tier: "Contributor" },
-      { name: "Rachel Moore",   domain: "leadership", label: "Leadership & Management",      tier: "Contributor" },
-      { name: "Elliot Gray",    domain: "design",     label: "Design, Creative & Gaming",    tier: "Contributor" },
-      { name: "Sofia Lane",     domain: "design",     label: "Design, Creative & Gaming",    tier: "Contributor" },
+      { name: "Dr. Maya Chen",  domain: "ai",         label: "AI & Automation",          tier: "Founding Expert", spots: 3  },
+      { name: "Marcus Bell",    domain: "finance",    label: "Finance & Investing",       tier: "Founding Expert", spots: 6  },
+      { name: "Nora Kim",       domain: "marketing",  label: "Marketing, Sales & Growth", tier: "Founding Expert", spots: 4  },
+      { name: "Dana Wright",    domain: "leadership", label: "Leadership & Management",   tier: "Founding Expert", spots: 9  },
+      { name: "Ari Fox",        domain: "design",     label: "Design, Creative & Gaming", tier: "Founding Expert", spots: 7  },
+      { name: "Owen Patel",     domain: "ai",         label: "AI & Automation",          tier: "Expert",          spots: 11 },
+      { name: "Lena Brooks",    domain: "ai",         label: "AI & Automation",          tier: "Expert",          spots: 17 },
+      { name: "Anika Rao",      domain: "finance",    label: "Finance & Investing",       tier: "Expert",          spots: 13 },
+      { name: "Jonah Price",    domain: "finance",    label: "Finance & Investing",       tier: "Expert",          spots: 19 },
+      { name: "Caleb Stone",    domain: "marketing",  label: "Marketing, Sales & Growth", tier: "Expert",          spots: 8  },
+      { name: "Mei Tan",        domain: "marketing",  label: "Marketing, Sales & Growth", tier: "Expert",          spots: 15 },
+      { name: "Hugo Bennett",   domain: "leadership", label: "Leadership & Management",   tier: "Expert",          spots: 12 },
+      { name: "Farah Nasser",   domain: "leadership", label: "Leadership & Management",   tier: "Expert",          spots: 18 },
+      { name: "Jules Rivera",   domain: "design",     label: "Design, Creative & Gaming", tier: "Expert",          spots: 10 },
+      { name: "Mina Park",      domain: "design",     label: "Design, Creative & Gaming", tier: "Expert",          spots: 16 },
+      { name: "Theo Ramirez",   domain: "ai",         label: "AI & Automation",          tier: "Contributor",     spots: 20 },
+      { name: "Priya Shah",     domain: "ai",         label: "AI & Automation",          tier: "Contributor",     spots: 22 },
+      { name: "Elena Foster",   domain: "finance",    label: "Finance & Investing",       tier: "Contributor",     spots: 19 },
+      { name: "Samir Haddad",   domain: "finance",    label: "Finance & Investing",       tier: "Contributor",     spots: 23 },
+      { name: "Victor Hale",    domain: "marketing",  label: "Marketing, Sales & Growth", tier: "Contributor",     spots: 21 },
+      { name: "Isabel Cruz",    domain: "marketing",  label: "Marketing, Sales & Growth", tier: "Contributor",     spots: 18 },
+      { name: "Miles Ortega",   domain: "leadership", label: "Leadership & Management",   tier: "Contributor",     spots: 24 },
+      { name: "Rachel Moore",   domain: "leadership", label: "Leadership & Management",   tier: "Contributor",     spots: 20 },
+      { name: "Elliot Gray",    domain: "design",     label: "Design, Creative & Gaming", tier: "Contributor",     spots: 22 },
+      { name: "Sofia Lane",     domain: "design",     label: "Design, Creative & Gaming", tier: "Contributor",     spots: 21 },
     ];
+
+    function spotsColor(n) {
+      if (n <= 5)  return "#c0392b";
+      if (n <= 12) return "#b87a22";
+      return "#145f47";
+    }
 
     const tiers = ["Founding Expert", "Expert", "Contributor"];
     const list = document.getElementById("modal-expert-list");
@@ -860,7 +866,7 @@
             </div>
           </div>
           <div style="display:flex;align-items:center;gap:14px;flex-shrink:0;">
-            <span class="modal-spots">25 of 25 spots open</span>
+            <span class="modal-spots" style="color:${spotsColor(e.spots)}">${e.spots} of 25 spots left</span>
             <span class="modal-claim">Claim — coming soon</span>
           </div>
         `;
