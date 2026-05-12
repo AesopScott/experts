@@ -363,6 +363,80 @@
       .nav-links { flex-wrap: wrap; }
       .trust-strip { gap: 16px; }
     }
+
+    /* ── FOUNDING MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(10,20,16,0.72);
+      backdrop-filter: blur(4px);
+      overflow-y: auto;
+      padding: 40px 16px;
+    }
+    .modal-overlay.open { display: flex; align-items: flex-start; justify-content: center; }
+    .modal-box {
+      width: min(760px,100%);
+      background: var(--panel);
+      border-radius: 16px;
+      box-shadow: 0 32px 80px rgba(10,20,16,0.28);
+      overflow: hidden;
+    }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 28px;
+      border-bottom: 1px solid var(--line);
+      background: var(--dark); color: #fff;
+    }
+    .modal-header h3 { margin: 0; font-size: 20px; color: #5ddfb0; }
+    .modal-header p  { margin: 4px 0 0; font-size: 13px; color: rgba(255,255,255,0.6); }
+    .modal-close {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.1); border: none; cursor: pointer;
+      color: #fff; font-size: 18px; line-height: 1;
+      display: grid; place-items: center; flex-shrink: 0;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.2); }
+    .modal-tier-label {
+      padding: 10px 28px;
+      font-size: 11px; font-weight: 900; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--green);
+      background: var(--green3);
+      border-bottom: 1px solid var(--line);
+    }
+    .modal-expert-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 14px 28px;
+      border-bottom: 1px solid var(--line);
+    }
+    .modal-expert-row:last-child { border-bottom: none; }
+    .modal-expert-info { display: flex; align-items: center; gap: 12px; }
+    .modal-dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+    .modal-dot.ai         { background: #145f47; }
+    .modal-dot.finance    { background: #b87a22; }
+    .modal-dot.marketing  { background: #245a7d; }
+    .modal-dot.leadership { background: #7b4b92; }
+    .modal-dot.design     { background: #bf563f; }
+    .modal-expert-name { font-size: 15px; font-weight: 800; }
+    .modal-expert-domain { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .modal-spots {
+      font-size: 12px; font-weight: 750; color: var(--green);
+      white-space: nowrap;
+    }
+    .modal-claim {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 7px 14px; border-radius: 7px;
+      background: var(--green); color: #fff;
+      font-size: 12px; font-weight: 800; white-space: nowrap;
+      cursor: default; opacity: 0.55;
+    }
+    .modal-footer {
+      padding: 18px 28px;
+      border-top: 1px solid var(--line);
+      background: var(--paper);
+      font-size: 12px; color: var(--muted); text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -411,8 +485,6 @@
   <!-- FREE VS PATRON TIERS -->
   <section class="section section-alt" id="patron">
     <div class="inner">
-      <span class="overline">Membership</span>
-      <h2>Free to follow.<br>Patron to go deeper.</h2>
       <p class="lead">Every account starts free. Become a patron of any expert to unlock their full content, live events, and direct access.</p>
 
       <div class="tier-grid">
@@ -533,7 +605,7 @@
         <h2>Become a Founding Patron.</h2>
         <p>The first 25 patrons of each expert lock in $10/month for that expert — for life. The multi-expert discount ladder still applies on top: follow 4+ experts and your founding rate drops to $7/month for that expert (30% off $10), while new experts you add are $9.80/month.</p>
         <p>Founding Patrons receive a permanent badge on their profile and are recognized as the community members who made this platform possible.</p>
-        <a href="#" class="btn btn-mint btn-lg" style="margin-top:8px;">Claim founding patron rate</a>
+        <button onclick="document.getElementById('foundingModal').classList.add('open')" class="btn btn-mint btn-lg" style="margin-top:8px;">Claim founding patron rate</button>
         <p class="soon-note" style="color:rgba(255,255,255,0.55);margin-top:10px;">Stripe payments coming soon</p>
       </div>
       <div class="founding-card">
@@ -721,6 +793,81 @@
     </div>
     <p class="soon-note" style="color:rgba(255,255,255,0.4);">Stripe payments coming soon</p>
   </section>
+
+  <!-- FOUNDING PATRON MODAL -->
+  <div class="modal-overlay" id="foundingModal" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <h3>⭐ Claim your founding patron rate</h3>
+          <p>$10/month locked for life — first 25 patrons per expert only.</p>
+        </div>
+        <button class="modal-close" onclick="document.getElementById('foundingModal').classList.remove('open')">✕</button>
+      </div>
+      <div id="modal-expert-list"></div>
+      <div class="modal-footer">Stripe payments coming soon — spots are being tracked and reserved in order.</div>
+    </div>
+  </div>
+
+  <script>
+    const FOUNDING_EXPERTS = [
+      { name: "Dr. Maya Chen",  domain: "ai",         label: "AI & Automation",             tier: "Founding Expert" },
+      { name: "Marcus Bell",    domain: "finance",    label: "Finance & Investing",          tier: "Founding Expert" },
+      { name: "Nora Kim",       domain: "marketing",  label: "Marketing, Sales & Growth",    tier: "Founding Expert" },
+      { name: "Dana Wright",    domain: "leadership", label: "Leadership & Management",      tier: "Founding Expert" },
+      { name: "Ari Fox",        domain: "design",     label: "Design, Creative & Gaming",    tier: "Founding Expert" },
+      { name: "Owen Patel",     domain: "ai",         label: "AI & Automation",             tier: "Expert" },
+      { name: "Lena Brooks",    domain: "ai",         label: "AI & Automation",             tier: "Expert" },
+      { name: "Anika Rao",      domain: "finance",    label: "Finance & Investing",          tier: "Expert" },
+      { name: "Jonah Price",    domain: "finance",    label: "Finance & Investing",          tier: "Expert" },
+      { name: "Caleb Stone",    domain: "marketing",  label: "Marketing, Sales & Growth",    tier: "Expert" },
+      { name: "Mei Tan",        domain: "marketing",  label: "Marketing, Sales & Growth",    tier: "Expert" },
+      { name: "Hugo Bennett",   domain: "leadership", label: "Leadership & Management",      tier: "Expert" },
+      { name: "Farah Nasser",   domain: "leadership", label: "Leadership & Management",      tier: "Expert" },
+      { name: "Jules Rivera",   domain: "design",     label: "Design, Creative & Gaming",    tier: "Expert" },
+      { name: "Mina Park",      domain: "design",     label: "Design, Creative & Gaming",    tier: "Expert" },
+      { name: "Theo Ramirez",   domain: "ai",         label: "AI & Automation",             tier: "Contributor" },
+      { name: "Priya Shah",     domain: "ai",         label: "AI & Automation",             tier: "Contributor" },
+      { name: "Elena Foster",   domain: "finance",    label: "Finance & Investing",          tier: "Contributor" },
+      { name: "Samir Haddad",   domain: "finance",    label: "Finance & Investing",          tier: "Contributor" },
+      { name: "Victor Hale",    domain: "marketing",  label: "Marketing, Sales & Growth",    tier: "Contributor" },
+      { name: "Isabel Cruz",    domain: "marketing",  label: "Marketing, Sales & Growth",    tier: "Contributor" },
+      { name: "Miles Ortega",   domain: "leadership", label: "Leadership & Management",      tier: "Contributor" },
+      { name: "Rachel Moore",   domain: "leadership", label: "Leadership & Management",      tier: "Contributor" },
+      { name: "Elliot Gray",    domain: "design",     label: "Design, Creative & Gaming",    tier: "Contributor" },
+      { name: "Sofia Lane",     domain: "design",     label: "Design, Creative & Gaming",    tier: "Contributor" },
+    ];
+
+    const tiers = ["Founding Expert", "Expert", "Contributor"];
+    const list = document.getElementById("modal-expert-list");
+
+    tiers.forEach(tier => {
+      const experts = FOUNDING_EXPERTS.filter(e => e.tier === tier);
+      const label = document.createElement("div");
+      label.className = "modal-tier-label";
+      label.textContent = tier + "s";
+      list.appendChild(label);
+
+      experts.forEach(e => {
+        const row = document.createElement("div");
+        row.className = "modal-expert-row";
+        row.innerHTML = `
+          <div class="modal-expert-info">
+            <span class="modal-dot ${e.domain}"></span>
+            <div>
+              <div class="modal-expert-name">${e.name}</div>
+              <div class="modal-expert-domain">${e.label}</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;flex-shrink:0;">
+            <span class="modal-spots">25 of 25 spots open</span>
+            <span class="modal-claim">Claim — coming soon</span>
+          </div>
+        `;
+        list.appendChild(row);
+      });
+    });
+  </script>
 
   <footer>
     <span>© 2026 25experts.com · A project of <a href="https://aesopacademy.org" style="color:var(--green);font-weight:700;">Aesop Academy</a></span>
