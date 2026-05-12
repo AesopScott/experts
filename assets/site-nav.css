@@ -70,7 +70,7 @@
   gap: 4px;
   align-content: center;
   align-items: center;
-  padding: 9px 0;
+  padding: 11px 0;
   overflow: hidden;
 }
 
@@ -99,21 +99,21 @@
   position: absolute;
   left: 2%;
   width: 96%;
-  height: 12px;
+  height: 10px;
   pointer-events: none;
   z-index: 0;
   overflow: visible;
   color: #f7d98b;
-  filter: drop-shadow(0 0 7px rgba(247, 217, 139, 0.38));
+  filter: drop-shadow(0 0 6px rgba(247, 217, 139, 0.36));
 }
 
-.site-nav-trail-top { top: 0; }
-.site-nav-trail-bottom { bottom: 0; transform: scaleY(-1); }
+.site-nav-trail-top { top: 5px; }
+.site-nav-trail-bottom { bottom: 5px; }
 
 .site-nav-trail .trail-glow {
   fill: none;
-  stroke: rgba(247, 217, 139, 0.35);
-  stroke-width: 7;
+  stroke: rgba(247, 217, 139, 0.28);
+  stroke-width: 5;
   stroke-linecap: round;
 }
 
@@ -127,11 +127,12 @@
 .site-nav-trail .trail-core {
   fill: none;
   stroke: rgba(255, 246, 197, 0.98);
-  stroke-width: 2.2;
+  stroke-width: 1.4;
   stroke-linecap: round;
-  stroke-dasharray: 42 160;
+  stroke-dasharray: 36 184;
   animation: siteNavTrailSweep var(--trail-speed, 7.2s) linear infinite;
   animation-delay: var(--trail-delay, 0s);
+  animation-direction: alternate;
 }
 
 .site-nav-trail .trail-spark {
@@ -140,6 +141,7 @@
   filter: drop-shadow(0 0 7px rgba(247, 217, 139, 0.95));
   animation: siteNavSparkTravel var(--spark-speed, 6.7s) linear infinite;
   animation-delay: var(--spark-delay, -1s);
+  animation-direction: alternate;
   transform-origin: center;
   transform-box: view-box;
 }
@@ -154,18 +156,18 @@
 .site-nav-group:nth-child(4) .site-nav-trail-bottom { --trail-speed: 9.1s; --trail-delay: -1.5s; --spark-speed: 7.7s; --spark-delay: -4.3s; }
 
 @keyframes siteNavTrailSweep {
-  0% { stroke-dashoffset: 160; opacity: 0.18; }
+  0% { stroke-dashoffset: 170; opacity: 0.2; }
   18% { opacity: 0.9; }
   78% { opacity: 0.72; }
-  100% { stroke-dashoffset: -160; opacity: 0.18; }
+  100% { stroke-dashoffset: -170; opacity: 0.2; }
 }
 
 @keyframes siteNavSparkTravel {
-  0% { opacity: 0; transform: translateX(-112px) scale(0.72); }
+  0% { opacity: 0.12; transform: translateX(-110px) scale(0.72); }
   9% { opacity: 0.35; }
   46% { opacity: 1; transform: translateX(0) scale(1.12); }
   90% { opacity: 0.55; }
-  100% { opacity: 0; transform: translateX(112px) scale(0.72); }
+  100% { opacity: 0.12; transform: translateX(110px) scale(0.72); }
 }
 
 .nav .site-nav-group a:hover,
