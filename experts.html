@@ -445,6 +445,32 @@
     .cta-section h2 { color: #fff; max-width: 760px; margin: 0 auto 16px; }
     .cta-section p { color: rgba(255,255,255,0.72); font-size: 1.05rem; max-width: 640px; margin: 0 auto 32px; line-height: 1.7; }
     .cta-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .call-form-card {
+      width: min(900px, calc(100% - 36px));
+      margin: 0 auto;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+    .call-form-card h2 { margin: 0 0 8px; font-size: 2rem; }
+    .call-form-card p { margin: 0 0 20px; color: var(--muted); line-height: 1.6; }
+    .call-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .call-form-card label { display: grid; gap: 7px; font-size: 0.9rem; font-weight: 800; color: var(--ink); }
+    .call-form-card input, .call-form-card select, .call-form-card textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 12px 13px;
+      font: inherit;
+      color: var(--ink);
+      background: #fff;
+    }
+    .call-form-card textarea { min-height: 120px; resize: vertical; }
+    .call-form-card .full { grid-column: 1 / -1; }
+    .call-form-card button { border: 0; cursor: pointer; justify-self: start; }
+    .form-status { display: none; border-radius: 9px; background: var(--green3); color: var(--green); padding: 11px 13px; font-weight: 850; font-size: 0.9rem; }
 
     /* â”€â”€ FOOTER â”€â”€ */
     footer {
@@ -542,6 +568,7 @@
     }
     .beyond-tag.live { background: var(--mint); color: var(--green); }
     @media (max-width: 900px) { .beyond-grid { grid-template-columns: repeat(3,1fr); } }
+    @media (max-width: 680px) { .call-form-grid { grid-template-columns: 1fr; } }
     /* â”€â”€ ACCESSIBILITY â”€â”€ */
     :focus-visible { outline: 2px solid var(--green2); outline-offset: 3px; border-radius: 3px; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
@@ -1119,10 +1146,44 @@
       <p>We're inviting 25â€“30 AI experts to build this platform with us â€” migrate their patrons, run live sessions, and help define what a mission-driven AI expert economy looks like. Founding spots are limited.</p>
       <div class="cta-group">
         <a class="btn btn-white" href="expertapplication.html">Apply as a Founding Expert</a>
-        <a class="btn btn-ghost" href="mailto:founders@aesopacademy.org?subject=30-min%20Creator%20Call">Book a 30-min Call</a>
+        <a class="btn btn-ghost" href="#creator-call-form">Book a 30-min Call</a>
       </div>
     </div>
   </section>
+
+  <section class="section section-band" id="creator-call-form">
+    <div class="call-form-card">
+      <span class="overline">Creator conversation</span>
+      <h2>Request a 30-minute creator call.</h2>
+      <p>Use this form to talk through fit, founding spots, audience migration, revenue share, workshops, and how your patrons would move into 25experts.</p>
+      <form action="#" method="post" class="call-form-grid" data-mock-form>
+        <label>Name<input type="text" name="name" autocomplete="name" placeholder="Your name"></label>
+        <label>Email<input type="email" name="email" autocomplete="email" placeholder="you@example.com"></label>
+        <label>Creator channel<input type="url" name="channel" placeholder="https://"></label>
+        <label>Audience size
+          <select name="audience">
+            <option>Under 1,000</option>
+            <option>1,000-10,000</option>
+            <option>10,000-100,000</option>
+            <option>100,000+</option>
+          </select>
+        </label>
+        <label class="full">What should we discuss?<textarea name="message" placeholder="Tell us about your AI focus, current patron platform, and what you want to understand before applying."></textarea></label>
+        <button class="btn btn-primary" type="submit">Submit call request</button>
+        <div class="form-status full">Call request received for the mockup. Connect this to the final form handler before launch.</div>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    document.querySelectorAll("[data-mock-form]").forEach((form) => {
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const status = form.querySelector(".form-status");
+        if (status) status.style.display = "block";
+      });
+    });
+  </script>
 
   <footer>
     <div class="footer-brand">

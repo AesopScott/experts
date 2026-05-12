@@ -191,6 +191,50 @@
     }
 
     .contact-box strong { display: block; margin-bottom: 4px; }
+    .legal-form {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .legal-form label {
+      display: grid;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--ink);
+    }
+    .legal-form input,
+    .legal-form select,
+    .legal-form textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px 11px;
+      font: inherit;
+      color: var(--ink);
+      background: #fff;
+    }
+    .legal-form textarea { min-height: 120px; resize: vertical; }
+    .legal-form button {
+      justify-self: start;
+      border: 0;
+      border-radius: 8px;
+      min-height: 42px;
+      padding: 0 16px;
+      background: var(--green);
+      color: #fff;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .form-status {
+      display: none;
+      border-radius: 8px;
+      background: #e9f5ef;
+      color: var(--green);
+      padding: 10px 12px;
+      font-weight: 850;
+      font-size: 0.82rem;
+    }
 
     /* â”€â”€ FOOTER â”€â”€ */
     footer {
@@ -320,7 +364,7 @@
       <p>We retain account data for as long as your account is active and for a reasonable period thereafter to comply with legal obligations. You may request deletion of your account and associated data by contacting us at the address below.</p>
 
       <h2>Your Rights</h2>
-      <p>Depending on your location, you may have rights to access, correct, delete, or port your personal data, or to object to certain processing. To exercise these rights, contact <a href="mailto:privacy@aesopacademy.org">privacy@aesopacademy.org</a>. California residents may have additional rights under the CCPA.</p>
+      <p>Depending on your location, you may have rights to access, correct, delete, or port your personal data, or to object to certain processing. To exercise these rights, use the contact form below and select Privacy Request. California residents may have additional rights under the CCPA.</p>
 
       <h2>Cookies</h2>
       <p>We use essential cookies for session management and optional analytics cookies. You can opt out of analytics cookies at any time via the cookie settings banner.</p>
@@ -352,12 +396,12 @@
       <p>Some content on the Platform is provided by independent Expert creators. While we encourage Experts to produce accessible content, we cannot guarantee that all third-party materials meet accessibility standards.</p>
 
       <h2>Reporting an Issue</h2>
-      <p>If you encounter an accessibility barrier on 25experts.com, please contact us. We aim to respond within 5 business days and address substantive issues within 30 days where possible.</p>
+      <p>If you encounter an accessibility barrier on 25experts.com, please use the contact form below and select Accessibility Concern. We aim to respond within 5 business days and address substantive issues within 30 days where possible.</p>
 
       <div class="contact-box">
         <strong>Accessibility Contact</strong>
-        <a href="mailto:accessibility@aesopacademy.org">accessibility@aesopacademy.org</a><br>
-        Aesop Academy Â· 501(c)(3) Non-Profit
+        Use the contact form below and choose Accessibility Concern.<br>
+        Aesop Academy - 501(c)(3) Non-Profit
       </div>
 
       <h2>Formal Complaint</h2>
@@ -399,14 +443,28 @@
     <section id="contact">
       <div class="section-tag">Legal</div>
       <h1>Contact</h1>
-      <p>For general legal inquiries, please contact:</p>
+      <p>For general legal inquiries, privacy requests, accessibility concerns, or other formal notices, use this form.</p>
       <div class="contact-box">
-        <strong>Aesop Academy â€” Legal</strong>
-        <a href="mailto:legal@aesopacademy.org">legal@aesopacademy.org</a><br>
+        <strong>Aesop Academy - Legal</strong>
         Aesop Academy, 501(c)(3) Non-Profit<br>
         United States
       </div>
-      <p style="margin-top:16px;font-size:0.82rem;color:var(--muted)">For privacy requests: <a href="mailto:privacy@aesopacademy.org">privacy@aesopacademy.org</a> Â· For accessibility concerns: <a href="mailto:accessibility@aesopacademy.org">accessibility@aesopacademy.org</a></p>
+      <form action="#" method="post" class="legal-form" id="legal-contact-form">
+        <label>Name<input type="text" name="name" autocomplete="name" placeholder="Your name"></label>
+        <label>Email<input type="email" name="email" autocomplete="email" placeholder="you@example.com"></label>
+        <label>Request type
+          <select name="request_type">
+            <option>General Legal Inquiry</option>
+            <option>Privacy Request</option>
+            <option>Accessibility Concern</option>
+            <option>Copyright or Content Notice</option>
+            <option>Other Formal Notice</option>
+          </select>
+        </label>
+        <label>Message<textarea name="message" placeholder="Describe the request or concern."></textarea></label>
+        <button type="submit">Submit legal request</button>
+        <div class="form-status">Legal request received for the mockup. Connect this to the final form handler before launch.</div>
+      </form>
     </section>
 
   </div><!-- /.content -->
@@ -440,6 +498,15 @@
 
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  const legalContactForm = document.getElementById("legal-contact-form");
+  if (legalContactForm) {
+    legalContactForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const status = legalContactForm.querySelector(".form-status");
+      if (status) status.style.display = "block";
+    });
+  }
 </script>
 </body>
 </html>
