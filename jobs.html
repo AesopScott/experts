@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI Jobs | 25experts</title>
-  <meta name="description" content="Post AI jobs for $25 per 7 days — a fraction of LinkedIn's cost, and every viewer is actively learning AI. Auto-renew until you hire.">
-  <meta name="page-version" content="v2026.05.12.5">
+  <meta name="description" content="Browse AI jobs posted by organizations hiring from the 25experts community — active AI learners, practitioners, and patrons across five domains.">
+  <meta name="page-version" content="v2026.05.12.6">
   <meta name="page-updated" content="2026-05-12">
   <link rel="canonical" href="https://25experts.com/jobs.html">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -18,14 +18,14 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="25experts by Aesop Academy">
   <meta property="og:title" content="AI Jobs | 25experts">
-  <meta property="og:description" content="Post AI jobs for $25 per 7 days — a fraction of LinkedIn's cost, and every viewer is actively learning AI.">
+  <meta property="og:description" content="Browse AI jobs posted by organizations hiring from the 25experts community.">
   <meta property="og:url" content="https://25experts.com/jobs.html">
   <meta property="og:image" content="https://25experts.com/assets/og-25experts.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="AI Jobs | 25experts">
-  <meta name="twitter:description" content="Post AI jobs for $25 per 7 days — a fraction of LinkedIn's cost, and every viewer is actively learning AI.">
+  <meta name="twitter:description" content="Browse AI jobs posted by organizations hiring from the 25experts community.">
   <meta name="twitter:image" content="https://25experts.com/assets/og-25experts.png">
   <script type="application/ld+json">
   {
@@ -33,7 +33,7 @@
     "@type": "WebPage",
     "name": "AI Jobs | 25experts",
     "url": "https://25experts.com/jobs.html",
-    "description": "Post AI jobs for $25 per 7 days — a fraction of LinkedIn's cost, and every viewer is actively learning AI.",
+    "description": "Browse AI jobs posted by organizations hiring from the 25experts community.",
     "publisher": { "@type": "NGO", "name": "Aesop Academy", "url": "https://25experts.com/" }
   }
   </script>
@@ -60,184 +60,64 @@
     .topbar { padding: 9px 18px; background: var(--green); color: #fff; font-size: 13px; text-align: center; font-weight: 650; }
     .topbar a { color: #fff; text-decoration: underline; font-weight: 800; margin-left: 6px; }
 
-    /* ── HERO ── */
     .hero {
-      background: var(--dark);
+      background: linear-gradient(115deg, rgba(20,95,71,.97), rgba(18,39,50,.94));
       color: #fff;
-      padding: clamp(52px,7vw,96px) clamp(18px,5vw,68px) 52px;
+      padding: clamp(48px,6vw,80px) clamp(18px,5vw,68px) 44px;
     }
-    .hero-inner {
-      max-width: 1280px; margin: 0 auto;
-      display: grid; grid-template-columns: minmax(0,1.1fr) minmax(300px,.9fr);
-      gap: clamp(28px,5vw,64px); align-items: center;
-    }
-    .eyebrow {
-      display: inline-flex; margin-bottom: 20px; padding: 7px 11px; border-radius: 999px;
-      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
-      font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: .08em;
-    }
-    .hero h1 {
-      margin: 0 0 20px; font-size: clamp(38px,5.5vw,72px); line-height: .96; letter-spacing: -.01em;
-    }
+    .hero-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: minmax(0,1.2fr) minmax(280px,.8fr); gap: clamp(28px,5vw,56px); align-items: end; }
+    .eyebrow { display: inline-flex; margin-bottom: 18px; padding: 7px 11px; border-radius: 999px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; }
+    .hero h1 { margin: 0 0 18px; font-size: clamp(38px,5.5vw,68px); line-height: .97; letter-spacing: -.01em; }
     .hero h1 em { font-style: normal; color: #5ddfb0; }
-    .hero p { color: rgba(255,255,255,.78); font-size: clamp(15px,1.8vw,19px); line-height: 1.6; margin: 0 0 28px; max-width: 560px; }
-
+    .hero p { color: rgba(255,255,255,.78); font-size: clamp(15px,1.8vw,18px); line-height: 1.6; margin: 0 0 28px; max-width: 540px; }
     .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-    .btn-primary {
-      display: inline-flex; align-items: center; justify-content: center;
-      min-height: 48px; padding: 0 24px; border-radius: 8px;
-      background: #5ddfb0; color: #0d3d2e; font: inherit; font-weight: 900; font-size: 15px;
-      border: 0; cursor: pointer; text-decoration: none;
-    }
-    .btn-ghost {
-      display: inline-flex; align-items: center; justify-content: center;
-      min-height: 48px; padding: 0 24px; border-radius: 8px;
-      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.24);
-      color: #fff; font: inherit; font-weight: 800; font-size: 15px; text-decoration: none;
-    }
-    .btn-ghost:hover { background: rgba(255,255,255,.18); }
 
-    /* ── PRICING CARD ── */
-    .pricing-card {
-      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.16);
-      border-radius: 12px; padding: 28px; display: grid; gap: 16px;
-    }
-    .pricing-card h2 { font-size: 22px; margin: 0; color: #fff; }
-    .price-row { display: flex; align-items: baseline; gap: 8px; }
-    .price-big { font-size: 64px; font-weight: 950; line-height: 1; color: #5ddfb0; letter-spacing: -.02em; }
-    .price-unit { color: rgba(255,255,255,.65); font-size: 15px; }
-    .pricing-features { display: grid; gap: 10px; }
-    .pf { display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,.8); }
-    .pf-check { width: 22px; height: 22px; border-radius: 50%; background: rgba(93,223,176,.2); border: 1px solid rgba(93,223,176,.5); display: grid; place-items: center; font-size: 11px; color: #5ddfb0; flex-shrink: 0; }
-    .vs-bar {
-      display: flex; align-items: center; gap: 10px; margin-top: 4px;
-      padding: 10px 12px; border-radius: 8px;
-      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
-      font-size: 12px; color: rgba(255,255,255,.55);
-    }
-    .vs-bar s { color: rgba(255,255,255,.35); }
-    .vs-bar strong { color: #5ddfb0; }
+    .btn-primary { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 24px; border-radius: 8px; background: #5ddfb0; color: #0d3d2e; font: inherit; font-weight: 900; font-size: 15px; border: 0; cursor: pointer; text-decoration: none; }
+    .btn-ghost { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 24px; border-radius: 8px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.24); color: #fff; font: inherit; font-weight: 800; font-size: 15px; text-decoration: none; }
 
-    /* ── PAGE ── */
-    .page { max-width: 1280px; margin: 0 auto; padding: 40px clamp(18px,5vw,68px) 80px; display: grid; gap: 32px; }
+    .hero-aside { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); border-radius: 10px; padding: 22px; display: grid; gap: 12px; }
+    .hero-aside strong { font-size: 18px; }
+    .hero-aside p { color: rgba(255,255,255,.68); font-size: 14px; line-height: 1.55; margin: 0; }
+    .aside-link { display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 8px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2); color: #fff; font-weight: 850; font-size: 14px; margin-top: 4px; }
+
+    .page { max-width: 1280px; margin: 0 auto; padding: 36px clamp(18px,5vw,68px) 80px; display: grid; gap: 28px; }
 
     .kicker { color: var(--green); font-size: 12px; font-weight: 950; text-transform: uppercase; letter-spacing: .09em; margin-bottom: 8px; }
-    .section-head { max-width: 720px; }
-    .section-head h2 { font-size: clamp(26px,3.5vw,40px); line-height: 1.06; margin-bottom: 10px; }
-    .section-head p { color: var(--muted); font-size: 16px; line-height: 1.62; }
 
-    /* ── AUDIENCE GRID ── */
-    .audience-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
-    .audience-card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 20px; box-shadow: var(--shadow); }
-    .audience-card strong { display: block; font-size: 28px; line-height: 1; color: var(--green); margin-bottom: 8px; }
-    .audience-card span { color: var(--muted); font-size: 14px; line-height: 1.5; }
-
-    /* ── JOB FILTERS ── */
-    .job-toolbar {
-      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-      padding: 16px 20px; background: var(--panel);
-      border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow);
-    }
-    .job-toolbar select {
-      min-height: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px;
-      background: #fff; color: var(--ink); font: inherit; font-weight: 750;
-    }
+    .job-toolbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 16px 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); }
+    .job-toolbar select { min-height: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); font: inherit; font-weight: 750; }
     .toolbar-spacer { flex: 1; }
-    .post-btn-sm {
-      display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px;
-      border-radius: 8px; background: var(--green); color: #fff;
-      font: inherit; font-weight: 900; font-size: 14px; border: 0; cursor: pointer; text-decoration: none;
-    }
+    .post-btn-sm { display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 8px; background: var(--green); color: #fff; font: inherit; font-weight: 900; font-size: 14px; border: 0; cursor: pointer; text-decoration: none; }
 
-    /* ── JOB CARDS ── */
     .job-grid { display: grid; gap: 12px; }
-    .job-card {
-      background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
-      padding: 20px 22px; display: grid;
-      grid-template-columns: 48px 1fr auto;
-      gap: 16px; align-items: center;
-      box-shadow: var(--shadow);
-      transition: box-shadow .15s, transform .15s;
-      text-decoration: none; color: inherit;
-    }
+    .job-card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 20px 22px; display: grid; grid-template-columns: 48px 1fr auto; gap: 16px; align-items: center; box-shadow: var(--shadow); transition: box-shadow .15s, transform .15s; text-decoration: none; color: inherit; }
     .job-card:hover { box-shadow: 0 10px 32px rgba(17,31,25,.14); transform: translateY(-1px); }
     .job-card.featured { border-color: rgba(184,122,34,.3); background: linear-gradient(to right, #fffdf5, #fff); }
-
-    .company-logo {
-      width: 48px; height: 48px; border-radius: 8px;
-      background: var(--green); color: #fff;
-      display: grid; place-items: center;
-      font-size: 14px; font-weight: 900; flex-shrink: 0;
-    }
+    .company-logo { width: 48px; height: 48px; border-radius: 8px; background: var(--green); color: #fff; display: grid; place-items: center; font-size: 14px; font-weight: 900; flex-shrink: 0; }
     .job-main { display: grid; gap: 4px; min-width: 0; }
     .job-title { font-size: 16px; font-weight: 800; line-height: 1.2; }
     .job-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 2px; }
     .job-company { font-size: 13px; color: var(--muted); font-weight: 750; }
-    .job-tag {
-      display: inline-flex; padding: 2px 8px; border-radius: 999px;
-      font-size: 11px; font-weight: 850; letter-spacing: .04em;
-      background: var(--mint); color: var(--green);
-    }
+    .job-tag { display: inline-flex; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 850; letter-spacing: .04em; background: var(--mint); color: var(--green); }
     .job-tag.remote { background: #ddeaf5; color: var(--blue); }
     .job-tag.hybrid { background: #ede5f5; color: #7b4b92; }
     .job-tag.featured-tag { background: var(--gold2); color: var(--gold); }
     .job-salary { font-size: 13px; color: var(--muted); white-space: nowrap; }
-
     .job-right { display: grid; gap: 6px; text-align: right; align-items: center; }
     .job-age { font-size: 12px; color: var(--muted); white-space: nowrap; }
-    .apply-btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      min-height: 36px; padding: 0 14px; border-radius: 8px;
-      background: var(--green); color: #fff;
-      font: inherit; font-size: 13px; font-weight: 850;
-      white-space: nowrap;
-    }
+    .apply-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 36px; padding: 0 14px; border-radius: 8px; background: var(--green); color: #fff; font: inherit; font-size: 13px; font-weight: 850; white-space: nowrap; }
     .job-card.featured .apply-btn { background: var(--gold); }
 
-    /* ── POST A JOB SECTION ── */
-    .post-section {
-      background: var(--dark); color: #fff;
-      border-radius: 12px; padding: 40px 36px;
-      display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center;
-    }
-    .post-section h2 { font-size: clamp(24px,3vw,38px); margin-bottom: 10px; }
-    .post-section p { color: rgba(255,255,255,.72); line-height: 1.6; margin: 0; }
-    .post-section .btn-primary { font-size: 16px; min-height: 52px; padding: 0 28px; white-space: nowrap; }
-
-    /* ── POST FORM ── */
-    .form-card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 28px; box-shadow: var(--shadow); }
-    .form-card h2 { font-size: 26px; margin-bottom: 6px; }
-    .form-card > p { color: var(--muted); margin-bottom: 0; }
-    .form-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 13px; margin-top: 20px; }
-    .form-grid label { display: grid; gap: 7px; font-size: 13px; font-weight: 900; color: var(--ink); }
-    .form-grid input, .form-grid select, .form-grid textarea {
-      width: 100%; border: 1px solid var(--line); border-radius: 8px;
-      padding: 12px 13px; font: inherit; background: #fff; color: var(--ink);
-    }
-    .form-grid textarea { min-height: 128px; resize: vertical; }
-    .form-grid .full { grid-column: 1/-1; }
-    .pricing-note {
-      grid-column: 1/-1;
-      display: flex; align-items: center; gap: 12px;
-      padding: 14px 16px; border-radius: 8px;
-      background: var(--mint); border: 1px solid rgba(20,95,71,.2);
-      font-size: 13px; color: var(--green);
-    }
-    .pricing-note strong { font-weight: 900; }
-    .submit-btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      min-height: 46px; padding: 0 22px; border: 0; border-radius: 8px;
-      background: var(--green); color: #fff; font: inherit; font-weight: 950; cursor: pointer;
-    }
-    .form-status { display: none; border-radius: 8px; background: var(--mint); color: var(--green); padding: 12px 14px; font-weight: 900; font-size: 13px; margin-top: 12px; }
+    .recruiter-cta { background: var(--dark); color: #fff; border-radius: 12px; padding: 36px; display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: center; }
+    .recruiter-cta h2 { font-size: clamp(22px,3vw,34px); margin-bottom: 10px; }
+    .recruiter-cta p { color: rgba(255,255,255,.7); line-height: 1.6; margin: 0; font-size: 15px; }
 
     :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 3px; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-
     footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-top: 1px solid var(--line); padding: 26px clamp(18px,5vw,68px); color: var(--muted); font-size: 13px; }
 
-    @media (max-width: 1060px) { .hero-inner { grid-template-columns: 1fr; } .pricing-card { max-width: 480px; } .audience-grid { grid-template-columns: repeat(2,1fr); } .post-section { grid-template-columns: 1fr; } }
-    @media (max-width: 760px) { .audience-grid, .form-grid { grid-template-columns: 1fr; } .job-card { grid-template-columns: 40px 1fr; } .job-right { display: none; } }
+    @media (max-width: 1060px) { .hero-inner { grid-template-columns: 1fr; } .recruiter-cta { grid-template-columns: 1fr; } }
+    @media (max-width: 760px) { .job-card { grid-template-columns: 40px 1fr; } .job-right { display: none; } }
   </style>
   <link rel="stylesheet" href="assets/site-nav.css?v=20260512-navresponsive1">
 </head>
@@ -254,59 +134,30 @@
     <div class="hero-inner">
       <div>
         <span class="eyebrow">AI Jobs Board</span>
-        <h1>Hire from the most focused<br><em>AI talent pool anywhere.</em></h1>
-        <p>Every visitor to this page is actively learning AI from vetted experts. Post your role, reach the right people, and auto-renew until you hire — cancel anytime.</p>
+        <h1>Find your next<br><em>AI role.</em></h1>
+        <p>Every job here is posted by an organization that knows this audience — active AI learners and practitioners investing in their craft. Browse open roles across five domains.</p>
         <div class="hero-actions">
-          <a class="btn-primary" href="#post-form">Post a Job — $25</a>
-          <a class="btn-ghost" href="#jobs-list">Browse open roles</a>
+          <a class="btn-primary" href="#jobs-list">Browse open roles</a>
+          <a class="btn-ghost" href="postajob.html">Post a Job</a>
         </div>
       </div>
-      <div class="pricing-card">
-        <h2>Simple pricing</h2>
-        <div class="price-row">
-          <span class="price-big">$25</span>
-          <span class="price-unit">per 7 days</span>
-        </div>
-        <div class="pricing-features">
-          <div class="pf"><span class="pf-check">✓</span>Live within minutes of posting</div>
-          <div class="pf"><span class="pf-check">✓</span>Auto-renew weekly until you hire</div>
-          <div class="pf"><span class="pf-check">✓</span>Cancel anytime — one click</div>
-          <div class="pf"><span class="pf-check">✓</span>Seen by active AI learners &amp; patrons</div>
-          <div class="pf"><span class="pf-check">✓</span>Shared to 25experts community digest</div>
-        </div>
-        <div class="vs-bar">
-          <span>vs. LinkedIn:</span>
-          <s>$499+/30 days</s>
-          <span>—</span>
-          <strong>you save 95%</strong>
-        </div>
-      </div>
+      <aside class="hero-aside">
+        <strong>Are you hiring?</strong>
+        <p>Reach professionals who are actively learning AI from vetted experts. Every viewer on this board is an engaged practitioner — not a passive scroller.</p>
+        <a class="aside-link" href="postajob.html">Post a Job →</a>
+      </aside>
     </div>
   </section>
 
   <main class="page">
 
-    <section>
-      <div class="section-head">
-        <div class="kicker">Why post here</div>
-        <h2>A captive audience you cannot buy on LinkedIn.</h2>
-        <p>25experts patrons are not passive scrollers. They are professionals actively investing time and money to get better at AI. That makes them the exact hire you are looking for — and they are here every week.</p>
-      </div>
-      <div class="audience-grid" style="margin-top: 24px;">
-        <article class="audience-card"><strong>100%</strong><span>of visitors are actively engaged in structured AI learning.</span></article>
-        <article class="audience-card"><strong>25+</strong><span>vetted AI experts whose audiences follow this job board.</span></article>
-        <article class="audience-card"><strong>$14/mo</strong><span>average patron investment — these are motivated, paying learners.</span></article>
-        <article class="audience-card"><strong>5 domains</strong><span>AI, Finance, Marketing, Leadership, and Design — hire across disciplines.</span></article>
-      </div>
-    </section>
-
     <section id="jobs-list">
-      <div class="section-header" style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px;">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px;">
         <div>
           <div class="kicker">Open roles</div>
           <h2 style="font-size:clamp(22px,3vw,34px);margin:0;">AI Jobs — posted this week</h2>
         </div>
-        <a class="post-btn-sm" href="#post-form">+ Post a Job</a>
+        <a class="post-btn-sm" href="postajob.html">+ Post a Job</a>
       </div>
 
       <div class="job-toolbar" aria-label="Filter jobs">
@@ -333,49 +184,12 @@
       <div class="job-grid" id="job-grid" style="margin-top:12px;" aria-live="polite"></div>
     </section>
 
-    <section class="post-section">
+    <section class="recruiter-cta">
       <div>
-        <h2>Ready to reach the right people?</h2>
-        <p>$25 for 7 days. Auto-renew until hired. Cancel with one click — no contracts, no account rep, no minimum spend.</p>
+        <h2>Hiring AI talent?</h2>
+        <p>Post your role to a board where every viewer is actively engaged in AI learning. Reach practitioners, not passive job-seekers.</p>
       </div>
-      <a class="btn-primary" href="#post-form">Post a Job Now</a>
-    </section>
-
-    <section class="form-card" id="post-form">
-      <div class="kicker">Post a job</div>
-      <h2>Job listing form</h2>
-      <p>Fill out your listing. Goes live within minutes. Mock form — connect to payment processor before launch.</p>
-      <form action="#" method="post" class="form-grid" data-mock-form>
-        <label>Job title<input type="text" name="title" placeholder="e.g. AI Product Manager" autocomplete="off"></label>
-        <label>Company name<input type="text" name="company" autocomplete="organization" placeholder="Your company or org"></label>
-        <label>Location / remote policy
-          <select name="location">
-            <option>Remote — worldwide</option>
-            <option>Remote — US only</option>
-            <option>Hybrid — specify city</option>
-            <option>On-site</option>
-          </select>
-        </label>
-        <label>Domain focus
-          <select name="domain">
-            <option>AI &amp; Automation</option>
-            <option>Finance &amp; Investing</option>
-            <option>Marketing &amp; Sales</option>
-            <option>Leadership &amp; Management</option>
-            <option>Design &amp; Creative</option>
-            <option>Cross-domain / General AI</option>
-          </select>
-        </label>
-        <label>Salary range<input type="text" name="salary" placeholder="e.g. $90k–$130k" autocomplete="off"></label>
-        <label>Contact email<input type="email" name="email" autocomplete="email" placeholder="hiring@company.com"></label>
-        <label class="full">Job description<textarea name="description" placeholder="Describe the role, key responsibilities, and what you're looking for. Plain English is fine."></textarea></label>
-        <div class="pricing-note">
-          <span aria-hidden="true">✓</span>
-          <span><strong>$25 for 7 days.</strong> Auto-renewal is opt-in at checkout. Cancel anytime. No contracts.</span>
-        </div>
-        <button class="submit-btn" type="submit">Submit listing — $25</button>
-      </form>
-      <div class="form-status">Listing received. Connect to payment processor and job management system before launch.</div>
+      <a class="btn-primary" href="postajob.html" style="white-space:nowrap;font-size:16px;min-height:52px;padding:0 28px;">Post a Job</a>
     </section>
 
   </main>
@@ -407,16 +221,13 @@
       leadership: { bg: "#ede5f5", color: "#7b4b92" },
       design:     { bg: "#f5e5e0", color: "#bf563f" },
     };
-    const DOMAIN_NAMES = {
-      ai: "AI & Automation", finance: "Finance", marketing: "Marketing",
-      leadership: "Leadership", design: "Design"
-    };
+    const DOMAIN_NAMES = { ai: "AI & Automation", finance: "Finance", marketing: "Marketing", leadership: "Leadership", design: "Design" };
 
     function renderJob(job) {
       const dc = DOMAIN_COLORS[job.domain];
       const card = document.createElement("a");
       card.className = "job-card" + (job.featured ? " featured" : "");
-      card.href = "#post-form";
+      card.href = "#";
       card.dataset.type = job.type;
       card.dataset.domain = job.domain;
       card.innerHTML = `
@@ -443,8 +254,7 @@
       const grid = document.getElementById("job-grid");
       grid.innerHTML = "";
       let count = 0;
-      const sorted = [...JOBS].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
-      sorted.forEach(job => {
+      [...JOBS].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0)).forEach(job => {
         if ((typeVal === "all" || job.type === typeVal) && (domainVal === "all" || job.domain === domainVal)) {
           grid.appendChild(renderJob(job));
           count++;
@@ -455,12 +265,6 @@
 
     document.getElementById("filter-type").addEventListener("change", buildJobs);
     document.getElementById("filter-domain").addEventListener("change", buildJobs);
-
-    document.querySelector("[data-mock-form]").addEventListener("submit", e => {
-      e.preventDefault();
-      document.querySelector(".form-status").style.display = "block";
-    });
-
     buildJobs();
   </script>
 </body>
