@@ -343,6 +343,28 @@
       font-weight: 850;
     }
 
+    .attended {
+      display: inline-flex;
+      align-self: flex-start;
+      padding: 5px 7px;
+      border-radius: 6px;
+      background: #145f47;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 850;
+    }
+
+    .not-attended {
+      display: inline-flex;
+      align-self: flex-start;
+      padding: 5px 7px;
+      border-radius: 6px;
+      background: #bf563f;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 850;
+    }
+
     .empty {
       min-height: 104px;
       border-radius: 8px;
@@ -449,6 +471,24 @@
   </footer>
 
   <script>
+    // monthIndex 0 = April (all past), monthIndex 1 weeks 0-2 = May 1-17 (past as of May 12)
+    function isPast(monthIndex, weekIndex) {
+      if (monthIndex === 0) return true;
+      if (monthIndex === 1 && weekIndex <= 2) return true;
+      return false;
+    }
+
+    // Keys: `${domain.key}-${monthIndex}-${expertIndex}`
+    const ATTENDED = new Set([
+      'ai-0-0',
+      'design-0-0',
+      'marketing-0-1',
+      'finance-0-2',
+      'leadership-0-3',
+      'ai-1-0',
+      'marketing-1-1',
+    ]);
+
     const domains = [
       {
         key: "ai",
@@ -563,13 +603,17 @@
           const slots = timeSlotsByMonth[monthIndex];
           const time = slots[(domainIndex * 2 + expertIndex + monthIndex) % slots.length];
           const topicSuffix = monthIndex === 0 ? "" : monthIndex === 1 ? " Lab" : " Clinic";
+          const eventKey = `${domain.key}-${monthIndex}-${expertIndex}`;
           events.push({
             domain: domain.name,
             key: domain.key,
+            eventKey,
             expert,
             topic: topic + topicSuffix,
             week,
             time,
+            past: isPast(monthIndex, expertIndex),
+            attended: ATTENDED.has(eventKey),
             link: `https://discord.gg/25xprt${domain.key.charAt(0).toUpperCase()}${monthIndex + 4}${expertIndex + 1}w`
           });
         });
@@ -607,7 +651,12 @@
                         <strong>${event.expert}</strong>
                         <p>${event.topic}</p>
                       </div>
-                      <a class="teams" href="${event.link}">Join Discord</a>
+                      ${event.past
+                        ? event.attended
+                          ? `<span class="attended">Attended</span>`
+                          : `<span class="not-attended">Did not attend</span>`
+                        : `<a class="teams" href="${event.link}">Join Discord</a>`
+                      }
                     </article>
                   </div>
                 `;
