@@ -69,7 +69,7 @@
 }
 
 .nav .site-nav-group a {
-  min-height: 28px;
+  min-height: 17px;
   display: grid;
   place-items: center;
   padding: 0 6px;
