@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>25experts - Practical AI Learning</title>
+  <style>
+    :root {
+      --ink: #111615;
+      --muted: #61706d;
+      --paper: #fbfaf6;
+      --panel: #ffffff;
+      --line: #dfe5df;
+      --green: #17624a;
+      --mint: #def3e5;
+      --blue: #245a7d;
+      --gold: #b87a22;
+      --coral: #c6553f;
+      --violet: #6954a3;
+      --dark: #101817;
+      --shadow: 0 18px 50px rgba(24, 34, 29, 0.13);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 15px clamp(18px, 5vw, 68px);
+      border-bottom: 1px solid rgba(223, 229, 223, 0.9);
+      background: rgba(251, 250, 246, 0.93);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 850;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      color: #fff;
+      background: var(--green);
+      font-weight: 900;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: var(--green);
+      color: #fff;
+      font-weight: 800;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .button.secondary {
+      color: var(--green);
+      background: #fff;
+      border-color: var(--line);
+    }
+
+    .hero {
+      min-height: 88vh;
+      display: grid;
+      align-items: end;
+      background:
+        linear-gradient(90deg, rgba(8, 22, 18, 0.9), rgba(8, 22, 18, 0.55) 55%, rgba(8, 22, 18, 0.16)),
+        url("https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1800&q=80");
+      background-position: center;
+      background-size: cover;
+    }
+
+    .hero-inner {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 92px 0 50px;
+      color: #fff;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      padding: 7px 11px;
+      border: 1px solid rgba(255, 255, 255, 0.34);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    h1 {
+      max-width: 900px;
+      margin: 22px 0 18px;
+      font-size: clamp(42px, 7vw, 86px);
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 720px;
+      margin: 0 0 28px;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: clamp(18px, 2.1vw, 23px);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .hero-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1px;
+      width: min(1080px, 100%);
+      margin-top: 54px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    .hero-stat {
+      min-height: 112px;
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-stat strong {
+      display: block;
+      font-size: 27px;
+      line-height: 1.05;
+    }
+
+    .hero-stat span {
+      display: block;
+      margin-top: 7px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 13px;
+    }
+
+    section { padding: 78px clamp(18px, 5vw, 68px); }
+
+    .section-inner {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .section-heading {
+      max-width: 820px;
+      margin-bottom: 34px;
+    }
+
+    .kicker {
+      margin-bottom: 10px;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: clamp(30px, 4.4vw, 54px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .section-heading p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .band { background: #eef4ef; }
+
+    .split {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(340px, 1.05fr);
+      gap: 36px;
+      align-items: start;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      min-height: 230px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .green { background: var(--green); }
+    .blue { background: var(--blue); }
+    .gold { background: var(--gold); }
+    .coral { background: var(--coral); }
+    .violet { background: var(--violet); }
+
+    .card h3 {
+      margin: 0 0 7px;
+      font-size: 21px;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .path {
+      display: grid;
+      gap: 12px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .path-row {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .path-row:last-child { border-bottom: 0; }
+
+    .num {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--mint);
+      color: var(--green);
+      font-weight: 950;
+    }
+
+    .path-row h3 {
+      margin: 0 0 4px;
+      font-size: 18px;
+    }
+
+    .path-row p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .rhythm {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .day {
+      min-height: 190px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .day small {
+      display: inline-block;
+      margin-bottom: 12px;
+      color: var(--green);
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .day h3 {
+      margin: 0 0 8px;
+      font-size: 21px;
+    }
+
+    .day p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .access {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .social-card {
+      min-height: 245px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .social-card h3 {
+      margin: 0 0 8px;
+      font-size: 21px;
+    }
+
+    .social-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .tier {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .tier h3 {
+      margin: 0 0 10px;
+      font-size: 25px;
+    }
+
+    .tier p {
+      margin: 0 0 18px;
+      color: var(--muted);
+    }
+
+    .tier ul {
+      display: grid;
+      gap: 9px;
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    .fineprint {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .mission {
+      color: #fff;
+      background:
+        linear-gradient(90deg, rgba(16, 24, 23, 0.9), rgba(16, 24, 23, 0.62)),
+        url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1800&q=80");
+      background-position: center;
+      background-size: cover;
+    }
+
+    .mission .section-heading p { color: rgba(255, 255, 255, 0.8); }
+    .mission .kicker { color: #bfead1; }
+
+    .quote {
+      max-width: 860px;
+      margin-top: 34px;
+      padding: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.09);
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 20px;
+      font-weight: 750;
+    }
+
+    .cta {
+      text-align: center;
+      background: var(--dark);
+      color: #fff;
+    }
+
+    .cta h2 {
+      max-width: 800px;
+      margin: 0 auto 16px;
+    }
+
+    .cta p {
+      max-width: 700px;
+      margin: 0 auto 28px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 18px;
+    }
+
+    .cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    footer {
+      padding: 28px clamp(18px, 5vw, 68px);
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      font-size: 14px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-strip,
+      .split,
+      .cards,
+      .rhythm,
+      .access,
+      .social-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .nav-links a:not(.button) { display: none; }
+      .hero { min-height: 860px; }
+    }
+
+    @media (max-width: 540px) {
+      .nav { align-items: flex-start; }
+      .button { width: 100%; }
+      .hero-actions, .cta-actions { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="#">
+      <span class="brand-mark">25</span>
+      <span>25experts by Aesop Academy</span>
+    </a>
+    <nav class="nav-links" aria-label="Page navigation">
+      <a href="#why">Why join</a>
+      <a href="#works">How it works</a>
+      <a href="#access">Access</a>
+      <a href="#mission">Mission</a>
+      <a class="button" href="#join">Join waitlist</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <span class="eyebrow">For professionals who need practical AI fluency</span>
+        <h1>Stop chasing AI advice across the internet.</h1>
+        <p>25experts brings trusted AI educators, practical workflows, ranked lessons, and a clear weekly path into one nonprofit learning community. Browse the platform for free, then support individual Experts to unlock their live events and AI companion.</p>
+        <div class="hero-actions">
+          <a class="button" href="#join">Join the founding learner list</a>
+          <a class="button secondary" href="#why">See why it works</a>
+        </div>
+        <div class="hero-strip" aria-label="Platform value highlights">
+          <div class="hero-stat">
+            <strong>Trusted</strong>
+            <span>curated experts, quality-ranked lessons, and transparent standards</span>
+          </div>
+          <div class="hero-stat">
+            <strong>Practical</strong>
+            <span>workflows, challenges, templates, and applied AI sessions</span>
+          </div>
+          <div class="hero-stat">
+            <strong>Live</strong>
+            <span>paid Expert membership unlocks workshops, Q&A, office hours, and live events</span>
+          </div>
+          <div class="hero-stat">
+            <strong>AI guide</strong>
+            <span>paid Expert membership unlocks that Expert's AI companion</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="why">
+      <div class="section-inner">
+        <div class="section-heading">
+          <div class="kicker">The subscriber problem</div>
+          <h2>AI knowledge is everywhere. It is organized nowhere.</h2>
+          <p>You can follow dozens of creators and still feel behind. 25experts turns scattered AI content into a guided learning environment built around progress, access, and practical outcomes. You do not pay one blanket fee for the whole site; you choose which Experts to support.</p>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <div class="icon green">1</div>
+            <h3>Know what to learn next</h3>
+            <p>Ranked lessons, learning paths, and catch-up feeds help you avoid the noise and move to the next useful step.</p>
+          </article>
+          <article class="card">
+            <div class="icon blue">2</div>
+            <h3>Get closer to the teachers</h3>
+            <p>Membership to an Expert unlocks their live workshops, office hours, Q&A events, and communities where creators actually respond.</p>
+          </article>
+          <article class="card">
+            <div class="icon gold">3</div>
+            <h3>Build visible mastery</h3>
+            <p>Track completed workshops, saved workflows, implementation challenges, and credentials that represent real work.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="works" class="band">
+      <div class="section-inner split">
+        <div class="section-heading">
+          <div class="kicker">How it works</div>
+          <h2>A weekly rhythm that keeps you moving.</h2>
+          <p>The platform is designed around momentum. Every week gives you something to learn, someone to ask, and something useful to build.</p>
+        </div>
+        <div class="path">
+          <div class="path-row">
+            <div class="num">1</div>
+            <div>
+              <h3>Follow the experts and topics that match your work</h3>
+              <p>AI for marketers, agencies, executives, teachers, operators, builders, and governance leaders.</p>
+            </div>
+          </div>
+          <div class="path-row">
+            <div class="num">2</div>
+            <div>
+              <h3>Watch the best current lessons first</h3>
+              <p>Content is ranked by usefulness, engagement, completion, freshness, and review.</p>
+            </div>
+          </div>
+          <div class="path-row">
+            <div class="num">3</div>
+            <div>
+              <h3>Attend the live events your membership unlocks</h3>
+              <p>Follow an Expert as a paid patron to access their live workshops, office hours, AMAs, and Q&A sessions.</p>
+            </div>
+          </div>
+          <div class="path-row">
+            <div class="num">4</div>
+            <div>
+              <h3>Complete challenges that turn learning into skill</h3>
+              <p>Build workflows, templates, prompts, automations, and practical artifacts you can use immediately.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-inner">
+        <div class="section-heading">
+          <div class="kicker">Retention by design</div>
+          <h2>Not another library you forget to open.</h2>
+          <p>25experts is built around four reasons to come back: progress, access, agency, and momentum.</p>
+        </div>
+        <div class="rhythm">
+          <article class="day">
+            <small>Monday</small>
+            <h3>New workflow</h3>
+            <p>A practical AI lesson or workflow you can apply during the week.</p>
+          </article>
+          <article class="day">
+            <small>Wednesday</small>
+            <h3>Live workshop</h3>
+            <p>Creator-led Q&A, office hours, or walkthroughs unlocked by the Experts you support.</p>
+          </article>
+          <article class="day">
+            <small>Friday</small>
+            <h3>Challenge</h3>
+            <p>A small implementation task that turns watching into doing.</p>
+          </article>
+          <article class="day">
+            <small>Weekly</small>
+            <h3>AI companion</h3>
+            <p>Catch up on missed moments, ask questions, and get recommended next actions based on your path.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="access" class="band">
+      <div class="section-inner">
+        <div class="section-heading">
+          <div class="kicker">Access model</div>
+          <h2>Free discovery. $14/month per Expert for deeper access.</h2>
+          <p>Aesop Academy's mission means access cannot be an afterthought. The platform must help people learn even when they cannot pay full price, while making paid patronage clear: you pay for each Expert you choose to follow deeply.</p>
+        </div>
+        <div class="access">
+          <article class="tier">
+            <h3>Free learner access</h3>
+            <p>Built for discovery, trust, and public benefit across 25experts.</p>
+            <ul>
+              <li>Creator profiles and topic pages</li>
+              <li>Short-form clips and selected lessons</li>
+              <li>Public ranking pages</li>
+              <li>Weekly digest</li>
+              <li>Limited social search</li>
+              <li>Public live event calendar</li>
+              <li>Scholarship or sponsored-access pathways</li>
+            </ul>
+          </article>
+          <article class="tier">
+            <h3>$14/month per Expert</h3>
+            <p>Built for depth, direct access, progress, and identity with the specific Experts you choose.</p>
+            <ul>
+              <li>Full content from that Expert</li>
+              <li>Live Q&A participation with that Expert</li>
+              <li>Expert-specific live events, replays, and workshops</li>
+              <li>AI chatbot companion for that Expert's content and learning path</li>
+              <li>Community access around that Expert's work</li>
+              <li>Implementation challenges tied to that Expert's lessons</li>
+              <li>Progress tracking for the Experts and tracks you support</li>
+            </ul>
+          </article>
+        </div>
+        <p class="fineprint">Example: following one Expert deeply is $14/month and unlocks that Expert's paid content, live events, Q&A access, replays, community layer, and AI companion support. Following three Experts deeply is $42/month. Free platform discovery remains available, but live-event access and AI companion access are paid features.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-inner">
+        <div class="section-heading">
+          <div class="kicker">Social learning values</div>
+          <h2>The community is part of the product.</h2>
+          <p>25experts should keep people coming back because they belong, contribute, get recognized, and feel closer to the creators they trust.</p>
+        </div>
+        <div class="social-grid">
+          <article class="social-card">
+            <div class="icon green">B</div>
+            <h3>Belonging by role</h3>
+            <p>Persona rooms like AI for marketers, agencies, teachers, executives, and operators give learners a smaller place where their questions actually fit.</p>
+          </article>
+          <article class="social-card">
+            <div class="icon blue">Q</div>
+            <h3>Direct creator access</h3>
+            <p>Paid Expert membership unlocks live Q&A, office hours, AMAs, event replays, and creator replies that make patrons feel known instead of anonymous.</p>
+          </article>
+          <article class="social-card">
+            <div class="icon gold">V</div>
+            <h3>Vote on what gets made</h3>
+            <p>Subscribers can upvote questions, suggest workshops, submit workflows, and shape the next creator lesson.</p>
+          </article>
+          <article class="social-card">
+            <div class="icon coral">★</div>
+            <h3>Recognition that means something</h3>
+            <p>Badges, challenge completions, featured workflows, and progress markers should reward real learning, not empty activity.</p>
+          </article>
+          <article class="social-card">
+            <div class="icon violet">↗</div>
+            <h3>Clips worth sharing</h3>
+            <p>Short clips from workshops and lessons make the best ideas easy to share, helping members spread useful AI education outside the platform.</p>
+          </article>
+          <article class="social-card">
+            <div class="icon green">↺</div>
+            <h3>AI companion catch-up</h3>
+            <p>The companion summarizes missed workshops, top posts, unanswered questions, new tools, and the next action to take.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="mission" id="mission">
+      <div class="section-inner">
+        <div class="section-heading">
+          <div class="kicker">Why this exists</div>
+          <h2>Nobody should be left behind because they could not find a trusted teacher.</h2>
+          <p>25experts begins with AI because AI is reshaping work, education, creativity, and daily life. The people who understand it will shape what comes next. The people who do not will be shaped by it.</p>
+        </div>
+        <div class="quote">When a decision is hard, the platform asks: does this serve the learner first, prove we built this for creators, and expand access rather than restrict it?</div>
+      </div>
+    </section>
+
+    <section id="join" class="cta">
+      <div class="section-inner">
+        <h2>Join the founding learner list.</h2>
+        <p>Get early access to the first AI & Automation vertical, free learning previews, and founding patron opportunities for the specific Experts you want to support at $14/month each.</p>
+        <div class="cta-actions">
+          <a class="button" href="mailto:learners@example.com?subject=25experts%20founding%20learner%20list">Join the learner list</a>
+          <a class="button secondary" href="mailto:learners@example.com?subject=25experts%20sponsored%20access">Ask about sponsored access</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Subscriber value mockup by Codex. Replace placeholder emails, pricing, access rules, and certification language before launch.
+  </footer>
+</body>
+</html>

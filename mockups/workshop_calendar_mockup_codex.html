@@ -1,58 +1,9 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  <title>Workshop Calendar | 25experts</title>
-  <meta name="description" content="See upcoming AI workshops and live events from 25experts creators across practical AI domains and member communities.">
-  <link rel="canonical" href="https://25experts.com/workshopcalendar.html">
-  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-  <link rel="alternate icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32">
-  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-  <link rel="mask-icon" href="/assets/mask-icon.svg" color="#145f47">
-  <link rel="manifest" href="/site.webmanifest">
-  <meta name="theme-color" content="#145f47">
-  <meta name="robots" content="index, follow">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="25experts by Aesop Academy">
-  <meta property="og:title" content="Workshop Calendar | 25experts">
-  <meta property="og:description" content="See upcoming AI workshops and live events from 25experts creators across practical AI domains and member communities.">
-  <meta property="og:url" content="https://25experts.com/workshopcalendar.html">
-  <meta property="og:image" content="https://25experts.com/assets/og-25experts.png">
-  <meta property="og:image:secure_url" content="https://25experts.com/assets/og-25experts.png">
-  <meta property="og:image:type" content="image/png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Are You an AI Expert? Do You Want to Be? 25experts by Aesop Academy">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Workshop Calendar | 25experts">
-  <meta name="twitter:description" content="See upcoming AI workshops and live events from 25experts creators across practical AI domains and member communities.">
-  <meta name="twitter:image" content="https://25experts.com/assets/og-25experts.png">
-  <meta name="twitter:image:alt" content="Are You an AI Expert? Do You Want to Be? 25experts by Aesop Academy">
-  <script type="application/ld+json">
-    {
-        "@type":  "WebPage",
-        "url":  "https://25experts.com/workshopcalendar.html",
-        "name":  "Workshop Calendar | 25experts",
-        "description":  "See upcoming AI workshops and live events from 25experts creators across practical AI domains and member communities.",
-        "@context":  "https://schema.org",
-        "publisher":  {
-                          "url":  "https://25experts.com/",
-                          "name":  "Aesop Academy",
-                          "@type":  "NGO",
-                          "nonprofitStatus":  "Nonprofit501c3"
-                      },
-        "image":  "https://25experts.com/assets/og-25experts.png",
-        "isPartOf":  {
-                         "url":  "https://25experts.com/",
-                         "name":  "25experts by Aesop Academy",
-                         "@type":  "WebSite"
-                     }
-    }
-  </script>
+  <title>25experts Workshop Calendar Mockup</title>
   <style>
     :root {
       --ink: #101615;
@@ -102,7 +53,7 @@
       gap: 20px;
       padding: 15px clamp(18px, 5vw, 68px);
       border-bottom: 1px solid rgba(221, 229, 223, 0.86);
-      background: rgba(251, 250, 246, 0.93);
+      background: rgba(251, 250, 246, 0.94);
       backdrop-filter: blur(16px);
     }
 
@@ -122,7 +73,6 @@
       background: var(--green);
       color: #fff;
       font-size: 12px;
-      letter-spacing: 0;
     }
 
     .brand-text span {
@@ -141,20 +91,6 @@
       color: var(--muted);
       font-size: 14px;
       font-weight: 700;
-    }
-
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 44px;
-      padding: 0 18px;
-      border: 1px solid transparent;
-      border-radius: 8px;
-      background: var(--green);
-      color: #fff;
-      font-weight: 850;
-      white-space: nowrap;
     }
 
     .hero {
@@ -383,30 +319,8 @@
       align-self: flex-start;
       padding: 5px 7px;
       border-radius: 6px;
-      background: #5865F2;
-      color: #fff;
-      font-size: 11px;
-      font-weight: 850;
-    }
-
-    .attended {
-      display: inline-flex;
-      align-self: flex-start;
-      padding: 5px 7px;
-      border-radius: 6px;
-      background: #145f47;
-      color: #fff;
-      font-size: 11px;
-      font-weight: 850;
-    }
-
-    .not-attended {
-      display: inline-flex;
-      align-self: flex-start;
-      padding: 5px 7px;
-      border-radius: 6px;
-      background: #bf563f;
-      color: #fff;
+      background: rgba(255, 255, 255, 0.72);
+      color: #33413d;
       font-size: 11px;
       font-weight: 850;
     }
@@ -446,48 +360,54 @@
       font-size: 14px;
     }
 
-    footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      padding: 26px clamp(18px, 5vw, 68px);
-      color: var(--muted);
-      border-top: 1px solid var(--line);
-      font-size: 14px;
-    }
-
-    @media (max-width: 900px) {
-      .nav-links a:not(.button) { display: none; }
-    }
-
     @media (max-width: 760px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+      }
+
       .month-head {
         align-items: flex-start;
         flex-direction: column;
       }
+
       .summary {
         grid-template-columns: 1fr;
       }
     }
   </style>
-  <link rel="stylesheet" href="assets/site-nav.css?v=20260512-compactnav">
 </head>
 <body>
   <div class="mission-bar">
     <strong>Aesop Academy</strong> is a 501(c)(3) nonprofit advancing AI literacy for youth and working professionals.
     <a href="https://aesopacademy.org">aesopacademy.org</a>
   </div>
-  <div id="site-nav"></div>
-  <script src="assets/site-nav.js?v=20260512-compactnav"></script>
 
+  <header class="nav">
+    <a class="brand" href="../index.html">
+      <span class="brand-mark">25</span>
+      <span class="brand-text">
+        25experts
+        <span>by Aesop Academy</span>
+      </span>
+    </a>
+    <nav class="nav-links" aria-label="Page navigation">
+      <a href="../index.html">Home</a>
+      <a href="../subscriber.html">Follow the Experts</a>
+      <a href="../experts.html">Expert Program</a>
+      <a href="blog_archive_mockup_codex.html">Blogs</a>
+    </nav>
+  </header>
 
   <section class="hero">
     <div class="hero-inner">
-      <span class="eyebrow">Monthly workshop programming</span>
+      <span class="eyebrow">Monthly workshop programming mockup</span>
       <h1>Every Expert teaches live, every month.</h1>
-      <p>A sample three-month schedule across all five 25experts domains. Each month includes one live workshop from all 25 Experts, distributed across weekly columns. All times EST.</p>
+      <p>This calendar shows a sample three-month programming schedule across all five 25experts domains. Each month includes one live workshop from all 25 Experts, distributed across weekly calendar columns and the 10:00 AM - 9:00 PM EST workshop day.</p>
       <div class="legend" aria-label="Domain color legend">
         <span class="pill"><span class="dot ai"></span>AI & Automation</span>
         <span class="pill"><span class="dot finance"></span>Finance & Investing</span>
@@ -500,30 +420,7 @@
 
   <main id="calendar-root"></main>
 
-  <footer>
-    <strong>25experts by <a href="https://aesopacademy.org" style="color:var(--green);">Aesop Academy</a></strong>
-    <span>AI literacy education for youth and working professionals, globally. Â· <a href="https://aesopacademy.org" style="color:var(--muted);">aesopacademy.org</a></span>
-  </footer>
-
   <script>
-    // monthIndex 0 = April (all past), monthIndex 1 weeks 0-2 = May 1-17 (past as of May 12)
-    function isPast(monthIndex, weekIndex) {
-      if (monthIndex === 0) return true;
-      if (monthIndex === 1 && weekIndex <= 2) return true;
-      return false;
-    }
-
-    // Keys: `${domain.key}-${monthIndex}-${expertIndex}`
-    const ATTENDED = new Set([
-      'ai-0-0',
-      'design-0-0',
-      'marketing-0-1',
-      'finance-0-2',
-      'leadership-0-3',
-      'ai-1-0',
-      'marketing-1-1',
-    ]);
-
     const domains = [
       {
         key: "ai",
@@ -638,18 +535,14 @@
           const slots = timeSlotsByMonth[monthIndex];
           const time = slots[(domainIndex * 2 + expertIndex + monthIndex) % slots.length];
           const topicSuffix = monthIndex === 0 ? "" : monthIndex === 1 ? " Lab" : " Clinic";
-          const eventKey = `${domain.key}-${monthIndex}-${expertIndex}`;
           events.push({
             domain: domain.name,
             key: domain.key,
-            eventKey,
             expert,
             topic: topic + topicSuffix,
             week,
             time,
-            past: isPast(monthIndex, expertIndex),
-            attended: ATTENDED.has(eventKey),
-            link: `https://discord.gg/25xprt${domain.key.charAt(0).toUpperCase()}${monthIndex + 4}${expertIndex + 1}w`
+            link: `https://teams.microsoft.com/l/meetup-join/25experts-${domain.key}-${monthIndex + 4}-${expertIndex + 1}`
           });
         });
       });
@@ -686,12 +579,7 @@
                         <strong>${event.expert}</strong>
                         <p>${event.topic}</p>
                       </div>
-                      ${event.past
-                        ? event.attended
-                          ? `<span class="attended">Attended</span>`
-                          : `<span class="not-attended">Did not attend</span>`
-                        : `<a class="teams" href="${event.link}">Join Discord</a>`
-                      }
+                      <a class="teams" href="${event.link}">Join Teams</a>
                     </article>
                   </div>
                 `;
@@ -716,5 +604,3 @@
   </script>
 </body>
 </html>
-
-

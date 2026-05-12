@@ -1,10 +1,56 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>25experts — Admin</title>
+  <title>Admin | 25experts</title>
+  <meta name="description" content="Administrative planning mockup for 25experts operations.">
+  <link rel="canonical" href="https://25experts.com/admin.html">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="alternate icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="mask-icon" href="/assets/mask-icon.svg" color="#145f47">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#145f47">
+  <meta name="robots" content="noindex, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="25experts by Aesop Academy">
+  <meta property="og:title" content="Admin | 25experts">
+  <meta property="og:description" content="Administrative planning mockup for 25experts operations.">
+  <meta property="og:url" content="https://25experts.com/admin.html">
+  <meta property="og:image" content="https://25experts.com/assets/og-25experts.png">
+  <meta property="og:image:secure_url" content="https://25experts.com/assets/og-25experts.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Are You an AI Expert? Do You Want to Be? 25experts by Aesop Academy">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Admin | 25experts">
+  <meta name="twitter:description" content="Administrative planning mockup for 25experts operations.">
+  <meta name="twitter:image" content="https://25experts.com/assets/og-25experts.png">
+  <meta name="twitter:image:alt" content="Are You an AI Expert? Do You Want to Be? 25experts by Aesop Academy">
+  <script type="application/ld+json">
+    {
+        "@type":  "WebPage",
+        "url":  "https://25experts.com/admin.html",
+        "name":  "Admin | 25experts",
+        "description":  "Administrative planning mockup for 25experts operations.",
+        "@context":  "https://schema.org",
+        "publisher":  {
+                          "url":  "https://25experts.com/",
+                          "name":  "Aesop Academy",
+                          "@type":  "NGO",
+                          "nonprofitStatus":  "Nonprofit501c3"
+                      },
+        "image":  "https://25experts.com/assets/og-25experts.png",
+        "isPartOf":  {
+                         "url":  "https://25experts.com/",
+                         "name":  "25experts by Aesop Academy",
+                         "@type":  "WebSite"
+                     }
+    }
+  </script>
   <style>
     :root {
       --ink:    #101615;
@@ -39,7 +85,7 @@
 
     a { color: inherit; text-decoration: none; }
 
-    /* ── GATE ── */
+    /* â”€â”€ GATE â”€â”€ */
     #gate {
       position: fixed; inset: 0;
       background: var(--dark);
@@ -90,7 +136,7 @@
       min-height: 18px;
     }
 
-    /* ── LAYOUT ── */
+    /* â”€â”€ LAYOUT â”€â”€ */
     #app { display: none; min-height: 100vh; }
 
     .sidebar {
@@ -165,7 +211,7 @@
       padding: 4px 10px; border-radius: 20px; text-transform: uppercase;
     }
 
-    /* ── SECTION WRAPPERS ── */
+    /* â”€â”€ SECTION WRAPPERS â”€â”€ */
     .section { margin-bottom: 36px; }
 
     .section-header {
@@ -181,7 +227,7 @@
       font-size: 0.75rem; color: var(--muted);
     }
 
-    /* ── STAT CARDS ── */
+    /* â”€â”€ STAT CARDS â”€â”€ */
     .stat-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
@@ -216,7 +262,7 @@
     .stat-card.navy  .value { color: var(--fellow); }
     .stat-card.red   .value { color: var(--red); }
 
-    /* ── TABLES ── */
+    /* â”€â”€ TABLES â”€â”€ */
     .table-wrap {
       background: var(--panel);
       border: 1px solid var(--line);
@@ -315,7 +361,7 @@
 
     .name-cell { display: flex; align-items: center; gap: 10px; }
 
-    /* ── PILL TABS ── */
+    /* â”€â”€ PILL TABS â”€â”€ */
     .pill-tabs {
       display: flex; gap: 4px; margin-bottom: 14px;
     }
@@ -331,7 +377,7 @@
       background: var(--green); color: #fff; border-color: var(--green);
     }
 
-    /* ── NOTICE STRIP ── */
+    /* â”€â”€ NOTICE STRIP â”€â”€ */
     .notice {
       background: var(--gold3);
       border: 1px solid #e8c278;
@@ -347,7 +393,7 @@
 </head>
 <body>
 
-<!-- ── GATE ── -->
+<!-- â”€â”€ GATE â”€â”€ -->
 <div id="gate">
   <div class="gate-box">
     <div class="logo">25<sup>experts</sup></div>
@@ -358,7 +404,7 @@
   </div>
 </div>
 
-<!-- ── APP ── -->
+<!-- â”€â”€ APP â”€â”€ -->
 <div id="app">
   <aside class="sidebar">
     <div class="sidebar-logo">
@@ -366,27 +412,27 @@
       <small>Admin Console</small>
     </div>
     <nav>
-      <a href="#overview"     class="active"><span class="icon">◈</span> Overview</a>
-      <a href="#experts"      ><span class="icon">★</span> Expert Roster</a>
-      <a href="#applications" ><span class="icon">✉</span> Applications</a>
-      <a href="#spots"        ><span class="icon">◉</span> Founding Spots</a>
-      <a href="experts.html"  ><span class="icon">↗</span> Expert Program</a>
-      <a href="join.html"     ><span class="icon">↗</span> Join Page</a>
+      <a href="#overview"     class="active"><span class="icon">â—ˆ</span> Overview</a>
+      <a href="#experts"      ><span class="icon">â˜…</span> Expert Roster</a>
+      <a href="#applications" ><span class="icon">âœ‰</span> Applications</a>
+      <a href="#spots"        ><span class="icon">â—‰</span> Founding Spots</a>
+      <a href="experts.html"  ><span class="icon">â†—</span> Expert Program</a>
+      <a href="join.html"     ><span class="icon">â†—</span> Join Page</a>
     </nav>
-    <div class="sidebar-footer">Aesop Academy · 501(c)(3)</div>
+    <div class="sidebar-footer">Aesop Academy Â· 501(c)(3)</div>
   </aside>
 
   <main class="main">
     <div class="topbar">
       <h1>Platform Overview</h1>
-      <span class="wip-badge">Interface mockup — no live data</span>
+      <span class="wip-badge">Interface mockup â€” no live data</span>
     </div>
 
     <div class="notice">
       <strong>Wiring note:</strong> All data below is static mockup. Connect to backend (Stripe, database, email) when platform launches.
     </div>
 
-    <!-- ── STATS ── -->
+    <!-- â”€â”€ STATS â”€â”€ -->
     <div class="section" id="overview">
       <div class="section-header">
         <h2>Platform Stats</h2>
@@ -415,7 +461,7 @@
         </div>
         <div class="stat-card green">
           <div class="label">Total Patrons</div>
-          <div class="value">—</div>
+          <div class="value">â€”</div>
           <div class="sub">Stripe not connected</div>
         </div>
         <div class="stat-card">
@@ -430,13 +476,13 @@
         </div>
         <div class="stat-card">
           <div class="label">MRR (est.)</div>
-          <div class="value">—</div>
+          <div class="value">â€”</div>
           <div class="sub">Stripe not connected</div>
         </div>
       </div>
     </div>
 
-    <!-- ── EXPERT ROSTER ── -->
+    <!-- â”€â”€ EXPERT ROSTER â”€â”€ -->
     <div class="section" id="experts">
       <div class="section-header">
         <h2>Expert Roster</h2>
@@ -460,7 +506,7 @@
       </div>
     </div>
 
-    <!-- ── APPLICATIONS ── -->
+    <!-- â”€â”€ APPLICATIONS â”€â”€ -->
     <div class="section" id="applications">
       <div class="section-header">
         <h2>Applications</h2>
@@ -491,11 +537,11 @@
       </div>
     </div>
 
-    <!-- ── FOUNDING SPOTS ── -->
+    <!-- â”€â”€ FOUNDING SPOTS â”€â”€ -->
     <div class="section" id="spots">
       <div class="section-header">
         <h2>Founding Patron Spots</h2>
-        <span class="hint">25 spots per expert · mirrors join page modal</span>
+        <span class="hint">25 spots per expert Â· mirrors join page modal</span>
       </div>
       <div class="table-wrap">
         <table>
@@ -518,7 +564,7 @@
 </div>
 
 <script>
-  /* ── GATE ── */
+  /* â”€â”€ GATE â”€â”€ */
   const PASS = 'aesop2026';
 
   function unlock() {
@@ -531,7 +577,7 @@
     }
   }
 
-  /* ── DATA ── */
+  /* â”€â”€ DATA â”€â”€ */
   const DOMAIN_COLORS = {
     ai:         '#145f47',
     finance:    '#b87a22',
@@ -569,17 +615,17 @@
   ];
 
   const APPLICATIONS = [
-    { name:'Jordan Blake',    domain:'ai',         audience:'1k–5k',   patreon:'Yes (180 patrons)', date:'May 10 2026', status:'pending'  },
-    { name:'Amara Diallo',    domain:'finance',    audience:'5k–10k',  patreon:'No',                 date:'May 9 2026',  status:'pending'  },
-    { name:'Ethan Cho',       domain:'marketing',  audience:'500–1k',  patreon:'Yes (45 patrons)',   date:'May 8 2026',  status:'pending'  },
+    { name:'Jordan Blake',    domain:'ai',         audience:'1kâ€“5k',   patreon:'Yes (180 patrons)', date:'May 10 2026', status:'pending'  },
+    { name:'Amara Diallo',    domain:'finance',    audience:'5kâ€“10k',  patreon:'No',                 date:'May 9 2026',  status:'pending'  },
+    { name:'Ethan Cho',       domain:'marketing',  audience:'500â€“1k',  patreon:'Yes (45 patrons)',   date:'May 8 2026',  status:'pending'  },
     { name:'Layla Mansour',   domain:'ai',         audience:'10k+',    patreon:'No',                 date:'May 7 2026',  status:'pending'  },
-    { name:'Sam Okonkwo',     domain:'leadership', audience:'1k–5k',   patreon:'Yes (90 patrons)',   date:'May 5 2026',  status:'review'   },
-    { name:'Tara Finch',      domain:'design',     audience:'5k–10k',  patreon:'No',                 date:'May 3 2026',  status:'review'   },
-    { name:'Rhys Morgan',     domain:'ai',         audience:'1k–5k',   patreon:'Yes (220 patrons)',  date:'Apr 28 2026', status:'approved' },
-    { name:'Priti Shah',      domain:'finance',    audience:'500–1k',  patreon:'No',                 date:'Apr 22 2026', status:'approved' },
+    { name:'Sam Okonkwo',     domain:'leadership', audience:'1kâ€“5k',   patreon:'Yes (90 patrons)',   date:'May 5 2026',  status:'review'   },
+    { name:'Tara Finch',      domain:'design',     audience:'5kâ€“10k',  patreon:'No',                 date:'May 3 2026',  status:'review'   },
+    { name:'Rhys Morgan',     domain:'ai',         audience:'1kâ€“5k',   patreon:'Yes (220 patrons)',  date:'Apr 28 2026', status:'approved' },
+    { name:'Priti Shah',      domain:'finance',    audience:'500â€“1k',  patreon:'No',                 date:'Apr 22 2026', status:'approved' },
   ];
 
-  /* ── RENDER HELPERS ── */
+  /* â”€â”€ RENDER HELPERS â”€â”€ */
   function initials(name) {
     return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
   }
@@ -601,7 +647,7 @@
     return '<span style="color:#145f47">Open</span>';
   }
 
-  /* ── BUILD ROSTER ── */
+  /* â”€â”€ BUILD ROSTER â”€â”€ */
   const rosterBody = document.getElementById('roster-body');
   EXPERTS.forEach(e => {
     const color = DOMAIN_COLORS[e.domain] || '#555';
@@ -632,7 +678,7 @@
       </tr>`;
   });
 
-  /* ── BUILD APPLICATIONS ── */
+  /* â”€â”€ BUILD APPLICATIONS â”€â”€ */
   function renderApps(filter) {
     const body = document.getElementById('apps-body');
     const list = filter === 'all' ? APPLICATIONS : APPLICATIONS.filter(a => a.status === filter);
@@ -669,7 +715,7 @@
     renderApps(filter);
   }
 
-  /* ── BUILD SPOTS TABLE ── */
+  /* â”€â”€ BUILD SPOTS TABLE â”€â”€ */
   const spotsBody = document.getElementById('spots-body');
   EXPERTS.forEach(e => {
     const color = DOMAIN_COLORS[e.domain] || '#555';
@@ -698,3 +744,5 @@
 </script>
 </body>
 </html>
+
+

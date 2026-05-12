@@ -1,55 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Expert Profiles | 25experts</title>
-  <meta name="description" content="Browse AI expert profiles, follow trusted creators, and discover their videos, blogs, workshops, and forum contributions.">
-  <link rel="canonical" href="https://25experts.com/expertprofiles.html">
-  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-  <link rel="alternate icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32">
-  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-  <link rel="mask-icon" href="/assets/mask-icon.svg" color="#145f47">
-  <link rel="manifest" href="/site.webmanifest">
-  <meta name="theme-color" content="#145f47">
-  <meta name="robots" content="index, follow">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="25experts by Aesop Academy">
-  <meta property="og:title" content="Expert Profiles | 25experts">
-  <meta property="og:description" content="Browse AI expert profiles, follow trusted creators, and discover their videos, blogs, workshops, and forum contributions.">
-  <meta property="og:url" content="https://25experts.com/expertprofiles.html">
-  <meta property="og:image" content="https://25experts.com/assets/og-25experts.png">
-  <meta property="og:image:secure_url" content="https://25experts.com/assets/og-25experts.png">
-  <meta property="og:image:type" content="image/png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Are You an AI Expert? Do You Want to Be? 25experts by Aesop Academy">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Expert Profiles | 25experts">
-  <meta name="twitter:description" content="Browse AI expert profiles, follow trusted creators, and discover their videos, blogs, workshops, and forum contributions.">
-  <meta name="twitter:image" content="https://25experts.com/assets/og-25experts.png">
-  <meta name="twitter:image:alt" content="Are You an AI Expert? Do You Want to Be? 25experts by Aesop Academy">
-  <script type="application/ld+json">
-    {
-        "@type":  "WebPage",
-        "url":  "https://25experts.com/expertprofiles.html",
-        "name":  "Expert Profiles | 25experts",
-        "description":  "Browse AI expert profiles, follow trusted creators, and discover their videos, blogs, workshops, and forum contributions.",
-        "@context":  "https://schema.org",
-        "publisher":  {
-                          "url":  "https://25experts.com/",
-                          "name":  "Aesop Academy",
-                          "@type":  "NGO",
-                          "nonprofitStatus":  "Nonprofit501c3"
-                      },
-        "image":  "https://25experts.com/assets/og-25experts.png",
-        "isPartOf":  {
-                         "url":  "https://25experts.com/",
-                         "name":  "25experts by Aesop Academy",
-                         "@type":  "WebSite"
-                     }
-    }
-  </script>
+  <title>Expert Profiles | 25experts by Aesop Academy</title>
   <style>
     :root {
       --ink: #101615;
@@ -648,20 +602,33 @@
       .stat:last-child { border-bottom: 0; }
       .section-head { align-items: flex-start; flex-direction: column; }
     }
-    /* â”€â”€ ACCESSIBILITY â”€â”€ */
-    :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 3px; }
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
   </style>
-  <link rel="stylesheet" href="assets/site-nav.css?v=20260512-compactnav">
 </head>
 <body>
   <div class="topbar">
     <strong>Aesop Academy</strong> is a 501(c)(3) nonprofit advancing AI literacy for youth and working professionals.
     <a href="https://aesopacademy.org">aesopacademy.org</a>
   </div>
-  <div id="site-nav"></div>
-  <script src="assets/site-nav.js?v=20260512-compactnav"></script>
 
+  <header class="nav">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">25</span>
+      <span class="brand-text">
+        25experts
+        <span>by Aesop Academy</span>
+      </span>
+    </a>
+    <nav class="nav-links" aria-label="Page navigation">
+      <a href="index.html">Home</a>
+      <a href="subscriber.html">Follow the Experts</a>
+      <a href="experts.html">Expert Program</a>
+      <a href="workshopcalendar.html">Workshops</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="videos.html">Videos</a>
+      <a href="forums.html">Forums</a>
+      <a href="patronrecognition.html">Recognition</a>
+    </nav>
+  </header>
 
   <section class="hero">
     <div class="hero-inner">
@@ -682,7 +649,6 @@
       <div class="roster-head">
         <h2>Browse all experts</h2>
         <div class="roster-tools">
-          <label for="search" class="sr-only">Search experts or topics</label>
           <input class="search" id="search" type="search" placeholder="Search experts or topics" />
           <select class="select" id="domainFilter" aria-label="Filter by domain">
             <option value="All">All domains</option>
@@ -954,5 +920,3 @@
   </script>
 </body>
 </html>
-
-

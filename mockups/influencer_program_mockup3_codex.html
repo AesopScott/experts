@@ -1,0 +1,1040 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Experts Creator Partner Program</title>
+  <style>
+    :root {
+      --ink: #101415;
+      --muted: #63706e;
+      --paper: #fbfaf6;
+      --panel: #ffffff;
+      --line: #dfe5df;
+      --green: #17624a;
+      --green-2: #dff3e5;
+      --blue: #23577a;
+      --gold: #b87a22;
+      --coral: #c6553f;
+      --dark: #101817;
+      --shadow: 0 18px 50px rgba(24, 34, 29, 0.13);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 15px clamp(18px, 5vw, 68px);
+      border-bottom: 1px solid rgba(223, 229, 223, 0.9);
+      background: rgba(251, 250, 246, 0.93);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 850;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--green);
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: var(--green);
+      color: #fff;
+      font-weight: 800;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .button.secondary {
+      background: #fff;
+      color: var(--green);
+      border-color: var(--line);
+    }
+
+    .button.dark {
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .hero {
+      min-height: 88vh;
+      display: grid;
+      align-items: end;
+      background:
+        linear-gradient(90deg, rgba(8, 22, 18, 0.9), rgba(8, 22, 18, 0.55) 56%, rgba(8, 22, 18, 0.18)),
+        url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=80");
+      background-position: center;
+      background-size: cover;
+    }
+
+    .hero-inner {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 94px 0 48px;
+      color: #fff;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 11px;
+      border: 1px solid rgba(255, 255, 255, 0.34);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    h1 {
+      max-width: 900px;
+      margin: 22px 0 18px;
+      font-size: clamp(42px, 7vw, 86px);
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 740px;
+      margin: 0 0 28px;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: clamp(18px, 2.1vw, 23px);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .hero-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1px;
+      width: min(1080px, 100%);
+      margin-top: 54px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    .hero-stat {
+      min-height: 112px;
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-stat strong {
+      display: block;
+      font-size: 29px;
+      line-height: 1.05;
+    }
+
+    .hero-stat span {
+      display: block;
+      margin-top: 7px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 13px;
+    }
+
+    section { padding: 78px clamp(18px, 5vw, 68px); }
+
+    .section-inner {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .section-heading {
+      max-width: 820px;
+      margin-bottom: 34px;
+    }
+
+    .kicker {
+      margin-bottom: 10px;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: clamp(30px, 4.4vw, 54px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .section-heading p,
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .band { background: #eef4ef; }
+
+    .split {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(340px, 1.08fr);
+      gap: 36px;
+      align-items: start;
+    }
+
+    .plain-list {
+      display: grid;
+      gap: 16px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .plain-list li {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 13px;
+      align-items: start;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .check {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--green-2);
+      color: var(--green);
+      font-weight: 950;
+    }
+
+    .plain-list strong { display: block; margin-bottom: 3px; }
+    .plain-list span { color: var(--muted); }
+
+    .mission-card {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .mission-card h3 {
+      margin: 0 0 10px;
+      font-size: 25px;
+    }
+
+    .mission-card p {
+      margin: 0 0 14px;
+      color: var(--muted);
+    }
+
+    .mission-badge {
+      display: inline-flex;
+      margin-bottom: 18px;
+      padding: 8px 11px;
+      border-radius: 999px;
+      background: var(--green-2);
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+
+    th {
+      padding: 16px 18px;
+      text-align: left;
+      color: var(--muted);
+      background: #f4f7f1;
+      font-size: 12px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    td {
+      padding: 17px 18px;
+      border-top: 1px solid var(--line);
+      font-weight: 650;
+    }
+
+    .platform-col {
+      color: var(--green);
+      font-weight: 900;
+    }
+
+    tr.featured-row td { background: #f8fbf6; }
+
+    .fineprint {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .earnings {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .earnings h3 {
+      margin: 0 0 4px;
+      font-size: 24px;
+    }
+
+    .earnings p {
+      margin: 0 0 18px;
+      color: var(--muted);
+    }
+
+    .ladder { display: grid; gap: 10px; }
+
+    .ladder-row {
+      display: grid;
+      grid-template-columns: 92px 1fr 64px;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .bar {
+      height: 14px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #ecf0eb;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      border-radius: 999px;
+      background: var(--green);
+    }
+
+    .ladder-row small {
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .ladder-row strong { text-align: right; }
+
+    .note {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 8px;
+      background: #f4f7f1;
+      color: #31473d;
+      font-size: 14px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .step {
+      min-height: 250px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .step-num {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      border-radius: 8px;
+      background: var(--ink);
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .step h3 { margin: 0 0 9px; font-size: 20px; }
+    .step p { margin: 0; color: var(--muted); }
+
+    .guarantee {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 34px;
+      align-items: center;
+      border-radius: 8px;
+      background: var(--dark);
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .guarantee-visual {
+      min-height: 430px;
+      background:
+        linear-gradient(rgba(16, 24, 23, 0.22), rgba(16, 24, 23, 0.54)),
+        url("https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1100&q=80");
+      background-position: center;
+      background-size: cover;
+    }
+
+    .guarantee-copy { padding: 34px 34px 34px 0; }
+
+    .guarantee-copy h2 {
+      max-width: 620px;
+      color: #fff;
+    }
+
+    .guarantee-copy p {
+      max-width: 620px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 18px;
+    }
+
+    .guarantee-points {
+      display: grid;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .guarantee-point {
+      padding: 13px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.07);
+      color: rgba(255, 255, 255, 0.88);
+      font-weight: 700;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .feature {
+      min-height: 220px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .icon.green { background: var(--green); }
+    .icon.blue { background: var(--blue); }
+    .icon.gold { background: var(--gold); }
+    .icon.coral { background: var(--coral); }
+
+    .feature h3 { margin: 0 0 7px; font-size: 19px; }
+    .feature p { margin: 0; color: var(--muted); }
+
+    .compare {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .compare article {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .compare article.best { border-top: 5px solid var(--green); }
+    .compare h3 { margin: 0 0 10px; font-size: 21px; }
+    .compare p { margin: 0; color: var(--muted); }
+
+    .governance {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .policy {
+      padding: 24px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+    }
+
+    .policy h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+    }
+
+    .policy p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .faq { display: grid; gap: 12px; }
+
+    details {
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 850;
+      list-style: none;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+
+    details p {
+      margin: 12px 0 0;
+      color: var(--muted);
+    }
+
+    .cta {
+      text-align: center;
+      color: #fff;
+      background:
+        linear-gradient(rgba(16, 24, 23, 0.86), rgba(16, 24, 23, 0.86)),
+        url("https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=80");
+      background-position: center;
+      background-size: cover;
+    }
+
+    .cta h2 {
+      max-width: 780px;
+      margin: 0 auto 16px;
+      color: #fff;
+    }
+
+    .cta p {
+      max-width: 720px;
+      margin: 0 auto 28px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 18px;
+    }
+
+    .cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    footer {
+      padding: 28px clamp(18px, 5vw, 68px);
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      font-size: 14px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-strip,
+      .split,
+      .steps,
+      .features,
+      .compare,
+      .governance,
+      .guarantee {
+        grid-template-columns: 1fr;
+      }
+
+      .guarantee-copy { padding: 0 24px 28px; }
+      .guarantee-visual { min-height: 280px; }
+    }
+
+    @media (max-width: 760px) {
+      .nav-links a:not(.button) { display: none; }
+      .hero { min-height: 860px; }
+      .hero-strip { grid-template-columns: 1fr; }
+      .hero-stat { min-height: 84px; }
+    }
+
+    @media (max-width: 540px) {
+      .nav { align-items: flex-start; }
+      .nav-links { gap: 10px; }
+      .button { width: 100%; }
+      .hero-actions, .cta-actions { flex-direction: column; }
+      .ladder-row {
+        grid-template-columns: 76px 1fr 54px;
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="#">
+      <span class="brand-mark">E</span>
+      <span>Experts by Aesop Academy</span>
+    </a>
+    <nav class="nav-links" aria-label="Page navigation">
+      <a href="#mission">Mission</a>
+      <a href="#earnings">Earnings</a>
+      <a href="#migration">Migration</a>
+      <a href="#faq">FAQ</a>
+      <a class="button" href="#apply">Apply</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <span class="eyebrow">A nonprofit AI education platform for serious creators</span>
+        <h1>You built the audience. Help build the AI learning institution they need.</h1>
+        <p>Experts is a creator partner program from Aesop Academy, a 501(c)(3) nonprofit. Bring your patrons into a mission-driven AI learning platform where your work earns more, reaches farther, and stays centered on education.</p>
+        <div class="hero-actions">
+          <a class="button" href="#apply">Apply as a founding creator</a>
+          <a class="button secondary" href="#earnings">See earning examples</a>
+        </div>
+        <div class="hero-strip" aria-label="Program highlights">
+          <div class="hero-stat">
+            <strong>501(c)(3)</strong>
+            <span>mission-led AI education under Aesop Academy</span>
+          </div>
+          <div class="hero-stat">
+            <strong>50-70%</strong>
+            <span>creator payout as a mission expense for quality education</span>
+          </div>
+          <div class="hero-stat">
+            <strong>No lock-in</strong>
+            <span>keep YouTube, Substack, Patreon, LinkedIn, and X</span>
+          </div>
+          <div class="hero-stat">
+            <strong>Trust</strong>
+            <span>nonprofit credibility for creators, learners, donors, and sponsors</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="mission">
+      <div class="section-inner split">
+        <div class="section-heading">
+          <div class="kicker">The strategic difference</div>
+          <h2>This is not a startup asking creators to take platform risk.</h2>
+          <p>Experts is designed to build the largest, most engaged audience of AI learners possible. The platform does not need to maximize profit. It needs to fund the mission, pay creators fairly, and create trusted AI education at scale.</p>
+        </div>
+        <div class="mission-card">
+          <span class="mission-badge">Aesop Academy nonprofit venture</span>
+          <h3>Your content advances a public education mission.</h3>
+          <p>Creator payouts, growth funds, workshops, rankings, and even limited guarantees are treated as the cost of producing high-quality AI education.</p>
+          <p>That changes the creator conversation. You are not just joining another monetization tool. You are helping build an institution for practical AI learning.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="section-inner">
+        <div class="section-heading">
+          <div class="kicker">Why creators should care</div>
+          <h2>Nonprofit trust makes the offer easier to say yes to.</h2>
+          <p>Creators are careful with their audiences. A nonprofit education structure gives them a better reason to invite patrons than "try my new platform."</p>
+        </div>
+        <ul class="plain-list">
+          <li>
+            <span class="check">1</span>
+            <div>
+              <strong>More credible patron migration</strong>
+              <span>Your audience is joining a mission-led AI education platform, not just changing payment processors.</span>
+            </div>
+          </li>
+          <li>
+            <span class="check">2</span>
+            <div>
+              <strong>More durable funding logic</strong>
+              <span>Grant funding, donor contributions, underwriting, and sponsorship can help support operations and creator incentives.</span>
+            </div>
+          </li>
+          <li>
+            <span class="check">3</span>
+            <div>
+              <strong>More aligned programming</strong>
+              <span>Content decisions are made for educational value, not because a for-profit platform needs to squeeze margin.</span>
+            </div>
+          </li>
+          <li>
+            <span class="check">4</span>
+            <div>
+              <strong>More audience trust</strong>
+              <span>Learners, employers, donors, and sponsors can understand the platform as public-benefit infrastructure for AI literacy.</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="earnings">
+      <div class="section-inner">
+        <div class="section-heading">
+          <div class="kicker">The simple money story</div>
+          <h2>Mission-driven does not mean creator-unfriendly.</h2>
+          <p>The platform exists to build AI learning at scale. Paying creators well is part of the mission because quality education requires quality contributors.</p>
+        </div>
+        <div class="table-wrap">
+          <table aria-label="Monthly creator earnings comparison">
+            <thead>
+              <tr>
+                <th>Patron count</th>
+                <th>Patreon style payout at 47%</th>
+                <th>YouTube style payout at 55%</th>
+                <th class="platform-col">Experts at 50-70%</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>100 patrons</td>
+                <td>$658 per month</td>
+                <td>$770 per month</td>
+                <td class="platform-col">$700-$980 per month</td>
+              </tr>
+              <tr class="featured-row">
+                <td>500 patrons</td>
+                <td>$3,290 per month</td>
+                <td>$3,850 per month</td>
+                <td class="platform-col">$3,500-$4,900 per month</td>
+              </tr>
+              <tr>
+                <td>1,000 patrons</td>
+                <td>$6,580 per month</td>
+                <td>$7,700 per month</td>
+                <td class="platform-col">$7,000-$9,800 per month</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="fineprint">Illustrative estimates using a $14 monthly patron price, before payment processing, refunds, and final program terms. The operating principle is transparency: creators should always see exactly how each dollar is calculated.</p>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="section-inner split">
+        <div class="earnings">
+          <h3>Your earnings ladder</h3>
+          <p>Start at 50%. Unlock up to 70% with qualifying contributions and patron engagement.</p>
+          <div class="ladder">
+            <div class="ladder-row">
+              <small>Baseline</small>
+              <div class="bar"><span style="width: 71%"></span></div>
+              <strong>50%</strong>
+            </div>
+            <div class="ladder-row">
+              <small>Videos</small>
+              <div class="bar"><span style="width: 14%"></span></div>
+              <strong>+10%</strong>
+            </div>
+            <div class="ladder-row">
+              <small>Blog</small>
+              <div class="bar"><span style="width: 4%"></span></div>
+              <strong>+3%</strong>
+            </div>
+            <div class="ladder-row">
+              <small>Workshop</small>
+              <div class="bar"><span style="width: 7%"></span></div>
+              <strong>+5%</strong>
+            </div>
+            <div class="ladder-row">
+              <small>Forum</small>
+              <div class="bar"><span style="width: 3%"></span></div>
+              <strong>+2%</strong>
+            </div>
+          </div>
+          <div class="note">Qualifying means original, useful, platform-appropriate, and valuable to patrons. Low-effort filler does not unlock higher payout.</div>
+        </div>
+        <div class="section-heading">
+          <div class="kicker">The incentive model</div>
+          <h2>Your patron count is still the main engine.</h2>
+          <p>The percentage is not the whole reward. Better content earns higher ranking, higher ranking earns more discovery, more discovery earns more followers, and more followers become patrons.</p>
+          <ul class="plain-list">
+            <li>
+              <span class="check">1</span>
+              <div>
+                <strong>Patron-weighted economics</strong>
+                <span>Your audience remains the center of your earnings.</span>
+              </div>
+            </li>
+            <li>
+              <span class="check">2</span>
+              <div>
+                <strong>Contribution-based unlocks</strong>
+                <span>Videos, posts, workshops, and substantive replies raise your eligible share.</span>
+              </div>
+            </li>
+            <li>
+              <span class="check">3</span>
+              <div>
+                <strong>Quality-weighted discovery</strong>
+                <span>Useful content gets surfaced to patrons beyond your current audience.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="migration">
+      <div class="section-inner">
+        <div class="section-heading">
+          <div class="kicker">Patron migration</div>
+          <h2>Give your audience a mission-backed reason to move.</h2>
+          <p>The best migration pitch is not "I make more here." It is "you get a better AI learning home, and your subscription helps fund accessible AI education."</p>
+        </div>
+        <div class="steps">
+          <article class="step">
+            <div class="step-num">1</div>
+            <h3>Your personalized migration page</h3>
+            <p>A clean page that explains what patrons get, what changes, what stays the same, and how their support advances the AI education mission.</p>
+          </article>
+          <article class="step">
+            <div class="step-num">2</div>
+            <h3>Ready-to-send launch copy</h3>
+            <p>Email, Patreon post, LinkedIn copy, X posts, short video scripts, and a simple FAQ you can adapt in minutes.</p>
+          </article>
+          <article class="step">
+            <div class="step-num">3</div>
+            <h3>Founding patron offer</h3>
+            <p>Early patrons get a reason to move now: better access, organized learning, live Q&A, and preferred founding terms.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-inner guarantee">
+        <div class="guarantee-visual" aria-hidden="true"></div>
+        <div class="guarantee-copy">
+          <div class="kicker">Funding and risk reversal</div>
+          <h2>The nonprofit structure makes creator support easier to fund.</h2>
+          <p>Because creator incentives are mission expenses, the program can be supported through subscriptions, grants, donors, corporate underwriting, and sponsors who want to fund AI literacy.</p>
+          <div class="guarantee-points">
+            <div class="guarantee-point">Limited founding creator guarantee can be reserved for the first 3-5 anchor creators.</div>
+            <div class="guarantee-point">Growth Fund can support creators based on attributed patrons, growth, engagement, and retention.</div>
+            <div class="guarantee-point">Sponsors and underwriters can fund platform operations without controlling programming decisions.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="included" class="band">
+      <div class="section-inner">
+        <div class="section-heading">
+          <div class="kicker">What creators get</div>
+          <h2>More than a payout percentage.</h2>
+          <p>The best pitch is not just "you earn more." It is "your patrons get a better learning home, your work reaches farther, and the platform is built around education instead of extraction."</p>
+        </div>
+        <div class="features">
+          <article class="feature">
+            <div class="icon green">%</div>
+            <h3>Transparent payouts</h3>
+            <p>See current share, unlocked bonuses, attributed patrons, and estimated monthly payout.</p>
+          </article>
+          <article class="feature">
+            <div class="icon blue">AI</div>
+            <h3>AI creator tools</h3>
+            <p>Turn videos into transcripts, blog drafts, clips, summaries, and searchable learning assets.</p>
+          </article>
+          <article class="feature">
+            <div class="icon gold">G</div>
+            <h3>Grant-backed mission</h3>
+            <p>AI education funders can support the platform because the work advances a nonprofit mission.</p>
+          </article>
+          <article class="feature">
+            <div class="icon coral">M</div>
+            <h3>Marketing support</h3>
+            <p>Promotion is allocated by patrons, growth, engagement, and retention instead of follower size alone.</p>
+          </article>
+          <article class="feature">
+            <div class="icon blue">R</div>
+            <h3>Ranked discovery</h3>
+            <p>High-quality lessons, workshops, and posts rise through transparent engagement signals.</p>
+          </article>
+          <article class="feature">
+            <div class="icon green">Q</div>
+            <h3>Live Q&A</h3>
+            <p>Patrons get the access they want most: direct answers from creators they already trust.</p>
+          </article>
+          <article class="feature">
+            <div class="icon gold">C</div>
+            <h3>Creator collaboration</h3>
+            <p>Roundtables, joint workshops, and cross-creator tracks help audiences overlap naturally.</p>
+          </article>
+          <article class="feature">
+            <div class="icon coral">S</div>
+            <h3>Subscriber experience</h3>
+            <p>Free previews, paid paths, topic rooms, catch-up summaries, and practical workflow challenges.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-inner">
+        <div class="section-heading">
+          <div class="kicker">Positioning</div>
+          <h2>Use it alongside the platforms you already rely on.</h2>
+          <p>Experts is not asking creators to abandon their reach channels. It gives serious learners a dedicated, mission-led place to go deeper.</p>
+        </div>
+        <div class="compare">
+          <article>
+            <h3>YouTube</h3>
+            <p>Excellent for discovery, but weak for structured learning, live patron access, and multi-creator education paths.</p>
+          </article>
+          <article>
+            <h3>Patreon</h3>
+            <p>Useful for membership payments, but isolated by creator and not built around ranked AI learning discovery.</p>
+          </article>
+          <article class="best">
+            <h3>Experts</h3>
+            <p>Built for nonprofit AI education, patron migration, live access, ranked discovery, and fair creator economics.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="section-inner">
+        <div class="section-heading">
+          <div class="kicker">Governance promise</div>
+          <h2>The mission has to stay clean.</h2>
+          <p>The nonprofit model only works if programming and curation decisions are made for educational value, not for the benefit of any outside company.</p>
+        </div>
+        <div class="governance">
+          <article class="policy">
+            <h3>Educational mission comes first</h3>
+            <p>Creator selection, rankings, learning paths, free access, and content standards should be governed by what helps AI learners most.</p>
+          </article>
+          <article class="policy">
+            <h3>Sponsors do not control programming</h3>
+            <p>For-profit companies can sponsor, underwrite, or advertise to the audience, but curation must remain distinct from commercial interests.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="section-inner">
+        <div class="section-heading">
+          <div class="kicker">Creator questions</div>
+          <h2>The objections we should answer upfront.</h2>
+          <p>Influencers will not join because the page is pretty. They join when the risk feels understood and the mission feels credible.</p>
+        </div>
+        <div class="faq">
+          <details open>
+            <summary>Do I have to leave YouTube, Patreon, Substack, or X?</summary>
+            <p>No. The program is non-exclusive. Keep your existing channels and use Experts as the deeper learning and patron experience layer.</p>
+          </details>
+          <details>
+            <summary>Why does the nonprofit structure matter?</summary>
+            <p>It changes the incentives. The platform is built to grow AI education and audience trust, not maximize shareholder profit. Creator payouts and programming support are part of the mission.</p>
+          </details>
+          <details>
+            <summary>Who owns my content?</summary>
+            <p>You retain ownership. The platform receives a non-exclusive license to host, stream, recommend, and package approved content according to the creator agreement.</p>
+          </details>
+          <details>
+            <summary>What if my patrons do not migrate?</summary>
+            <p>The migration plan should include a founding patron offer, personalized landing page, ready-to-send copy, and optional limited guarantee for the first anchor creators.</p>
+          </details>
+          <details>
+            <summary>How does the marketing or Growth Fund work?</summary>
+            <p>The recommended formula is 50% attributed paid patrons, 25% net new patron growth, and 25% engagement and retention. This rewards size, growth, and quality.</p>
+          </details>
+          <details>
+            <summary>How does ranking work?</summary>
+            <p>Ranking should use transparent signals like views, completion, saves, comments, follows gained, workshop attendance, freshness, and human review. AI assists discovery; it should not be an opaque judge.</p>
+          </details>
+          <details>
+            <summary>Can for-profit companies influence what gets featured?</summary>
+            <p>No. Sponsors and advertisers may support the platform, but programming and curation decisions must be mission-led and kept distinct from commercial relationships.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section id="apply" class="cta">
+      <div class="section-inner">
+        <div class="kicker">Founding creator cohort</div>
+        <h2>Help build the nonprofit AI learning platform your patrons wish already existed.</h2>
+        <p>We are inviting a small group of AI creators to test the program, migrate patrons, run live sessions, and shape the creator economics before the platform opens more broadly.</p>
+        <div class="cta-actions">
+          <a class="button" href="mailto:founders@example.com?subject=Experts%20Founding%20Creator%20Application">Apply as a founding creator</a>
+          <a class="button secondary" href="mailto:founders@example.com?subject=Book%20a%2030-minute%20creator%20call">Book a 30-minute call</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Mockup v3 for creator recruitment. Replace placeholder email, nonprofit legal language, guarantee details, and final creator agreement terms before launch.
+  </footer>
+</body>
+</html>

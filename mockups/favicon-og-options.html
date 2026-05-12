@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Favicon and OG Preview Options</title>
+  <style>
+    :root {
+      --ink:#101615;
+      --muted:#66716e;
+      --paper:#fbfaf6;
+      --panel:#fff;
+      --line:#dfe5df;
+      --green:#145f47;
+      --mint:#e9f5ef;
+      --gold:#b87a22;
+      --blue:#295b8f;
+      --shadow:0 18px 48px rgba(16,22,21,.1);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    header{padding:34px clamp(18px,5vw,64px);background:linear-gradient(115deg,var(--green),#142a36);color:#fff}
+    header h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(34px,5vw,58px);line-height:1}
+    header p{max-width:880px;margin:14px 0 0;color:rgba(255,255,255,.82);font-size:17px;line-height:1.5}
+    main{max-width:1320px;margin:0 auto;padding:28px clamp(18px,4vw,48px) 72px;display:grid;gap:22px}
+    .option{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:var(--shadow)}
+    .option-head{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:14px}
+    .option-head h2{margin:0;font-size:24px}
+    .option-head span{color:var(--muted);font-size:14px;font-weight:850}
+    .preview{padding:22px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:24px;align-items:start}
+    .favicon-panel{display:grid;gap:12px;justify-items:center}
+    .favicon{width:96px;height:96px;border-radius:22px;display:grid;place-items:center;background:var(--green);color:#fff;font-weight:950;font-size:30px;box-shadow:0 10px 24px rgba(16,22,21,.15);overflow:hidden}
+    .favicon.circle{border-radius:50%}
+    .favicon.shield{clip-path:polygon(50% 0,88% 14%,82% 72%,50% 100%,18% 72%,12% 14%)}
+    .favicon-label{color:var(--muted);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+    .og-shell{display:grid;gap:10px}
+    .og-label{color:var(--muted);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+    .og{width:100%;max-width:960px;aspect-ratio:1.91/1;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;position:relative;padding:34px 40px;display:flex;flex-direction:column;justify-content:flex-end}
+    .og h3{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:42px;line-height:1.02;letter-spacing:0;max-width:700px}
+    .og p{margin:12px 0 0;color:var(--muted);font-size:19px;line-height:1.38;max-width:720px}
+    .brand{position:absolute;top:26px;left:32px;display:flex;align-items:center;gap:11px;font-weight:950;color:var(--green);font-size:18px}
+    .brand-mark{width:42px;height:42px;border-radius:9px;background:var(--green);color:#fff;display:grid;place-items:center;font-size:14px;font-weight:950}
+    .stamp{position:absolute;right:28px;top:30px;border:1px solid rgba(20,95,71,.18);background:var(--mint);color:var(--green);border-radius:999px;padding:8px 12px;font-size:13px;font-weight:900}
+    .dots{position:absolute;right:34px;bottom:34px;display:grid;grid-template-columns:repeat(5,10px);gap:8px}
+    .dots i{width:10px;height:10px;border-radius:50%;background:var(--green);opacity:.35}
+    .og.green{background:linear-gradient(135deg,#fff,#e9f5ef)}
+    .og.blue{background:linear-gradient(135deg,#fff,#eaf3f8)}
+    .og.gold{background:linear-gradient(135deg,#fff,#fff1d8)}
+    .og.dark{background:linear-gradient(135deg,#10221c,#173d42);color:#fff}
+    .og.dark p{color:rgba(255,255,255,.78)}
+    .og.dark .brand{color:#fff}
+    .og.dark .stamp{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:#fff}
+    .glyph{font-size:44px;line-height:1}
+    .bars{display:flex;align-items:end;gap:6px;height:48px}
+    .bars i{width:10px;background:#fff;border-radius:999px}.bars i:nth-child(1){height:20px}.bars i:nth-child(2){height:34px}.bars i:nth-child(3){height:48px}
+    .notes{margin-top:12px;color:var(--muted);font-size:14px;line-height:1.45}
+    @media(max-width:880px){
+      .preview{grid-template-columns:1fr}
+      .favicon-panel{justify-items:start;grid-template-columns:96px 1fr;align-items:center}
+      .og{padding:28px}
+      .og h3{font-size:32px}
+      .og p{font-size:16px}
+      .brand{position:static;margin-bottom:34px}
+      .stamp{display:none}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Favicon + OG Preview Options</h1>
+    <p>Each option now has a large favicon preview and a full-width social sharing card so you can actually compare the marks, hierarchy, and mission language.</p>
+  </header>
+  <main>
+    <section class="option">
+      <div class="option-head"><h2>1. “25” Badge</h2><span>Simple brand recognition</span></div>
+      <div class="preview">
+        <div class="favicon-panel"><div class="favicon">25</div><div><div class="favicon-label">Favicon</div><div class="notes">Most readable at tiny browser-tab size.</div></div></div>
+        <div class="og-shell"><div class="og-label">OG / Social Card</div><div class="og green"><div class="brand"><span class="brand-mark">25</span>25experts</div><span class="stamp">Aesop Academy</span><h3>AI literacy for everyone.</h3><p>Trusted experts, practical access, and a mission-led path into AI.</p></div></div>
+      </div>
+    </section>
+
+    <section class="option">
+      <div class="option-head"><h2>2. Aesop + 25 Lockup</h2><span>Best mission fit</span></div>
+      <div class="preview">
+        <div class="favicon-panel"><div class="favicon">25</div><div><div class="favicon-label">Favicon</div><div class="notes">Keeps favicon simple while OG makes Aesop visible.</div></div></div>
+        <div class="og-shell"><div class="og-label">OG / Social Card</div><div class="og"><div class="brand"><span class="brand-mark">25</span>25experts by Aesop Academy</div><span class="stamp">501(c)(3)</span><h3>Nobody should be left behind by AI.</h3><p>Aesop Academy’s expert-powered platform for practical AI literacy.</p></div></div>
+      </div>
+    </section>
+
+    <section class="option">
+      <div class="option-head"><h2>3. Expert Circle</h2><span>Network signal</span></div>
+      <div class="preview">
+        <div class="favicon-panel"><div class="favicon circle">25</div><div><div class="favicon-label">Favicon</div><div class="notes">Softer, more community-oriented mark.</div></div></div>
+        <div class="og-shell"><div class="og-label">OG / Social Card</div><div class="og green"><div class="brand"><span class="brand-mark">25</span>25experts</div><div class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><h3>Learn from the people who actually know.</h3><p>Twenty-five trusted experts organized around practical AI capability.</p></div></div>
+      </div>
+    </section>
+
+    <section class="option">
+      <div class="option-head"><h2>4. Open Book + AI</h2><span>Education emphasis</span></div>
+      <div class="preview">
+        <div class="favicon-panel"><div class="favicon"><span class="glyph">AI</span></div><div><div class="favicon-label">Favicon</div><div class="notes">More education than brand; less unique.</div></div></div>
+        <div class="og-shell"><div class="og-label">OG / Social Card</div><div class="og gold"><div class="brand"><span class="brand-mark">AI</span>Aesop Academy</div><span class="stamp">Education</span><h3>Trusted AI learning from verified experts.</h3><p>Videos, workshops, blogs, and community support for practical AI literacy.</p></div></div>
+      </div>
+    </section>
+
+    <section class="option">
+      <div class="option-head"><h2>5. Compass Mark</h2><span>Guidance/discovery</span></div>
+      <div class="preview">
+        <div class="favicon-panel"><div class="favicon"><span class="glyph">✦</span></div><div><div class="favicon-label">Favicon</div><div class="notes">Elegant but less clearly tied to 25experts.</div></div></div>
+        <div class="og-shell"><div class="og-label">OG / Social Card</div><div class="og blue"><div class="brand"><span class="brand-mark">✦</span>25experts</div><span class="stamp">Guided Learning</span><h3>Find the expert who helps you move forward.</h3><p>Discover trusted AI guidance organized by domain, topic, and practical need.</p></div></div>
+      </div>
+    </section>
+
+    <section class="option">
+      <div class="option-head"><h2>6. Green Shield</h2><span>Strongest trust signal</span></div>
+      <div class="preview">
+        <div class="favicon-panel"><div class="favicon shield">25</div><div><div class="favicon-label">Favicon</div><div class="notes">Good for verified quality and nonprofit credibility.</div></div></div>
+        <div class="og-shell"><div class="og-label">OG / Social Card</div><div class="og dark"><div class="brand"><span class="brand-mark">25</span>25experts</div><span class="stamp">Verified Experts</span><h3>Verified experts. Mission-led AI literacy.</h3><p>A nonprofit-backed platform for trusted AI learning and practical capability.</p></div></div>
+      </div>
+    </section>
+
+    <section class="option">
+      <div class="option-head"><h2>7. Globe + 25</h2><span>Global mission</span></div>
+      <div class="preview">
+        <div class="favicon-panel"><div class="favicon"><span class="glyph">◎</span></div><div><div class="favicon-label">Favicon</div><div class="notes">Strong mission idea, weaker brand recognition.</div></div></div>
+        <div class="og-shell"><div class="og-label">OG / Social Card</div><div class="og blue"><div class="brand"><span class="brand-mark">◎</span>25experts</div><span class="stamp">Global Access</span><h3>Helping Aesop Academy reach the world.</h3><p>Practical AI literacy for learners, workers, students, and communities everywhere.</p></div></div>
+      </div>
+    </section>
+
+    <section class="option">
+      <div class="option-head"><h2>8. Signal Bars</h2><span>Recognition system</span></div>
+      <div class="preview">
+        <div class="favicon-panel"><div class="favicon"><span class="bars"><i></i><i></i><i></i></span></div><div><div class="favicon-label">Favicon</div><div class="notes">Best if leaderboards and recognition become core brand signals.</div></div></div>
+        <div class="og-shell"><div class="og-label">OG / Social Card</div><div class="og green"><div class="brand"><span class="brand-mark">↗</span>25experts</div><span class="stamp">Recognition</span><h3>Capability. Contribution. Consistency. Growth.</h3><p>Leaderboards and badges that reward meaningful engagement, not empty attention.</p></div></div>
+      </div>
+    </section>
+
+    <section class="option">
+      <div class="option-head"><h2>9. Expert Checkmark</h2><span>Verified authority</span></div>
+      <div class="preview">
+        <div class="favicon-panel"><div class="favicon"><span class="glyph">✓</span></div><div><div class="favicon-label">Favicon</div><div class="notes">Very clear verification message, but generic.</div></div></div>
+        <div class="og-shell"><div class="og-label">OG / Social Card</div><div class="og"><div class="brand"><span class="brand-mark">✓</span>25experts</div><span class="stamp">Curated</span><h3>Curated experts. Practical AI education.</h3><p>Follow the people whose content earns trust, engagement, and real patron value.</p></div></div>
+      </div>
+    </section>
+
+    <section class="option">
+      <div class="option-head"><h2>10. Minimal Wordmark</h2><span>Premium/editorial</span></div>
+      <div class="preview">
+        <div class="favicon-panel"><div class="favicon" style="font-family:Georgia,serif;font-size:36px">25</div><div><div class="favicon-label">Favicon</div><div class="notes">Most polished, least explanatory.</div></div></div>
+        <div class="og-shell"><div class="og-label">OG / Social Card</div><div class="og dark"><span class="stamp">by Aesop Academy</span><h3>Are You an AI Expert?<br>Do You Want to Be?</h3><p>25experts · Trusted AI learning by Aesop Academy</p></div></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

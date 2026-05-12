@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="25experts by Aesop Academy">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10221c"/>
+      <stop offset="100%" stop-color="#173d42"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="856" y="70" width="244" height="46" rx="23" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.26)"/>
+  <text x="978" y="100" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#ffffff">by Aesop Academy</text>
+  <text x="72" y="302" font-family="Georgia, 'Times New Roman', serif" font-size="88" font-weight="700" fill="#ffffff">Are You an AI Expert?</text>
+  <text x="76" y="404" font-family="Georgia, 'Times New Roman', serif" font-size="82" font-weight="700" fill="#ffffff">Do You Want to Be?</text>
+  <text x="78" y="494" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700" fill="#5ddfb0">25experts · Trusted AI learning by Aesop Academy</text>
+</svg>

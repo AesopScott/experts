@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Donate | 25experts by Aesop Academy</title>
+  <style>
+    :root {
+      --ink:#101615;
+      --muted:#66716e;
+      --paper:#fbfaf6;
+      --panel:#ffffff;
+      --line:#dfe5df;
+      --green:#145f47;
+      --mint:#e9f5ef;
+      --gold:#b87a22;
+      --gold2:#fff1d8;
+      --blue:#295b8f;
+      --blue2:#e6f0fb;
+      --coral:#bf563f;
+      --coral2:#fff0ec;
+      --shadow:0 20px 60px rgba(16,22,21,.12);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--paper);color:var(--ink);letter-spacing:0}
+    a{color:inherit;text-decoration:none}
+    .topbar{padding:9px clamp(18px,5vw,68px);background:var(--green);color:#fff;font-size:13px;text-align:center}
+    .topbar a{text-decoration:underline;font-weight:800}
+    .nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:28px;padding:0 clamp(18px,5vw,68px);background:rgba(251,250,246,.94);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;backdrop-filter:blur(16px)}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:900}
+    .brand-mark{width:38px;height:38px;display:grid;place-items:center;border-radius:8px;background:var(--green);color:#fff;font-size:12px}
+    .brand-text{display:grid;line-height:1.08}
+    .brand-text span{color:var(--muted);font-size:12px;font-weight:800;margin-top:3px}
+    .nav-links{display:flex;align-items:center;gap:16px;color:var(--muted);font-size:14px;font-weight:750}
+    .hero{color:#fff;padding:clamp(42px,7vw,86px) clamp(18px,5vw,68px) 46px;background:linear-gradient(115deg,rgba(20,95,71,.97),rgba(18,39,50,.94)),radial-gradient(circle at 84% 20%,rgba(255,255,255,.2),transparent 28%)}
+    .hero-inner{max-width:1220px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);gap:clamp(28px,5vw,64px);align-items:end}
+    .eyebrow{display:inline-flex;margin-bottom:18px;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+    h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(42px,7vw,76px);line-height:.96;letter-spacing:0}
+    .hero p{max-width:760px;margin:20px 0 0;color:rgba(255,255,255,.82);font-size:clamp(16px,2vw,20px);line-height:1.55}
+    .donation-card{background:#fff;color:var(--ink);border-radius:8px;padding:22px;display:grid;gap:16px;box-shadow:var(--shadow)}
+    .donation-card h2{margin:0;font-size:26px}.donation-card p{margin:0;color:var(--muted);line-height:1.45;font-size:14px}
+    .amounts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .amount{min-height:48px;border:1px solid var(--line);border-radius:8px;display:grid;place-items:center;font-weight:950;background:#fff}
+    .amount.featured{background:var(--green);color:#fff;border-color:var(--green)}
+    .button{display:inline-flex;align-items:center;justify-content:center;min-height:46px;border-radius:8px;padding:0 18px;background:var(--green);color:#fff;font-weight:950}
+    .page{max-width:1420px;margin:0 auto;padding:28px clamp(18px,5vw,68px) 72px;display:grid;gap:22px}
+    .impact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .impact{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px;min-height:150px;box-shadow:0 12px 36px rgba(16,22,21,.05)}
+    .impact strong{display:block;font-size:30px;line-height:1;margin-bottom:10px;color:var(--green)}
+    .impact span{color:var(--muted);font-size:14px;line-height:1.45}
+    .split{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(340px,.94fr);gap:22px;align-items:start}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:var(--shadow)}
+    .panel-head{padding:20px 22px;border-bottom:1px solid var(--line)}
+    .panel-head h2{margin:0;font-size:26px}.panel-head p{margin:6px 0 0;color:var(--muted);line-height:1.45;font-size:14px}
+    .list{padding:18px;display:grid;gap:10px}
+    .item{display:grid;grid-template-columns:32px 1fr;gap:12px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:14px;color:#33413c;line-height:1.45}
+    .check{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:var(--mint);color:var(--green);font-weight:950}
+    .use-grid{padding:18px;display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .use{border:1px solid var(--line);border-radius:8px;background:#fff;padding:18px;display:grid;gap:10px;min-height:180px}
+    .use b{display:inline-flex;width:max-content;padding:6px 9px;border-radius:999px;background:var(--mint);color:var(--green);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+    .use h3{margin:0;font-size:21px}.use p{margin:0;color:var(--muted);line-height:1.5;font-size:14px}
+    .principle{border:1px solid rgba(184,122,34,.24);background:var(--gold2);border-radius:8px;padding:22px;color:#67450f;display:grid;gap:8px}
+    .principle h2{margin:0;font-size:26px}.principle p{margin:0;line-height:1.52}
+    footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:26px clamp(18px,5vw,68px);color:var(--muted);border-top:1px solid var(--line);font-size:13px}
+    @media(max-width:1120px){.hero-inner,.split{grid-template-columns:1fr}.impact-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:760px){.nav{align-items:flex-start;flex-direction:column;padding-top:14px;padding-bottom:14px}.nav-links{flex-wrap:wrap;gap:12px}.impact-grid,.use-grid,.amounts{grid-template-columns:1fr}}
+  </style>
+  <link rel="stylesheet" href="assets/site-nav.css?v=20260512-nav2">
+</head>
+<body>
+  <div class="topbar">
+    <strong>Aesop Academy</strong> is a 501(c)(3) nonprofit advancing AI literacy for youth and working professionals.
+    <a href="https://aesopacademy.org">aesopacademy.org</a>
+  </div>
+  <div id="site-nav"></div>
+  <script src="assets/site-nav.js?v=20260512-nav2"></script>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow">Donate to access</span>
+        <h1>Give someone a way into practical AI literacy.</h1>
+        <p>Your donation helps Aesop Academy use 25experts to provide trusted AI education, free access pathways, live expert learning, and support for people who cannot afford to fall behind.</p>
+      </div>
+      <aside class="donation-card">
+        <h2>Choose an impact amount</h2>
+        <p>Mock donation amounts. Replace with the final donation processor before launch.</p>
+        <div class="amounts">
+          <div class="amount">$25</div>
+          <div class="amount featured">$70</div>
+          <div class="amount">$140</div>
+          <div class="amount">$500</div>
+        </div>
+        <a class="button" href="mailto:donate@aesopacademy.org?subject=25experts%20Donation">Donate through Aesop Academy</a>
+      </aside>
+    </div>
+  </section>
+
+  <main class="page">
+    <section class="impact-grid" aria-label="Donation impact">
+      <article class="impact"><strong>$14</strong><span>Can support one month of following an expert for a learner who needs access.</span></article>
+      <article class="impact"><strong>$70</strong><span>Can support a five-expert learning bundle for one patron for a month.</span></article>
+      <article class="impact"><strong>$140</strong><span>Can support several months of targeted expert access.</span></article>
+      <article class="impact"><strong>$500</strong><span>Can help underwrite access seats, workshops, and program infrastructure.</span></article>
+    </section>
+
+    <section class="split">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Where donations go</h2>
+          <p>Donations should directly support access, mission infrastructure, and the quality systems that keep learning trustworthy.</p>
+        </div>
+        <div class="use-grid">
+          <article class="use">
+            <b>Access</b>
+            <h3>Free and reduced-cost seats</h3>
+            <p>Help learners follow experts when cost would otherwise keep them out.</p>
+          </article>
+          <article class="use">
+            <b>Youth</b>
+            <h3>Student pathways</h3>
+            <p>Support youth and student access through Aesop Academy programs.</p>
+          </article>
+          <article class="use">
+            <b>Live Learning</b>
+            <h3>Workshop access</h3>
+            <p>Help fund live events, Q&A access, replays, and practical community learning.</p>
+          </article>
+          <article class="use">
+            <b>Trust</b>
+            <h3>Quality and moderation</h3>
+            <p>Support the systems that keep expert content, forums, and recognition useful.</p>
+          </article>
+        </div>
+      </article>
+
+      <aside class="panel">
+        <div class="panel-head">
+          <h2>Why individual donors matter</h2>
+          <p>Small gifts can still expand access when the platform is organized around clear per-expert costs.</p>
+        </div>
+        <div class="list">
+          <div class="item"><span class="check">✓</span><span>25experts pricing is per expert, so donations can be tied to concrete access.</span></div>
+          <div class="item"><span class="check">✓</span><span>Donor support helps keep free pathways real, not just symbolic.</span></div>
+          <div class="item"><span class="check">✓</span><span>Aesop Academy can direct access toward youth, students, and working professionals.</span></div>
+          <div class="item"><span class="check">✓</span><span>Mission funding lets the platform prioritize learning over extraction.</span></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="principle">
+      <h2>Donation trust boundary</h2>
+      <p>Donations support access and mission delivery. They do not buy expert rankings, patron recognition, forum status, content placement, or certification decisions. That boundary protects the credibility of Aesop Academy and keeps 25experts learner-first.</p>
+    </section>
+  </main>
+
+  <footer>
+    <strong>25experts by <a href="https://aesopacademy.org" style="color:var(--green);">Aesop Academy</a></strong>
+    <span>Donation page mockup for Aesop Academy access support.</span>
+  </footer>
+</body>
+</html>
