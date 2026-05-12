@@ -24,7 +24,7 @@
       label: "Non-Profit Values",
       className: "site-nav-values",
       links: [
-        ["Support", "support.html"],
+        ["Donate or Sponsor", "support.html"],
         ["Scholarships", "join.html"],
         ["Trends", "trends.html"],
         ["Leader Boards", "leaderboards.html"]
@@ -34,10 +34,9 @@
       label: "Actions",
       className: "site-nav-actions",
       links: [
-        ["Join Free", "join.html"],
+        ["Join Now", "join.html"],
         ["Expert Program", "experts.html"],
-        ["Post a Job", "jobs.html"],
-        ["Calendar", "workshopcalendar.html"]
+        ["Workshop Calendar", "workshopcalendar.html"]
       ]
     }
   ];
