@@ -233,10 +233,16 @@
     }
 
     /* ── DOLLAR TABLE ── */
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
     .dollar-table {
-      width: 100%; border-collapse: collapse;
+      width: 100%; min-width: 1040px; border-collapse: collapse;
       border-radius: 12px; overflow: hidden;
-      font-size: 0.9rem; box-shadow: var(--shadow);
+      font-size: 0.9rem;
     }
     .dollar-table thead { background: var(--ink); color: #fff; }
     .dollar-table th {
@@ -251,6 +257,12 @@
       font-size: 0.79rem; color: var(--muted);
       background: var(--paper); border-top: 1px solid var(--line);
     }
+    .dollar-table tfoot a {
+      color: var(--green);
+      font-weight: 800;
+      text-decoration: none;
+    }
+    .dollar-table tfoot a:hover { text-decoration: underline; }
 
     /* ── STEPS ── */
     .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
@@ -508,8 +520,11 @@
       <a href="workshopcalendar.html">Workshops</a>
       <a href="blogs.html">Blogs</a>
       <a href="videos.html">Videos</a>
-      <a href="expertprofiles.html">Profiles</a>
+      <a href="expertprofiles.html">Expert Profiles</a>
+      <a href="patronrecognition.html">Recognition</a>
+      <a href="expertsrecognition.html">Expert Recognition</a>
       <a href="forums.html">Forums</a>
+      <a href="profile.html">Profile</a>
       <a href="#earn">How you earn</a>
       <a href="#faq">FAQ</a>
       <a class="btn btn-primary" href="#apply">Apply as a Founding Expert</a>
@@ -526,6 +541,7 @@
       <div class="hero-actions">
         <a class="btn btn-hero" href="#apply">Apply as a Founding Expert</a>
         <a class="btn btn-hero-ghost btn-ghost" href="#earn">See how you earn</a>
+        <a class="btn btn-hero-ghost btn-ghost" href="expertsrecognition.html">See Expert Recognition</a>
       </div>
       <div class="hero-strip">
         <div class="hero-stat">
@@ -677,6 +693,9 @@
         <span class="overline">How you earn</span>
         <h2>Earn more when your patrons get more.</h2>
         <p class="lead">Your patron count is the main engine. Contributions unlock higher revenue tiers. Quality content earns more discovery — which earns more patrons. The model rewards doing your best work consistently.</p>
+        <p style="margin-top:16px">
+          <a class="btn btn-primary" href="expertsrecognition.html">See how Expert Recognition works</a>
+        </p>
         <ul class="check-list" style="margin-top:24px">
           <li>
             <span class="chk">✓</span>
@@ -754,7 +773,8 @@
       <span class="overline">The numbers</span>
       <h2 style="margin-bottom:10px">What your audience is actually worth here</h2>
       <p class="lead" style="margin-bottom:32px">Same patrons. Same content. The difference is how much you keep — and what platform is backing you.</p>
-      <table class="dollar-table">
+      <div class="table-scroll">
+        <table class="dollar-table">
         <thead>
           <tr>
             <th>Patron count</th>
@@ -762,7 +782,7 @@
             <th>YouTube (~55%)</th>
             <th>Contributor floor (50%)</th>
             <th>Expert floor (60%)</th>
-            <th>Max — all tiers (70%)</th>
+            <th>Founding Expert floor / Contributor + Expert max (70%)</th>
           </tr>
         </thead>
         <tbody>
@@ -792,9 +812,10 @@
           </tr>
         </tbody>
         <tfoot>
-          <tr><td colspan="6">Patreon estimate after platform fees. Contributor floor = 50%; Expert floor = 60%; Founding Expert = 70% locked. Max reflects full contribution unlocks at any tier. Expert Growth Fund distributions are additional. Numbers above assume patrons follow this expert only (full $14 allocated). When a patron follows multiple experts, their payment is split evenly — your dashboard shows your exact per-patron allocation in real time.</td></tr>
+          <tr><td colspan="6">Patreon estimate after platform fees. Contributor floor = 50%; Expert floor = 60%; Founding Expert floor = guaranteed 70%. Contributors and Experts can also max at 70% based on qualified contribution. Expert Growth Fund distributions are additional. Numbers above assume patrons follow this expert only (full $14 allocated). When a patron follows multiple experts, their payment is split evenly — your dashboard shows your exact per-patron allocation in real time. <a href="creator-advancement.html">Creator advancement path document</a>: coming soon.</td></tr>
         </tfoot>
       </table>
+      </div>
     </div>
   </section>
 

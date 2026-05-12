@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Expert Profile | 25experts by Aesop Academy</title>
+  <style>
+    :root {
+      --ink:#101615;
+      --muted:#66716e;
+      --paper:#fbfaf6;
+      --panel:#ffffff;
+      --line:#dfe5df;
+      --green:#145f47;
+      --mint:#e9f5ef;
+      --gold:#b87a22;
+      --gold2:#fff1d8;
+      --blue:#295b8f;
+      --blue2:#e6f0fb;
+      --violet:#6a529c;
+      --violet2:#eee9fa;
+      --shadow:0 20px 60px rgba(16,22,21,.12);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--paper);color:var(--ink);letter-spacing:0}
+    a{color:inherit;text-decoration:none}
+    input,textarea,select{font:inherit}
+    .topbar{padding:9px clamp(18px,5vw,68px);background:var(--green);color:#fff;font-size:13px;text-align:center}
+    .topbar a{text-decoration:underline;font-weight:800}
+    .nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:28px;padding:0 clamp(18px,5vw,68px);background:rgba(251,250,246,.94);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;backdrop-filter:blur(16px)}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:900}
+    .brand-mark{width:38px;height:38px;display:grid;place-items:center;border-radius:8px;background:var(--green);color:#fff;font-size:12px}
+    .brand-text{display:grid;line-height:1.08}
+    .brand-text span{color:var(--muted);font-size:12px;font-weight:800;margin-top:3px}
+    .nav-links{display:flex;align-items:center;gap:16px;color:var(--muted);font-size:14px;font-weight:750}
+    .nav-links a:hover{color:var(--ink)}
+    .hero{padding:clamp(32px,6vw,60px) clamp(18px,5vw,68px) 30px;background:linear-gradient(115deg,rgba(20,95,71,.97),rgba(18,39,50,.94));color:#fff}
+    .hero-inner{max-width:1220px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:32px;align-items:end}
+    .eyebrow{display:inline-flex;margin-bottom:16px;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+    h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(40px,6vw,68px);line-height:.98}
+    .hero p{max-width:760px;margin:18px 0 0;color:rgba(255,255,255,.82);font-size:18px;line-height:1.55}
+    .tier-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:8px;padding:20px;display:grid;gap:12px}
+    .tier-card strong{font-size:28px}.tier-card span{color:rgba(255,255,255,.78);font-size:14px;line-height:1.45}
+    .page{max-width:1420px;margin:0 auto;padding:24px clamp(18px,5vw,68px) 68px;display:grid;gap:22px}
+    .grid{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(340px,.94fr);gap:22px;align-items:start}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:0 16px 42px rgba(16,22,21,.06)}
+    .panel-head{padding:20px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .panel-head h2{margin:0;font-size:24px}.panel-head p{margin:5px 0 0;color:var(--muted);line-height:1.45;font-size:14px}
+    .form{padding:20px;display:grid;gap:16px}
+    .field{display:grid;gap:7px}
+    label{font-size:12px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+    input,textarea,select{width:100%;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);padding:11px 12px;outline:none}
+    textarea{min-height:132px;line-height:1.48;resize:vertical}
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .button-row{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border-radius:8px;padding:0 16px;font-weight:900;border:1px solid var(--green);background:var(--green);color:#fff}
+    .btn.secondary{background:var(--mint);color:var(--green);border-color:rgba(20,95,71,.18)}
+    .preview{padding:20px;display:grid;gap:16px}
+    .profile-preview{border:1px solid var(--line);border-radius:8px;background:linear-gradient(135deg,#fff,#f4f8f5);padding:20px;display:grid;gap:14px}
+    .preview-top{display:grid;grid-template-columns:72px 1fr;gap:14px;align-items:center}
+    .avatar{width:72px;height:72px;display:grid;place-items:center;border-radius:18px;background:var(--green);color:#fff;font-weight:950;font-size:22px}
+    .profile-preview h3{margin:0;font-size:28px;font-family:Georgia,"Times New Roman",serif;line-height:1}
+    .profile-preview p{margin:0;color:var(--muted);line-height:1.5}
+    .tags{display:flex;flex-wrap:wrap;gap:7px}
+    .tag{display:inline-flex;align-items:center;min-height:28px;border-radius:999px;padding:0 9px;background:var(--mint);color:var(--green);font-size:12px;font-weight:900}
+    .note{border:1px solid rgba(184,122,34,.24);background:var(--gold2);border-radius:8px;padding:16px;color:#67450f;line-height:1.48}
+    .checklist{padding:18px;display:grid;gap:10px}
+    .check{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;border:1px solid var(--line);border-radius:8px;background:#fff;padding:12px;color:#33413c;line-height:1.45}
+    .dot{width:24px;height:24px;display:grid;place-items:center;border-radius:50%;background:var(--mint);color:var(--green);font-weight:950;font-size:12px}
+    footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:26px clamp(18px,5vw,68px);color:var(--muted);border-top:1px solid var(--line);font-size:13px}
+    @media(max-width:1000px){.hero-inner,.grid{grid-template-columns:1fr}}
+    @media(max-width:760px){.nav{align-items:flex-start;flex-direction:column;padding-top:14px;padding-bottom:14px}.nav-links{flex-wrap:wrap;gap:12px}.two{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <strong>Aesop Academy</strong> is a 501(c)(3) nonprofit advancing AI literacy for youth and working professionals.
+    <a href="https://aesopacademy.org">aesopacademy.org</a>
+  </div>
+
+  <header class="nav">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">25</span>
+      <span class="brand-text">25experts<span>by Aesop Academy</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Page navigation">
+      <a href="profile.html">Profile Hub</a>
+      <a href="patronprofile.html">Patron Profile</a>
+      <a href="expertprofiles.html">Public Expert Profiles</a>
+      <a href="forums.html">Forums</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow">My expert profile</span>
+        <h1>Manage the identity patrons see.</h1>
+        <p>This is where contributors, verified creators, and founding experts maintain the public bio, forum name, specialty, and profile content that appears in the expert directory.</p>
+      </div>
+      <aside class="tier-card">
+        <strong>Tier: Founding Expert</strong>
+        <span>Recommended tier names: Contributor, Verified Creator, Founding Expert. The middle tier becomes Verified Creator so the word expert can describe everyone on the platform.</span>
+      </aside>
+    </div>
+  </section>
+
+  <main class="page">
+    <section class="grid">
+      <article class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>Public expert identity</h2>
+            <p>This information can be shown on `expertprofiles.html` and on expert forum posts.</p>
+          </div>
+        </div>
+        <div class="form">
+          <div class="two">
+            <div class="field">
+              <label for="displayName">Display name</label>
+              <input id="displayName" value="Maya Lin" />
+            </div>
+            <div class="field">
+              <label for="forumName">Forum name</label>
+              <input id="forumName" value="@MayaAI" />
+            </div>
+          </div>
+          <div class="two">
+            <div class="field">
+              <label for="tier">Creator tier</label>
+              <select id="tier">
+                <option>Founding Expert</option>
+                <option>Verified Creator</option>
+                <option>Contributor</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="domain">Primary domain</label>
+              <select id="domain">
+                <option>AI & Automation</option>
+                <option>Finance & Investing</option>
+                <option>Marketing, Sales & Growth</option>
+                <option>Career & Productivity</option>
+                <option>Education & Community</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="headline">Profile headline</label>
+            <input id="headline" value="Applied AI Strategy for Operators" />
+          </div>
+          <div class="field">
+            <label for="bio">Public bio</label>
+            <textarea id="bio">I help operators turn messy business workflows into practical AI systems their teams can actually maintain. My work focuses on automation boundaries, quality checks, and human-centered rollout.</textarea>
+          </div>
+          <div class="field">
+            <label for="topics">Topics patrons can expect</label>
+            <input id="topics" value="workflow mapping, prompt systems, AI adoption, quality checks" />
+          </div>
+          <div class="button-row">
+            <a class="btn" href="#">Save profile</a>
+            <a class="btn secondary" href="expertprofiles.html">Preview public directory</a>
+          </div>
+        </div>
+      </article>
+
+      <aside class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>Public preview</h2>
+            <p>Mockup of how this identity could appear to patrons.</p>
+          </div>
+        </div>
+        <div class="preview">
+          <div class="profile-preview">
+            <div class="preview-top">
+              <div class="avatar">ML</div>
+              <div>
+                <h3>Maya Lin</h3>
+                <p>@MayaAI · Founding Expert · AI & Automation</p>
+              </div>
+            </div>
+            <p><strong>Applied AI Strategy for Operators</strong></p>
+            <p>I help operators turn messy business workflows into practical AI systems their teams can actually maintain.</p>
+            <div class="tags">
+              <span class="tag">Founding Expert</span>
+              <span class="tag">AI & Automation</span>
+              <span class="tag">Forum verified</span>
+            </div>
+          </div>
+          <div class="note">
+            Founding Experts should provide a forum name so patrons can recognize official expert replies. Contributors and Verified Creators should still provide a clear public bio for the expert directory.
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>Profile readiness</h2>
+          <p>Before an expert profile becomes public, these fields should be complete.</p>
+        </div>
+      </div>
+      <div class="checklist">
+        <div class="check"><span class="dot">✓</span><span>Public bio explains what patrons can learn from this creator.</span></div>
+        <div class="check"><span class="dot">✓</span><span>Forum name is set for Founding Experts and visible on official replies.</span></div>
+        <div class="check"><span class="dot">✓</span><span>Creator tier uses Contributor, Verified Creator, or Founding Expert.</span></div>
+        <div class="check"><span class="dot">✓</span><span>Primary domain and topics match the public expert directory.</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <strong>25experts by <a href="https://aesopacademy.org" style="color:var(--green);">Aesop Academy</a></strong>
+    <span>My Expert Profile mockup.</span>
+  </footer>
+</body>
+</html>

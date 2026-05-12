@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expert Profiles | 25experts by Aesop Academy</title>
+  <style>
+    :root {
+      --ink: #101615;
+      --muted: #66716e;
+      --paper: #fbfaf6;
+      --panel: #ffffff;
+      --line: #dfe5df;
+      --green: #145f47;
+      --mint: #e9f5ef;
+      --gold: #b87a22;
+      --gold2: #fff1d8;
+      --shadow: 0 20px 60px rgba(16, 22, 21, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      letter-spacing: 0;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input, select { font: inherit; }
+
+    .topbar {
+      padding: 9px clamp(18px, 5vw, 68px);
+      background: var(--green);
+      color: #fff;
+      font-size: 13px;
+      text-align: center;
+    }
+    .topbar a { text-decoration: underline; font-weight: 800; }
+
+    .nav {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      padding: 0 clamp(18px, 5vw, 68px);
+      background: rgba(251, 250, 246, 0.94);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(16px);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-weight: 900;
+    }
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--green);
+      color: #fff;
+      font-size: 12px;
+    }
+    .brand-text { display: grid; line-height: 1.08; }
+    .brand-text span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      margin-top: 3px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 750;
+    }
+    .nav-links a:hover { color: var(--ink); }
+
+    .hero {
+      background:
+        linear-gradient(115deg, rgba(20,95,71,0.96), rgba(19,42,54,0.92)),
+        radial-gradient(circle at 82% 18%, rgba(255,255,255,0.18), transparent 28%);
+      color: #fff;
+      padding: clamp(42px, 7vw, 82px) clamp(18px, 5vw, 68px) 48px;
+    }
+    .hero-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr);
+      gap: clamp(28px, 5vw, 64px);
+      align-items: end;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 18px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.22);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .hero h1 {
+      max-width: 780px;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(42px, 7vw, 78px);
+      line-height: 0.96;
+      letter-spacing: 0;
+    }
+    .hero p {
+      max-width: 720px;
+      margin: 20px 0 0;
+      color: rgba(255,255,255,0.82);
+      font-size: clamp(16px, 2vw, 20px);
+      line-height: 1.55;
+    }
+    .hero-panel {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 8px;
+      padding: 22px;
+    }
+    .hero-panel strong {
+      display: block;
+      font-size: 32px;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .hero-panel span {
+      color: rgba(255,255,255,0.78);
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .page {
+      max-width: 1420px;
+      margin: 0 auto;
+      padding: 28px clamp(18px, 5vw, 68px) 72px;
+      display: grid;
+      grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .roster {
+      position: sticky;
+      top: 96px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 14px 40px rgba(16, 22, 21, 0.06);
+      overflow: hidden;
+    }
+    .roster-head {
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      gap: 12px;
+    }
+    .roster-head h2 { margin: 0; font-size: 18px; }
+    .roster-tools { display: grid; gap: 10px; }
+    .search, .select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      min-height: 40px;
+      padding: 0 12px;
+      color: var(--ink);
+      outline: none;
+    }
+    .expert-list {
+      max-height: calc(100vh - 268px);
+      overflow: auto;
+      padding: 10px;
+      display: grid;
+      gap: 8px;
+    }
+    .expert-button {
+      width: 100%;
+      border: 1px solid transparent;
+      background: transparent;
+      display: grid;
+      grid-template-columns: 44px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      text-align: left;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--ink);
+    }
+    .expert-button:hover { background: #f2f6f1; }
+    .expert-button.active {
+      border-color: rgba(20,95,71,0.35);
+      background: var(--mint);
+    }
+    .avatar {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      font-weight: 950;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .expert-button strong {
+      display: block;
+      font-size: 14px;
+      line-height: 1.2;
+    }
+    .expert-button span span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.25;
+    }
+    .score {
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--green);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 5px 7px;
+    }
+
+    .profile { display: grid; gap: 22px; }
+    .profile-hero {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .profile-top {
+      display: grid;
+      grid-template-columns: 1fr minmax(240px, 330px);
+      gap: 24px;
+      padding: clamp(22px, 4vw, 38px);
+      background: linear-gradient(135deg, #fff, #f1f6f1);
+    }
+    .identity {
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+    .big-avatar {
+      width: 86px;
+      height: 86px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      color: #fff;
+      font-size: 24px;
+      font-weight: 950;
+      box-shadow: 0 18px 38px rgba(16,22,21,0.18);
+    }
+    .identity h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(34px, 5vw, 56px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+    .title {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+      font-weight: 750;
+      line-height: 1.35;
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: currentColor;
+    }
+    .bio {
+      grid-column: 2;
+      margin: 0;
+      max-width: 720px;
+      color: #394340;
+      font-size: 16px;
+      line-height: 1.62;
+    }
+
+    .join-card {
+      align-self: stretch;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      display: grid;
+      gap: 16px;
+    }
+    .join-card strong { font-size: 24px; }
+    .join-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 14px;
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 8px;
+      background: var(--green);
+      color: #fff;
+      font-weight: 900;
+      border: 0;
+      cursor: pointer;
+    }
+    .button.secondary {
+      color: var(--green);
+      background: var(--mint);
+      border: 1px solid rgba(20,95,71,0.18);
+    }
+    .profile-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--line);
+      background: #fff;
+    }
+    .stat {
+      padding: 18px 20px;
+      border-right: 1px solid var(--line);
+    }
+    .stat:last-child { border-right: 0; }
+    .stat strong {
+      display: block;
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+    .stat span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .learning-map {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .map-card, .feed, .companion, .content-shell {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    .map-card {
+      padding: 18px;
+      min-height: 150px;
+    }
+    .map-card b {
+      display: block;
+      font-size: 14px;
+      color: var(--green);
+      margin-bottom: 9px;
+    }
+    .map-card h3 {
+      margin: 0 0 8px;
+      font-size: 19px;
+    }
+    .map-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .content-shell { overflow: hidden; }
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 22px 24px;
+      border-bottom: 1px solid var(--line);
+    }
+    .section-head h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .section-head p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tab {
+      min-height: 38px;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 999px;
+      padding: 0 14px;
+      font-weight: 850;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .tab.active {
+      background: var(--green);
+      color: #fff;
+      border-color: var(--green);
+    }
+    .content-grid {
+      padding: 18px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .content-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+      min-height: 246px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+    .thumb {
+      min-height: 112px;
+      padding: 14px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+      background: var(--green);
+    }
+    .thumb span {
+      width: fit-content;
+      border: 1px solid rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.14);
+      border-radius: 999px;
+      padding: 5px 8px;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .thumb strong { font-size: 24px; line-height: 1; }
+    .content-body {
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .content-body h3 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.22;
+    }
+    .content-body p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.48;
+      font-size: 14px;
+    }
+    .card-actions {
+      align-self: end;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 900;
+    }
+    .locked {
+      color: var(--gold);
+      background: var(--gold2);
+      border-radius: 999px;
+      padding: 5px 8px;
+      font-size: 11px;
+      font-weight: 950;
+    }
+
+    .social-layer {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 14px;
+    }
+    .feed, .companion { padding: 20px; }
+    .feed h2, .companion h2 {
+      margin: 0 0 14px;
+      font-size: 22px;
+    }
+    .thread {
+      border-top: 1px solid var(--line);
+      padding: 14px 0;
+      display: grid;
+      gap: 7px;
+    }
+    .thread:last-child { padding-bottom: 0; }
+    .thread strong { font-size: 15px; }
+    .thread p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.48;
+      font-size: 14px;
+    }
+    .companion {
+      background: linear-gradient(145deg, #ffffff, #eef6f2);
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+    .chat-line {
+      padding: 12px 13px;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: #2f3b37;
+      line-height: 1.45;
+      font-size: 14px;
+    }
+    .chat-line.ai {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
+    }
+
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 26px clamp(18px, 5vw, 68px);
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      font-size: 13px;
+    }
+
+    @media (max-width: 1080px) {
+      .hero-inner, .page, .profile-top, .social-layer { grid-template-columns: 1fr; }
+      .roster { position: static; }
+      .expert-list { max-height: none; grid-template-columns: repeat(2, 1fr); }
+      .bio { grid-column: 1 / -1; }
+      .content-grid, .learning-map { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 760px) {
+      .nav { align-items: flex-start; flex-direction: column; padding-top: 14px; padding-bottom: 14px; }
+      .nav-links { flex-wrap: wrap; gap: 12px; }
+      .expert-list, .profile-stats, .content-grid, .learning-map { grid-template-columns: 1fr; }
+      .identity { grid-template-columns: 1fr; }
+      .stat { border-right: 0; border-bottom: 1px solid var(--line); }
+      .stat:last-child { border-bottom: 0; }
+      .section-head { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <strong>Aesop Academy</strong> is a 501(c)(3) nonprofit advancing AI literacy for youth and working professionals.
+    <a href="https://aesopacademy.org">aesopacademy.org</a>
+  </div>
+
+  <header class="nav">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">25</span>
+      <span class="brand-text">
+        25experts
+        <span>by Aesop Academy</span>
+      </span>
+    </a>
+    <nav class="nav-links" aria-label="Page navigation">
+      <a href="index.html">Home</a>
+      <a href="subscriber.html">Follow the Experts</a>
+      <a href="experts.html">Expert Program</a>
+      <a href="workshopcalendar.html">Workshops</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="videos.html">Videos</a>
+      <a href="forums.html">Forums</a>
+      <a href="patronrecognition.html">Recognition</a>
+      <a href="expertsrecognition.html">Expert Recognition</a>
+      <a href="profile.html">Profile</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow">Expert profile directory</span>
+        <h1>Find the guide who fits the work in front of you.</h1>
+        <p>Every expert profile brings together the whole learning relationship: videos, essays, live workshops, community posts, saved progress, and an AI companion trained around that expert's teaching library.</p>
+      </div>
+      <div class="hero-panel">
+        <strong>25 experts</strong>
+        <span>Five focused domains, five verified experts per domain, and one clear path from curiosity to capability.</span>
+      </div>
+    </div>
+  </section>
+
+  <main class="page">
+    <aside class="roster" aria-label="Expert roster">
+      <div class="roster-head">
+        <h2>Browse all experts</h2>
+        <div class="roster-tools">
+          <input class="search" id="search" type="search" placeholder="Search experts or topics" />
+          <select class="select" id="domainFilter" aria-label="Filter by domain">
+            <option value="All">All domains</option>
+          </select>
+        </div>
+      </div>
+      <div class="expert-list" id="expertList"></div>
+    </aside>
+
+    <section class="profile" aria-live="polite">
+      <article class="profile-hero">
+        <div class="profile-top">
+          <div class="identity">
+            <div class="big-avatar" id="bigAvatar">ML</div>
+            <div>
+              <h2 id="expertName">Maya Lin</h2>
+              <div class="title" id="expertTitle">Applied AI Strategy for Operators</div>
+              <div class="chips" id="chips"></div>
+            </div>
+            <p class="bio" id="expertBio"></p>
+          </div>
+          <div class="join-card">
+            <strong id="price">$14/mo</strong>
+            <p>Follow this expert for their full library, live workshops, forum access, and paid AI companion features.</p>
+            <a class="button" href="subscriber.html#join">Follow this expert</a>
+            <a class="button secondary" href="workshopcalendar.html">View live workshops</a>
+          </div>
+        </div>
+        <div class="profile-stats" id="stats"></div>
+      </article>
+
+      <section class="learning-map" id="learningMap"></section>
+
+      <section class="content-shell">
+        <div class="section-head">
+          <div>
+            <h2>Content library</h2>
+            <p id="librarySubtitle">Videos, blogs, and workshops from the selected expert.</p>
+          </div>
+          <div class="tabs" role="tablist" aria-label="Content type">
+            <button class="tab active" data-tab="videos">Videos</button>
+            <button class="tab" data-tab="blogs">Blogs</button>
+            <button class="tab" data-tab="workshops">Workshops</button>
+          </div>
+        </div>
+        <div class="content-grid" id="contentGrid"></div>
+      </section>
+
+      <section class="social-layer">
+        <article class="feed">
+          <h2>Community pulse</h2>
+          <div id="threads"></div>
+        </article>
+        <article class="companion">
+          <h2>AI companion preview</h2>
+          <div class="chat-line">I am trying to automate client onboarding without breaking trust. Where should I start?</div>
+          <div class="chat-line ai" id="aiReply">Start with a workflow map, then automate the status updates before you automate the judgment calls.</div>
+          <a class="button" href="subscriber.html#pricing">Unlock with paid access</a>
+        </article>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <strong>25experts by <a href="https://aesopacademy.org" style="color:var(--green);">Aesop Academy</a></strong>
+    <span>AI literacy education for youth and working professionals, globally. Expert profile mockup.</span>
+  </footer>
+
+  <script>
+    const domains = [
+      { name: "AI & Automation", color: "#145f47", experts: [
+        ["Maya Lin", "Applied AI Strategy for Operators", "Turns messy business workflows into practical AI systems teams can actually maintain."],
+        ["Ethan Brooks", "Automation Architect", "Builds no-code and low-code AI workflows for service businesses and operations teams."],
+        ["Priya Shah", "Prompt Systems Coach", "Teaches reusable prompt systems, team standards, and quality checks for everyday AI work."],
+        ["Noah Kim", "AI Product Builder", "Helps founders and product teams prototype useful AI features without overbuilding."],
+        ["Ava Martinez", "AI Adoption Lead", "Guides managers through training, rollout, change management, and human-centered adoption."]
+      ]},
+      { name: "Finance & Investing", color: "#b87a22", experts: [
+        ["Julian Park", "AI Finance Analyst", "Uses AI to improve research workflows, portfolio review, and financial decision hygiene."],
+        ["Nadia Ellis", "Personal Finance Systems", "Teaches practical money systems for families, freelancers, and early-career professionals."],
+        ["Marcus Reed", "Market Research Mentor", "Shows learners how to compare signals, narratives, and risk before making investing decisions."],
+        ["Sofia Grant", "Small Business Finance", "Helps owners understand cash flow, pricing, forecasts, and AI-assisted bookkeeping."],
+        ["Caleb Stone", "Retirement Planning Guide", "Makes long-term planning clearer with simple models and grounded AI research methods."]
+      ]},
+      { name: "Marketing, Sales & Growth", color: "#295b8f", experts: [
+        ["Leah Morgan", "AI Growth Strategist", "Builds campaigns, content engines, and customer research loops with AI-assisted teams."],
+        ["Theo James", "Sales Enablement Coach", "Turns sales conversations into repeatable playbooks, scripts, and training libraries."],
+        ["Iris Chen", "Creator Marketing Lead", "Helps experts and brands create audience trust without becoming content machines."],
+        ["Dante Moore", "Lifecycle Marketing Builder", "Designs email, retention, and customer education systems that feel useful instead of noisy."],
+        ["Elena Price", "Brand Positioning Advisor", "Clarifies offers, audience language, and market categories for AI-era companies."]
+      ]},
+      { name: "Career & Productivity", color: "#6a529c", experts: [
+        ["Amara Wilson", "AI Career Coach", "Helps workers upgrade their role, portfolio, and daily productivity with practical AI habits."],
+        ["Owen Patel", "Executive Workflow Designer", "Designs executive operating systems for decisions, meetings, delegation, and follow-through."],
+        ["Mina Torres", "Learning Systems Mentor", "Turns AI learning into weekly practice plans, projects, and measurable progress."],
+        ["Graham Lee", "Job Search Strategist", "Uses AI to sharpen resumes, interviews, networking, and career transition plans."],
+        ["Rachel Adams", "Team Productivity Lead", "Helps teams reduce busywork, document better, and collaborate around AI-enabled workflows."]
+      ]},
+      { name: "Education & Community", color: "#b94d5f", experts: [
+        ["Samira Khan", "AI Literacy Educator", "Builds accessible AI lessons for students, parents, teachers, and community programs."],
+        ["Ben Carter", "Workshop Facilitator", "Designs live learning sessions that move people from passive watching to active practice."],
+        ["Talia Rivera", "Community Learning Architect", "Creates peer circles, accountability rhythms, and social learning experiences."],
+        ["Victor Nguyen", "Assessment and Feedback Lead", "Builds rubrics, feedback loops, and AI-supported grading for practical learning."],
+        ["Hannah Blake", "Youth Access Program Lead", "Creates free and sponsored pathways for young learners and underserved communities."]
+      ]}
+    ];
+
+    const experts = domains.flatMap((domain, domainIndex) => domain.experts.map((item, index) => {
+      const initials = item[0].split(" ").map(part => part[0]).join("");
+      const seed = domainIndex * 5 + index + 1;
+      return {
+        id: initials.toLowerCase(),
+        name: item[0],
+        title: item[1],
+        bio: item[2],
+        initials,
+        domain: domain.name,
+        color: domain.color,
+        score: 91 + ((seed * 3) % 8),
+        followers: 820 + seed * 137,
+        videos: 18 + (seed % 6),
+        blogs: 10 + (seed % 5),
+        workshops: 3 + (seed % 4)
+      };
+    }));
+
+    let selectedId = "ml";
+    let activeTab = "videos";
+
+    const expertList = document.getElementById("expertList");
+    const domainFilter = document.getElementById("domainFilter");
+    const search = document.getElementById("search");
+
+    domains.forEach(domain => {
+      const option = document.createElement("option");
+      option.value = domain.name;
+      option.textContent = domain.name;
+      domainFilter.appendChild(option);
+    });
+
+    function buildItems(type) {
+      const topics = {
+        videos: [
+          ["The first AI workflow every team should map", "A 14-minute field guide for finding the repetitive work that is safe to automate."],
+          ["From prompt to process", "How to turn one good AI interaction into a repeatable team standard."],
+          ["Quality checks before launch", "A simple review rhythm for reducing errors, hallucinations, and overconfidence."],
+          ["Building a personal AI cockpit", "Dashboards, saved prompts, weekly routines, and decision support in one place."],
+          ["When not to automate", "The judgment calls, trust moments, and human handoffs that should stay visible."]
+        ],
+        blogs: [
+          ["AI fluency is a workflow skill", "The best learners stop chasing tricks and start improving one recurring process at a time."],
+          ["How to evaluate an AI answer", "A practical checklist for evidence, sources, edge cases, and decision risk."],
+          ["The weekly AI review", "A lightweight habit for turning experiments into durable skills."],
+          ["What teams should document first", "The few shared notes that prevent AI work from becoming private chaos."],
+          ["Making AI useful for beginners", "How to lower the intimidation level without watering down the learning."]
+        ],
+        workshops: [
+          ["Live Q&A: Build your first AI workflow map", "Members bring one real process and leave with a cleaner automation plan."],
+          ["Office hours: Fix a broken prompt system", "A practical critique session for prompts, policies, and team adoption."],
+          ["Workshop: AI companion setup", "Configure the companion around goals, constraints, and saved expert content."],
+          ["Live lab: Score your own AI output", "Use the platform rubric to improve drafts, workflows, and decisions."],
+          ["Roundtable: What changed this month", "A fast-moving review of tools, risks, and practical use cases."]
+        ]
+      };
+      return topics[type].map((topic, index) => ({
+        title: topic[0],
+        desc: topic[1],
+        status: index < 2 ? "Free preview" : "Paid member",
+        metric: type === "videos" ? `${8 + index * 3} min` : type === "blogs" ? `${4 + index} min read` : `Live ${index + 1}:00 PM EST`,
+        date: type === "workshops" ? ["May 21", "May 28", "June 4", "June 11", "June 18"][index] : ["New", "Trending", "Saved", "Top rated", "Updated"][index],
+        type
+      }));
+    }
+
+    function renderRoster() {
+      const term = search.value.trim().toLowerCase();
+      const domain = domainFilter.value;
+      const visible = experts.filter(expert => {
+        const matchesDomain = domain === "All" || expert.domain === domain;
+        const text = `${expert.name} ${expert.title} ${expert.domain} ${expert.bio}`.toLowerCase();
+        return matchesDomain && text.includes(term);
+      });
+      expertList.innerHTML = visible.map(expert => `
+        <button class="expert-button ${expert.id === selectedId ? "active" : ""}" data-id="${expert.id}">
+          <span class="avatar" style="background:${expert.color}">${expert.initials}</span>
+          <span>
+            <strong>${expert.name}</strong>
+            <span>${expert.title}</span>
+          </span>
+          <span class="score">${expert.score}</span>
+        </button>
+      `).join("");
+      expertList.querySelectorAll("button").forEach(button => {
+        button.addEventListener("click", () => {
+          selectedId = button.dataset.id;
+          activeTab = "videos";
+          render();
+        });
+      });
+    }
+
+    function renderProfile() {
+      const expert = experts.find(item => item.id === selectedId) || experts[0];
+      document.getElementById("bigAvatar").textContent = expert.initials;
+      document.getElementById("bigAvatar").style.background = expert.color;
+      document.getElementById("expertName").textContent = expert.name;
+      document.getElementById("expertTitle").textContent = expert.title;
+      document.getElementById("expertBio").textContent = `${expert.bio} Their profile is organized so subscribers can move from short videos to written playbooks, then into live workshops and community practice.`;
+      document.getElementById("librarySubtitle").textContent = `${expert.name}'s videos, blogs, and workshops in one subscriber view.`;
+      document.getElementById("chips").innerHTML = [expert.domain, "AI graded content", "Live events", "Forum access", "AI companion"]
+        .map((chip, index) => `<span class="chip" style="${index === 0 ? `color:${expert.color}` : ""}"><span class="dot"></span>${chip}</span>`).join("");
+      document.getElementById("stats").innerHTML = [
+        [`${expert.followers.toLocaleString()}`, "followers"],
+        [`${expert.videos}`, "videos"],
+        [`${expert.blogs}`, "blogs"],
+        [`${expert.workshops}`, "workshops"]
+      ].map(stat => `<div class="stat"><strong>${stat[0]}</strong><span>${stat[1]}</span></div>`).join("");
+      document.getElementById("learningMap").innerHTML = [
+        ["1. Watch", "Start with the highest-rated short lessons and free previews."],
+        ["2. Practice", "Use the blog playbooks, downloads, and forum prompts to apply the idea."],
+        ["3. Go live", "Bring real questions to workshops and keep momentum with the AI companion."]
+      ].map(item => `<article class="map-card"><b>${expert.name.split(" ")[0]}'s path</b><h3>${item[0]}</h3><p>${item[1]}</p></article>`).join("");
+      document.getElementById("aiReply").textContent = `I would start with ${expert.name.split(" ")[0]}'s workflow map lesson, then bring one real example to the next workshop so the advice becomes specific to your work.`;
+      document.getElementById("threads").innerHTML = [
+        [`${expert.name} just answered`, "What is the safest first automation for a small team with no technical support?"],
+        ["Member discussion", "Three subscribers are comparing notes from this week's workshop and posting before-and-after workflows."],
+        ["Top community prompt", "Show me where my plan depends on assumptions I have not tested yet."]
+      ].map(thread => `<div class="thread"><strong>${thread[0]}</strong><p>${thread[1]}</p></div>`).join("");
+    }
+
+    function renderContent() {
+      const expert = experts.find(item => item.id === selectedId) || experts[0];
+      const items = buildItems(activeTab);
+      document.querySelectorAll(".tab").forEach(tab => tab.classList.toggle("active", tab.dataset.tab === activeTab));
+      document.getElementById("contentGrid").innerHTML = items.map((item, index) => `
+        <article class="content-card">
+          <div class="thumb" style="background:linear-gradient(135deg, ${expert.color}, #10221c)">
+            <span>${item.type}</span>
+            <strong>${index + 1}</strong>
+          </div>
+          <div class="content-body">
+            <div class="meta"><span>${item.date}</span><span>${item.metric}</span></div>
+            <h3>${item.title}</h3>
+            <p>${item.desc}</p>
+            <div class="card-actions">
+              <a href="#">Open</a>
+              <span class="${item.status === "Paid member" ? "locked" : ""}">${item.status}</span>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function render() {
+      renderRoster();
+      renderProfile();
+      renderContent();
+    }
+
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        activeTab = tab.dataset.tab;
+        renderContent();
+      });
+    });
+    search.addEventListener("input", renderRoster);
+    domainFilter.addEventListener("change", renderRoster);
+    render();
+  </script>
+</body>
+</html>

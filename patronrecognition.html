@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patron Recognition | 25experts by Aesop Academy</title>
+  <style>
+    :root {
+      --ink:#101615;
+      --muted:#66716e;
+      --paper:#fbfaf6;
+      --panel:#ffffff;
+      --line:#dfe5df;
+      --green:#145f47;
+      --mint:#e9f5ef;
+      --gold:#b87a22;
+      --gold2:#fff1d8;
+      --blue:#295b8f;
+      --blue2:#e6f0fb;
+      --violet:#6a529c;
+      --violet2:#eee9fa;
+      --rose:#b94d5f;
+      --rose2:#fde9ed;
+      --shadow:0 20px 60px rgba(16,22,21,.12);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--paper);color:var(--ink);letter-spacing:0}
+    a{color:inherit;text-decoration:none}
+    .topbar{padding:9px clamp(18px,5vw,68px);background:var(--green);color:#fff;font-size:13px;text-align:center}
+    .topbar a{text-decoration:underline;font-weight:800}
+    .nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:28px;padding:0 clamp(18px,5vw,68px);background:rgba(251,250,246,.94);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;backdrop-filter:blur(16px)}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:900}
+    .brand-mark{width:38px;height:38px;display:grid;place-items:center;border-radius:8px;background:var(--green);color:#fff;font-size:12px}
+    .brand-text{display:grid;line-height:1.08}
+    .brand-text span{color:var(--muted);font-size:12px;font-weight:800;margin-top:3px}
+    .nav-links{display:flex;align-items:center;gap:16px;color:var(--muted);font-size:14px;font-weight:750}
+    .nav-links a:hover{color:var(--ink)}
+    .hero{color:#fff;padding:clamp(42px,7vw,84px) clamp(18px,5vw,68px) 44px;background:linear-gradient(115deg,rgba(20,95,71,.97),rgba(18,39,50,.94)),radial-gradient(circle at 84% 20%,rgba(255,255,255,.2),transparent 28%)}
+    .hero-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);gap:clamp(28px,5vw,64px);align-items:end}
+    .eyebrow{display:inline-flex;margin-bottom:18px;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+    h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(42px,7vw,76px);line-height:.96;letter-spacing:0}
+    .hero p{max-width:760px;margin:20px 0 0;color:rgba(255,255,255,.82);font-size:clamp(16px,2vw,20px);line-height:1.55}
+    .hero-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:8px;padding:22px;display:grid;gap:12px}
+    .hero-card strong{font-size:30px}.hero-card span{color:rgba(255,255,255,.78);line-height:1.45;font-size:14px}
+    .page{max-width:1320px;margin:0 auto;padding:28px clamp(18px,5vw,68px) 72px;display:grid;gap:22px}
+    .pillars{display:grid;gap:18px}
+    .pillar{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:var(--shadow)}
+    .pillar-top{display:grid;grid-template-columns:92px 1fr minmax(240px,320px);gap:20px;align-items:center;padding:24px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,#fff,#f4f8f5)}
+    .pillar-mark{width:72px;height:72px;display:grid;place-items:center;border-radius:18px;color:#fff;font-weight:950;font-size:24px}
+    .pillar h2{margin:0;font-size:30px;line-height:1.05}.pillar-lede{margin:8px 0 0;color:var(--muted);font-size:16px;line-height:1.5}
+    .result-box{border:1px solid var(--line);border-radius:8px;background:#fff;padding:15px}
+    .result-box b{display:block;font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}.result-box p{margin:0;color:var(--muted);line-height:1.45;font-size:14px}
+    .pillar-body{display:grid;grid-template-columns:1fr 1fr;gap:0}
+    .section{padding:22px;border-right:1px solid var(--line)}
+    .section:last-child{border-right:0}
+    .section h3{margin:0 0 12px;font-size:18px}
+    .earn-list,.outcome-list{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+    .earn-list li,.outcome-list li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;color:#33413c;line-height:1.45;font-size:14px}
+    .check{width:24px;height:24px;display:grid;place-items:center;border-radius:50%;font-size:12px;font-weight:950;background:var(--mint);color:var(--green)}
+    .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+    .tag{display:inline-flex;align-items:center;min-height:30px;padding:0 10px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--muted);font-size:12px;font-weight:900}
+    .forum{border:1px solid rgba(184,122,34,.24);background:var(--gold2);border-radius:8px;padding:22px;display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.55fr);gap:22px;align-items:center}
+    .forum h2{margin:0 0 8px;font-size:26px}.forum p{margin:0;color:#67450f;line-height:1.52}
+    .forum ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+    .forum li{background:#fff;border:1px solid rgba(184,122,34,.24);border-radius:8px;padding:10px 12px;color:#67450f;font-weight:800;font-size:14px}
+    footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:26px clamp(18px,5vw,68px);color:var(--muted);border-top:1px solid var(--line);font-size:13px}
+    @media(max-width:1100px){.hero-inner,.pillar-top,.forum{grid-template-columns:1fr}}
+    @media(max-width:760px){.nav{align-items:flex-start;flex-direction:column;padding-top:14px;padding-bottom:14px}.nav-links{flex-wrap:wrap;gap:12px}.pillar-body{grid-template-columns:1fr}.section{border-right:0;border-bottom:1px solid var(--line)}.section:last-child{border-bottom:0}}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <strong>Aesop Academy</strong> is a 501(c)(3) nonprofit advancing AI literacy for youth and working professionals.
+    <a href="https://aesopacademy.org">aesopacademy.org</a>
+  </div>
+
+  <header class="nav">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">25</span>
+      <span class="brand-text">25experts<span>by Aesop Academy</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Page navigation">
+      <a href="index.html">Home</a>
+      <a href="subscriber.html">Follow the Experts</a>
+      <a href="experts.html">Expert Program</a>
+      <a href="workshopcalendar.html">Workshops</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="videos.html">Videos</a>
+      <a href="expertprofiles.html">Expert Profiles</a>
+      <a href="forums.html">Forums</a>
+      <a href="expertsrecognition.html">Expert Recognition</a>
+      <a href="profile.html">Profile</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow">Patron recognition system</span>
+        <h1>Four ways patrons earn standing.</h1>
+        <p>The recognition system is simple: patrons earn recognition by consuming expert content, contributing useful reviews and forum posts, showing up consistently, and helping expert content reach new audiences.</p>
+      </div>
+      <aside class="hero-card">
+        <strong>Recognition becomes visible</strong>
+        <span>Points influence leaderboards. Badges appear on patron profiles and forum posts. Strong engagement can unlock higher-tier forums, including Super Patron spaces.</span>
+      </aside>
+    </div>
+  </section>
+
+  <main class="page">
+    <section class="pillars">
+      <article class="pillar">
+        <div class="pillar-top">
+          <div class="pillar-mark" style="background:var(--green)">C</div>
+          <div>
+            <h2>Capability</h2>
+            <p class="pillar-lede">Capability measures how deeply a patron engages with expert content across the platform.</p>
+          </div>
+          <div class="result-box">
+            <b>What it leads to</b>
+            <p>Points, leaderboard placement, profile badges, forum-post badges, and higher-tier forum access.</p>
+          </div>
+        </div>
+        <div class="pillar-body">
+          <div class="section">
+            <h3>How points are earned</h3>
+            <ul class="earn-list">
+              <li><span class="check">+</span><span>Watching expert videos</span></li>
+              <li><span class="check">+</span><span>Attending live workshops</span></li>
+              <li><span class="check">+</span><span>Reading expert blog posts</span></li>
+              <li><span class="check">+</span><span>Following multiple experts inside a domain</span></li>
+            </ul>
+          </div>
+          <div class="section">
+            <h3>Visible recognition</h3>
+            <ul class="outcome-list">
+              <li><span class="check">✓</span><span>Capability leaderboard ranking</span></li>
+              <li><span class="check">✓</span><span>Profile badges such as Video Watcher, Blog Reader, and Workshop Attendee</span></li>
+              <li><span class="check">✓</span><span>Badge color and emphasis on forum posts</span></li>
+              <li><span class="check">✓</span><span>Unlock path toward Super Patron forums</span></li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="pillar">
+        <div class="pillar-top">
+          <div class="pillar-mark" style="background:var(--blue)">R</div>
+          <div>
+            <h2>Contribution</h2>
+            <p class="pillar-lede">Contribution measures how much useful context a patron adds back into the platform.</p>
+          </div>
+          <div class="result-box">
+            <b>What it leads to</b>
+            <p>Contribution badges, visible recognition, stronger forum identity, and higher-tier forum access.</p>
+          </div>
+        </div>
+        <div class="pillar-body">
+          <div class="section">
+            <h3>How points are earned</h3>
+            <ul class="earn-list">
+              <li><span class="check">+</span><span>Posting video reviews</span></li>
+              <li><span class="check">+</span><span>Posting blog reviews</span></li>
+              <li><span class="check">+</span><span>Posting workshop reviews</span></li>
+              <li><span class="check">+</span><span>Making useful forum posts and replies</span></li>
+            </ul>
+          </div>
+          <div class="section">
+            <h3>Visible recognition</h3>
+            <ul class="outcome-list">
+              <li><span class="check">✓</span><span>Reviewer badges on the patron profile</span></li>
+              <li><span class="check">✓</span><span>Forum-post badges with different color and emphasis</span></li>
+              <li><span class="check">✓</span><span>Recognition for useful reviews and discussion posts</span></li>
+              <li><span class="check">✓</span><span>Unlock path toward Super Patron forums</span></li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="pillar">
+        <div class="pillar-top">
+          <div class="pillar-mark" style="background:var(--gold)">S</div>
+          <div>
+            <h2>Consistency</h2>
+            <p class="pillar-lede">Consistency measures whether a patron builds a real rhythm week to week.</p>
+          </div>
+          <div class="result-box">
+            <b>What it leads to</b>
+            <p>Profile badges, forum-post badges, and placement on a consistency leaderboard.</p>
+          </div>
+        </div>
+        <div class="pillar-body">
+          <div class="section">
+            <h3>How points are earned</h3>
+            <ul class="earn-list">
+              <li><span class="check">+</span><span>Returning weekly to watch, read, or attend</span></li>
+              <li><span class="check">+</span><span>Contributing reviews or forum posts week to week</span></li>
+              <li><span class="check">+</span><span>Growing capability over a sustained period</span></li>
+              <li><span class="check">+</span><span>Maintaining a balanced engagement rhythm across content types</span></li>
+            </ul>
+          </div>
+          <div class="section">
+            <h3>Visible recognition</h3>
+            <ul class="outcome-list">
+              <li><span class="check">✓</span><span>Consistency badges on the patron profile</span></li>
+              <li><span class="check">✓</span><span>Streak or rhythm markers on forum posts</span></li>
+              <li><span class="check">✓</span><span>Placement on the consistency leaderboard</span></li>
+              <li><span class="check">✓</span><span>Recognition for sustained engagement, not one-time spikes</span></li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="pillar">
+        <div class="pillar-top">
+          <div class="pillar-mark" style="background:var(--violet)">G</div>
+          <div>
+            <h2>Community growth</h2>
+            <p class="pillar-lede">Community growth measures how patrons help expert content reach people beyond the platform.</p>
+          </div>
+          <div class="result-box">
+            <b>What it leads to</b>
+            <p>A dedicated community-growth leaderboard, profile badges, forum-post badges, and social sharing recognition.</p>
+          </div>
+        </div>
+        <div class="pillar-body">
+          <div class="section">
+            <h3>How points are earned</h3>
+            <ul class="earn-list">
+              <li><span class="check">+</span><span>Sharing expert videos to other social platforms</span></li>
+              <li><span class="check">+</span><span>Sharing expert blog posts</span></li>
+              <li><span class="check">+</span><span>Sharing workshop pages, clips, or reminders</span></li>
+              <li><span class="check">+</span><span>Helping new patrons discover experts and domains</span></li>
+            </ul>
+          </div>
+          <div class="section">
+            <h3>Visible recognition</h3>
+            <ul class="outcome-list">
+              <li><span class="check">✓</span><span>Community-growth leaderboard placement</span></li>
+              <li><span class="check">✓</span><span>Profile badges for sharing and amplification</span></li>
+              <li><span class="check">✓</span><span>Forum-post badges that show growth contribution</span></li>
+              <li><span class="check">✓</span><span>Recognition for helping the platform and experts reach new audiences</span></li>
+            </ul>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="forum">
+      <div>
+        <h2>Higher-tier forums come from capability and contribution.</h2>
+        <p>Super Patron forums should unlock through a combination of content engagement and useful contribution. Patrons should not get higher-tier access just by being loud; they should earn it by watching, reading, attending, reviewing, and posting in ways that help the platform.</p>
+      </div>
+      <ul>
+        <li>Capability unlock: content engagement threshold</li>
+        <li>Contribution unlock: review and forum-post threshold</li>
+        <li>Consistency signal: sustained week-to-week rhythm</li>
+        <li>Growth signal: meaningful social sharing</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <strong>25experts by <a href="https://aesopacademy.org" style="color:var(--green);">Aesop Academy</a></strong>
+    <span>Four-pillar patron recognition system mockup.</span>
+  </footer>
+</body>
+</html>
