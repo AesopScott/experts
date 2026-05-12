@@ -1,0 +1,41 @@
+name: Deploy to Mocahost (Experts)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-mocahost-experts
+  # Keep queued deploys running in order so an in-flight FTP upload is not
+  # cancelled halfway through and left partially deployed.
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: 65.181.111.131
+          username: hivetec1
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 21
+          protocol: ftps
+          local-dir: ./
+          server-dir: /public_html/experts/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.github/**
+            **/.claude/**
+            **/.DS_Store
+            **/README.md
+            cgi-bin/**
+            .htaccess
