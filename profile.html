@@ -53,6 +53,7 @@
     @media(max-width:980px){.hero-inner{grid-template-columns:1fr}.switcher{align-items:flex-start;flex-direction:column}iframe{height:1350px}}
     @media(max-width:760px){.nav{align-items:flex-start;flex-direction:column;padding-top:14px;padding-bottom:14px}.nav-links{flex-wrap:wrap;gap:12px}iframe{height:1600px}}
   </style>
+  <link rel="stylesheet" href="assets/site-nav.css">
 </head>
 <body>
   <div class="topbar">
@@ -60,20 +61,8 @@
     <a href="https://aesopacademy.org">aesopacademy.org</a>
   </div>
 
-  <header class="nav">
-    <a class="brand" href="index.html">
-      <span class="brand-mark">25</span>
-      <span class="brand-text">25experts<span>by Aesop Academy</span></span>
-    </a>
-    <nav class="nav-links" aria-label="Page navigation">
-      <a href="index.html">Home</a>
-      <a href="subscriber.html">Follow the Experts</a>
-      <a href="expertprofiles.html">Expert Profiles</a>
-      <a href="forums.html">Forums</a>
-      <a href="patronrecognition.html">Recognition</a>
-      <a href="leaderboards.html">Leaderboards</a>
-    </nav>
-  </header>
+    <div id="site-nav"></div>
+  <script src="assets/site-nav.js"></script>
 
   <section class="hero">
     <div class="hero-inner">

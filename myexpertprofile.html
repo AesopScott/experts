@@ -71,6 +71,7 @@
     @media(max-width:1000px){.hero-inner,.grid{grid-template-columns:1fr}}
     @media(max-width:760px){.nav{align-items:flex-start;flex-direction:column;padding-top:14px;padding-bottom:14px}.nav-links{flex-wrap:wrap;gap:12px}.two{grid-template-columns:1fr}}
   </style>
+  <link rel="stylesheet" href="assets/site-nav.css">
 </head>
 <body>
   <div class="topbar">
@@ -78,19 +79,8 @@
     <a href="https://aesopacademy.org">aesopacademy.org</a>
   </div>
 
-  <header class="nav">
-    <a class="brand" href="index.html">
-      <span class="brand-mark">25</span>
-      <span class="brand-text">25experts<span>by Aesop Academy</span></span>
-    </a>
-    <nav class="nav-links" aria-label="Page navigation">
-      <a href="profile.html">Profile Hub</a>
-      <a href="patronprofile.html">Patron Profile</a>
-      <a href="expertprofiles.html">Public Expert Profiles</a>
-      <a href="forums.html">Forums</a>
-      <a href="leaderboards.html">Leaderboards</a>
-    </nav>
-  </header>
+    <div id="site-nav"></div>
+  <script src="assets/site-nav.js"></script>
 
   <section class="hero">
     <div class="hero-inner">

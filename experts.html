@@ -497,6 +497,7 @@
     .beyond-tag.live { background: var(--mint); color: var(--green); }
     @media (max-width: 900px) { .beyond-grid { grid-template-columns: repeat(3,1fr); } }
   </style>
+  <link rel="stylesheet" href="assets/site-nav.css">
 </head>
 <body>
 
@@ -506,31 +507,8 @@
   </div>
 
   <!-- NAV -->
-  <header class="nav">
-    <a class="brand" href="index.html">
-      <span class="brand-mark" style="font-size:0.72rem;letter-spacing:-0.03em">25</span>
-      <div class="brand-text">
-        <strong>25experts.com</strong>
-        <span>by Aesop Academy</span>
-      </div>
-    </a>
-    <nav class="nav-links" aria-label="Page navigation">
-      <a href="index.html">Home</a>
-      <a href="join.html">Follow the Experts</a>
-      <a href="workshopcalendar.html">Workshops</a>
-      <a href="blogs.html">Blogs</a>
-      <a href="videos.html">Videos</a>
-      <a href="expertprofiles.html">Expert Profiles</a>
-      <a href="patronrecognition.html">Recognition</a>
-      <a href="expertsrecognition.html">Expert Recognition</a>
-      <a href="leaderboards.html">Leaderboards</a>
-      <a href="forums.html">Forums</a>
-      <a href="profile.html">Profile</a>
-      <a href="#earn">How you earn</a>
-      <a href="#faq">FAQ</a>
-      <a class="btn btn-primary" href="expertapplication.html">Apply as a Founding Expert</a>
-    </nav>
-  </header>
+    <div id="site-nav"></div>
+  <script src="assets/site-nav.js"></script>
 
   <!-- HERO -->
   <section class="hero" aria-label="Hero">
