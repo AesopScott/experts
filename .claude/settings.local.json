@@ -17,7 +17,13 @@
       "Bash(Sort-Object)",
       "Bash(ls C:/Users/scott/Code/)",
       "mcp__Claude_in_Chrome__tabs_context_mcp",
-      "Bash(cp \"C:/Users/scott/Code/Aesop/ai-news/trend-data.json\" \"C:/Users/scott/Code/experts/trend-data.json\")"
+      "Bash(cp \"C:/Users/scott/Code/Aesop/ai-news/trend-data.json\" \"C:/Users/scott/Code/experts/trend-data.json\")",
+      "WebFetch(domain:25experts.com)",
+      "mcp__github__get_file_contents",
+      "Bash(gh run *)",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__Claude_in_Chrome__computer",
+      "mcp__Claude_in_Chrome__javascript_tool"
     ]
   }
 }
