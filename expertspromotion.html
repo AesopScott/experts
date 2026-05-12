@@ -397,6 +397,9 @@
     @media (max-width: 540px) {
       .principle-strip { grid-template-columns: 1fr; }
     }
+    /* ── ACCESSIBILITY ── */
+    :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 3px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
   </style>
   <link rel="stylesheet" href="assets/site-nav.css?v=20260512-nav2">
 </head>
@@ -485,7 +488,7 @@
 
       <div class="criteria-grid">
         <div class="criteria-card primary">
-          <span class="criteria-icon">🎓</span>
+          <span class="criteria-icon" aria-hidden="true">🎓</span>
           <h3>Content quality</h3>
           <p>Reviewed by the editorial team against the platform's quality standard: practical, accurate, original, and genuinely useful for working professionals.</p>
           <ul class="criteria-list">
@@ -600,7 +603,7 @@
           </ul>
         </div>
         <div class="criteria-card fellow-card">
-          <span class="criteria-icon">📡</span>
+          <span class="criteria-icon" aria-hidden="true">📡</span>
           <h3>Vertical authority</h3>
           <p>Expert Fellows are recognized as authoritative voices in their domain — on and off the platform.</p>
           <ul class="criteria-list">

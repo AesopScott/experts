@@ -314,6 +314,12 @@
     @media (max-width: 900px) {
       .nav-links a:not(.btn) { display: none; }
     }
+    /* ── ACCESSIBILITY ── */
+    :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 3px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .field-error { display: none; font-size: 0.75rem; color: var(--error); margin-top: 4px; }
+    .field-error::before { content: "⚠ "; }
+    .field-error.visible { display: block; }
   </style>
   <link rel="stylesheet" href="assets/site-nav.css?v=20260512-nav2">
 </head>
@@ -372,15 +378,17 @@
           <div class="field-grid">
             <div class="field">
               <label for="fname">First name</label>
-              <input type="text" id="fname" name="fname" placeholder="Maya" required>
+              <input type="text" id="fname" name="fname" placeholder="Maya" required autocomplete="given-name">
+              <span class="field-error" id="fname-error">First name is required.</span>
             </div>
             <div class="field">
               <label for="lname">Last name</label>
-              <input type="text" id="lname" name="lname" placeholder="Chen" required>
+              <input type="text" id="lname" name="lname" placeholder="Chen" required autocomplete="family-name">
             </div>
             <div class="field">
               <label for="email">Email address</label>
-              <input type="email" id="email" name="email" placeholder="you@example.com" required>
+              <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
+              <span class="field-error" id="email-error">Email address is required.</span>
             </div>
             <div class="field">
               <label for="location">Where are you based? <span>(optional)</span></label>
@@ -388,7 +396,7 @@
             </div>
             <div class="field field-grid single">
               <label for="website">Website or portfolio <span>(optional)</span></label>
-              <input type="url" id="website" name="website" placeholder="https://yoursite.com">
+              <input type="url" id="website" name="website" placeholder="https://yoursite.com" autocomplete="url">
             </div>
           </div>
         </div>
@@ -442,6 +450,7 @@
             <div class="field">
               <label for="content1">Best example of your work <span>(link)</span></label>
               <input type="url" id="content1" name="content1" placeholder="https://youtube.com/watch?v=..." required>
+              <span class="field-error" id="content1-error">At least one content example is required.</span>
               <span class="field-hint">A video, blog post, course, or talk that best represents your teaching.</span>
             </div>
             <div class="field">
@@ -481,6 +490,7 @@
             <div class="field">
               <label for="why-platform">What do you want to teach, and who is it for?</label>
               <textarea id="why-platform" name="why-platform" placeholder="Describe the specific problems you help people solve and who your ideal learner is..." required></textarea>
+              <span class="field-error" id="why-platform-error">Please tell us what you want to teach.</span>
             </div>
             <div class="field">
               <label for="why-nonprofit">Why does the nonprofit mission matter to you? <span>(optional)</span></label>
@@ -549,18 +559,34 @@
       const wrap = document.getElementById('form-wrap');
       const ty   = document.getElementById('thankyou');
 
+      // Reset previous error state
+      form.querySelectorAll('[aria-invalid]').forEach(el => el.removeAttribute('aria-invalid'));
+      form.querySelectorAll('.field-error.visible').forEach(el => el.classList.remove('visible'));
+      form.querySelectorAll('.agree-item[aria-invalid]').forEach(el => el.removeAttribute('aria-invalid'));
+
       // Basic validation
       const required = form.querySelectorAll('[required]');
       let valid = true;
       required.forEach(el => {
-        if (el.type === 'checkbox' && !el.checked) { valid = false; el.closest('.agree-item').style.outline = '2px solid #c0392b'; }
-        else if (el.type === 'radio') {
+        if (el.type === 'checkbox' && !el.checked) {
+          valid = false;
+          el.setAttribute('aria-invalid', 'true');
+          const item = el.closest('.agree-item');
+          item.style.outline = '2px solid #c0392b';
+          item.style.borderRadius = '4px';
+        } else if (el.type === 'radio') {
           const group = form.querySelectorAll(`[name="${el.name}"]`);
           const checked = [...group].some(r => r.checked);
           if (!checked) { valid = false; }
+        } else if (!el.value.trim()) {
+          valid = false;
+          el.setAttribute('aria-invalid', 'true');
+          el.style.borderColor = '#c0392b';
+          const err = el.parentElement.querySelector('.field-error');
+          if (err) err.classList.add('visible');
+        } else {
+          el.style.borderColor = '';
         }
-        else if (!el.value.trim()) { valid = false; el.style.borderColor = '#c0392b'; }
-        else { el.style.borderColor = ''; }
       });
 
       if (!valid) {
