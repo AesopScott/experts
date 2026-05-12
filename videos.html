@@ -20,7 +20,7 @@
       --marketing: #245a7d;
       --leadership: #7b4b92;
       --design: #bf563f;
-      --shadow: 0 18px 46px rgba(17, 31, 25, 0.12);
+      --shadow: 0 18px 46px rgba(17,31,25,0.12);
     }
 
     * { box-sizing: border-box; }
@@ -35,10 +35,11 @@
 
     a { color: inherit; text-decoration: none; }
 
+    /* ── TOP BAR ── */
     .mission-bar {
       padding: 9px 18px;
       background: var(--green);
-      color: rgba(255, 255, 255, 0.9);
+      color: rgba(255,255,255,0.9);
       text-align: center;
       font-size: 13px;
       font-weight: 650;
@@ -54,494 +55,253 @@
       align-items: center;
       justify-content: space-between;
       gap: 18px;
-      padding: 15px clamp(18px, 5vw, 68px);
-      border-bottom: 1px solid rgba(221, 229, 223, 0.86);
-      background: rgba(251, 250, 246, 0.94);
+      padding: 15px clamp(18px,5vw,68px);
+      border-bottom: 1px solid rgba(221,229,223,0.86);
+      background: rgba(251,250,246,0.94);
       backdrop-filter: blur(16px);
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      font-weight: 900;
-    }
-
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 900; }
     .brand-mark {
-      width: 38px;
-      height: 38px;
-      display: grid;
-      place-items: center;
-      border-radius: 8px;
-      background: var(--green);
-      color: #fff;
-      font-size: 12px;
+      width: 38px; height: 38px;
+      display: grid; place-items: center;
+      border-radius: 8px; background: var(--green); color: #fff; font-size: 12px;
     }
-
     .brand-text span {
-      display: block;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+      display: block; color: var(--muted);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
     }
-
     .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 700;
+      display: flex; align-items: center; gap: 18px;
+      color: var(--muted); font-size: 14px; font-weight: 700;
     }
 
-    .hero {
-      padding: 58px clamp(18px, 5vw, 64px) 34px;
-    }
-
-    .hero-inner {
-      width: min(1320px, 100%);
-      margin: 0 auto;
-    }
-
+    /* ── HERO ── */
+    .hero { padding: 52px clamp(18px,5vw,64px) 32px; }
+    .hero-inner { width: min(1320px,100%); margin: 0 auto; }
     .eyebrow {
-      display: inline-flex;
-      padding: 7px 11px;
-      border-radius: 999px;
-      background: #e5f2e8;
-      color: var(--green);
-      font-size: 13px;
-      font-weight: 850;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
+      display: inline-flex; padding: 7px 11px; border-radius: 999px;
+      background: #e5f2e8; color: var(--green);
+      font-size: 13px; font-weight: 850; letter-spacing: 0.07em; text-transform: uppercase;
     }
-
     h1 {
-      max-width: 860px;
-      margin: 18px 0 12px;
-      font-size: clamp(40px, 6vw, 76px);
-      line-height: 0.96;
-      letter-spacing: 0;
+      max-width: 860px; margin: 16px 0 10px;
+      font-size: clamp(38px,5.5vw,68px); line-height: 0.96;
     }
+    .hero p { max-width: 700px; margin: 0; color: var(--muted); font-size: 17px; }
 
-    .hero p {
-      max-width: 780px;
-      margin: 0;
-      color: var(--muted);
-      font-size: 18px;
-    }
-
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 24px;
-    }
-
+    .domain-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
     .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 11px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: var(--panel);
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 750;
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 7px 11px; border: 1px solid var(--line);
+      border-radius: 999px; background: var(--panel);
+      color: var(--muted); font-size: 13px; font-weight: 750; cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
     }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--green);
+    .pill.active {
+      border-color: var(--domain-color, var(--green));
+      background: var(--domain-bg, #e5f2e8);
+      color: var(--domain-color, var(--green));
+      font-weight: 850;
     }
-    .dot.ai         { background: var(--ai); }
-    .dot.finance    { background: var(--finance); }
-    .dot.marketing  { background: var(--marketing); }
-    .dot.leadership { background: var(--leadership); }
-    .dot.design     { background: var(--design); }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--domain-color, var(--green)); flex-shrink: 0; }
 
+    /* ── FILTER PANEL ── */
     .filter-panel {
       display: grid;
-      grid-template-columns: minmax(220px, 1fr) minmax(220px, 1fr) auto;
-      gap: 12px;
-      align-items: end;
-      width: min(1320px, calc(100% - 36px));
-      margin: 0 auto 24px;
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: var(--panel);
-      box-shadow: var(--shadow);
+      grid-template-columns: minmax(200px,1fr) minmax(200px,1fr) auto;
+      gap: 12px; align-items: end;
+      width: min(1320px,calc(100% - 36px));
+      margin: 0 auto 20px;
+      padding: 16px 18px;
+      border: 1px solid var(--line); border-radius: 10px;
+      background: var(--panel); box-shadow: var(--shadow);
     }
-
-    .field {
-      display: grid;
-      gap: 7px;
-    }
-
+    .field { display: grid; gap: 6px; }
     .field label {
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 850;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      color: var(--muted); font-size: 11px; font-weight: 850;
+      letter-spacing: 0.06em; text-transform: uppercase;
     }
-
     select, button {
-      min-height: 42px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fff;
-      color: var(--ink);
-      font: inherit;
-      font-weight: 750;
+      min-height: 40px; border: 1px solid var(--line); border-radius: 8px;
+      background: #fff; color: var(--ink); font: inherit; font-weight: 750;
     }
-
     select { padding: 0 12px; }
+    button { padding: 0 16px; cursor: pointer; }
+    button.primary { border-color: var(--green); background: var(--green); color: #fff; }
 
-    button {
-      padding: 0 16px;
-      cursor: pointer;
-    }
-
-    button.primary {
-      border-color: var(--green);
-      background: var(--green);
-      color: #fff;
-    }
-
+    /* ── MAIN ── */
     main {
-      width: min(1320px, calc(100% - 36px));
+      width: min(1320px,calc(100% - 36px));
       margin: 0 auto;
       padding-bottom: 64px;
     }
 
     .stats {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 28px;
+      display: grid; grid-template-columns: repeat(4,minmax(0,1fr));
+      gap: 12px; margin-bottom: 28px;
     }
-
     .stat {
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: var(--panel);
-      box-shadow: var(--shadow);
+      padding: 16px 18px;
+      border: 1px solid var(--line); border-radius: 10px;
+      background: var(--panel); box-shadow: var(--shadow);
     }
-
-    .stat strong {
-      display: block;
-      font-size: 28px;
-      line-height: 1;
-    }
-
-    .stat span {
-      display: block;
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 750;
-    }
+    .stat strong { display: block; font-size: 26px; line-height: 1; }
+    .stat span { display: block; margin-top: 5px; color: var(--muted); font-size: 13px; font-weight: 750; }
 
     /* ── MONTH SECTION ── */
-    .month {
-      margin-top: 26px;
+    .month-section {
+      margin-top: 20px;
+      border: 1px solid var(--line); border-radius: 10px;
+      background: var(--panel); box-shadow: var(--shadow);
       overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: var(--panel);
-      box-shadow: var(--shadow);
     }
 
-    .month-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 22px 24px;
-      border-bottom: 1px solid var(--line);
+    .month-toggle {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 20px 24px;
       background: #f5f8f2;
+      border-bottom: 1px solid var(--line);
+      cursor: pointer;
+      user-select: none;
     }
+    .month-toggle:hover { background: #eef3eb; }
 
-    .month-head h2 {
-      margin: 0;
-      font-size: clamp(25px, 3vw, 36px);
-      line-height: 1;
-    }
+    .month-toggle-left { display: flex; flex-direction: column; gap: 3px; }
+    .month-toggle h2 { margin: 0; font-size: clamp(22px,2.8vw,32px); line-height: 1; }
+    .month-toggle p  { margin: 0; color: var(--muted); font-size: 13px; }
 
-    .month-head p {
-      margin: 4px 0 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
+    .month-toggle-right { display: flex; align-items: center; gap: 12px; }
     .month-count {
-      padding: 8px 11px;
-      border-radius: 999px;
-      background: var(--green);
-      color: #fff;
-      font-size: 13px;
-      font-weight: 850;
-      white-space: nowrap;
+      padding: 7px 11px; border-radius: 999px;
+      background: var(--green); color: #fff;
+      font-size: 13px; font-weight: 850; white-space: nowrap;
     }
+    .month-count.is-filtered {
+      background: var(--marketing);
+    }
+    .chevron {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(0,0,0,0.06);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    .month-section[data-open="true"]  .chevron { transform: rotate(0deg); }
+    .month-section[data-open="false"] .chevron { transform: rotate(-90deg); }
+
+    .month-body { display: none; padding: 20px 20px 24px; }
+    .month-section[data-open="true"] .month-body { display: block; }
 
     /* ── VIDEO GRID ── */
     .video-grid {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 1px;
-      background: var(--line);
-    }
-
-    .domain-column {
-      background: #fff;
-    }
-
-    .domain-head {
-      min-height: 78px;
-      padding: 14px;
-      border-bottom: 1px solid var(--line);
-      background: #fbfcf8;
-    }
-
-    .domain-head strong {
-      display: block;
-      font-size: 15px;
-      line-height: 1.1;
-    }
-
-    .domain-head span {
-      display: block;
-      margin-top: 5px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 750;
-    }
-
-    .video-list {
-      display: grid;
-      gap: 0;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 16px;
     }
 
     /* ── VIDEO CARD ── */
     .video-card {
-      display: grid;
-      grid-template-rows: auto 1fr;
-      border-bottom: 1px solid var(--line);
-      background: #fff;
+      display: flex; flex-direction: column;
+      border-radius: 10px; overflow: hidden;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      transition: box-shadow 0.15s, transform 0.15s;
+      cursor: pointer;
     }
-
-    .video-card.ai         { background: #f6faf7; }
-    .video-card.finance    { background: #fcf8ee; }
-    .video-card.marketing  { background: #f2f7fb; }
-    .video-card.leadership { background: #f8f3fa; }
-    .video-card.design     { background: #fcf4f1; }
-
-    .video-card.is-hidden,
-    .domain-column.is-hidden {
-      display: none;
+    .video-card:hover {
+      box-shadow: 0 8px 28px rgba(17,31,25,0.14);
+      transform: translateY(-2px);
     }
+    .video-card.is-hidden { display: none; }
 
     /* Thumbnail */
     .thumb {
       position: relative;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 100%; aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center;
       overflow: hidden;
     }
-
-    .thumb-bg {
-      position: absolute;
-      inset: 0;
-    }
-
-    .thumb-bg.ai         { background: linear-gradient(135deg, #0d3d2e 0%, #1e7a56 100%); }
-    .thumb-bg.finance    { background: linear-gradient(135deg, #5c3d0c 0%, #c48a30 100%); }
-    .thumb-bg.marketing  { background: linear-gradient(135deg, #0f2f4a 0%, #2d6fa8 100%); }
-    .thumb-bg.leadership { background: linear-gradient(135deg, #3e1f54 0%, #9260b8 100%); }
-    .thumb-bg.design     { background: linear-gradient(135deg, #5c1f14 0%, #d4654e 100%); }
+    .thumb-bg { position: absolute; inset: 0; }
+    .thumb-bg.ai         { background: linear-gradient(135deg,#0d3d2e 0%,#1e7a56 100%); }
+    .thumb-bg.finance    { background: linear-gradient(135deg,#5c3d0c 0%,#c48a30 100%); }
+    .thumb-bg.marketing  { background: linear-gradient(135deg,#0f2f4a 0%,#2d6fa8 100%); }
+    .thumb-bg.leadership { background: linear-gradient(135deg,#3e1f54 0%,#9260b8 100%); }
+    .thumb-bg.design     { background: linear-gradient(135deg,#5c1f14 0%,#d4654e 100%); }
 
     .play-btn {
-      position: relative;
-      z-index: 1;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.92);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      color: var(--ink);
-      padding-left: 3px;
+      position: relative; z-index: 1;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,0.9);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: var(--ink); padding-left: 3px;
+      transition: transform 0.15s, background 0.15s;
     }
+    .video-card:hover .play-btn { transform: scale(1.1); background: #fff; }
 
     .duration {
-      position: absolute;
-      z-index: 1;
-      bottom: 6px;
-      right: 6px;
-      padding: 3px 6px;
-      border-radius: 4px;
-      background: rgba(0, 0, 0, 0.72);
-      color: #fff;
-      font-size: 11px;
-      font-weight: 850;
-      letter-spacing: 0.04em;
+      position: absolute; z-index: 1; bottom: 7px; right: 8px;
+      padding: 3px 7px; border-radius: 4px;
+      background: rgba(0,0,0,0.75); color: #fff;
+      font-size: 11px; font-weight: 850; letter-spacing: 0.03em;
     }
 
-    /* Card body */
-    .card-body {
-      padding: 8px 12px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+    /* Card info */
+    .card-info {
+      padding: 12px 13px 13px;
+      display: flex; flex-direction: column; gap: 7px; flex: 1;
     }
-
-    .video-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 850;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      height: 16px;
+    .card-title {
+      margin: 0; font-size: 14px; font-weight: 800; line-height: 1.2;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden; height: calc(14px * 1.2 * 2);
     }
-
-    .video-card h3 {
-      margin: 0;
-      font-size: 14px;
-      line-height: 1.2;
-      height: calc(14px * 1.2 * 2);
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+    .card-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 6px; margin-top: auto;
     }
-
-    .video-card p {
-      margin: 0;
-      color: #41504b;
-      font-size: 12px;
-      line-height: 1.4;
-      height: calc(12px * 1.4 * 2);
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+    .card-expert {
+      font-size: 12px; font-weight: 750; color: var(--muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-
-    .byline {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 750;
-      margin-top: auto;
-      padding-top: 6px;
+    .domain-tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 8px; border-radius: 999px;
+      font-size: 11px; font-weight: 850; letter-spacing: 0.04em;
+      white-space: nowrap; flex-shrink: 0;
     }
+    .domain-tag.ai         { background: #e0f0e8; color: var(--ai); }
+    .domain-tag.finance    { background: #f5ecd6; color: var(--finance); }
+    .domain-tag.marketing  { background: #ddeaf5; color: var(--marketing); }
+    .domain-tag.leadership { background: #ede5f5; color: var(--leadership); }
+    .domain-tag.design     { background: #f5e5e0; color: var(--design); }
 
-    .watch-link {
-      display: inline-flex;
-      align-self: flex-start;
-      padding: 5px 8px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.78);
-      color: #33413d;
-      font-size: 11px;
-      font-weight: 850;
-      white-space: nowrap;
-    }
-
-    .status {
-      display: inline-flex;
-      align-items: center;
-      padding: 3px 7px;
-      border-radius: 999px;
-      font-size: 10px;
-      font-weight: 900;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .watched-status {
-      background: #dfe9e2;
-      color: #2d5b45;
-    }
-
-    .unwatched-status {
-      background: #fff;
-      color: #8b3f31;
-      border: 1px solid rgba(191, 86, 63, 0.28);
-    }
-
-    .archive-note {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-      padding: 18px 24px 24px;
-      background: #fff;
-    }
-
-    .note-card {
-      padding: 13px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .note-card strong {
-      display: block;
-      margin-bottom: 4px;
-      color: var(--ink);
-      font-size: 14px;
-    }
-
+    /* Empty state */
     .empty-state {
-      display: none;
-      margin: 24px 0;
-      padding: 24px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: var(--panel);
-      color: var(--muted);
-      box-shadow: var(--shadow);
+      display: none; padding: 28px; margin-bottom: 20px;
+      border: 1px solid var(--line); border-radius: 10px;
+      background: var(--panel); color: var(--muted); box-shadow: var(--shadow);
     }
-
     .empty-state.is-visible { display: block; }
 
     footer {
       border-top: 1px solid var(--line);
-      padding: 28px clamp(18px, 5vw, 68px);
-      color: var(--muted);
-      font-size: 13px;
-      text-align: center;
+      padding: 28px clamp(18px,5vw,68px);
+      color: var(--muted); font-size: 13px; text-align: center;
     }
 
     @media (max-width: 1100px) {
-      .video-grid { grid-template-columns: 1fr; }
+      .video-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
     }
-
     @media (max-width: 760px) {
       .nav { align-items: flex-start; flex-direction: column; }
       .nav-links { flex-wrap: wrap; }
-      .stats, .filter-panel, .archive-note { grid-template-columns: 1fr; }
-      .month-head { align-items: flex-start; flex-direction: column; }
+      .stats, .filter-panel { grid-template-columns: 1fr; }
+      .video-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .month-toggle { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 480px) {
+      .video-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -566,6 +326,7 @@
       <a href="experts.html">Expert Program</a>
       <a href="workshopcalendar.html">Workshops</a>
       <a href="blogs.html">Blogs</a>
+      <a href="videos.html">Videos</a>
     </nav>
   </header>
 
@@ -573,14 +334,8 @@
     <div class="hero-inner">
       <span class="eyebrow">Video library</span>
       <h1>Every video from every Expert.</h1>
-      <p>A three-month archive of practical tutorials, walkthroughs, and expert sessions from all 25 experts across every domain. Filter by domain or expert to find exactly what you need.</p>
-      <div class="filters" aria-label="Domain filter">
-        <span class="pill"><span class="dot ai"></span>AI &amp; Automation</span>
-        <span class="pill"><span class="dot finance"></span>Finance &amp; Investing</span>
-        <span class="pill"><span class="dot marketing"></span>Marketing, Sales &amp; Growth</span>
-        <span class="pill"><span class="dot leadership"></span>Leadership &amp; Management</span>
-        <span class="pill"><span class="dot design"></span>Design, Creative &amp; Gaming</span>
-      </div>
+      <p>75–125 new videos each month from 25 experts across five domains. Filter by domain or expert to find exactly what you need.</p>
+      <div class="domain-pills" id="domain-pills"></div>
     </div>
   </section>
 
@@ -600,216 +355,368 @@
       </div>
       <button class="primary" id="clear-filters" type="button">Clear filters</button>
     </section>
-    <section class="empty-state" id="empty-state">
-      No videos match this filter combination.
-    </section>
+    <section class="empty-state" id="empty-state">No videos match this filter combination.</section>
     <section class="stats" aria-label="Library summary">
-      <article class="stat"><strong>75</strong><span>videos across three months</span></article>
+      <article class="stat"><strong id="stat-total">300</strong><span>videos in the library</span></article>
       <article class="stat"><strong>25</strong><span>experts represented</span></article>
       <article class="stat"><strong>5</strong><span>professional learning domains</span></article>
-      <article class="stat"><strong>18+ hrs</strong><span>of practical content</span></article>
+      <article class="stat"><strong>4–5</strong><span>new videos per expert per month</span></article>
     </section>
   </main>
 
   <script>
-    const domains = [
-      {
-        key: "ai",
-        name: "AI & Automation",
-        experts: [
-          ["Dr. Maya Chen", "Build an AI Workflow You Can Actually Trust", "A step-by-step walkthrough for assembling automations that hold up in real work."],
-          ["Owen Patel", "The Prompt Library Your Team Will Really Use", "How to structure prompts by role and task so everyone stops reinventing them."],
-          ["Lena Brooks", "Five Agentic Workflows That Save a Real Hour", "Live demos of agent patterns for research, writing, and daily ops."],
-          ["Theo Ramirez", "When Not to Automate: A Manager's Framework", "Where AI hands-off breaks down and what to do instead."],
-          ["Priya Shah", "The Lean AI Stack for 2026", "Tool-by-tool walkthrough of a practical AI setup for small operators."]
-        ]
-      },
-      {
-        key: "finance",
-        name: "Finance & Investing",
-        experts: [
-          ["Marcus Bell", "Reading an AI-Generated Portfolio Summary", "What to trust, what to check, and where models overstate confidence."],
-          ["Anika Rao", "A Calm Framework for Volatile Markets", "Separating signal from narrative and emotional reaction — live example."],
-          ["Jonah Price", "Cash Flow Forecasting with AI Assistance", "Spreadsheet walkthrough for founders and lean finance teams."],
-          ["Elena Foster", "Risk Terms Every New Investor Should Know", "Plain-language definitions that help you ask better questions."],
-          ["Samir Haddad", "The Finance Dashboard That Gets Opened", "Designing visibility for non-finance teams — a live build."]
-        ]
-      },
-      {
-        key: "marketing",
-        name: "Marketing, Sales & Growth",
-        experts: [
-          ["Nora Kim", "AI Content That Still Sounds Like You", "A live editing session: keeping voice and judgment in the loop."],
-          ["Caleb Stone", "The Weekly Lead Research Sprint", "Using AI to prep account intel before outreach — a real workflow."],
-          ["Mei Tan", "Follow-Up Emails That Don't Feel Automated", "Structure with AI, personalize by hand — a walkthrough."],
-          ["Victor Hale", "Customer Interviews at AI Speed", "Turning raw call notes into themes, objections, and copy in minutes."],
-          ["Isabel Cruz", "One Webinar, Twenty Useful Assets", "A repurposing workflow demo — no content sludge."]
-        ]
-      },
-      {
-        key: "leadership",
-        name: "Leadership & Management",
-        experts: [
-          ["Dana Wright", "Talking to Your Team About AI Anxiety", "A leadership script and framing session for real conversations."],
-          ["Hugo Bennett", "AI Policy Without the Legal Fog", "Building a first-draft AI use policy your team will actually read."],
-          ["Farah Nasser", "The Decision Brief Template for AI Work", "Using AI to surface tradeoffs without outsourcing judgment."],
-          ["Miles Ortega", "What an AI-Ready Team Culture Looks Like", "Habits and rituals from teams that made adoption stick."],
-          ["Rachel Moore", "Delegation Maps for Human + AI Teams", "Deciding what belongs to people, tools, and review — live example."]
-        ]
-      },
-      {
-        key: "design",
-        name: "Design, Creative & Gaming",
-        experts: [
-          ["Ari Fox", "Generative Design Without Losing Taste", "Using AI options without letting volume replace creative direction."],
-          ["Jules Rivera", "Rapid Prototyping with AI Image Tools", "From mood to testable concept in a single work session."],
-          ["Mina Park", "Game Concepts from Constraints, Not Prompts", "Why better constraints produce better AI-assisted ideas — live demo."],
-          ["Elliot Gray", "Creative Direction for AI-Assisted Teams", "How to review and redirect work when the first draft came from a model."],
-          ["Sofia Lane", "Building Brand Systems with AI", "Keeping consistency across copy, visuals, and interaction patterns."]
-        ]
-      }
+    const DOMAINS = {
+      ai:         { name: "AI & Automation",          bg: "#e0f0e8", color: "#145f47" },
+      finance:    { name: "Finance & Investing",       bg: "#f5ecd6", color: "#b87a22" },
+      marketing:  { name: "Marketing, Sales & Growth", bg: "#ddeaf5", color: "#245a7d" },
+      leadership: { name: "Leadership & Management",   bg: "#ede5f5", color: "#7b4b92" },
+      design:     { name: "Design, Creative & Gaming", bg: "#f5e5e0", color: "#bf563f" },
+    };
+
+    const EXPERTS = [
+      { name: "Dr. Maya Chen",  domain: "ai", videos: [
+        ["Build an AI Workflow You Can Actually Trust",   "8:34"],
+        ["The Prompt Library Your Team Will Really Use",  "11:07"],
+        ["Five Agentic Workflows That Save a Real Hour",  "14:22"],
+        ["Debugging Your Automation When It Breaks",      "9:18"],
+        ["How to Evaluate Any AI Tool Before You Buy",    "12:45"],
+      ]},
+      { name: "Owen Patel",     domain: "ai", videos: [
+        ["Prompting for Consistency, Not Just Quality",   "10:03"],
+        ["Building a Shared Prompt Library for Your Team","13:29"],
+        ["AI-Assisted Research: A Live Walkthrough",      "16:11"],
+        ["The Prompt Patterns That Always Work",          "8:52"],
+      ]},
+      { name: "Lena Brooks",    domain: "ai", videos: [
+        ["Five Agentic Workflows That Save a Real Hour",  "14:14"],
+        ["Automating Your Weekly Report in 20 Minutes",   "19:38"],
+        ["How I Use AI for Daily Ops Without App Sprawl", "11:55"],
+        ["Agent Patterns for Research and Writing",       "15:02"],
+        ["When Agents Fail: What to Do Next",             "9:40"],
+      ]},
+      { name: "Theo Ramirez",   domain: "ai", videos: [
+        ["When Not to Automate: A Manager's Framework",   "17:21"],
+        ["AI Risk Assessment for Small Teams",            "13:07"],
+        ["The Handoff Problem: AI and Human Judgment",    "10:48"],
+        ["Building Trust in AI-Assisted Decisions",       "14:33"],
+      ]},
+      { name: "Priya Shah",     domain: "ai", videos: [
+        ["The Lean AI Stack for 2026",                    "20:28"],
+        ["Tool Teardown: What's Actually Worth It",       "18:14"],
+        ["AI on a Budget: Free Tiers That Deliver",       "12:39"],
+        ["Stack Review: Three Months of Real Use",        "15:51"],
+        ["How to Audit Your AI Tools Every Quarter",      "9:22"],
+      ]},
+      { name: "Marcus Bell",    domain: "finance", videos: [
+        ["Reading an AI-Generated Portfolio Summary",     "10:11"],
+        ["What AI Gets Wrong About Financial Analysis",   "14:05"],
+        ["Portfolio Review: A Live Walkthrough",          "22:17"],
+        ["How to Verify AI-Generated Financial Data",     "11:43"],
+      ]},
+      { name: "Anika Rao",      domain: "finance", videos: [
+        ["A Calm Framework for Volatile Markets",         "13:18"],
+        ["How to Separate Signal from Narrative",         "9:54"],
+        ["Emotional Investing: Patterns to Avoid",        "16:02"],
+        ["Market Volatility: What the Data Actually Says","18:30"],
+        ["Building a Steady Investment Mindset",          "11:16"],
+      ]},
+      { name: "Jonah Price",    domain: "finance", videos: [
+        ["Cash Flow Forecasting with AI Assistance",      "16:25"],
+        ["The Founder's Finance Dashboard",               "20:44"],
+        ["Modeling Revenue Scenarios in a Spreadsheet",   "24:08"],
+        ["Burn Rate and Runway: A Plain-English Guide",   "13:37"],
+      ]},
+      { name: "Elena Foster",   domain: "finance", videos: [
+        ["Risk Terms Every New Investor Should Know",     "19:32"],
+        ["Understanding Portfolio Risk in Plain English", "15:19"],
+        ["How to Read a Fund Prospectus",                 "17:48"],
+        ["Diversification: What It Actually Means",       "12:06"],
+        ["The Questions to Ask Before Any Investment",    "10:33"],
+      ]},
+      { name: "Samir Haddad",   domain: "finance", videos: [
+        ["The Finance Dashboard That Gets Opened",        "22:39"],
+        ["Financial Visibility for Non-Finance Teams",    "17:02"],
+        ["Designing Reports People Actually Read",        "14:28"],
+        ["KPIs That Actually Drive Decisions",            "19:14"],
+      ]},
+      { name: "Nora Kim",       domain: "marketing", videos: [
+        ["AI Content That Still Sounds Like You",         "15:29"],
+        ["The Brand Voice Checklist for AI Content",      "11:44"],
+        ["Editing AI Copy Without Losing Your Voice",     "13:57"],
+        ["Content Strategy With AI in the Loop",          "18:23"],
+        ["How to Build a Content System That Scales",     "20:11"],
+      ]},
+      { name: "Caleb Stone",    domain: "marketing", videos: [
+        ["The Weekly Lead Research Sprint",               "12:08"],
+        ["Account Research in 15 Minutes with AI",        "14:36"],
+        ["Outreach That Doesn't Feel Like a Template",    "10:52"],
+        ["Building a Prospecting Workflow That Works",    "17:19"],
+      ]},
+      { name: "Mei Tan",        domain: "marketing", videos: [
+        ["Follow-Up Emails That Don't Feel Automated",    "18:36"],
+        ["Sequencing Outreach: Timing and Context",       "13:22"],
+        ["AI-Assisted Sales Writing: A Live Demo",        "16:48"],
+        ["The Follow-Up Framework for Warm Leads",        "11:35"],
+        ["Writing for Conversion Without Sounding Salesy","14:04"],
+      ]},
+      { name: "Victor Hale",    domain: "marketing", videos: [
+        ["Customer Interviews at AI Speed",               "21:43"],
+        ["Turning Call Notes into Useful Insight",        "15:07"],
+        ["Jobs-to-Be-Done Research with AI Tools",        "19:55"],
+        ["How to Synthesize 50 Interviews in an Afternoon","23:30"],
+      ]},
+      { name: "Isabel Cruz",    domain: "marketing", videos: [
+        ["One Webinar, Twenty Useful Assets",             "17:58"],
+        ["Repurposing Without the Content Sludge",        "12:41"],
+        ["Building a Content Calendar from One Source",   "15:26"],
+        ["The Asset Map: Planning Content at Scale",      "20:03"],
+        ["Repurposing for Each Platform Without Rewriting","13:49"],
+      ]},
+      { name: "Dana Wright",    domain: "leadership", videos: [
+        ["Talking to Your Team About AI Anxiety",         "23:54"],
+        ["A Leadership Script for AI Conversations",      "18:12"],
+        ["Building Psychological Safety Around New Tools","15:39"],
+        ["How to Run an AI Town Hall",                    "20:27"],
+      ]},
+      { name: "Hugo Bennett",   domain: "leadership", videos: [
+        ["AI Policy Without the Legal Fog",               "17:40"],
+        ["Writing an AI Use Policy Your Team Will Read",  "14:55"],
+        ["Risk and Responsibility: The Manager's View",   "19:08"],
+        ["How to Update Policy as AI Evolves",            "12:33"],
+        ["AI Governance for Small Organizations",         "16:21"],
+      ]},
+      { name: "Farah Nasser",   domain: "leadership", videos: [
+        ["The Decision Brief Template for AI Work",       "20:47"],
+        ["Using AI to Clarify Tradeoffs, Not Replace Them","16:03"],
+        ["Structured Thinking with AI Assistance",        "13:44"],
+        ["The One-Page Decision Framework",               "11:18"],
+      ]},
+      { name: "Miles Ortega",   domain: "leadership", videos: [
+        ["What an AI-Ready Team Culture Looks Like",      "25:05"],
+        ["Habits That Make AI Adoption Stick",            "19:33"],
+        ["The Rituals High-Performing Teams Use",         "16:47"],
+        ["Managing the Gap Between Early and Late Adopters","14:09"],
+        ["Building Norms Around AI Use at Work",          "22:14"],
+      ]},
+      { name: "Rachel Moore",   domain: "leadership", videos: [
+        ["Delegation Maps for Human and AI Teams",        "18:22"],
+        ["What Belongs to People, Tools, and Review",     "15:56"],
+        ["Redesigning Workflows for a Mixed Team",        "21:11"],
+        ["Accountability in AI-Assisted Work",            "13:28"],
+      ]},
+      { name: "Ari Fox",        domain: "design", videos: [
+        ["Generative Design Without Losing Taste",        "19:51"],
+        ["How to Direct AI Options Instead of Accept Them","14:37"],
+        ["Taste as a Creative Skill in the AI Era",       "17:02"],
+        ["Design Critique When the First Draft Is AI",    "12:19"],
+        ["Maintaining a Creative Point of View with AI",  "15:44"],
+      ]},
+      { name: "Jules Rivera",   domain: "design", videos: [
+        ["Rapid Prototyping with AI Image Tools",         "22:58"],
+        ["From Mood to Concept in One Session",           "18:15"],
+        ["The Prototype Workflow I Use Every Week",       "20:33"],
+        ["Testing Visual Concepts Before You Build",      "13:51"],
+      ]},
+      { name: "Mina Park",      domain: "design", videos: [
+        ["Game Concepts from Constraints, Not Prompts",   "25:12"],
+        ["Why Better Constraints Make Better Games",      "19:44"],
+        ["AI-Assisted Level Design: A Live Demo",         "28:07"],
+        ["The Constraints Toolkit for Game Creators",     "16:30"],
+        ["Playtesting Ideas Before You Build Them",       "14:03"],
+      ]},
+      { name: "Elliot Gray",    domain: "design", videos: [
+        ["Creative Direction for AI-Assisted Teams",      "24:19"],
+        ["How to Review Work When AI Made the Draft",     "17:38"],
+        ["Setting Creative Standards Across a Mixed Team","20:54"],
+        ["The Creative Brief That Works for AI Projects", "13:07"],
+      ]},
+      { name: "Sofia Lane",     domain: "design", videos: [
+        ["Building Brand Systems with AI",                "21:36"],
+        ["Consistency Across Copy, Visuals, and UX",      "16:12"],
+        ["The Brand Audit: Finding What Needs Fixing",    "18:49"],
+        ["AI for Brand Governance at Scale",              "14:25"],
+        ["How to Build a Living Brand Guide",             "19:03"],
+      ]},
     ];
 
-    const months = [
-      {
-        name: "May 2026",
-        description: "The latest drop: live workshop follow-ups, current AI shifts, and practical operating sessions.",
-        durationOffset: 0
-      },
-      {
-        name: "April 2026",
-        description: "Foundational tutorials, current tools, and domain-specific walkthroughs from launch month.",
-        durationOffset: 1
-      },
-      {
-        name: "March 2026",
-        description: "Early expert sessions and deep-dives from across the full network.",
-        durationOffset: 2
-      }
+    const MONTHS = [
+      { name: "May 2026",   desc: "The latest drop — live sessions, current shifts, and practical operating videos.", open: true },
+      { name: "April 2026", desc: "Foundational tutorials and domain-specific walkthroughs from launch month.", open: false },
+      { name: "March 2026", desc: "Earlier expert sessions and deep-dives from across the full network.", open: false },
     ];
 
-    function videoDate(monthIndex, expertIndex, domainIndex) {
-      const month = monthIndex === 0 ? "May" : monthIndex === 1 ? "Apr" : "Mar";
-      const day = 2 + expertIndex * 5 + domainIndex;
-      return `${month} ${day}`;
+    function seededPick(arr, monthIndex, expertIndex) {
+      const seed = (monthIndex * 7 + expertIndex * 3) % arr.length;
+      const count = 4 + (seed % 2);
+      const start = (monthIndex + expertIndex) % arr.length;
+      const result = [];
+      for (let i = 0; i < count && i < arr.length; i++) {
+        result.push(arr[(start + i) % arr.length]);
+      }
+      return result;
     }
 
-    function duration(monthIndex, expertIndex, domainIndex, offset) {
-      const mins = 8 + ((expertIndex * 3 + domainIndex * 2 + offset) % 22);
-      const secs = (expertIndex * 7 + domainIndex * 11) % 60;
-      return `${mins}:${String(secs).padStart(2, "0")}`;
+    function dayStr(monthIndex, expertIndex, videoIndex) {
+      const days = ["May","Apr","Mar"];
+      const day = 1 + ((expertIndex * 4 + videoIndex * 3) % 28);
+      return `${days[monthIndex]} ${day}`;
     }
 
-    function renderMonth(month, monthIndex) {
-      const section = document.createElement("section");
-      section.className = "month";
-      section.innerHTML = `
-        <div class="month-head">
-          <div>
-            <h2>${month.name}</h2>
-            <p>${month.description}</p>
+    function renderCard(expert, video, monthIndex, expertIndex, videoIndex) {
+      const [title, dur] = video;
+      const domain = expert.domain;
+      const domainName = DOMAINS[domain].name.split(",")[0].split(" & ")[0];
+      return `
+        <article class="video-card" data-domain="${domain}" data-expert="${expert.name}">
+          <div class="thumb">
+            <div class="thumb-bg ${domain}"></div>
+            <div class="play-btn">▶</div>
+            <span class="duration">${dur}</span>
           </div>
-          <span class="month-count">25 videos</span>
-        </div>
-        <div class="video-grid">
-          ${domains.map((domain, domainIndex) => `
-            <div class="domain-column">
-              <div class="domain-head">
-                <strong>${domain.name}</strong>
-                <span>5 expert videos</span>
-              </div>
-              <div class="video-list">
-                ${domain.experts.map(([expert, title, dek], expertIndex) => {
-                  const dur = duration(monthIndex, expertIndex, domainIndex, month.durationOffset);
-                  const isWatched = ((monthIndex + domainIndex + expertIndex) % 3) !== 0;
-                  return `
-                    <article class="video-card ${domain.key}" data-domain="${domain.key}" data-expert="${expert}">
-                      <div class="thumb">
-                        <div class="thumb-bg ${domain.key}"></div>
-                        <div class="play-btn">▶</div>
-                        <span class="duration">${dur}</span>
-                      </div>
-                      <div class="card-body">
-                        <div class="video-meta">
-                          <span>${videoDate(monthIndex, expertIndex, domainIndex)}</span>
-                        </div>
-                        <h3>${title}</h3>
-                        <p>${dek}</p>
-                        <div class="byline">
-                          <span>${expert}</span>
-                          <span class="status ${isWatched ? "watched-status" : "unwatched-status"}">${isWatched ? "Watched" : "New"}</span>
-                          <a class="watch-link" href="#">Watch →</a>
-                        </div>
-                      </div>
-                    </article>
-                  `;
-                }).join("")}
-              </div>
+          <div class="card-info">
+            <h3 class="card-title">${title}</h3>
+            <div class="card-meta">
+              <span class="card-expert">${expert.name}</span>
+              <span class="domain-tag ${domain}">${domainName}</span>
             </div>
-          `).join("")}
+          </div>
+        </article>`;
+    }
+
+    function buildMonth(month, monthIndex) {
+      const section = document.createElement("section");
+      section.className = "month-section";
+      section.dataset.open = month.open ? "true" : "false";
+      section.dataset.month = monthIndex;
+
+      let allCards = [];
+      EXPERTS.forEach((expert, expertIndex) => {
+        const videos = seededPick(expert.videos, monthIndex, expertIndex);
+        videos.forEach((video, videoIndex) => {
+          allCards.push(renderCard(expert, video, monthIndex, expertIndex, videoIndex));
+        });
+      });
+
+      const totalCount = allCards.length;
+
+      section.innerHTML = `
+        <div class="month-toggle" role="button" aria-expanded="${month.open}">
+          <div class="month-toggle-left">
+            <h2>${month.name}</h2>
+            <p>${month.desc}</p>
+          </div>
+          <div class="month-toggle-right">
+            <span class="month-count" data-total="${totalCount}">${totalCount} videos</span>
+            <span class="chevron">▼</span>
+          </div>
         </div>
-        <div class="archive-note">
-          <div class="note-card"><strong>Social search ready</strong>Videos are indexed around the question they answer, not just the topic.</div>
-          <div class="note-card"><strong>Quality ranked</strong>Every video is graded so the best content rises to the top of each domain.</div>
-          <div class="note-card"><strong>Expert attribution</strong>Every video ties back to a verified expert profile and patron pathway.</div>
-        </div>
-      `;
+        <div class="month-body">
+          <div class="video-grid">${allCards.join("")}</div>
+        </div>`;
+
+      section.querySelector(".month-toggle").addEventListener("click", () => {
+        const isOpen = section.dataset.open === "true";
+        section.dataset.open = isOpen ? "false" : "true";
+      });
+
       return section;
     }
 
+    // Build DOM
     const root = document.getElementById("video-root");
-    months.forEach((month, index) => root.appendChild(renderMonth(month, index)));
+    const emptyState = document.getElementById("empty-state");
+    MONTHS.forEach((month, i) => root.appendChild(buildMonth(month, i)));
 
+    // Domain filter pills in hero
+    const pillContainer = document.getElementById("domain-pills");
+    Object.entries(DOMAINS).forEach(([key, d]) => {
+      const pill = document.createElement("span");
+      pill.className = "pill";
+      pill.style.setProperty("--domain-color", d.color);
+      pill.style.setProperty("--domain-bg", d.bg);
+      pill.innerHTML = `<span class="dot"></span>${d.name}`;
+      pill.addEventListener("click", () => {
+        const domainSelect = document.getElementById("domain-filter");
+        if (domainSelect.value === key) {
+          domainSelect.value = "all";
+        } else {
+          domainSelect.value = key;
+        }
+        domainSelect.dispatchEvent(new Event("change"));
+        document.getElementById("video-root").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+      pillContainer.appendChild(pill);
+    });
+
+    // Populate selects
     const domainFilter = document.getElementById("domain-filter");
     const expertFilter = document.getElementById("expert-filter");
-    const clearFilters = document.getElementById("clear-filters");
-    const emptyState = document.getElementById("empty-state");
 
-    domains.forEach(domain => {
-      const option = document.createElement("option");
-      option.value = domain.key;
-      option.textContent = domain.name;
-      domainFilter.appendChild(option);
+    Object.entries(DOMAINS).forEach(([key, d]) => {
+      const opt = document.createElement("option");
+      opt.value = key; opt.textContent = d.name;
+      domainFilter.appendChild(opt);
     });
 
     function populateExperts() {
-      const selectedDomain = domainFilter.value;
+      const sel = domainFilter.value;
       expertFilter.innerHTML = '<option value="all">All experts</option>';
-      domains
-        .filter(d => selectedDomain === "all" || d.key === selectedDomain)
-        .forEach(d => {
-          d.experts.forEach(([expert]) => {
-            const option = document.createElement("option");
-            option.value = expert;
-            option.textContent = expert;
-            expertFilter.appendChild(option);
-          });
+      EXPERTS
+        .filter(e => sel === "all" || e.domain === sel)
+        .forEach(e => {
+          const opt = document.createElement("option");
+          opt.value = e.name; opt.textContent = e.name;
+          expertFilter.appendChild(opt);
         });
     }
 
+    function syncPills() {
+      const sel = domainFilter.value;
+      pillContainer.querySelectorAll(".pill").forEach((pill, i) => {
+        const key = Object.keys(DOMAINS)[i];
+        pill.classList.toggle("active", key === sel);
+      });
+    }
+
     function applyFilters() {
-      const selectedDomain = domainFilter.value;
-      const selectedExpert = expertFilter.value;
-      let visibleCount = 0;
+      const selDomain = domainFilter.value;
+      const selExpert = expertFilter.value;
+      let visibleTotal = 0;
 
-      document.querySelectorAll(".video-card").forEach(card => {
-        const domainMatch = selectedDomain === "all" || card.dataset.domain === selectedDomain;
-        const expertMatch = selectedExpert === "all" || card.dataset.expert === selectedExpert;
-        const visible = domainMatch && expertMatch;
-        card.classList.toggle("is-hidden", !visible);
-        if (visible) visibleCount++;
+      document.querySelectorAll(".month-section").forEach(section => {
+        let sectionVisible = 0;
+        section.querySelectorAll(".video-card").forEach(card => {
+          const domainMatch = selDomain === "all" || card.dataset.domain === selDomain;
+          const expertMatch = selExpert === "all" || card.dataset.expert === selExpert;
+          const show = domainMatch && expertMatch;
+          card.classList.toggle("is-hidden", !show);
+          if (show) { sectionVisible++; visibleTotal++; }
+        });
+
+        const countEl = section.querySelector(".month-count");
+        const total = parseInt(countEl.dataset.total);
+        const isFiltered = selDomain !== "all" || selExpert !== "all";
+        countEl.textContent = isFiltered ? `${sectionVisible} of ${total} videos` : `${total} videos`;
+        countEl.classList.toggle("is-filtered", isFiltered && sectionVisible < total);
+
+        // Auto-open sections that have results when filtering
+        if (isFiltered && sectionVisible > 0 && section.dataset.open === "false") {
+          section.dataset.open = "true";
+        }
       });
 
-      document.querySelectorAll(".domain-column").forEach(col => {
-        col.classList.toggle("is-hidden", !col.querySelector(".video-card:not(.is-hidden)"));
-      });
+      document.getElementById("stat-total").textContent =
+        (selDomain !== "all" || selExpert !== "all")
+          ? visibleTotal
+          : document.querySelectorAll(".video-card").length;
 
-      emptyState.classList.toggle("is-visible", visibleCount === 0);
+      emptyState.classList.toggle("is-visible", visibleTotal === 0);
+      syncPills();
     }
 
     domainFilter.addEventListener("change", () => { populateExperts(); applyFilters(); });
     expertFilter.addEventListener("change", applyFilters);
-    clearFilters.addEventListener("click", () => {
+    document.getElementById("clear-filters").addEventListener("click", () => {
       domainFilter.value = "all";
       populateExperts();
       expertFilter.value = "all";
