@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaderboards | 25experts by Aesop Academy</title>
+  <style>
+    :root {
+      --ink:#101615;
+      --muted:#66716e;
+      --paper:#fbfaf6;
+      --panel:#ffffff;
+      --line:#dfe5df;
+      --green:#145f47;
+      --mint:#e9f5ef;
+      --gold:#b87a22;
+      --gold2:#fff1d8;
+      --blue:#295b8f;
+      --blue2:#e6f0fb;
+      --violet:#6a529c;
+      --violet2:#eee9fa;
+      --rose:#b94d5f;
+      --rose2:#fde9ed;
+      --shadow:0 20px 60px rgba(16,22,21,.12);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--paper);color:var(--ink);letter-spacing:0}
+    a{color:inherit;text-decoration:none}
+    button,select{font:inherit}
+    .topbar{padding:9px clamp(18px,5vw,68px);background:var(--green);color:#fff;font-size:13px;text-align:center}
+    .topbar a{text-decoration:underline;font-weight:800}
+    .nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:28px;padding:0 clamp(18px,5vw,68px);background:rgba(251,250,246,.94);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;backdrop-filter:blur(16px)}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:900}
+    .brand-mark{width:38px;height:38px;display:grid;place-items:center;border-radius:8px;background:var(--green);color:#fff;font-size:12px}
+    .brand-text{display:grid;line-height:1.08}
+    .brand-text span{color:var(--muted);font-size:12px;font-weight:800;margin-top:3px}
+    .nav-links{display:flex;align-items:center;gap:16px;color:var(--muted);font-size:14px;font-weight:750}
+    .nav-links a:hover{color:var(--ink)}
+    .hero{color:#fff;padding:clamp(42px,7vw,84px) clamp(18px,5vw,68px) 44px;background:linear-gradient(115deg,rgba(20,95,71,.97),rgba(18,39,50,.94)),radial-gradient(circle at 84% 20%,rgba(255,255,255,.2),transparent 28%)}
+    .hero-inner{max-width:1220px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:clamp(28px,5vw,64px);align-items:end}
+    .eyebrow{display:inline-flex;margin-bottom:18px;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+    h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(42px,7vw,76px);line-height:.96;letter-spacing:0}
+    .hero p{max-width:760px;margin:20px 0 0;color:rgba(255,255,255,.82);font-size:clamp(16px,2vw,20px);line-height:1.55}
+    .hero-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:8px;padding:22px;display:grid;gap:12px}
+    .hero-card strong{font-size:30px}.hero-card span{color:rgba(255,255,255,.78);line-height:1.45;font-size:14px}
+    .page{max-width:1420px;margin:0 auto;padding:28px clamp(18px,5vw,68px) 72px;display:grid;gap:22px}
+    .toolbar{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;display:grid;grid-template-columns:1fr auto;gap:14px;box-shadow:0 12px 36px rgba(16,22,21,.05)}
+    .board-tabs{display:grid;gap:10px}
+    .tab-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .tab-label{min-width:112px;color:var(--ink);font-size:13px;font-weight:950;text-transform:uppercase;letter-spacing:.06em}
+    .tabs{display:flex;flex-wrap:wrap;gap:8px}
+    .tab{min-height:40px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--muted);font-weight:900;padding:0 14px;cursor:pointer}
+    .tab.active{background:var(--green);border-color:var(--green);color:#fff}
+    .filters{display:flex;flex-wrap:wrap;gap:10px}
+    select{min-height:40px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);padding:0 12px;font-weight:750}
+    .board-layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);gap:22px;align-items:start}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:var(--shadow)}
+    .panel-head{padding:20px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .panel-head h2{margin:0;font-size:26px}.panel-head p{margin:5px 0 0;color:var(--muted);line-height:1.45;font-size:14px}
+    .board-list{padding:16px;display:grid;gap:10px}
+    .row{display:grid;grid-template-columns:58px 1fr auto;gap:14px;align-items:center;border:1px solid var(--line);border-radius:8px;background:#fff;padding:14px}
+    .rank{width:44px;height:44px;display:grid;place-items:center;border-radius:50%;background:var(--mint);color:var(--green);font-weight:950}
+    .rank.top{background:var(--gold2);color:var(--gold)}
+    .person{display:grid;gap:6px}
+    .person strong{font-size:17px}.person span{color:var(--muted);font-size:13px;line-height:1.35}
+    .badges{display:flex;flex-wrap:wrap;gap:7px;margin-top:3px}
+    .tag{display:inline-flex;align-items:center;min-height:26px;border-radius:999px;padding:0 8px;font-size:11px;font-weight:900}
+    .green{background:var(--mint);color:var(--green)}.blue{background:var(--blue2);color:var(--blue)}.gold{background:var(--gold2);color:var(--gold)}.violet{background:var(--violet2);color:var(--violet)}.rose{background:var(--rose2);color:var(--rose)}
+    .score{text-align:right;font-weight:950;color:var(--green);font-size:22px;white-space:nowrap}
+    .score small{display:block;color:var(--muted);font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.05em;margin-top:3px}
+    .explain{padding:18px;display:grid;gap:14px}
+    .explain-card{border:1px solid var(--line);border-radius:8px;background:#fff;padding:16px}
+    .explain-card b{display:inline-flex;margin-bottom:10px;padding:6px 9px;border-radius:999px;background:var(--mint);color:var(--green);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+    .explain-card h3{margin:0 0 8px;font-size:20px}.explain-card p{margin:0;color:var(--muted);line-height:1.48;font-size:14px}
+    .principle{border:1px solid rgba(184,122,34,.24);background:var(--gold2);border-radius:8px;padding:20px;color:#67450f;display:grid;gap:8px}
+    .principle h2{margin:0;font-size:24px}.principle p{margin:0;line-height:1.52}
+    footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:26px clamp(18px,5vw,68px);color:var(--muted);border-top:1px solid var(--line);font-size:13px}
+    @media(max-width:1120px){.hero-inner,.board-layout,.toolbar{grid-template-columns:1fr}}
+    @media(max-width:760px){.nav{align-items:flex-start;flex-direction:column;padding-top:14px;padding-bottom:14px}.nav-links{flex-wrap:wrap;gap:12px}.row{grid-template-columns:1fr}.score{text-align:left}}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <strong>Aesop Academy</strong> is a 501(c)(3) nonprofit advancing AI literacy for youth and working professionals.
+    <a href="https://aesopacademy.org">aesopacademy.org</a>
+  </div>
+
+  <header class="nav">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">25</span>
+      <span class="brand-text">25experts<span>by Aesop Academy</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Page navigation">
+      <a href="index.html">Home</a>
+      <a href="subscriber.html">Follow the Experts</a>
+      <a href="expertprofiles.html">Expert Profiles</a>
+      <a href="forums.html">Forums</a>
+      <a href="patronrecognition.html">Patron Recognition</a>
+      <a href="expertsrecognition.html">Expert Recognition</a>
+      <a href="profile.html">Profile</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow">Leaderboards mockup</span>
+        <h1>Recognition made visible.</h1>
+        <p>Leaderboards show who is building capability, contributing useful signal, showing up consistently, growing the community, and creating expert content patrons value.</p>
+      </div>
+      <aside class="hero-card">
+        <strong>Separate boards, separate ethics</strong>
+        <span>Patron boards reward engagement and contribution. Expert boards weight quality evaluations first, subscribed patrons second, and use marketing exposure as the reward.</span>
+      </aside>
+    </div>
+  </section>
+
+  <main class="page">
+    <section class="toolbar" aria-label="Leaderboard controls">
+      <div class="board-tabs">
+        <div class="tab-row">
+          <span class="tab-label">Patron Boards</span>
+          <div class="tabs">
+            <button class="tab active" data-board="patronCapability">Capability</button>
+            <button class="tab" data-board="patronContribution">Contribution</button>
+            <button class="tab" data-board="patronConsistency">Consistency</button>
+            <button class="tab" data-board="patronGrowth">Community Growth</button>
+          </div>
+        </div>
+        <div class="tab-row">
+          <span class="tab-label">Expert Boards</span>
+          <div class="tabs">
+            <button class="tab" data-board="expertQuality">Expert Quality</button>
+            <button class="tab" data-board="expertPatrons">Subscribed Patrons</button>
+          </div>
+        </div>
+      </div>
+      <div class="filters">
+        <select aria-label="Domain filter">
+          <option>All domains</option>
+          <option>AI & Automation</option>
+          <option>Finance & Investing</option>
+          <option>Marketing, Sales & Growth</option>
+          <option>Career & Productivity</option>
+          <option>Education & Community</option>
+        </select>
+        <select aria-label="Time period">
+          <option>This week</option>
+          <option>This month</option>
+          <option>All time</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="board-layout">
+      <article class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 id="boardTitle">Patron Capability Leaderboard</h2>
+            <p id="boardSubtitle">Videos watched, blogs read, workshops attended, and experts followed.</p>
+          </div>
+        </div>
+        <div class="board-list" id="boardList"></div>
+      </article>
+
+      <aside class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>How this board works</h2>
+            <p id="boardSummary">Capability shows how deeply patrons engage with expert content.</p>
+          </div>
+        </div>
+        <div class="explain" id="explain"></div>
+      </aside>
+    </section>
+
+    <section class="principle">
+      <h2>Leaderboard rule</h2>
+      <p>Leaderboards should create recognition without turning the platform into an attention contest. Low-effort activity, duplicate shares, repeated views, and shallow comments should be capped. Top tiers and disputed rankings should be auditable.</p>
+    </section>
+  </main>
+
+  <footer>
+    <strong>25experts by <a href="https://aesopacademy.org" style="color:var(--green);">Aesop Academy</a></strong>
+    <span>Patron and expert leaderboard mockup.</span>
+  </footer>
+
+  <script>
+    const boards = {
+      patronCapability: {
+        title: "Patron Capability Leaderboard",
+        subtitle: "Videos watched, blogs read, workshops attended, and experts followed.",
+        summary: "Capability shows how deeply patrons engage with expert content.",
+        explain: [
+          ["Earned by", "Watching videos, attending workshops, reading blogs, and following experts inside a domain."],
+          ["Rewards", "Leaderboard placement, profile badges, forum-post badges, and Super Patron forum eligibility."],
+          ["Guardrail", "Repeated views and passive activity are capped so capability reflects real engagement."]
+        ],
+        rows: [
+          ["Ari Thomas", "42 videos · 26 blogs · 6 workshops", ["Capability 94", "Video Watcher", "Workshop Attendee"], 4920],
+          ["Nadia Cole", "38 videos · 22 blogs · 8 workshops", ["Capability 91", "Blog Reader"], 4680],
+          ["Marcus Bell", "34 videos · 28 blogs · 5 workshops", ["Capability 88"], 4510],
+          ["Priya N.", "31 videos · 20 blogs · 7 workshops", ["Capability 85"], 4320],
+          ["Elena R.", "29 videos · 18 blogs · 6 workshops", ["Capability 82"], 4155]
+        ]
+      },
+      patronContribution: {
+        title: "Patron Contribution Leaderboard",
+        subtitle: "Video reviews, blog reviews, workshop reviews, and useful forum posts.",
+        summary: "Contribution recognizes patrons who add useful signal back into the platform.",
+        explain: [
+          ["Earned by", "Posting reviews and forum replies that help other patrons choose what to watch, read, or attend."],
+          ["Rewards", "Reviewer badges, forum-post color/emphasis, recognition, and Super Patron forum eligibility."],
+          ["Guardrail", "Short, duplicate, or low-effort reviews receive little or no credit."]
+        ],
+        rows: [
+          ["Mina Torres", "14 useful reviews · 21 forum posts", ["Reviewer", "Forum Contributor"], 3860],
+          ["Ari Thomas", "12 useful reviews · 18 forum posts", ["Video Reviewer", "Useful Post"], 3710],
+          ["Sam Walker", "10 useful reviews · 16 forum posts", ["Blog Reviewer"], 3480],
+          ["Rachel Kim", "9 useful reviews · 17 forum posts", ["Workshop Reviewer"], 3310],
+          ["Theo Grant", "8 useful reviews · 15 forum posts", ["Contributor"], 3095]
+        ]
+      },
+      patronConsistency: {
+        title: "Consistency Leaderboard",
+        subtitle: "Week-to-week rhythm across watching, reading, attending, reviewing, and posting.",
+        summary: "Consistency rewards patrons who keep showing up instead of spiking once.",
+        explain: [
+          ["Earned by", "Sustained weekly rhythm across multiple patron behaviors."],
+          ["Rewards", "Profile badges, forum rhythm markers, and consistency leaderboard placement."],
+          ["Guardrail", "One-day bursts cannot outrank steady week-to-week rhythm."]
+        ],
+        rows: [
+          ["Priya N.", "9-week rhythm · 4 content types", ["Weekly Rhythm", "Consistent"], 2740],
+          ["Ari Thomas", "8-week rhythm · 5 content types", ["14-day rhythm"], 2620],
+          ["Ben Carter", "7-week rhythm · 4 content types", ["Workshop Regular"], 2485],
+          ["Sofia James", "6-week rhythm · 4 content types", ["Steady Patron"], 2310],
+          ["Owen Patel", "6-week rhythm · 3 content types", ["Consistent"], 2200]
+        ]
+      },
+      patronGrowth: {
+        title: "Community Growth Leaderboard",
+        subtitle: "Sharing expert videos, blogs, workshops, and profiles to social platforms.",
+        summary: "Community growth recognizes patrons who help experts and the platform reach new audiences.",
+        explain: [
+          ["Earned by", "Verified shares of expert content, workshop pages, blog posts, videos, and expert profiles."],
+          ["Rewards", "Growth badges, profile recognition, forum-post markers, and community-growth leaderboard placement."],
+          ["Guardrail", "Duplicate shares and spammy posting are capped or removed."]
+        ],
+        rows: [
+          ["Dante Moore", "34 verified shares · 9 profile visits driven", ["Expert Amplifier"], 3190],
+          ["Elena R.", "29 verified shares · 7 profile visits driven", ["Growth badge"], 2950],
+          ["Ari Thomas", "14 verified shares · 6 profile visits driven", ["Community Growth"], 2530],
+          ["Hannah Blake", "18 verified shares · 4 profile visits driven", ["Workshop Promoter"], 2380],
+          ["Noah Chen", "16 verified shares · 3 profile visits driven", ["Content Sharer"], 2210]
+        ]
+      },
+      expertQuality: {
+        title: "Expert Quality Leaderboard",
+        subtitle: "Quality evaluations of videos, blogs, and workshops are weighted first.",
+        summary: "Expert recognition starts with content quality, not raw volume.",
+        explain: [
+          ["Earned by", "AI-assisted and human-reviewed quality evaluations, patron reviews, clarity, usefulness, and freshness."],
+          ["Rewards", "Expert profile emphasis, quality badges, featured placement, and marketing exposure to potential patrons."],
+          ["Guardrail", "Raw content quantity cannot outrank stronger quality evaluations."]
+        ],
+        rows: [
+          ["Maya Lin", "Top quality: workflow automation content", ["Top Rated", "Quality 98"], 98],
+          ["Samira Khan", "Top quality: accessible AI literacy", ["Quality 96"], 96],
+          ["Leah Morgan", "Top quality: growth systems", ["Quality 95"], 95],
+          ["Owen Patel", "Top quality: executive workflows", ["Quality 94"], 94],
+          ["Julian Park", "Top quality: AI finance research", ["Quality 92"], 92]
+        ]
+      },
+      expertPatrons: {
+        title: "Subscribed Patrons Leaderboard",
+        subtitle: "Paid patrons subscribed, retained, and engaged with each expert.",
+        summary: "Subscribed patron count is the second major expert recognition signal.",
+        explain: [
+          ["Earned by", "Paid patrons subscribed to the expert, free-to-paid conversion, retention, and healthy engagement."],
+          ["Rewards", "Patron Favorite badges, discovery emphasis, and marketing-dollar allocation signals."],
+          ["Guardrail", "Patron count matters, but quality evaluations remain the primary recognition signal."]
+        ],
+        rows: [
+          ["Leah Morgan", "1,482 paid patrons · 91% retention", ["Patron Favorite"], 1482],
+          ["Maya Lin", "1,390 paid patrons · 94% retention", ["Retention Leader"], 1390],
+          ["Julian Park", "1,214 paid patrons · 89% retention", ["Growth"], 1214],
+          ["Samira Khan", "1,106 paid patrons · 93% retention", ["Community Favorite"], 1106],
+          ["Owen Patel", "986 paid patrons · 90% retention", ["Patron Favorite"], 986]
+        ]
+      }
+    };
+
+    function renderBoard(key) {
+      const board = boards[key];
+      document.getElementById("boardTitle").textContent = board.title;
+      document.getElementById("boardSubtitle").textContent = board.subtitle;
+      document.getElementById("boardSummary").textContent = board.summary;
+      document.getElementById("boardList").innerHTML = board.rows.map((row, index) => `
+        <div class="row">
+          <div class="rank ${index < 3 ? "top" : ""}">${index + 1}</div>
+          <div class="person">
+            <strong>${row[0]}</strong>
+            <span>${row[1]}</span>
+            <div class="badges">${row[2].map((tag, tagIndex) => `<span class="tag ${["green","blue","gold","violet","rose"][tagIndex % 5]}">${tag}</span>`).join("")}</div>
+          </div>
+          <div class="score">${row[3].toLocaleString()}<small>${key.startsWith("expertQuality") ? "quality" : "points"}</small></div>
+        </div>
+      `).join("");
+      document.getElementById("explain").innerHTML = board.explain.map(item => `
+        <article class="explain-card">
+          <b>${item[0]}</b>
+          <h3>${item[1].split(".")[0]}</h3>
+          <p>${item[1]}</p>
+        </article>
+      `).join("");
+    }
+
+    document.querySelectorAll(".tab").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(tab => tab.classList.toggle("active", tab === button));
+        renderBoard(button.dataset.board);
+      });
+    });
+    renderBoard("patronCapability");
+  </script>
+</body>
+</html>
