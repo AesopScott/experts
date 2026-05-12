@@ -54,6 +54,17 @@
     return `<a href="${href}"${active}>${text}</a>`;
   }
 
+  function trailMarkup(position) {
+    return `
+      <svg class="site-nav-trail site-nav-trail-${position}" viewBox="0 0 240 18" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path class="trail-glow" d="M4 9 C42 4, 72 14, 112 9 S188 4, 236 9"></path>
+        <path class="trail-thread" d="M4 9 C42 4, 72 14, 112 9 S188 4, 236 9"></path>
+        <path class="trail-core" d="M4 9 C42 4, 72 14, 112 9 S188 4, 236 9"></path>
+        <circle class="trail-spark" cx="120" cy="9" r="2.6"></circle>
+      </svg>
+    `;
+  }
+
   const navMarkup = `
     <header class="nav">
       <a class="brand" href="index.html">
@@ -65,7 +76,9 @@
           <div class="site-nav-group ${group.className}">
             <div class="site-nav-label">${group.label}</div>
             <div class="site-nav-items">
+              ${trailMarkup("top")}
               ${group.links.map(linkMarkup).join("")}
+              ${trailMarkup("bottom")}
             </div>
           </div>
         `).join("")}

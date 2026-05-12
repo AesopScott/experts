@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <title>Admin | 25experts</title>
   <meta name="description" content="Administrative planning mockup for 25experts operations.">
-  <meta name="page-version" content="v2026.05.12.1">
+  <meta name="page-version" content="v2026.05.12.2">
   <meta name="page-updated" content="2026-05-12">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/admin.html">
@@ -88,7 +88,7 @@
 
     a { color: inherit; text-decoration: none; }
 
-    /* â”€â”€ GATE â”€â”€ */
+    /* ── GATE ── */
     #gate {
       position: fixed; inset: 0;
       background: var(--dark);
@@ -139,7 +139,7 @@
       min-height: 18px;
     }
 
-    /* â”€â”€ LAYOUT â”€â”€ */
+    /* ── LAYOUT ── */
     #app { display: none; min-height: 100vh; }
 
     .sidebar {
@@ -214,7 +214,7 @@
       padding: 4px 10px; border-radius: 20px; text-transform: uppercase;
     }
 
-    /* â”€â”€ SECTION WRAPPERS â”€â”€ */
+    /* ── SECTION WRAPPERS ── */
     .section { margin-bottom: 36px; }
 
     .section-header {
@@ -230,7 +230,7 @@
       font-size: 0.75rem; color: var(--muted);
     }
 
-    /* â”€â”€ STAT CARDS â”€â”€ */
+    /* ── STAT CARDS ── */
     .stat-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
@@ -265,7 +265,7 @@
     .stat-card.navy  .value { color: var(--fellow); }
     .stat-card.red   .value { color: var(--red); }
 
-    /* â”€â”€ TABLES â”€â”€ */
+    /* ── TABLES ── */
     .table-wrap {
       background: var(--panel);
       border: 1px solid var(--line);
@@ -364,7 +364,7 @@
 
     .name-cell { display: flex; align-items: center; gap: 10px; }
 
-    /* â”€â”€ PILL TABS â”€â”€ */
+    /* ── PILL TABS ── */
     .pill-tabs {
       display: flex; gap: 4px; margin-bottom: 14px;
     }
@@ -380,7 +380,7 @@
       background: var(--green); color: #fff; border-color: var(--green);
     }
 
-    /* â”€â”€ NOTICE STRIP â”€â”€ */
+    /* ── NOTICE STRIP ── */
     .notice {
       background: var(--gold3);
       border: 1px solid #e8c278;
@@ -396,7 +396,7 @@
 </head>
 <body>
 
-<!-- â”€â”€ GATE â”€â”€ -->
+<!-- ── GATE ── -->
 <div id="gate">
   <div class="gate-box">
     <div class="logo">25<sup>experts</sup></div>
@@ -407,7 +407,7 @@
   </div>
 </div>
 
-<!-- â”€â”€ APP â”€â”€ -->
+<!-- ── APP ── -->
 <div id="app">
   <aside class="sidebar">
     <div class="sidebar-logo">
@@ -415,27 +415,27 @@
       <small>Admin Console</small>
     </div>
     <nav>
-      <a href="#overview"     class="active"><span class="icon">â—ˆ</span> Overview</a>
-      <a href="#experts"      ><span class="icon">â˜…</span> Expert Roster</a>
-      <a href="#applications" ><span class="icon">âœ‰</span> Applications</a>
-      <a href="#spots"        ><span class="icon">â—‰</span> Founding Spots</a>
-      <a href="experts.html"  ><span class="icon">â†—</span> Expert Program</a>
-      <a href="join.html"     ><span class="icon">â†—</span> Join Page</a>
+      <a href="#overview"     class="active"><span class="icon">◈</span> Overview</a>
+      <a href="#experts"      ><span class="icon">★</span> Expert Roster</a>
+      <a href="#applications" ><span class="icon">✉</span> Applications</a>
+      <a href="#spots"        ><span class="icon">◉</span> Founding Spots</a>
+      <a href="experts.html"  ><span class="icon">↗</span> Expert Program</a>
+      <a href="join.html"     ><span class="icon">↗</span> Join Page</a>
     </nav>
-    <div class="sidebar-footer">Aesop Academy Â· 501(c)(3)</div>
+    <div class="sidebar-footer">Aesop Academy · 501(c)(3)</div>
   </aside>
 
   <main class="main">
     <div class="topbar">
       <h1>Platform Overview</h1>
-      <span class="wip-badge">Interface mockup â€” no live data</span>
+      <span class="wip-badge">Interface mockup — no live data</span>
     </div>
 
     <div class="notice">
       <strong>Wiring note:</strong> All data below is static mockup. Connect to backend (Stripe, database, email) when platform launches.
     </div>
 
-    <!-- â”€â”€ STATS â”€â”€ -->
+    <!-- ── STATS ── -->
     <div class="section" id="overview">
       <div class="section-header">
         <h2>Platform Stats</h2>
@@ -464,7 +464,7 @@
         </div>
         <div class="stat-card green">
           <div class="label">Total Patrons</div>
-          <div class="value">â€”</div>
+          <div class="value">—</div>
           <div class="sub">Stripe not connected</div>
         </div>
         <div class="stat-card">
@@ -479,13 +479,13 @@
         </div>
         <div class="stat-card">
           <div class="label">MRR (est.)</div>
-          <div class="value">â€”</div>
+          <div class="value">—</div>
           <div class="sub">Stripe not connected</div>
         </div>
       </div>
     </div>
 
-    <!-- â”€â”€ EXPERT ROSTER â”€â”€ -->
+    <!-- ── EXPERT ROSTER ── -->
     <div class="section" id="experts">
       <div class="section-header">
         <h2>Expert Roster</h2>
@@ -509,7 +509,7 @@
       </div>
     </div>
 
-    <!-- â”€â”€ APPLICATIONS â”€â”€ -->
+    <!-- ── APPLICATIONS ── -->
     <div class="section" id="applications">
       <div class="section-header">
         <h2>Applications</h2>
@@ -540,11 +540,11 @@
       </div>
     </div>
 
-    <!-- â”€â”€ FOUNDING SPOTS â”€â”€ -->
+    <!-- ── FOUNDING SPOTS ── -->
     <div class="section" id="spots">
       <div class="section-header">
         <h2>Founding Patron Spots</h2>
-        <span class="hint">25 spots per expert Â· mirrors join page modal</span>
+        <span class="hint">25 spots per expert · mirrors join page modal</span>
       </div>
       <div class="table-wrap">
         <table>
@@ -567,7 +567,7 @@
 </div>
 
 <script>
-  /* â”€â”€ GATE â”€â”€ */
+  /* ── GATE ── */
   const PASS = 'aesop2026';
 
   function unlock() {
@@ -580,7 +580,7 @@
     }
   }
 
-  /* â”€â”€ DATA â”€â”€ */
+  /* ── DATA ── */
   const DOMAIN_COLORS = {
     ai:         '#145f47',
     finance:    '#b87a22',
@@ -618,17 +618,17 @@
   ];
 
   const APPLICATIONS = [
-    { name:'Jordan Blake',    domain:'ai',         audience:'1kâ€“5k',   patreon:'Yes (180 patrons)', date:'May 10 2026', status:'pending'  },
-    { name:'Amara Diallo',    domain:'finance',    audience:'5kâ€“10k',  patreon:'No',                 date:'May 9 2026',  status:'pending'  },
-    { name:'Ethan Cho',       domain:'marketing',  audience:'500â€“1k',  patreon:'Yes (45 patrons)',   date:'May 8 2026',  status:'pending'  },
+    { name:'Jordan Blake',    domain:'ai',         audience:'1k–5k',   patreon:'Yes (180 patrons)', date:'May 10 2026', status:'pending'  },
+    { name:'Amara Diallo',    domain:'finance',    audience:'5k–10k',  patreon:'No',                 date:'May 9 2026',  status:'pending'  },
+    { name:'Ethan Cho',       domain:'marketing',  audience:'500–1k',  patreon:'Yes (45 patrons)',   date:'May 8 2026',  status:'pending'  },
     { name:'Layla Mansour',   domain:'ai',         audience:'10k+',    patreon:'No',                 date:'May 7 2026',  status:'pending'  },
-    { name:'Sam Okonkwo',     domain:'leadership', audience:'1kâ€“5k',   patreon:'Yes (90 patrons)',   date:'May 5 2026',  status:'review'   },
-    { name:'Tara Finch',      domain:'design',     audience:'5kâ€“10k',  patreon:'No',                 date:'May 3 2026',  status:'review'   },
-    { name:'Rhys Morgan',     domain:'ai',         audience:'1kâ€“5k',   patreon:'Yes (220 patrons)',  date:'Apr 28 2026', status:'approved' },
-    { name:'Priti Shah',      domain:'finance',    audience:'500â€“1k',  patreon:'No',                 date:'Apr 22 2026', status:'approved' },
+    { name:'Sam Okonkwo',     domain:'leadership', audience:'1k–5k',   patreon:'Yes (90 patrons)',   date:'May 5 2026',  status:'review'   },
+    { name:'Tara Finch',      domain:'design',     audience:'5k–10k',  patreon:'No',                 date:'May 3 2026',  status:'review'   },
+    { name:'Rhys Morgan',     domain:'ai',         audience:'1k–5k',   patreon:'Yes (220 patrons)',  date:'Apr 28 2026', status:'approved' },
+    { name:'Priti Shah',      domain:'finance',    audience:'500–1k',  patreon:'No',                 date:'Apr 22 2026', status:'approved' },
   ];
 
-  /* â”€â”€ RENDER HELPERS â”€â”€ */
+  /* ── RENDER HELPERS ── */
   function initials(name) {
     return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
   }
@@ -650,7 +650,7 @@
     return '<span style="color:#145f47">Open</span>';
   }
 
-  /* â”€â”€ BUILD ROSTER â”€â”€ */
+  /* ── BUILD ROSTER ── */
   const rosterBody = document.getElementById('roster-body');
   EXPERTS.forEach(e => {
     const color = DOMAIN_COLORS[e.domain] || '#555';
@@ -681,7 +681,7 @@
       </tr>`;
   });
 
-  /* â”€â”€ BUILD APPLICATIONS â”€â”€ */
+  /* ── BUILD APPLICATIONS ── */
   function renderApps(filter) {
     const body = document.getElementById('apps-body');
     const list = filter === 'all' ? APPLICATIONS : APPLICATIONS.filter(a => a.status === filter);
@@ -718,7 +718,7 @@
     renderApps(filter);
   }
 
-  /* â”€â”€ BUILD SPOTS TABLE â”€â”€ */
+  /* ── BUILD SPOTS TABLE ── */
   const spotsBody = document.getElementById('spots-body');
   EXPERTS.forEach(e => {
     const color = DOMAIN_COLORS[e.domain] || '#555';
