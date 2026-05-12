@@ -66,7 +66,7 @@
   position: relative;
   display: grid;
   grid-template-columns: repeat(2, minmax(56px, 1fr));
-  grid-template-rows: repeat(2, 16px);
+  grid-template-rows: repeat(2, 21px);
   gap: 4px;
   align-content: center;
   align-items: center;
@@ -75,8 +75,8 @@
 }
 
 .nav .site-nav-group a {
-  min-height: 17px;
-  height: 16px;
+  min-height: 22px;
+  height: 21px;
   position: relative;
   z-index: 1;
   align-self: center;
@@ -87,7 +87,7 @@
   border-radius: 7px;
   background: #fff;
   color: #15211e;
-  font-size: 10.5px;
+  font-size: 13.7px;
   font-weight: 850;
   line-height: 1.05;
   text-align: center;
