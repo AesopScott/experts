@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>25experts — Creator Advancement</title>
+  <style>
+    :root {
+      --ink:    #101615;
+      --muted:  #66716e;
+      --paper:  #fbfaf6;
+      --panel:  #ffffff;
+      --line:   #dfe5df;
+      --green:  #145f47;
+      --green2: #1a7a5e;
+      --green3: #e5f2e8;
+      --gold:   #b87a22;
+      --gold3:  #fdf3e3;
+      --dark:   #0f1716;
+      --shadow: 0 18px 46px rgba(17,31,25,0.12);
+      --shadow-sm: 0 4px 16px rgba(17,31,25,0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .mission-bar {
+      padding: 9px 18px;
+      background: var(--green);
+      color: rgba(255,255,255,0.9);
+      text-align: center;
+      font-size: 13px;
+      font-weight: 650;
+    }
+    .mission-bar strong { color: #fff; }
+    .mission-bar a { color: #fff; text-decoration: underline; margin-left: 6px; }
+
+    .nav {
+      position: sticky; top: 0; z-index: 20;
+      display: flex; align-items: center; justify-content: space-between; gap: 18px;
+      padding: 15px clamp(18px,5vw,68px);
+      border-bottom: 1px solid rgba(221,229,223,0.86);
+      background: rgba(251,250,246,0.94);
+      backdrop-filter: blur(16px);
+    }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 900; }
+    .brand-mark {
+      width: 38px; height: 38px; display: grid; place-items: center;
+      border-radius: 8px; background: var(--green); color: #fff; font-size: 12px;
+    }
+    .brand-text span {
+      display: block; color: var(--muted);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 18px;
+      color: var(--muted); font-size: 14px; font-weight: 700;
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 42px; padding: 0 20px; border-radius: 8px;
+      font-weight: 800; font-size: 14px; cursor: pointer;
+      transition: opacity 0.15s, transform 0.15s; white-space: nowrap;
+      border: none;
+    }
+    .btn:hover { opacity: 0.87; transform: translateY(-1px); }
+    .btn-green   { background: var(--green); color: #fff; }
+    .btn-gold    { background: var(--gold); color: #fff; }
+    .btn-outline { background: transparent; color: var(--green); border: 1.5px solid var(--green); }
+    .btn-lg      { min-height: 52px; padding: 0 32px; font-size: 16px; border-radius: 10px; }
+
+    /* ── LAYOUT ── */
+    .section { padding: 72px clamp(18px,5vw,68px); }
+    .section-alt { background: var(--panel); }
+    .inner { width: min(1080px,100%); margin: 0 auto; }
+    .inner-narrow { width: min(780px,100%); margin: 0 auto; }
+
+    .overline {
+      display: block; margin-bottom: 10px;
+      font-size: 11px; font-weight: 850; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--green);
+    }
+    .overline.gold { color: var(--gold); }
+    h1, h2, h3 { line-height: 1; letter-spacing: -0.02em; margin: 0; }
+    h1 { font-size: clamp(38px,6vw,68px); margin-bottom: 20px; }
+    h2 { font-size: clamp(28px,4vw,46px); margin-bottom: 14px; }
+    h3 { font-size: 20px; margin-bottom: 8px; }
+    p  { color: var(--muted); line-height: 1.6; margin: 0; }
+
+    .eyebrow {
+      display: inline-flex; padding: 7px 14px; border-radius: 999px;
+      background: var(--green3); color: var(--green);
+      font-size: 13px; font-weight: 850; letter-spacing: 0.07em; text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    /* ── HERO ── */
+    .hero { padding: 72px clamp(18px,5vw,68px) 56px; }
+    .hero-inner { width: min(860px,100%); margin: 0 auto; text-align: center; }
+    .hero p { font-size: clamp(16px,2vw,20px); max-width: 660px; margin: 0 auto 36px; }
+
+    /* ── TIER LADDER ── */
+    .ladder {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      margin-top: 56px;
+    }
+    .ladder-step {
+      padding: 32px 28px;
+      border-right: 1px solid var(--line);
+      background: var(--panel);
+      position: relative;
+    }
+    .ladder-step:last-child { border-right: none; }
+    .ladder-step.is-expert { background: var(--green3); }
+    .ladder-step.is-founding { background: var(--dark); color: #fff; }
+    .ladder-step.is-founding p { color: rgba(255,255,255,0.65); }
+    .ladder-step.is-founding h3 { color: #5ddfb0; }
+    .ladder-step.is-founding .tier-badge { background: rgba(255,255,255,0.12); color: #fff; }
+
+    .tier-badge {
+      display: inline-flex; padding: 5px 10px; border-radius: 999px;
+      background: var(--green3); color: var(--green);
+      font-size: 11px; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .tier-badge.gold { background: var(--gold3); color: var(--gold); }
+
+    .tier-share {
+      margin-top: 16px;
+      font-size: 28px; font-weight: 900; color: var(--green);
+    }
+    .ladder-step.is-founding .tier-share { color: #5ddfb0; }
+    .tier-share span { font-size: 14px; font-weight: 600; color: var(--muted); }
+    .ladder-step.is-founding .tier-share span { color: rgba(255,255,255,0.5); }
+
+    .tier-desc { margin-top: 10px; font-size: 14px; }
+
+    .arrow-connector {
+      position: absolute; right: -18px; top: 50%;
+      transform: translateY(-50%);
+      width: 36px; height: 36px;
+      background: var(--green); color: #fff;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      font-size: 16px; font-weight: 900;
+      z-index: 2;
+      box-shadow: 0 2px 8px rgba(20,95,71,0.3);
+    }
+
+    /* ── CRITERIA SECTION ── */
+    .criteria-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .criteria-card {
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel);
+      box-shadow: var(--shadow-sm);
+    }
+    .criteria-card.primary {
+      border-color: var(--green);
+      border-width: 2px;
+    }
+    .criteria-card.gold-card {
+      border-color: var(--gold);
+      border-width: 2px;
+      background: var(--gold3);
+    }
+    .criteria-icon {
+      font-size: 28px; margin-bottom: 12px; display: block;
+    }
+    .criteria-card h3 { font-size: 17px; margin-bottom: 6px; }
+    .criteria-list {
+      list-style: none; padding: 0; margin: 16px 0 0;
+      display: grid; gap: 10px;
+    }
+    .criteria-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px; color: var(--muted); line-height: 1.45;
+    }
+    .criteria-list li::before {
+      content: "✓";
+      flex-shrink: 0;
+      width: 18px; height: 18px;
+      background: var(--green3);
+      color: var(--green);
+      border-radius: 50%;
+      font-size: 10px; font-weight: 900;
+      display: grid; place-items: center;
+      margin-top: 1px;
+    }
+    .gold-card .criteria-list li::before {
+      background: var(--gold3);
+      color: var(--gold);
+      border: 1px solid var(--gold);
+    }
+
+    /* ── PATRONAGE METER ── */
+    .patron-thresholds {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 48px;
+    }
+    .threshold-card {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel);
+      text-align: center;
+    }
+    .threshold-card.active {
+      border-color: var(--green);
+      border-width: 2px;
+      background: var(--green3);
+    }
+    .threshold-card.gold-thresh {
+      border-color: var(--gold);
+      border-width: 2px;
+      background: var(--gold3);
+    }
+    .threshold-num {
+      font-size: 42px; font-weight: 900;
+      line-height: 1; color: var(--green);
+      margin-bottom: 4px;
+    }
+    .threshold-card.gold-thresh .threshold-num { color: var(--gold); }
+    .threshold-label { font-size: 13px; font-weight: 800; margin-bottom: 8px; }
+    .threshold-sub   { font-size: 13px; color: var(--muted); line-height: 1.4; }
+
+    /* ── PRINCIPLE STRIP ── */
+    .principle-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 48px;
+    }
+    .principle {
+      padding: 24px 20px;
+      background: var(--panel);
+      font-size: 14px;
+    }
+    .principle strong { display: block; margin-bottom: 6px; font-size: 15px; }
+
+    /* ── GATE CHECKLIST ── */
+    .gate-box {
+      margin-top: 40px;
+      border: 2px solid var(--green);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .gate-head {
+      padding: 16px 24px;
+      background: var(--green);
+      color: #fff;
+      font-size: 15px; font-weight: 800;
+    }
+    .gate-body {
+      padding: 24px;
+      background: var(--green3);
+      display: grid; gap: 10px;
+    }
+    .gate-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 14px; line-height: 1.45;
+    }
+    .gate-check {
+      flex-shrink: 0;
+      width: 20px; height: 20px;
+      background: var(--green); color: #fff;
+      border-radius: 50%; font-size: 10px; font-weight: 900;
+      display: grid; place-items: center; margin-top: 1px;
+    }
+
+    .gate-box.gold-gate { border-color: var(--gold); }
+    .gate-box.gold-gate .gate-head { background: var(--gold); }
+    .gate-box.gold-gate .gate-body { background: var(--gold3); }
+    .gate-box.gold-gate .gate-check { background: var(--gold); }
+
+    /* ── SOUL BOX ── */
+    .soul-box {
+      margin-top: 40px;
+      padding: 32px;
+      border-left: 5px solid var(--green);
+      border-radius: 0 12px 12px 0;
+      background: var(--green3);
+    }
+    .soul-box p { color: var(--ink); font-size: 16px; line-height: 1.6; }
+    .soul-box cite { display: block; margin-top: 12px; font-size: 13px; color: var(--muted); font-style: normal; }
+
+    /* ── CTA BAND ── */
+    .cta-band {
+      padding: 64px clamp(18px,5vw,68px);
+      background: var(--dark);
+      text-align: center;
+      color: #fff;
+    }
+    .cta-band h2 { color: #5ddfb0; margin-bottom: 12px; }
+    .cta-band p  { color: rgba(255,255,255,0.65); font-size: 17px; max-width: 540px; margin: 0 auto 32px; }
+    .cta-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 28px clamp(18px,5vw,68px);
+      color: var(--muted); font-size: 13px; text-align: center;
+    }
+
+    @media (max-width: 860px) {
+      .ladder              { grid-template-columns: 1fr; }
+      .ladder-step         { border-right: none; border-bottom: 1px solid var(--line); }
+      .ladder-step:last-child { border-bottom: none; }
+      .arrow-connector     { display: none; }
+      .criteria-grid       { grid-template-columns: 1fr; }
+      .patron-thresholds   { grid-template-columns: 1fr; }
+      .principle-strip     { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 540px) {
+      .principle-strip { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="mission-bar">
+    <strong>Aesop Academy</strong> is a 501(c)(3) nonprofit advancing AI literacy for youth and working professionals.
+    <a href="https://aesopacademy.org">aesopacademy.org</a>
+  </div>
+
+  <header class="nav">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">25</span>
+      <span class="brand-text">
+        25experts
+        <span>by Aesop Academy</span>
+      </span>
+    </a>
+    <nav class="nav-links" aria-label="Page navigation">
+      <a href="index.html">Home</a>
+      <a href="join.html">Follow the Experts</a>
+      <a href="experts.html">Expert Program</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="videos.html">Videos</a>
+      <a href="expertprofiles.html">Profiles</a>
+      <a href="forums.html">Forums</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">Creator advancement</div>
+      <h1>Earn your place.<br>Build your community.</h1>
+      <p>Advancement at 25experts is earned through two things: the quality of what you teach and the loyalty of the patrons who trust you. No follower counts. No paid placements. Just proof you're making people better at their work.</p>
+    </div>
+  </section>
+
+  <!-- TIER LADDER -->
+  <section class="section section-alt">
+    <div class="inner">
+      <span class="overline">The three tiers</span>
+      <h2>Where you start. Where you can go.</h2>
+      <p>Every creator enters as a Contributor. Advancement is earned — not granted — and each tier unlocks better economics and deeper platform privileges.</p>
+
+      <div class="ladder">
+        <div class="ladder-step">
+          <div class="arrow-connector">→</div>
+          <span class="tier-badge">Entry</span>
+          <h3>Contributor</h3>
+          <div class="tier-share">50–70%<span> revenue share</span></div>
+          <p class="tier-desc">Publish content, build your patron base, and demonstrate the quality and consistency that earns Expert status.</p>
+        </div>
+        <div class="ladder-step is-expert">
+          <div class="arrow-connector">→</div>
+          <span class="tier-badge">Earned</span>
+          <h3>Expert</h3>
+          <div class="tier-share">60–70%<span> revenue share</span></div>
+          <p class="tier-desc">Editorial-reviewed, patron-backed creators who have demonstrated sustained quality and real learner outcomes.</p>
+        </div>
+        <div class="ladder-step is-founding">
+          <span class="tier-badge">5 per vertical · permanent</span>
+          <h3>Founding Expert</h3>
+          <div class="tier-share">70%<span style="color:rgba(255,255,255,0.4)"> locked for life</span></div>
+          <p class="tier-desc">The five creators who define the standard for a vertical. Permanent status, governance seat on the Standards Board, and the highest revenue share — locked forever.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTRIBUTOR → EXPERT -->
+  <section class="section" id="contributor-to-expert">
+    <div class="inner">
+      <span class="overline">Path one</span>
+      <h2>Contributor → Expert</h2>
+      <p>To advance from Contributor to Expert, you need to prove two things consistently: that your content makes people better at their work, and that patrons trust you enough to pay for more of it.</p>
+
+      <div class="patron-thresholds">
+        <div class="threshold-card">
+          <div class="threshold-num">25</div>
+          <div class="threshold-label">Minimum patrons</div>
+          <div class="threshold-sub">The floor. You need at least 25 paying patrons before an Expert review can begin.</div>
+        </div>
+        <div class="threshold-card active">
+          <div class="threshold-num">60%</div>
+          <div class="threshold-label">Patron retention</div>
+          <div class="threshold-sub">More than half your patrons renew month-over-month. Retention proves real value, not just a good first impression.</div>
+        </div>
+        <div class="threshold-card">
+          <div class="threshold-num">3 mo</div>
+          <div class="threshold-label">Sustained consistency</div>
+          <div class="threshold-sub">Three consecutive months of qualifying content across at least two formats — video, blog, workshop, or forum.</div>
+        </div>
+      </div>
+
+      <div class="criteria-grid">
+        <div class="criteria-card primary">
+          <span class="criteria-icon">🎓</span>
+          <h3>Content quality</h3>
+          <p>Reviewed by the editorial team against the platform's quality standard: practical, accurate, original, and genuinely useful for working professionals.</p>
+          <ul class="criteria-list">
+            <li>At least 6 qualifying original videos</li>
+            <li>At least 3 published blog posts</li>
+            <li>At least 1 live workshop delivered on the platform</li>
+            <li>Completion rates above platform average</li>
+            <li>Content saved or shared by patrons</li>
+          </ul>
+        </div>
+        <div class="criteria-card primary">
+          <span class="criteria-icon">💬</span>
+          <h3>Community contribution</h3>
+          <p>Experts are teachers — and the best teachers show up in the room. Forum presence and learner support are part of the Expert standard.</p>
+          <ul class="criteria-list">
+            <li>At least 10 forum replies marked helpful or accepted</li>
+            <li>At least 2 expert-highlighted answers in patron rooms</li>
+            <li>No active moderation flags or trust violations</li>
+            <li>Patron questions answered within 5 business days on average</li>
+          </ul>
+        </div>
+        <div class="criteria-card">
+          <span class="criteria-icon">📈</span>
+          <h3>Learner outcomes</h3>
+          <p>The platform tracks real learning signals — not just views.</p>
+          <ul class="criteria-list">
+            <li>Workshop challenge completion rate ≥ 25%</li>
+            <li>Learning path completions attributed to your content</li>
+            <li>Patron testimonials or outcome reports (optional but weighted)</li>
+            <li>Content cited in forum answers by other members</li>
+          </ul>
+        </div>
+        <div class="criteria-card">
+          <span class="criteria-icon">🔄</span>
+          <h3>Patron loyalty</h3>
+          <p>Patrons vote every month when they renew. Retention is the most honest signal of whether your content is worth paying for.</p>
+          <ul class="criteria-list">
+            <li>60%+ patron renewal rate over trailing 3 months</li>
+            <li>No pattern of refund requests or disputes</li>
+            <li>Patron growth trend (flat or rising)</li>
+            <li>Live event attendance above 30% of patrons</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="gate-box">
+        <div class="gate-head">Expert review gate — all of the following must be true</div>
+        <div class="gate-body">
+          <div class="gate-item"><span class="gate-check">✓</span><span>Minimum 25 active patrons</span></div>
+          <div class="gate-item"><span class="gate-check">✓</span><span>Patron renewal rate ≥ 60% over 3 consecutive months</span></div>
+          <div class="gate-item"><span class="gate-check">✓</span><span>At least 6 qualifying original videos, 3 blog posts, and 1 live workshop</span></div>
+          <div class="gate-item"><span class="gate-check">✓</span><span>Editorial quality review passed (initiated by platform, not creator)</span></div>
+          <div class="gate-item"><span class="gate-check">✓</span><span>At least 10 accepted forum contributions</span></div>
+          <div class="gate-item"><span class="gate-check">✓</span><span>No active moderation flags</span></div>
+          <div class="gate-item"><span class="gate-check">✓</span><span>3 months of sustained, consistent content across at least 2 formats</span></div>
+        </div>
+      </div>
+
+      <div class="soul-box">
+        <p>"Expert status is not a reward for showing up. It is recognition that your patrons trust you and your content is making them better. Both have to be true."</p>
+        <cite>— 25experts Standards Board</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERT → FOUNDING EXPERT -->
+  <section class="section section-alt" id="expert-to-founding">
+    <div class="inner">
+      <span class="overline gold">Path two</span>
+      <h2>Expert → Founding Expert</h2>
+      <p>Founding Expert is not a promotion you apply for. There are only 5 seats per vertical — ever. When a vertical launches, the strongest aligned Expert becomes the first Founding Expert. When subsequent seats open, they are filled by the Standards Board, not by application.</p>
+
+      <div class="patron-thresholds">
+        <div class="threshold-card gold-thresh">
+          <div class="threshold-num">5</div>
+          <div class="threshold-label">Seats per vertical</div>
+          <div class="threshold-sub">The cap is permanent. Once all 5 seats in a vertical are filled, they are closed until a seat formally reopens under governance rules.</div>
+        </div>
+        <div class="threshold-card gold-thresh">
+          <div class="threshold-num">100</div>
+          <div class="threshold-label">Minimum patrons</div>
+          <div class="threshold-sub">100 active patrons is the floor for Founding Expert consideration. Patron count alone is not sufficient — but without it, review will not begin.</div>
+        </div>
+        <div class="threshold-card gold-thresh">
+          <div class="threshold-num">75%</div>
+          <div class="threshold-label">Patron retention</div>
+          <div class="threshold-sub">Founding Experts are the standard-setters for their vertical. Retention must reflect that.</div>
+        </div>
+      </div>
+
+      <div class="criteria-grid">
+        <div class="criteria-card gold-card">
+          <span class="criteria-icon">⭐</span>
+          <h3>Platform influence</h3>
+          <p>Founding Experts define the quality bar for their entire vertical, not just their own content.</p>
+          <ul class="criteria-list">
+            <li>Content consistently ranked in the top of its vertical by completion and saves</li>
+            <li>Other creators cite or build on your work in the forum</li>
+            <li>Patron testimonials demonstrate measurable career or skill impact</li>
+            <li>Learners complete entire learning paths anchored by your content</li>
+          </ul>
+        </div>
+        <div class="criteria-card gold-card">
+          <span class="criteria-icon">🏛️</span>
+          <h3>Governance readiness</h3>
+          <p>Founding Experts hold a seat on the Standards Board. The role carries real responsibility.</p>
+          <ul class="criteria-list">
+            <li>At least 12 months as a verified Expert in good standing</li>
+            <li>Demonstrated commitment to the Aesop Academy mission and access values</li>
+            <li>No unresolved disputes, flags, or conduct issues</li>
+            <li>Willingness to participate in quarterly Standards Board reviews</li>
+          </ul>
+        </div>
+        <div class="criteria-card gold-card">
+          <span class="criteria-icon">📡</span>
+          <h3>Vertical authority</h3>
+          <p>Founding Experts are recognized as authoritative voices in their domain — on and off the platform.</p>
+          <ul class="criteria-list">
+            <li>Actively publishing in at least 3 content formats</li>
+            <li>Live workshop attendance consistently above 40% of patrons</li>
+            <li>External credibility (industry recognition, published work, demonstrated expertise)</li>
+            <li>Patron base growing or stable over 6+ months</li>
+          </ul>
+        </div>
+        <div class="criteria-card gold-card">
+          <span class="criteria-icon">🤝</span>
+          <h3>Community trust</h3>
+          <p>The platform's most trusted creators set the tone for everyone else.</p>
+          <ul class="criteria-list">
+            <li>Patron renewal rate ≥ 75% over 6 consecutive months</li>
+            <li>Active and respected presence in the forum and patron rooms</li>
+            <li>Patron feedback consistently positive across content quality, availability, and responsiveness</li>
+            <li>No history of patron disputes or content integrity questions</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="gate-box gold-gate">
+        <div class="gate-head">Founding Expert review gate — Standards Board decision</div>
+        <div class="gate-body">
+          <div class="gate-item"><span class="gate-check">✓</span><span>Minimum 100 active patrons</span></div>
+          <div class="gate-item"><span class="gate-check">✓</span><span>Patron renewal rate ≥ 75% over 6 consecutive months</span></div>
+          <div class="gate-item"><span class="gate-check">✓</span><span>At least 12 months as a verified Expert in good standing</span></div>
+          <div class="gate-item"><span class="gate-check">✓</span><span>Content ranked in the top tier of the vertical for quality, completion, and saves</span></div>
+          <div class="gate-item"><span class="gate-check">✓</span><span>Demonstrated vertical authority — on platform and externally</span></div>
+          <div class="gate-item"><span class="gate-check">✓</span><span>Standards Board review and majority vote</span></div>
+          <div class="gate-item"><span class="gate-check">✓</span><span>A seat is formally available (new vertical launch or governed seat reopening)</span></div>
+        </div>
+      </div>
+
+      <div class="soul-box" style="border-color: var(--gold); background: var(--gold3);">
+        <p>"Founding Expert is not the top of a ladder. It is the beginning of a responsibility — to the patrons who trusted you first, to the creators who come after you, and to the learners who depend on this platform to be honest about what good teaching looks like."</p>
+        <cite>— 25experts Standards Board</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRINCIPLES -->
+  <section class="section">
+    <div class="inner">
+      <span class="overline">What we don't measure</span>
+      <h2>Advancement is never about these.</h2>
+      <p>These signals are explicitly excluded from advancement decisions to protect the integrity of the platform.</p>
+
+      <div class="principle-strip">
+        <div class="principle">
+          <strong>Follower count</strong>
+          <p style="font-size:13px;">How big your audience is on other platforms has no bearing on your tier. What matters is what your patrons here think of your work.</p>
+        </div>
+        <div class="principle">
+          <strong>Social media presence</strong>
+          <p style="font-size:13px;">You don't need a large following to be an Expert. You need patrons who renew, learners who improve, and content that holds up to review.</p>
+        </div>
+        <div class="principle">
+          <strong>Paid promotion</strong>
+          <p style="font-size:13px;">There is no path to advancement through sponsorships, advertising, or financial relationships with the platform. Period.</p>
+        </div>
+        <div class="principle">
+          <strong>Seniority alone</strong>
+          <p style="font-size:13px;">Being here a long time doesn't earn a promotion. Only continued proof of quality, patron loyalty, and community contribution does.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-band">
+    <h2>Ready to start building?</h2>
+    <p>Apply to the Expert Program. Every creator enters as a Contributor and earns their way up.</p>
+    <div class="cta-actions">
+      <a href="experts.html" class="btn btn-lg" style="background:#5ddfb0;color:#0f1716;font-weight:900;">Apply to the Expert Program</a>
+      <a href="join.html" class="btn btn-lg" style="background:rgba(255,255,255,0.1);color:#fff;border:1.5px solid rgba(255,255,255,0.28);">Follow the Experts first</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 25experts.com · A project of <a href="https://aesopacademy.org" style="color:var(--green);font-weight:700;">Aesop Academy</a></span>
+  </footer>
+
+</body>
+</html>
