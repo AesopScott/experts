@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>25experts - Forums</title>
+  <style>
+    :root {
+      --ink: #101615;
+      --muted: #66716e;
+      --paper: #fbfaf6;
+      --panel: #ffffff;
+      --line: #dfe5df;
+      --green: #145f47;
+      --ai: #145f47;
+      --finance: #b87a22;
+      --marketing: #245a7d;
+      --leadership: #7b4b92;
+      --design: #bf563f;
+      --shadow: 0 18px 46px rgba(17, 31, 25, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.4;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .mission-bar {
+      padding: 9px 18px;
+      background: var(--green);
+      color: rgba(255, 255, 255, 0.9);
+      text-align: center;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .mission-bar strong { color: #fff; }
+    .mission-bar a { color: #fff; text-decoration: underline; margin-left: 6px; }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 15px clamp(18px, 5vw, 68px);
+      border-bottom: 1px solid rgba(221, 229, 223, 0.86);
+      background: rgba(251, 250, 246, 0.94);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-weight: 900;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--green);
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .brand-text span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--ink); }
+
+    .hero {
+      padding: 58px clamp(18px, 5vw, 64px) 34px;
+      background:
+        linear-gradient(115deg, rgba(20, 95, 71, 0.96), rgba(19, 42, 54, 0.92)),
+        radial-gradient(circle at 82% 18%, rgba(255, 255, 255, 0.18), transparent 28%);
+      color: #fff;
+    }
+
+    .hero-inner {
+      width: min(1320px, 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(300px, 420px);
+      gap: clamp(28px, 5vw, 64px);
+      align-items: end;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      padding: 7px 11px;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 850;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 880px;
+      margin: 18px 0 12px;
+      font-size: clamp(40px, 6vw, 76px);
+      line-height: 0.96;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 760px;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 18px;
+    }
+
+    .hero-panel {
+      display: grid;
+      gap: 1px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .hero-metric {
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(14px);
+    }
+
+    .hero-metric strong {
+      display: block;
+      font-size: 28px;
+      line-height: 1.05;
+    }
+
+    .hero-metric span {
+      display: block;
+      margin-top: 6px;
+      color: rgba(255, 255, 255, 0.76);
+      font-size: 13px;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 11px;
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .dot.ai { background: #5ddfb0; }
+    .dot.finance { background: var(--finance); }
+    .dot.marketing { background: #7fb6df; }
+    .dot.leadership { background: #b88bd3; }
+    .dot.design { background: #df836e; }
+
+    main {
+      width: min(1320px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 28px 0 64px;
+    }
+
+    .filter-panel {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) minmax(220px, 2fr) auto;
+      gap: 12px;
+      align-items: end;
+      margin-bottom: 24px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+    }
+
+    .field label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    select,
+    input,
+    button {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      font-weight: 750;
+    }
+
+    select,
+    input { padding: 0 12px; }
+
+    button {
+      padding: 0 16px;
+      cursor: pointer;
+    }
+
+    button.primary {
+      border-color: var(--green);
+      background: var(--green);
+      color: #fff;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .stat {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 30px;
+      line-height: 1;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin: 36px 0 16px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(26px, 4vw, 42px);
+      line-height: 1;
+    }
+
+    .section-head p {
+      max-width: 640px;
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .count-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .domain-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .domain-card {
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-top: 5px solid var(--green);
+      border-radius: 10px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .domain-card.ai { border-top-color: var(--ai); background: #f6faf7; }
+    .domain-card.finance { border-top-color: var(--finance); background: #fcf8ee; }
+    .domain-card.marketing { border-top-color: var(--marketing); background: #f2f7fb; }
+    .domain-card.leadership { border-top-color: var(--leadership); background: #f8f3fa; }
+    .domain-card.design { border-top-color: var(--design); background: #fcf4f1; }
+
+    .domain-card h3 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.08;
+    }
+
+    .domain-card p {
+      margin: 0;
+      color: #41504b;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .forum-list {
+      display: grid;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .forum-link {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.07);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.74);
+      color: #33413d;
+    }
+
+    .forum-link strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.18;
+    }
+
+    .forum-link span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .forum-link .forum-type {
+      padding: 4px 7px;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--green);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .tier-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 4px;
+      color: #33413d;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .tier-head span {
+      color: var(--muted);
+      font-weight: 850;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .domain-card.is-hidden { display: none; }
+
+    .activity {
+      padding: 4px 7px;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .empty-state {
+      display: none;
+      margin: 24px 0;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel);
+      color: var(--muted);
+      box-shadow: var(--shadow);
+    }
+
+    .empty-state.is-visible { display: block; }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 28px clamp(18px, 5vw, 68px);
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 1180px) {
+      .domain-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .filter-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 760px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links { flex-wrap: wrap; }
+      .hero-inner,
+      .stats,
+      .filter-panel,
+      .domain-grid,
+      .domain-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="mission-bar">
+    <strong>Aesop Academy</strong> is a 501(c)(3) nonprofit advancing AI literacy for youth and working professionals.
+    <a href="https://aesopacademy.org">aesopacademy.org</a>
+  </div>
+
+  <header class="nav">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">25</span>
+      <span class="brand-text">
+        25experts
+        <span>by Aesop Academy</span>
+      </span>
+    </a>
+    <nav class="nav-links" aria-label="Page navigation">
+      <a href="index.html">Home</a>
+      <a href="subscriber.html">Follow the Experts</a>
+      <a href="experts.html">Expert Program</a>
+      <a href="workshopcalendar.html">Workshops</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="videos.html">Videos</a>
+      <a href="expertprofiles.html">Expert Profiles</a>
+      <a href="patronrecognition.html">Recognition</a>
+      <a class="active" href="forums.html">Forums</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow">Community forums</span>
+        <h1>Every domain gets a room. Every Expert gets a signal.</h1>
+        <p>Practical discussion spaces organized around the 5x5 model: five domains, one domain forum for each, and five Founding Expert forums under every domain.</p>
+        <div class="filters" aria-label="Domain legend">
+          <span class="pill"><span class="dot ai"></span>AI & Automation</span>
+          <span class="pill"><span class="dot finance"></span>Finance & Investing</span>
+          <span class="pill"><span class="dot marketing"></span>Marketing, Sales & Growth</span>
+          <span class="pill"><span class="dot leadership"></span>Leadership & Management</span>
+          <span class="pill"><span class="dot design"></span>Design, Creative & Gaming</span>
+        </div>
+      </div>
+      <aside class="hero-panel" aria-label="Forum summary">
+        <div class="hero-metric"><strong>25</strong><span>permanent Founding Experts across the network</span></div>
+        <div class="hero-metric"><strong>5</strong><span>professional domains with dedicated community hubs</span></div>
+        <div class="hero-metric"><strong>30</strong><span>total forums: one domain forum plus five Founding Expert forums per domain</span></div>
+      </aside>
+    </div>
+  </section>
+
+  <main>
+    <section class="filter-panel" aria-label="Forum filters">
+      <div class="field">
+        <label for="domain-filter">Filter by domain</label>
+        <select id="domain-filter">
+          <option value="all">All domains</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="room-search">Search forums</label>
+        <input id="room-search" type="search" placeholder="domain, expert, contributor...">
+      </div>
+      <button class="primary" id="clear-filters" type="button">Clear filters</button>
+    </section>
+
+    <section class="stats" aria-label="Forum summary">
+      <article class="stat"><strong id="total-count">30</strong><span>forums across the platform</span></article>
+      <article class="stat"><strong>25</strong><span>Founding Expert forums</span></article>
+      <article class="stat"><strong>5</strong><span>domain forums</span></article>
+      <article class="stat"><strong id="visible-count">30</strong><span>forums visible with current filters</span></article>
+    </section>
+
+    <section class="section-head" aria-label="Domain map heading">
+      <div>
+        <h2>Explore forums by domain</h2>
+        <p>Each domain has one main forum and five Founding Expert forums.</p>
+      </div>
+      <span class="count-pill">5 domains / 30 forums</span>
+    </section>
+
+    <section class="domain-grid" id="domain-grid" aria-label="Domain forum map"></section>
+
+    <section class="empty-state" id="empty-state">
+      No forums match this filter combination.
+    </section>
+  </main>
+
+  <footer>
+    <span>© 2026 25experts.com · A project of <a href="https://aesopacademy.org" style="color:var(--green);font-weight:700;">Aesop Academy</a></span>
+  </footer>
+
+  <script>
+    const domains = [
+      {
+        key: "ai",
+        name: "AI & Automation",
+        summary: "Practical AI workflows, prompt systems, agent patterns, tool audits, and automation judgment.",
+        foundingExperts: ["Dr. Maya Chen", "Owen Patel", "Lena Brooks", "Theo Ramirez", "Priya Shah"],
+        experts: ["Rina Park", "Gabe Ellis"],
+        contributors: ["Malik Stone", "June Alvarez", "Tessa Ng"]
+      },
+      {
+        key: "finance",
+        name: "Finance & Investing",
+        summary: "AI-assisted financial review, portfolio literacy, cash flow, risk, and dashboards people trust.",
+        foundingExperts: ["Marcus Bell", "Anika Rao", "Jonah Price", "Elena Foster", "Samir Haddad"],
+        experts: ["Keira Walsh", "Noah Grant"],
+        contributors: ["Amina Cole", "Peter Lin", "Ruth Adler"]
+      },
+      {
+        key: "marketing",
+        name: "Marketing, Sales & Growth",
+        summary: "AI content systems, sales research, customer interviews, webinar reuse, and brand voice.",
+        foundingExperts: ["Nora Kim", "Caleb Stone", "Mei Tan", "Victor Hale", "Isabel Cruz"],
+        experts: ["Tara Singh", "Leo Mercer"],
+        contributors: ["Hannah Price", "Omar Vale", "Cleo Hart"]
+      },
+      {
+        key: "leadership",
+        name: "Leadership & Management",
+        summary: "AI adoption, governance, team anxiety, decision briefs, culture, and delegation maps.",
+        foundingExperts: ["Dana Wright", "Hugo Bennett", "Farah Nasser", "Miles Ortega", "Rachel Moore"],
+        experts: ["Monica Reyes", "Ben Archer"],
+        contributors: ["Ivy Chen", "Grant Silva", "Mara Holt"]
+      },
+      {
+        key: "design",
+        name: "Design, Creative & Gaming",
+        summary: "Generative design, creative direction, rapid prototypes, game concepts, and brand systems.",
+        foundingExperts: ["Ari Fox", "Jules Rivera", "Mina Park", "Elliot Gray", "Sofia Lane"],
+        experts: ["Nico Ward", "Selene Cho"],
+        contributors: ["Ezra Lake", "Pia Moreno", "Kade Wynn"]
+      }
+    ];
+
+    function domainDot(key) {
+      return `<span class="dot ${key}"></span>`;
+    }
+
+    function renderDomains() {
+      const grid = document.getElementById("domain-grid");
+      grid.innerHTML = domains.map(domain => `
+        <article class="domain-card ${domain.key}" data-domain="${domain.key}" data-search="${`${domain.name} ${domain.summary} ${domain.foundingExperts.join(" ")} ${domain.experts.join(" ")} ${domain.contributors.join(" ")}`.toLowerCase()}">
+          <div>
+            <h3>${domain.name}</h3>
+            <p>${domain.summary}</p>
+          </div>
+          <div class="forum-list">
+            <div class="tier-head">Forums <span>6 total</span></div>
+            <a class="forum-link" href="#">
+              <div>
+                <strong>${domain.name} Forum</strong>
+                <span>Domain-wide questions, workshop follow-up, and practical discussion.</span>
+              </div>
+              <span class="forum-type">Domain</span>
+            </a>
+            ${domain.foundingExperts.map(expert => `
+              <a class="forum-link" href="#">
+                <div>
+                  <strong>${expert} Forum - (Forum Name)</strong>
+                  <span>Forum name will be set on this expert's profile page.</span>
+                </div>
+                <span class="forum-type">Founding</span>
+              </a>
+            `).join("")}
+          </div>
+        </article>
+      `).join("");
+    }
+
+    const domainFilter = document.getElementById("domain-filter");
+    const searchInput = document.getElementById("room-search");
+    const clearFilters = document.getElementById("clear-filters");
+    const emptyState = document.getElementById("empty-state");
+    const visibleCount = document.getElementById("visible-count");
+
+    domains.forEach(domain => {
+      const option = document.createElement("option");
+      option.value = domain.key;
+      option.textContent = domain.name;
+      domainFilter.appendChild(option);
+    });
+
+    function applyFilters() {
+      const selectedDomain = domainFilter.value;
+      const query = searchInput.value.trim().toLowerCase();
+      let total = 0;
+
+      document.querySelectorAll(".domain-card").forEach(card => {
+        const domainMatch = selectedDomain === "all" || card.dataset.domain === selectedDomain;
+        const searchMatch = !query || card.dataset.search.includes(query);
+        const visible = domainMatch && searchMatch;
+        card.classList.toggle("is-hidden", !visible);
+        if (visible) total += 6;
+      });
+
+      visibleCount.textContent = total;
+      document.getElementById("total-count").textContent = 30;
+      emptyState.classList.toggle("is-visible", total === 0);
+    }
+
+    domainFilter.addEventListener("change", () => {
+      applyFilters();
+    });
+    searchInput.addEventListener("input", applyFilters);
+    clearFilters.addEventListener("click", () => {
+      domainFilter.value = "all";
+      searchInput.value = "";
+      applyFilters();
+    });
+
+    renderDomains();
+    applyFilters();
+  </script>
+</body>
+</html>
