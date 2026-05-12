@@ -308,6 +308,33 @@
     .faq-q { font-size: 17px; font-weight: 800; margin: 0 0 8px; }
     .faq-a { font-size: 15px; color: var(--muted); margin: 0; line-height: 1.6; }
 
+    /* ── SOON NOTE ── */
+    .soon-note {
+      margin: 8px 0 0;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── MID-PAGE PATRON CTA ── */
+    .patron-cta-band {
+      padding: 56px clamp(18px,5vw,68px);
+      background: var(--green3);
+      text-align: center;
+    }
+    .patron-cta-band h2 {
+      font-size: clamp(26px,4vw,44px);
+      margin: 0 0 10px;
+    }
+    .patron-cta-band p {
+      color: var(--muted);
+      font-size: 17px;
+      max-width: 520px;
+      margin: 0 auto 28px;
+    }
+
     /* ── FINAL CTA ── */
     .final-cta {
       background: var(--dark); color: #fff;
@@ -445,6 +472,7 @@
             </ul>
             <div class="tier-cta">
               <a href="#" class="btn btn-green" style="width:100%">Start 7-day free trial</a>
+              <p class="soon-note">Stripe payments coming soon</p>
             </div>
           </div>
         </div>
@@ -489,6 +517,14 @@
     </div>
   </section>
 
+  <!-- PATRON CTA 1 -->
+  <section class="patron-cta-band">
+    <h2>Start your patronage today.</h2>
+    <p>Pick any expert. Your first 7 days are free. Cancel before then and you won't be charged a thing.</p>
+    <a href="#" class="btn btn-green btn-lg">Become a Patron — 7 days free</a>
+    <p class="soon-note">Stripe payments coming soon</p>
+  </section>
+
   <!-- FOUNDING PATRON -->
   <section class="founding-band">
     <div class="founding-inner">
@@ -498,6 +534,7 @@
         <p>The first 25 patrons of each expert lock in $10/month for that expert — for life. The multi-expert discount ladder still applies on top: follow 4+ experts and your founding rate drops to $7/month for that expert (30% off $10), while new experts you add are $9.80/month.</p>
         <p>Founding Patrons receive a permanent badge on their profile and are recognized as the community members who made this platform possible.</p>
         <a href="#" class="btn btn-mint btn-lg" style="margin-top:8px;">Claim founding patron rate</a>
+        <p class="soon-note" style="color:rgba(255,255,255,0.55);margin-top:10px;">Stripe payments coming soon</p>
       </div>
       <div class="founding-card">
         <div class="founding-price"><sup>$</sup>10<sub>/mo per expert</sub></div>
@@ -618,6 +655,14 @@
     </div>
   </section>
 
+  <!-- PATRON CTA 2 -->
+  <section class="patron-cta-band">
+    <h2>Everything you need to go deep on AI.</h2>
+    <p>Full video archive, live workshops, replays, Q&amp;A, blogs, and learning paths — starting at $14/month per expert.</p>
+    <a href="#" class="btn btn-green btn-lg">Become a Patron Today</a>
+    <p class="soon-note">Stripe payments coming soon</p>
+  </section>
+
   <!-- SCHOLARSHIP -->
   <section class="scholarship-band">
     <div class="inner-narrow">
@@ -664,6 +709,17 @@
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- PATRON CTA 3 -->
+  <section class="patron-cta-band" style="background:var(--dark);">
+    <h2 style="color:#5ddfb0;">Ready to go deeper?</h2>
+    <p style="color:rgba(255,255,255,0.7);">Join thousands of professionals learning AI from the people who actually use it.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
+      <a href="#" class="btn btn-mint btn-lg">Start 7-day free trial</a>
+      <a href="#" class="btn btn-lg" style="background:rgba(255,255,255,0.1);color:#fff;border:1.5px solid rgba(255,255,255,0.28);">Create free account</a>
+    </div>
+    <p class="soon-note" style="color:rgba(255,255,255,0.4);">Stripe payments coming soon</p>
   </section>
 
   <footer>
