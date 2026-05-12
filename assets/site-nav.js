@@ -4,7 +4,6 @@
       label: "Content",
       className: "site-nav-content",
       links: [
-        ["Trends", "trends.html"],
         ["Videos", "videos.html"],
         ["Blogs", "blogs.html"],
         ["Workshops", "workshopcalendar.html"],
@@ -27,7 +26,7 @@
       links: [
         ["Support", "support.html"],
         ["Scholarships", "join.html"],
-        ["Mission", "index.html"],
+        ["Trends", "trends.html"],
         ["Leader Boards", "leaderboards.html"]
       ]
     },
