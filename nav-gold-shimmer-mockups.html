@@ -270,6 +270,7 @@
       align-content: center;
       align-items: center;
       z-index: 2;
+      padding: 9px 0;
     }
 
     .site-nav a {
@@ -407,6 +408,141 @@
       animation-duration: 4.8s;
     }
 
+    /* PNG-inspired SVG light trails */
+    .site-nav-group::before,
+    .site-nav-group::after {
+      display: none;
+    }
+
+    .trail {
+      position: absolute;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 16px;
+      overflow: visible;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0.9;
+    }
+
+    .trail-top { top: 0; }
+    .trail-bottom {
+      bottom: 0;
+      transform: scaleY(-1);
+      opacity: 0.74;
+    }
+
+    .trail path,
+    .trail circle {
+      display: none;
+    }
+
+    .trail .glow,
+    .trail .core,
+    .trail .thread {
+      fill: none;
+      stroke-linecap: round;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .trail .glow {
+      stroke: rgba(247, 217, 139, 0.36);
+      stroke-width: 5;
+      filter: blur(2px);
+    }
+
+    .trail .core {
+      stroke: url(#goldTrail);
+      stroke-width: 1.7;
+      stroke-dasharray: 42 178;
+      animation: pathShimmer 6.8s ease-in-out infinite;
+    }
+
+    .trail .thread {
+      stroke: rgba(184, 122, 34, 0.72);
+      stroke-width: 0.9;
+    }
+
+    .trail .spark {
+      fill: #fff7c8;
+      filter: drop-shadow(0 0 5px rgba(247, 217, 139, 0.95));
+      animation: sparkPulse 3.8s ease-in-out infinite;
+    }
+
+    .trail .dust {
+      fill: rgba(247, 217, 139, 0.58);
+      animation: dustTwinkle 5.2s ease-in-out infinite;
+    }
+
+    .style-1 .line-1,
+    .style-2 .line-2,
+    .style-3 .line-3,
+    .style-4 .line-4,
+    .style-5 .line-5,
+    .style-6 .line-6,
+    .style-7 .line-7,
+    .style-8 .line-8,
+    .style-9 .line-9,
+    .style-10 .line-10 {
+      display: block;
+    }
+
+    .style-1 .trail .core { stroke-width: 1.2; stroke-dasharray: 34 190; animation-duration: 7.8s; }
+    .style-2 .trail .core { stroke-width: 1.6; stroke-dasharray: 46 170; animation-duration: 7s; }
+    .style-3 .trail .glow { stroke-width: 7; opacity: 0.9; }
+    .style-3 .trail .core {
+      stroke-dasharray: 72 168;
+      animation-duration: var(--core-speed, 7.1s);
+      animation-delay: var(--core-delay, 0s);
+      animation-timing-function: linear;
+    }
+    .style-3 .trail .spark.line-3 {
+      animation: sparkTravel var(--spark-speed, 6.4s) linear infinite;
+      animation-delay: var(--spark-delay, 0s);
+      transform-origin: center;
+      transform-box: view-box;
+    }
+    .style-3 .site-nav-group:nth-child(1) .trail-top { --core-speed: 6.9s; --core-delay: -1.2s; --spark-speed: 6.2s; --spark-delay: -0.4s; }
+    .style-3 .site-nav-group:nth-child(1) .trail-bottom { --core-speed: 8.1s; --core-delay: -3.1s; --spark-speed: 7.5s; --spark-delay: -2.8s; }
+    .style-3 .site-nav-group:nth-child(2) .trail-top { --core-speed: 7.7s; --core-delay: -4.6s; --spark-speed: 6.8s; --spark-delay: -5.1s; }
+    .style-3 .site-nav-group:nth-child(2) .trail-bottom { --core-speed: 6.4s; --core-delay: -0.8s; --spark-speed: 8.2s; --spark-delay: -1.7s; }
+    .style-3 .site-nav-group:nth-child(3) .trail-top { --core-speed: 8.8s; --core-delay: -2.3s; --spark-speed: 7.1s; --spark-delay: -3.9s; }
+    .style-3 .site-nav-group:nth-child(3) .trail-bottom { --core-speed: 7.2s; --core-delay: -5.4s; --spark-speed: 6.5s; --spark-delay: -0.9s; }
+    .style-3 .site-nav-group:nth-child(4) .trail-top { --core-speed: 6.1s; --core-delay: -3.7s; --spark-speed: 8.6s; --spark-delay: -6.2s; }
+    .style-3 .site-nav-group:nth-child(4) .trail-bottom { --core-speed: 9.2s; --core-delay: -1.6s; --spark-speed: 7.8s; --spark-delay: -4.4s; }
+    .style-4 .trail .thread { stroke-width: 0.8; opacity: 0.82; }
+    .style-5 .trail .core { stroke-width: 1.5; stroke-dasharray: 58 160; animation-duration: 8s; }
+    .style-6 .trail .glow { stroke-width: 8; }
+    .style-7 .trail .dust { display: block; }
+    .style-8 .trail .core { animation-duration: 6.2s; }
+    .style-9 .trail .core { stroke-dasharray: 34 110; animation-duration: 5.8s; }
+    .style-10 .trail .core { stroke-width: 1.25; stroke-dasharray: 62 160; animation-duration: 7.4s; }
+
+    @keyframes pathShimmer {
+      0% { stroke-dashoffset: 220; opacity: 0.42; }
+      45% { opacity: 1; }
+      100% { stroke-dashoffset: -220; opacity: 0.5; }
+    }
+
+    @keyframes sparkPulse {
+      0%, 100% { opacity: 0.28; transform: scale(0.78); }
+      42% { opacity: 1; transform: scale(1.18); }
+    }
+
+    @keyframes sparkTravel {
+      0% { opacity: 0; transform: translateX(-112px) scale(0.72); }
+      8% { opacity: 0.35; }
+      44% { opacity: 1; transform: translateX(0) scale(1.18); }
+      88% { opacity: 0.55; }
+      100% { opacity: 0; transform: translateX(112px) scale(0.84); }
+    }
+
+    @keyframes dustTwinkle {
+      0%, 100% { opacity: 0.12; }
+      50% { opacity: 0.78; }
+    }
+
     .notes {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -490,8 +626,83 @@
 
   <script>
     const template = document.getElementById("nav-template");
+    const trailMarkup = `
+      <svg class="trail trail-top" viewBox="0 0 240 40" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="goldTrail" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0%" stop-color="#8f5c16" stop-opacity="0.12"></stop>
+            <stop offset="34%" stop-color="#d79a2e" stop-opacity="0.78"></stop>
+            <stop offset="52%" stop-color="#fff7c8" stop-opacity="1"></stop>
+            <stop offset="72%" stop-color="#d79a2e" stop-opacity="0.82"></stop>
+            <stop offset="100%" stop-color="#8f5c16" stop-opacity="0.16"></stop>
+          </linearGradient>
+        </defs>
+        <path class="glow line-1" d="M6 20 C55 19 92 19 130 20 S205 21 235 20"></path>
+        <path class="thread line-1" d="M6 20 C55 19 92 19 130 20 S205 21 235 20"></path>
+        <path class="core line-1" d="M6 20 C55 19 92 19 130 20 S205 21 235 20"></path>
+        <circle class="spark line-1" cx="96" cy="20" r="2.6"></circle>
+
+        <path class="glow line-2" d="M4 23 C34 4 66 11 96 21 S146 29 176 17 S218 10 238 18"></path>
+        <path class="thread line-2" d="M4 23 C34 4 66 11 96 21 S146 29 176 17 S218 10 238 18"></path>
+        <path class="core line-2" d="M4 23 C34 4 66 11 96 21 S146 29 176 17 S218 10 238 18"></path>
+        <circle class="spark line-2" cx="88" cy="20" r="2.7"></circle>
+        <circle class="spark line-2" cx="170" cy="17" r="2.2"></circle>
+
+        <path class="glow line-3" d="M2 20 C52 20 92 20 126 20 S202 20 238 20"></path>
+        <path class="thread line-3" d="M2 20 C52 20 92 20 126 20 S202 20 238 20"></path>
+        <path class="core line-3" d="M2 20 C52 20 92 20 126 20 S202 20 238 20"></path>
+        <circle class="spark line-3" cx="128" cy="20" r="3.4"></circle>
+
+        <path class="glow line-4" d="M2 14 C58 8 104 10 143 20 S201 32 238 25"></path>
+        <path class="thread line-4" d="M2 14 C58 8 104 10 143 20 S201 32 238 25"></path>
+        <path class="thread line-4" d="M2 22 C64 18 105 16 142 20 S199 23 238 14"></path>
+        <path class="core line-4" d="M2 18 C58 12 104 13 143 20 S201 28 238 20"></path>
+        <circle class="spark line-4" cx="82" cy="17" r="2.2"></circle>
+        <circle class="spark line-4" cx="174" cy="22" r="2.4"></circle>
+
+        <path class="glow line-5" d="M8 25 C42 7 83 21 116 23 S184 10 232 12"></path>
+        <path class="thread line-5" d="M8 25 C42 7 83 21 116 23 S184 10 232 12"></path>
+        <path class="core line-5" d="M8 25 C42 7 83 21 116 23 S184 10 232 12"></path>
+        <circle class="spark line-5" cx="94" cy="23" r="2.8"></circle>
+
+        <path class="glow line-6" d="M5 20 C54 20 86 20 118 20 S183 20 235 20"></path>
+        <path class="thread line-6" d="M5 20 C54 20 86 20 118 20 S183 20 235 20"></path>
+        <path class="core line-6" d="M5 20 C54 20 86 20 118 20 S183 20 235 20"></path>
+        <circle class="spark line-6" cx="126" cy="20" r="3.6"></circle>
+
+        <path class="glow line-7" d="M4 16 C40 34 77 4 116 23 S183 14 236 26"></path>
+        <path class="thread line-7" d="M4 16 C40 34 77 4 116 23 S183 14 236 26"></path>
+        <path class="core line-7" d="M4 16 C40 34 77 4 116 23 S183 14 236 26"></path>
+        <circle class="spark line-7" cx="161" cy="18" r="2.5"></circle>
+        <circle class="dust line-7" cx="42" cy="12" r="0.8"></circle>
+        <circle class="dust line-7" cx="58" cy="9" r="0.7"></circle>
+        <circle class="dust line-7" cx="178" cy="15" r="0.8"></circle>
+        <circle class="dust line-7" cx="195" cy="17" r="0.7"></circle>
+
+        <path class="glow line-8" d="M2 13 C43 30 67 11 110 13 S185 28 238 18"></path>
+        <path class="thread line-8" d="M2 13 C43 30 67 11 110 13 S185 28 238 18"></path>
+        <path class="core line-8" d="M2 13 C43 30 67 11 110 13 S185 28 238 18"></path>
+        <circle class="spark line-8" cx="68" cy="17" r="2.7"></circle>
+        <circle class="spark line-8" cx="183" cy="23" r="2.7"></circle>
+
+        <path class="glow line-9" d="M4 14 C42 6 82 31 122 20 S189 10 236 23"></path>
+        <path class="thread line-9" d="M4 14 C42 6 82 31 122 20 S189 10 236 23"></path>
+        <path class="core line-9" d="M4 14 C42 6 82 31 122 20 S189 10 236 23"></path>
+        <circle class="spark line-9" cx="136" cy="20" r="3"></circle>
+
+        <path class="glow line-10" d="M4 20 C44 12 71 27 108 22 S160 28 178 16 S199 12 204 23 S221 15 236 18"></path>
+        <path class="thread line-10" d="M4 20 C44 12 71 27 108 22 S160 28 178 16 S199 12 204 23 S221 15 236 18"></path>
+        <path class="core line-10" d="M4 20 C44 12 71 27 108 22 S160 28 178 16 S199 12 204 23 S221 15 236 18"></path>
+        <circle class="spark line-10" cx="62" cy="22" r="2.4"></circle>
+        <circle class="spark line-10" cx="171" cy="17" r="2"></circle>
+      </svg>
+    `;
     document.querySelectorAll(".mockup .canvas").forEach((canvas) => {
       canvas.append(template.content.cloneNode(true));
+      canvas.querySelectorAll(".site-nav-items").forEach((items) => {
+        items.insertAdjacentHTML("afterbegin", trailMarkup);
+        items.insertAdjacentHTML("beforeend", trailMarkup.replace("trail-top", "trail-bottom"));
+      });
     });
   </script>
 </body>
