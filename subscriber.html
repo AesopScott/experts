@@ -445,6 +445,84 @@
     .cta-section p { color: rgba(255,255,255,0.72); font-size: 1.05rem; max-width: 640px; margin: 0 auto 32px; line-height: 1.7; }
     .cta-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
+    /* Founding patron availability + question form */
+    .founding-section { background: var(--paper); }
+    .founding-wrap { display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(360px, 1.05fr); gap: 24px; align-items: start; }
+    .spots-panel, .question-form {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+    .spots-header { display: flex; justify-content: space-between; gap: 18px; align-items: start; margin-bottom: 22px; }
+    .spots-header h3, .question-form h3 { margin: 0 0 8px; font-size: 1.55rem; line-height: 1.15; }
+    .spots-header p, .question-form p { margin: 0; color: var(--muted); line-height: 1.6; }
+    .spots-count {
+      min-width: 104px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: var(--green3);
+      color: var(--green);
+      text-align: center;
+      font-weight: 900;
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    .spots-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin: 22px 0; }
+    .spot {
+      min-height: 72px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      display: grid;
+      place-items: center;
+      gap: 4px;
+      padding: 10px;
+      text-align: center;
+      font-weight: 900;
+      color: var(--green);
+    }
+    .spot span { display: block; font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .spot.taken { background: #f2f4f1; color: var(--muted); opacity: 0.72; }
+    .spot.taken span { color: #8a928f; }
+    .spots-note { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; }
+    .spots-note div {
+      border-radius: 12px;
+      background: #f7faf7;
+      border: 1px solid var(--line);
+      padding: 14px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .spots-note strong { display: block; color: var(--ink); margin-bottom: 3px; }
+    .question-form form { display: grid; gap: 14px; margin-top: 20px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .question-form label { display: grid; gap: 7px; color: var(--ink); font-weight: 800; font-size: 0.9rem; }
+    .question-form input, .question-form select, .question-form textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px 13px;
+      font: inherit;
+      color: var(--ink);
+      background: #fff;
+    }
+    .question-form textarea { min-height: 130px; resize: vertical; }
+    .question-form button { justify-self: start; border: 0; cursor: pointer; }
+    .form-fineprint { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+    .form-status {
+      display: none;
+      border-radius: 10px;
+      background: var(--green3);
+      color: var(--green);
+      padding: 11px 13px;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
     /* â”€â”€ FOOTER â”€â”€ */
     footer {
       padding: 24px clamp(18px,5vw,64px);
@@ -475,12 +553,17 @@
       .steps-grid, .rhythm-grid { grid-template-columns: repeat(2,1fr); }
       .experts-grid { grid-template-columns: repeat(3,1fr); }
       .tier-grid { grid-template-columns: 1fr; }
+      .founding-wrap { grid-template-columns: 1fr; }
+      .spots-note { grid-template-columns: 1fr; }
     }
     @media (max-width: 560px) {
       .hero-strip { grid-template-columns: 1fr; }
       .steps-grid, .rhythm-grid, .features-grid, .rooms-grid, .trust-grid, .social-grid, .thirty-days-grid { grid-template-columns: 1fr; }
       .experts-grid { grid-template-columns: repeat(2,1fr); }
       .hero h1 { font-size: 2.2rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .spots-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .spots-header { flex-direction: column; }
     }
   </style>
   <link rel="stylesheet" href="assets/site-nav.css?v=20260512-compactnav">
@@ -987,13 +1070,107 @@
     <div class="inner">
       <span class="overline">Ready to begin?</span>
       <h2>Start your AI learning path.</h2>
-      <p>Become a founding learner. Get the founding patron rate of $14/month per expert locked permanently â€” it never increases. Have input on which experts join and what gets taught first.</p>
+      <p>Become a founding patron. Get the founding patron rate of $14/month per expert locked permanently - it never increases. Have input on which experts join and what gets taught first.</p>
       <div class="cta-group">
-        <a class="btn btn-white" href="mailto:hello@aesopacademy.org?subject=25experts%20Waitlist">Become a founding learner â€” it's free</a>
-        <a class="btn btn-ghost" href="mailto:hello@aesopacademy.org?subject=25experts%20Question">Ask us a question</a>
+        <a class="btn btn-white" href="#founding-patrons">See founding patron spots</a>
+        <a class="btn btn-ghost" href="#question-form">Ask us a question</a>
       </div>
     </div>
   </section>
+
+  <section class="section founding-section" id="founding-patrons">
+    <div class="inner founding-wrap">
+      <div class="spots-panel">
+        <div class="spots-header">
+          <div>
+            <span class="overline">Founding patron access</span>
+            <h3>Founding patron spots are limited.</h3>
+            <p>This mockup shows how the launch page can make availability visible before the first cohort opens.</p>
+          </div>
+          <div class="spots-count">18 open</div>
+        </div>
+        <div class="spots-grid" aria-label="Founding patron spots">
+          <div class="spot taken">01<span>claimed</span></div>
+          <div class="spot taken">02<span>claimed</span></div>
+          <div class="spot taken">03<span>claimed</span></div>
+          <div class="spot">04<span>open</span></div>
+          <div class="spot">05<span>open</span></div>
+          <div class="spot">06<span>open</span></div>
+          <div class="spot">07<span>open</span></div>
+          <div class="spot taken">08<span>claimed</span></div>
+          <div class="spot">09<span>open</span></div>
+          <div class="spot">10<span>open</span></div>
+          <div class="spot">11<span>open</span></div>
+          <div class="spot">12<span>open</span></div>
+          <div class="spot">13<span>open</span></div>
+          <div class="spot">14<span>open</span></div>
+          <div class="spot taken">15<span>claimed</span></div>
+          <div class="spot">16<span>open</span></div>
+          <div class="spot">17<span>open</span></div>
+          <div class="spot">18<span>open</span></div>
+          <div class="spot taken">19<span>claimed</span></div>
+          <div class="spot">20<span>open</span></div>
+          <div class="spot">21<span>open</span></div>
+          <div class="spot">22<span>open</span></div>
+          <div class="spot">23<span>open</span></div>
+          <div class="spot">24<span>open</span></div>
+          <div class="spot taken">25<span>claimed</span></div>
+        </div>
+        <div class="spots-note">
+          <div><strong>Locked rate</strong>$14/month per expert you follow.</div>
+          <div><strong>Early voice</strong>Help shape first rooms, workshops, and expert priorities.</div>
+          <div><strong>Mission access</strong>Your patronage helps fund Aesop Academy access pathways.</div>
+        </div>
+      </div>
+
+      <div class="question-form" id="question-form">
+        <span class="overline">Ask before you join</span>
+        <h3>Send us your question.</h3>
+        <p>Use this form for pricing, access, expert selection, student pathways, sponsorship, or anything else you want clarified.</p>
+        <form action="#" method="post" id="subscriber-question-form">
+          <div class="form-row">
+            <label>
+              Name
+              <input type="text" name="name" autocomplete="name" placeholder="Your name">
+            </label>
+            <label>
+              Email
+              <input type="email" name="email" autocomplete="email" placeholder="you@example.com">
+            </label>
+          </div>
+          <label>
+            What is your question about?
+            <select name="topic">
+              <option>Founding patron access</option>
+              <option>Pricing</option>
+              <option>Student or youth access</option>
+              <option>Expert selection</option>
+              <option>Sponsorship or donations</option>
+              <option>Something else</option>
+            </select>
+          </label>
+          <label>
+            Question
+            <textarea name="question" placeholder="What would you like to know?"></textarea>
+          </label>
+          <button class="btn btn-primary" type="submit">Submit question</button>
+          <div class="form-status" id="question-form-status">Question received for the mockup. Connect this to the final form handler before launch.</div>
+          <div class="form-fineprint">Mockup form only. Connect this to the final site form handler before launch.</div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const questionForm = document.getElementById("subscriber-question-form");
+    const questionStatus = document.getElementById("question-form-status");
+    if (questionForm && questionStatus) {
+      questionForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        questionStatus.style.display = "block";
+      });
+    }
+  </script>
 
   <footer>
     <div class="footer-brand">
