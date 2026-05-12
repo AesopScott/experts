@@ -298,71 +298,95 @@
     .site-nav-group::after {
       content: "";
       position: absolute;
-      left: var(--bar-left, 36px);
-      right: var(--bar-right, 10px);
-      height: var(--bar-height, 3px);
-      border-radius: 999px;
-      background: linear-gradient(90deg, rgba(184,122,34,0.08), #b87a22 30%, #f7d98b 52%, #b87a22 72%, rgba(184,122,34,0.08));
-      background-size: 220% 100%;
-      opacity: var(--bar-opacity, 0.9);
-      animation: shimmer var(--speed, 5s) ease-in-out infinite;
+      left: var(--bar-left, 24px);
+      right: var(--bar-right, 4px);
+      height: var(--bar-height, 15px);
+      border-radius: 50%;
+      border-top: var(--line-a, 1px) solid rgba(247,217,139,var(--line-alpha,0.76));
+      border-bottom: var(--line-b, 1px) solid rgba(184,122,34,var(--line-alpha-b,0.34));
+      background:
+        radial-gradient(circle at var(--spark-x, 12%) 48%, rgba(255,246,197,0.98) 0 2px, rgba(247,217,139,0.62) 3px, transparent 7px),
+        radial-gradient(circle at calc(var(--spark-x, 12%) + 38%) 58%, rgba(255,246,197,0.72) 0 1px, rgba(247,217,139,0.42) 2px, transparent 6px),
+        linear-gradient(90deg, transparent, rgba(184,122,34,0.22), rgba(255,246,197,0.82), rgba(184,122,34,0.2), transparent);
+      background-size: 100% 100%, 100% 100%, 260% 100%;
+      box-shadow:
+        0 0 8px rgba(247,217,139,0.28),
+        inset 0 1px 0 rgba(255,246,197,0.22);
+      opacity: var(--bar-opacity, 0.86);
+      transform: rotate(var(--arc, -1.2deg)) translateY(var(--shift-y, 0));
+      animation: trailFlow var(--speed, 7s) ease-in-out infinite;
       pointer-events: none;
       z-index: 1;
     }
 
-    .site-nav-group::before { top: var(--bar-top, 4px); }
-    .site-nav-group::after { bottom: var(--bar-bottom, 4px); animation-direction: reverse; }
-
-    @keyframes shimmer {
-      0% { background-position: 180% 0; filter: brightness(0.92); }
-      45% { background-position: 50% 0; filter: brightness(1.2); }
-      100% { background-position: -80% 0; filter: brightness(0.96); }
+    .site-nav-group::before { top: var(--bar-top, -2px); }
+    .site-nav-group::after {
+      bottom: var(--bar-bottom, -2px);
+      --arc: 1.1deg;
+      --shift-y: 0;
+      animation-direction: reverse;
     }
 
-    .style-1 { --bar-height: 2px; --bar-top: 4px; --bar-bottom: 4px; --bar-left: 34px; --bar-opacity: 0.82; --speed: 6s; }
-    .style-2 { --bar-height: 3px; --bar-top: 3px; --bar-bottom: 3px; --bar-left: 30px; --bar-opacity: 0.95; --speed: 5.5s; }
+    @keyframes trailFlow {
+      0% {
+        --spark-x: 8%;
+        background-position: 0 0, 0 0, 180% 0;
+        filter: brightness(0.9);
+      }
+      48% {
+        --spark-x: 62%;
+        background-position: 0 0, 0 0, 40% 0;
+        filter: brightness(1.28);
+      }
+      100% {
+        --spark-x: 92%;
+        background-position: 0 0, 0 0, -120% 0;
+        filter: brightness(0.96);
+      }
+    }
+
+    .style-1 { --bar-height: 12px; --bar-top: -3px; --bar-bottom: -3px; --bar-left: 32px; --bar-opacity: 0.72; --speed: 8s; --line-alpha: 0.58; }
+    .style-2 { --bar-height: 15px; --bar-top: -2px; --bar-bottom: -2px; --bar-left: 28px; --bar-opacity: 0.88; --speed: 7s; }
     .style-3 .site-nav-group::before,
-    .style-3 .site-nav-group::after { height: 5px; filter: blur(0.2px); opacity: 0.7; }
+    .style-3 .site-nav-group::after { height: 18px; filter: blur(0.2px); opacity: 0.78; box-shadow: 0 0 14px rgba(247,217,139,0.38); }
     .style-4 .site-nav-group::before,
     .style-4 .site-nav-group::after {
-      left: 25px;
-      right: 12px;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #f7d98b 22%, #b87a22 48%, #f7d98b 78%, transparent);
-      background-size: 260% 100%;
-      opacity: 0.86;
+      left: 20px;
+      right: 8px;
+      height: 16px;
+      opacity: 0.9;
+      --arc: -2.4deg;
     }
-    .style-5 .site-nav-group::before { top: 6px; transform: rotate(-1.5deg); }
-    .style-5 .site-nav-group::after { bottom: 6px; transform: rotate(1.5deg); }
+    .style-5 .site-nav-group::before { top: 0; transform: rotate(-3deg); }
+    .style-5 .site-nav-group::after { bottom: 0; transform: rotate(2.5deg); }
     .style-6 .site-nav-group::before,
     .style-6 .site-nav-group::after {
-      left: 28px;
-      right: 16px;
-      height: 4px;
-      border: 1px solid rgba(247,217,139,0.32);
-      background: linear-gradient(90deg, rgba(184,122,34,0.12), rgba(247,217,139,0.95), rgba(184,122,34,0.28));
-      background-size: 240% 100%;
+      left: 22px;
+      right: 14px;
+      height: 20px;
+      border-top-color: rgba(247,217,139,0.82);
+      border-bottom-color: rgba(184,122,34,0.46);
     }
     .style-7 .site-nav-group::before,
     .style-7 .site-nav-group::after {
-      left: 42px;
-      right: 18px;
-      height: 2px;
-      box-shadow: 0 0 10px rgba(247,217,139,0.48);
+      left: 36px;
+      right: 10px;
+      height: 13px;
+      box-shadow: 0 0 16px rgba(247,217,139,0.52);
       opacity: 0.9;
     }
     .style-8 .site-nav-group::before,
     .style-8 .site-nav-group::after {
-      left: 22px;
-      right: 22px;
-      height: 3px;
+      left: 16px;
+      right: 16px;
+      height: 20px;
       border-radius: 999px 60% 999px 60%;
       opacity: 0.75;
       animation-duration: 7s;
     }
     .style-9 .site-nav-group::before {
       top: 4px;
-      left: 34px;
+      left: 28px;
       right: 38%;
     }
     .style-9 .site-nav-group::after {
@@ -375,10 +399,10 @@
     }
     .style-10 .site-nav-group::before,
     .style-10 .site-nav-group::after {
-      left: 28px;
-      right: 12px;
-      height: 1px;
-      box-shadow: 0 0 0 1px rgba(247,217,139,0.18), 0 0 14px rgba(247,217,139,0.32);
+      left: 24px;
+      right: 10px;
+      height: 14px;
+      box-shadow: 0 0 0 1px rgba(247,217,139,0.12), 0 0 18px rgba(247,217,139,0.36);
       opacity: 1;
       animation-duration: 4.8s;
     }
@@ -428,13 +452,13 @@
     <section class="intro">
       <div>
         <span class="eyebrow">Navigation accent study</span>
-        <h1>Ten gold shimmer accents for the compact grouped nav.</h1>
-        <p>Each option keeps the current Dark Authority nav layout and adds slow animated curved gold bars above and below the buttons. The goal is a refined accent, not a flashy effect.</p>
+        <h1>Ten horizontal gold light-trail accents for the compact grouped nav.</h1>
+        <p>Each option keeps the current Dark Authority nav layout and adds slow animated horizontal gold filaments above and below the buttons, closer to elegant scrolling light trails than solid UI bars.</p>
       </div>
       <aside class="legend">
         <strong>Same nav, different accent</strong>
         <span>The buttons, labels, dark shell, and four groups stay fixed.</span>
-        <span>Only the gold bars change: thickness, glow, length, curve, and shimmer speed.</span>
+        <span>Only the gold trails change: thickness, glow, length, curve, glints, and scroll speed.</span>
       </aside>
     </section>
 
