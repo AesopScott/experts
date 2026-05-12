@@ -435,7 +435,7 @@
 
     .trail path,
     .trail circle {
-      display: none;
+      display: block;
     }
 
     .trail .glow,
@@ -453,7 +453,7 @@
     }
 
     .trail .core {
-      stroke: url(#goldTrail);
+      stroke: #fff7c8;
       stroke-width: 1.7;
       stroke-dasharray: 42 178;
       animation: pathShimmer 6.8s ease-in-out infinite;
@@ -475,29 +475,21 @@
       animation: dustTwinkle 5.2s ease-in-out infinite;
     }
 
-    .style-1 .line-1,
-    .style-2 .line-2,
-    .style-3 .line-3,
-    .style-4 .line-4,
-    .style-5 .line-5,
-    .style-6 .line-6,
-    .style-7 .line-7,
-    .style-8 .line-8,
-    .style-9 .line-9,
-    .style-10 .line-10 {
-      display: block;
-    }
+    .trail .inactive { display: none; }
 
     .style-1 .trail .core { stroke-width: 1.2; stroke-dasharray: 34 190; animation-duration: 7.8s; }
     .style-2 .trail .core { stroke-width: 1.6; stroke-dasharray: 46 170; animation-duration: 7s; }
     .style-3 .trail .glow { stroke-width: 7; opacity: 0.9; }
+    .style-3 .trail .thread { stroke-width: 1.4; stroke: rgba(247, 217, 139, 0.92); }
+    .style-3 .trail .spark { opacity: 1; filter: drop-shadow(0 0 9px rgba(247, 217, 139, 1)); }
     .style-3 .trail .core {
+      stroke-width: 2.8;
       stroke-dasharray: 72 168;
       animation-duration: var(--core-speed, 7.1s);
       animation-delay: var(--core-delay, 0s);
       animation-timing-function: linear;
     }
-    .style-3 .trail .spark.line-3 {
+    .style-3 .trail .spark {
       animation: sparkTravel var(--spark-speed, 6.4s) linear infinite;
       animation-delay: var(--spark-delay, 0s);
       transform-origin: center;
@@ -626,7 +618,85 @@
 
   <script>
     const template = document.getElementById("nav-template");
-    const trailMarkup = `
+    const trailPaths = {
+      1: `
+        <path class="glow" d="M6 20 C55 19 92 19 130 20 S205 21 235 20"></path>
+        <path class="thread" d="M6 20 C55 19 92 19 130 20 S205 21 235 20"></path>
+        <path class="core" d="M6 20 C55 19 92 19 130 20 S205 21 235 20"></path>
+        <circle class="spark" cx="96" cy="20" r="2.6"></circle>`,
+      2: `
+        <path class="glow" d="M4 23 C34 4 66 11 96 21 S146 29 176 17 S218 10 238 18"></path>
+        <path class="thread" d="M4 23 C34 4 66 11 96 21 S146 29 176 17 S218 10 238 18"></path>
+        <path class="core" d="M4 23 C34 4 66 11 96 21 S146 29 176 17 S218 10 238 18"></path>
+        <circle class="spark" cx="88" cy="20" r="2.7"></circle>
+        <circle class="spark" cx="170" cy="17" r="2.2"></circle>`,
+      3: `
+        <path class="glow" d="M2 20 C52 20 92 20 126 20 S202 20 238 20"></path>
+        <path class="thread" d="M2 20 C52 20 92 20 126 20 S202 20 238 20"></path>
+        <path class="core" d="M2 20 C52 20 92 20 126 20 S202 20 238 20"></path>
+        <circle class="spark" cx="128" cy="20" r="4.8"></circle>`,
+      4: `
+        <path class="glow" d="M2 14 C58 8 104 10 143 20 S201 32 238 25"></path>
+        <path class="thread" d="M2 14 C58 8 104 10 143 20 S201 32 238 25"></path>
+        <path class="thread" d="M2 22 C64 18 105 16 142 20 S199 23 238 14"></path>
+        <path class="core" d="M2 18 C58 12 104 13 143 20 S201 28 238 20"></path>
+        <circle class="spark" cx="82" cy="17" r="2.2"></circle>
+        <circle class="spark" cx="174" cy="22" r="2.4"></circle>`,
+      5: `
+        <path class="glow" d="M8 25 C42 7 83 21 116 23 S184 10 232 12"></path>
+        <path class="thread" d="M8 25 C42 7 83 21 116 23 S184 10 232 12"></path>
+        <path class="core" d="M8 25 C42 7 83 21 116 23 S184 10 232 12"></path>
+        <circle class="spark" cx="94" cy="23" r="2.8"></circle>`,
+      6: `
+        <path class="glow" d="M5 20 C54 20 86 20 118 20 S183 20 235 20"></path>
+        <path class="thread" d="M5 20 C54 20 86 20 118 20 S183 20 235 20"></path>
+        <path class="core" d="M5 20 C54 20 86 20 118 20 S183 20 235 20"></path>
+        <circle class="spark" cx="126" cy="20" r="3.6"></circle>`,
+      7: `
+        <path class="glow" d="M4 16 C40 34 77 4 116 23 S183 14 236 26"></path>
+        <path class="thread" d="M4 16 C40 34 77 4 116 23 S183 14 236 26"></path>
+        <path class="core" d="M4 16 C40 34 77 4 116 23 S183 14 236 26"></path>
+        <circle class="spark" cx="161" cy="18" r="2.5"></circle>
+        <circle class="dust" cx="42" cy="12" r="0.8"></circle>
+        <circle class="dust" cx="58" cy="9" r="0.7"></circle>
+        <circle class="dust" cx="178" cy="15" r="0.8"></circle>
+        <circle class="dust" cx="195" cy="17" r="0.7"></circle>`,
+      8: `
+        <path class="glow" d="M2 13 C43 30 67 11 110 13 S185 28 238 18"></path>
+        <path class="thread" d="M2 13 C43 30 67 11 110 13 S185 28 238 18"></path>
+        <path class="core" d="M2 13 C43 30 67 11 110 13 S185 28 238 18"></path>
+        <circle class="spark" cx="68" cy="17" r="2.7"></circle>
+        <circle class="spark" cx="183" cy="23" r="2.7"></circle>`,
+      9: `
+        <path class="glow" d="M4 14 C42 6 82 31 122 20 S189 10 236 23"></path>
+        <path class="thread" d="M4 14 C42 6 82 31 122 20 S189 10 236 23"></path>
+        <path class="core" d="M4 14 C42 6 82 31 122 20 S189 10 236 23"></path>
+        <circle class="spark" cx="136" cy="20" r="3"></circle>`,
+      10: `
+        <path class="glow" d="M4 20 C44 12 71 27 108 22 S160 28 178 16 S199 12 204 23 S221 15 236 18"></path>
+        <path class="thread" d="M4 20 C44 12 71 27 108 22 S160 28 178 16 S199 12 204 23 S221 15 236 18"></path>
+        <path class="core" d="M4 20 C44 12 71 27 108 22 S160 28 178 16 S199 12 204 23 S221 15 236 18"></path>
+        <circle class="spark" cx="62" cy="22" r="2.4"></circle>
+        <circle class="spark" cx="171" cy="17" r="2"></circle>`
+    };
+
+    function trailMarkup(styleNumber, position) {
+      return `
+      <svg class="trail ${position}" viewBox="0 0 240 40" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="goldTrail${styleNumber}${position}" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0%" stop-color="#8f5c16" stop-opacity="0.12"></stop>
+            <stop offset="34%" stop-color="#d79a2e" stop-opacity="0.88"></stop>
+            <stop offset="52%" stop-color="#fff7c8" stop-opacity="1"></stop>
+            <stop offset="72%" stop-color="#d79a2e" stop-opacity="0.9"></stop>
+            <stop offset="100%" stop-color="#8f5c16" stop-opacity="0.16"></stop>
+          </linearGradient>
+        </defs>
+        ${trailPaths[styleNumber].replaceAll('url(#goldTrail)', `url(#goldTrail${styleNumber}${position})`)}
+      </svg>`;
+    }
+
+    const legacyTrailMarkup = `
       <svg class="trail trail-top" viewBox="0 0 240 40" preserveAspectRatio="none" aria-hidden="true">
         <defs>
           <linearGradient id="goldTrail" x1="0" x2="1" y1="0" y2="0">
@@ -697,11 +767,13 @@
         <circle class="spark line-10" cx="171" cy="17" r="2"></circle>
       </svg>
     `;
-    document.querySelectorAll(".mockup .canvas").forEach((canvas) => {
+    document.querySelectorAll(".mockup").forEach((mockup, index) => {
+      const canvas = mockup.querySelector(".canvas");
+      const styleNumber = index + 1;
       canvas.append(template.content.cloneNode(true));
       canvas.querySelectorAll(".site-nav-items").forEach((items) => {
-        items.insertAdjacentHTML("afterbegin", trailMarkup);
-        items.insertAdjacentHTML("beforeend", trailMarkup.replace("trail-top", "trail-bottom"));
+        items.insertAdjacentHTML("afterbegin", trailMarkup(styleNumber, "trail-top"));
+        items.insertAdjacentHTML("beforeend", trailMarkup(styleNumber, "trail-bottom"));
       });
     });
   </script>
