@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>25experts — Expert Program Application</title>
+  <style>
+    :root {
+      --ink:    #101615;
+      --muted:  #66716e;
+      --paper:  #fbfaf6;
+      --panel:  #ffffff;
+      --line:   #dfe5df;
+      --green:  #145f47;
+      --green2: #1a7a5e;
+      --green3: #e5f2e8;
+      --gold:   #b87a22;
+      --gold3:  #fdf3e3;
+      --error:  #c0392b;
+      --dark:   #0f1716;
+      --shadow: 0 18px 46px rgba(17,31,25,0.12);
+      --shadow-sm: 0 4px 16px rgba(17,31,25,0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .mission-bar {
+      padding: 9px 18px;
+      background: var(--green);
+      color: rgba(255,255,255,0.9);
+      text-align: center;
+      font-size: 13px;
+      font-weight: 650;
+    }
+    .mission-bar strong { color: #fff; }
+    .mission-bar a { color: #fff; text-decoration: underline; margin-left: 6px; }
+
+    .nav {
+      position: sticky; top: 0; z-index: 20;
+      display: flex; align-items: center; justify-content: space-between; gap: 18px;
+      padding: 15px clamp(18px,5vw,68px);
+      border-bottom: 1px solid rgba(221,229,223,0.86);
+      background: rgba(251,250,246,0.94);
+      backdrop-filter: blur(16px);
+    }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 900; }
+    .brand-mark {
+      width: 38px; height: 38px; display: grid; place-items: center;
+      border-radius: 8px; background: var(--green); color: #fff; font-size: 12px;
+    }
+    .brand-text span {
+      display: block; color: var(--muted);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 18px;
+      color: var(--muted); font-size: 14px; font-weight: 700;
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 42px; padding: 0 20px; border-radius: 8px;
+      font-weight: 800; font-size: 14px; cursor: pointer;
+      transition: opacity 0.15s, transform 0.15s; white-space: nowrap;
+      border: none;
+    }
+    .btn:hover { opacity: 0.87; transform: translateY(-1px); }
+    .btn-green { background: var(--green); color: #fff; }
+    .btn-outline { background: transparent; color: var(--green); border: 1.5px solid var(--green); }
+    .btn-lg { min-height: 52px; padding: 0 32px; font-size: 16px; border-radius: 10px; }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 64px clamp(18px,5vw,68px) 48px;
+      border-bottom: 1px solid var(--line);
+    }
+    .hero-inner {
+      width: min(760px,100%); margin: 0 auto;
+    }
+    .eyebrow {
+      display: inline-flex; padding: 7px 14px; border-radius: 999px;
+      background: var(--green3); color: var(--green);
+      font-size: 13px; font-weight: 850; letter-spacing: 0.07em; text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: clamp(34px,5vw,58px); line-height: 1; letter-spacing: -0.02em;
+      margin: 0 0 18px;
+    }
+    .hero p {
+      font-size: 17px; color: var(--muted); max-width: 620px; line-height: 1.6; margin: 0;
+    }
+
+    .steps-strip {
+      display: flex; flex-wrap: wrap; gap: 0;
+      margin-top: 40px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--panel);
+    }
+    .step {
+      flex: 1; min-width: 160px;
+      padding: 16px 20px;
+      border-right: 1px solid var(--line);
+      font-size: 13px;
+    }
+    .step:last-child { border-right: none; }
+    .step-num {
+      display: inline-flex; width: 22px; height: 22px; border-radius: 50%;
+      background: var(--green); color: #fff;
+      font-size: 11px; font-weight: 900;
+      align-items: center; justify-content: center;
+      margin-bottom: 8px;
+    }
+    .step strong { display: block; font-size: 13px; margin-bottom: 3px; }
+    .step span { color: var(--muted); font-size: 12px; }
+
+    /* ── FORM LAYOUT ── */
+    .form-wrap {
+      padding: 56px clamp(18px,5vw,68px) 80px;
+    }
+    .form-inner {
+      width: min(760px,100%); margin: 0 auto;
+    }
+
+    .form-section {
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--line);
+    }
+    .form-section:last-of-type { border-bottom: none; }
+
+    .section-label {
+      font-size: 11px; font-weight: 900; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--green);
+      margin-bottom: 6px; display: block;
+    }
+    .section-label.gold { color: var(--gold); }
+    .form-section h2 {
+      font-size: clamp(20px,3vw,28px); letter-spacing: -0.02em; line-height: 1;
+      margin: 0 0 6px;
+    }
+    .form-section > p {
+      font-size: 14px; color: var(--muted); margin: 0 0 28px; line-height: 1.6;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .field-grid.single { grid-template-columns: 1fr; }
+
+    .field {
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .field label {
+      font-size: 13px; font-weight: 800; color: var(--ink);
+    }
+    .field label span {
+      color: var(--muted); font-weight: 600; margin-left: 4px;
+    }
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--green);
+    }
+    .field textarea {
+      resize: vertical;
+      min-height: 100px;
+      line-height: 1.6;
+    }
+    .field-hint {
+      font-size: 12px; color: var(--muted); line-height: 1.4;
+    }
+
+    /* ── DOMAIN PICKER ── */
+    .domain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .domain-option { display: none; }
+    .domain-label {
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px 16px;
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel);
+      cursor: pointer;
+      font-size: 13px; font-weight: 750;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .domain-option:checked + .domain-label {
+      border-color: var(--green);
+      background: var(--green3);
+      color: var(--green);
+    }
+    .domain-dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+    .domain-dot.ai         { background: #145f47; }
+    .domain-dot.finance    { background: #b87a22; }
+    .domain-dot.marketing  { background: #245a7d; }
+    .domain-dot.leadership { background: #7b4b92; }
+    .domain-dot.design     { background: #bf563f; }
+
+    /* ── TIER PICKER ── */
+    .tier-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .tier-option { display: none; }
+    .tier-label {
+      display: flex; flex-direction: column; gap: 4px;
+      padding: 16px;
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .tier-option:checked + .tier-label {
+      border-color: var(--green);
+      background: var(--green3);
+    }
+    .tier-label strong { font-size: 14px; }
+    .tier-label span { font-size: 12px; color: var(--muted); line-height: 1.4; }
+
+    /* ── AGREEMENT ── */
+    .agree-list {
+      display: grid; gap: 12px; margin: 20px 0;
+    }
+    .agree-item {
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+    .agree-item input[type="checkbox"] {
+      width: 18px; height: 18px; flex-shrink: 0;
+      margin-top: 2px; accent-color: var(--green); cursor: pointer;
+    }
+    .agree-item label {
+      font-size: 14px; color: var(--muted); line-height: 1.5; cursor: pointer;
+    }
+    .agree-item label strong { color: var(--ink); }
+
+    /* ── SUBMIT ── */
+    .submit-area {
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid var(--line);
+      display: flex; flex-direction: column; gap: 12px; align-items: flex-start;
+    }
+    .submit-note {
+      font-size: 13px; color: var(--muted); line-height: 1.5;
+    }
+    .submit-btn {
+      min-width: 240px;
+    }
+
+    /* ── THANK YOU STATE ── */
+    .thankyou {
+      display: none;
+      padding: 64px clamp(18px,5vw,68px);
+      text-align: center;
+    }
+    .thankyou-inner { width: min(600px,100%); margin: 0 auto; }
+    .thankyou-icon { font-size: 56px; margin-bottom: 24px; display: block; }
+    .thankyou h2 { font-size: clamp(28px,4vw,44px); letter-spacing: -0.02em; margin: 0 0 16px; }
+    .thankyou p { font-size: 17px; color: var(--muted); line-height: 1.6; margin: 0 0 32px; }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 28px clamp(18px,5vw,68px);
+      color: var(--muted); font-size: 13px; text-align: center;
+    }
+
+    @media (max-width: 640px) {
+      .field-grid { grid-template-columns: 1fr; }
+      .tier-grid   { grid-template-columns: 1fr; }
+      .steps-strip { flex-direction: column; }
+      .step        { border-right: none; border-bottom: 1px solid var(--line); }
+      .step:last-child { border-bottom: none; }
+    }
+    @media (max-width: 900px) {
+      .nav-links a:not(.btn) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="mission-bar">
+    <strong>Aesop Academy</strong> is a 501(c)(3) nonprofit advancing AI literacy for youth and working professionals.
+    <a href="https://aesopacademy.org">aesopacademy.org</a>
+  </div>
+
+  <header class="nav">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">25</span>
+      <span class="brand-text">
+        25experts
+        <span>by Aesop Academy</span>
+      </span>
+    </a>
+    <nav class="nav-links" aria-label="Page navigation">
+      <a href="index.html">Home</a>
+      <a href="join.html">Follow the Experts</a>
+      <a href="experts.html">Expert Program</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="videos.html">Videos</a>
+      <a href="expertprofiles.html">Profiles</a>
+      <a href="forums.html">Forums</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">Expert Program Application</div>
+      <h1>Apply to teach on 25experts.</h1>
+      <p>Every creator starts as a Contributor. Tell us about your work, your domain, and why you want to be part of a nonprofit AI learning platform built around patron trust — not algorithms.</p>
+
+      <div class="steps-strip">
+        <div class="step">
+          <div class="step-num">1</div>
+          <strong>Submit this form</strong>
+          <span>Takes about 10 minutes</span>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <strong>We review your application</strong>
+          <span>Usually within 5 business days</span>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <strong>Intro call</strong>
+          <span>30 minutes with the team</span>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <strong>Onboard as a Contributor</strong>
+          <span>Start publishing and building your patron base</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORM -->
+  <div class="form-wrap" id="form-wrap">
+    <div class="form-inner">
+      <form id="application-form" onsubmit="handleSubmit(event)" novalidate>
+
+        <!-- SECTION 1: About You -->
+        <div class="form-section">
+          <span class="section-label">Section 1 of 5</span>
+          <h2>About you</h2>
+          <p>Basic contact information. This is how we'll reach you.</p>
+          <div class="field-grid">
+            <div class="field">
+              <label for="fname">First name</label>
+              <input type="text" id="fname" name="fname" placeholder="Maya" required>
+            </div>
+            <div class="field">
+              <label for="lname">Last name</label>
+              <input type="text" id="lname" name="lname" placeholder="Chen" required>
+            </div>
+            <div class="field">
+              <label for="email">Email address</label>
+              <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            </div>
+            <div class="field">
+              <label for="location">Where are you based? <span>(optional)</span></label>
+              <input type="text" id="location" name="location" placeholder="City, Country">
+            </div>
+            <div class="field field-grid single">
+              <label for="website">Website or portfolio <span>(optional)</span></label>
+              <input type="url" id="website" name="website" placeholder="https://yoursite.com">
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: Your Domain -->
+        <div class="form-section">
+          <span class="section-label">Section 2 of 5</span>
+          <h2>Your domain</h2>
+          <p>25experts is organized into five verticals. Select the one that best matches your expertise. Each vertical has its own expert cohort — you're applying to one.</p>
+
+          <div class="domain-grid">
+            <div>
+              <input type="radio" class="domain-option" id="domain-ai" name="domain" value="ai" required>
+              <label class="domain-label" for="domain-ai">
+                <span class="domain-dot ai"></span>AI &amp; Automation
+              </label>
+            </div>
+            <div>
+              <input type="radio" class="domain-option" id="domain-finance" name="domain" value="finance">
+              <label class="domain-label" for="domain-finance">
+                <span class="domain-dot finance"></span>Finance &amp; Investing
+              </label>
+            </div>
+            <div>
+              <input type="radio" class="domain-option" id="domain-marketing" name="domain" value="marketing">
+              <label class="domain-label" for="domain-marketing">
+                <span class="domain-dot marketing"></span>Marketing, Sales &amp; Growth
+              </label>
+            </div>
+            <div>
+              <input type="radio" class="domain-option" id="domain-leadership" name="domain" value="leadership">
+              <label class="domain-label" for="domain-leadership">
+                <span class="domain-dot leadership"></span>Leadership &amp; Management
+              </label>
+            </div>
+            <div>
+              <input type="radio" class="domain-option" id="domain-design" name="domain" value="design">
+              <label class="domain-label" for="domain-design">
+                <span class="domain-dot design"></span>Design, Creative &amp; Gaming
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: Your Content -->
+        <div class="form-section">
+          <span class="section-label">Section 3 of 5</span>
+          <h2>Your content</h2>
+          <p>Share links to your existing work so we can understand your teaching style and subject matter. We're looking at quality and usefulness — not follower counts.</p>
+          <div class="field-grid single">
+            <div class="field">
+              <label for="content1">Best example of your work <span>(link)</span></label>
+              <input type="url" id="content1" name="content1" placeholder="https://youtube.com/watch?v=..." required>
+              <span class="field-hint">A video, blog post, course, or talk that best represents your teaching.</span>
+            </div>
+            <div class="field">
+              <label for="content2">Second example <span>(optional)</span></label>
+              <input type="url" id="content2" name="content2" placeholder="https://...">
+            </div>
+            <div class="field">
+              <label for="content3">Third example <span>(optional)</span></label>
+              <input type="url" id="content3" name="content3" placeholder="https://...">
+            </div>
+            <div class="field">
+              <label for="platforms">Where do you currently publish? <span>(optional)</span></label>
+              <input type="text" id="platforms" name="platforms" placeholder="YouTube, Substack, Patreon, LinkedIn...">
+              <span class="field-hint">List any platforms where you already have an audience or publish regularly.</span>
+            </div>
+            <div class="field">
+              <label for="audience">Rough combined audience size <span>(optional — informational only)</span></label>
+              <select id="audience" name="audience">
+                <option value="">Prefer not to say</option>
+                <option value="under-1k">Under 1,000</option>
+                <option value="1k-5k">1,000 – 5,000</option>
+                <option value="5k-25k">5,000 – 25,000</option>
+                <option value="25k-100k">25,000 – 100,000</option>
+                <option value="100k+">100,000+</option>
+              </select>
+              <span class="field-hint">This doesn't affect your application. We don't have follower minimums.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 4: Your Why -->
+        <div class="form-section">
+          <span class="section-label">Section 4 of 5</span>
+          <h2>Your why</h2>
+          <p>Short answers. We want to understand how you think about teaching and why 25experts is the right home for your work.</p>
+          <div class="field-grid single">
+            <div class="field">
+              <label for="why-platform">What do you want to teach, and who is it for?</label>
+              <textarea id="why-platform" name="why-platform" placeholder="Describe the specific problems you help people solve and who your ideal learner is..." required></textarea>
+            </div>
+            <div class="field">
+              <label for="why-nonprofit">Why does the nonprofit mission matter to you? <span>(optional)</span></label>
+              <textarea id="why-nonprofit" name="why-nonprofit" placeholder="25experts operates as a program of Aesop Academy, a 501(c)(3) nonprofit. Tell us why that structure resonates with you — or if it doesn't, that's okay too..."></textarea>
+            </div>
+            <div class="field">
+              <label for="patreon-migration">Do you have an existing paid community or patron base you'd consider migrating? <span>(optional)</span></label>
+              <textarea id="patreon-migration" name="patreon-migration" style="min-height:72px" placeholder="Patreon, Substack paid, cohort courses, Discord memberships, etc. No pressure either way."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 5: Agreements -->
+        <div class="form-section">
+          <span class="section-label">Section 5 of 5</span>
+          <h2>A few commitments</h2>
+          <p>These aren't legal agreements — just alignment checks before we talk. A full creator agreement comes later if we move forward.</p>
+          <div class="agree-list">
+            <div class="agree-item">
+              <input type="checkbox" id="agree-quality" name="agree-quality" required>
+              <label for="agree-quality"><strong>I care about teaching quality over reach.</strong> I understand that 25experts ranks content by learner outcomes and patron retention — not follower counts or paid placement.</label>
+            </div>
+            <div class="agree-item">
+              <input type="checkbox" id="agree-mission" name="agree-mission" required>
+              <label for="agree-mission"><strong>I support the access mission.</strong> I understand that 25experts maintains free and affordable access pathways as part of the Aesop Academy nonprofit mission, and I'm aligned with that.</label>
+            </div>
+            <div class="agree-item">
+              <input type="checkbox" id="agree-original" name="agree-original" required>
+              <label for="agree-original"><strong>My content is original.</strong> The work I publish on 25experts will be my own — not repurposed from other platforms without permission, not AI-generated without meaningful expert contribution.</label>
+            </div>
+            <div class="agree-item">
+              <input type="checkbox" id="agree-conduct" name="agree-conduct" required>
+              <label for="agree-conduct"><strong>I'll treat the community well.</strong> I'll respond to patron questions, engage in the forum in good faith, and uphold the community standards of the platform.</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBMIT -->
+        <div class="submit-area">
+          <button type="submit" class="btn btn-green btn-lg submit-btn">Submit application</button>
+          <p class="submit-note">We review every application personally and respond within 5 business days. If we want to move forward, we'll schedule a 30-minute intro call. Form submissions are not commitments — no contracts, no obligations.</p>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- THANK YOU -->
+  <div class="thankyou" id="thankyou">
+    <div class="thankyou-inner">
+      <span class="thankyou-icon">✅</span>
+      <h2>Application received.</h2>
+      <p>Thanks for applying to 25experts. We review every application personally and will be in touch within 5 business days. If we want to move forward, we'll reach out to schedule a 30-minute intro call.</p>
+      <a href="experts.html" class="btn btn-green btn-lg">Back to the Expert Program</a>
+    </div>
+  </div>
+
+  <footer>
+    <span>© 2026 25experts.com · A project of <a href="https://aesopacademy.org" style="color:var(--green);font-weight:700;">Aesop Academy</a></span>
+  </footer>
+
+  <script>
+    function handleSubmit(e) {
+      e.preventDefault();
+      const form = document.getElementById('application-form');
+      const wrap = document.getElementById('form-wrap');
+      const ty   = document.getElementById('thankyou');
+
+      // Basic validation
+      const required = form.querySelectorAll('[required]');
+      let valid = true;
+      required.forEach(el => {
+        if (el.type === 'checkbox' && !el.checked) { valid = false; el.closest('.agree-item').style.outline = '2px solid #c0392b'; }
+        else if (el.type === 'radio') {
+          const group = form.querySelectorAll(`[name="${el.name}"]`);
+          const checked = [...group].some(r => r.checked);
+          if (!checked) { valid = false; }
+        }
+        else if (!el.value.trim()) { valid = false; el.style.borderColor = '#c0392b'; }
+        else { el.style.borderColor = ''; }
+      });
+
+      if (!valid) {
+        form.querySelector('[required]:invalid, [required]')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      wrap.style.display = 'none';
+      ty.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+
+</body>
+</html>
