@@ -93,9 +93,19 @@
     }
   }
 
+  function renderVersionBadge() {
+    const meta = document.querySelector('meta[name="page-version"]');
+    if (!meta) return;
+    const badge = document.createElement("div");
+    badge.textContent = meta.getAttribute("content");
+    badge.style.cssText = "position:fixed;bottom:8px;right:10px;font-size:10px;font-family:monospace;color:rgba(0,0,0,.18);z-index:9999;pointer-events:none;letter-spacing:.04em;user-select:none;";
+    document.body.appendChild(badge);
+  }
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", renderSiteNav);
+    document.addEventListener("DOMContentLoaded", () => { renderSiteNav(); renderVersionBadge(); });
   } else {
     renderSiteNav();
+    renderVersionBadge();
   }
 })();
