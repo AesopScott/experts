@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>25experts.com — AI Literacy for Everyone, Everywhere</title>
+  <style>
+    :root {
+      --ink:    #111714;
+      --muted:  #5a6360;
+      --line:   #dfe4de;
+      --paper:  #f8f7f3;
+      --panel:  #ffffff;
+      --green:  #0d5c45;
+      --green2: #178a68;
+      --green3: #e8f4ef;
+      --mint:   #d2ede3;
+      --gold:   #b87d1a;
+      --blue:   #1c4b85;
+      --shadow: 0 22px 56px rgba(14,38,28,0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+      background: var(--paper); color: var(--ink); line-height: 1.55;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── BANNER ── */
+    .np-banner {
+      background: var(--green); color: rgba(255,255,255,0.9);
+      text-align: center; font-size: 0.8rem; padding: 9px 18px; letter-spacing: 0.02em;
+    }
+    .np-banner strong { color: #fff; }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between; gap: 24px;
+      padding: 14px clamp(18px,5vw,64px);
+      background: rgba(248,247,243,0.94); border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(16px);
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark {
+      width: 36px; height: 36px; display: grid; place-items: center;
+      background: var(--green); color: #fff; border-radius: 9px;
+      font-weight: 900; font-size: 0.72rem; letter-spacing: -0.03em; flex-shrink: 0;
+    }
+    .brand-text strong { display: block; font-size: 0.95rem; font-weight: 800; }
+    .brand-text span { display: block; font-size: 0.7rem; color: var(--muted); letter-spacing: 0.04em; }
+    .nav-links { display: flex; align-items: center; gap: 22px; font-size: 0.875rem; color: var(--muted); }
+    .nav-links a:hover { color: var(--ink); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 42px; padding: 0 20px; border-radius: 8px;
+      font-weight: 700; font-size: 0.875rem; cursor: pointer; white-space: nowrap;
+      transition: opacity 0.18s, transform 0.15s;
+    }
+    .btn:hover { opacity: 0.87; transform: translateY(-1px); }
+    .btn-primary   { background: var(--green); color: #fff; }
+    .btn-secondary { background: var(--panel); color: var(--green); border: 1.5px solid var(--line); }
+    .btn-ghost     { background: rgba(255,255,255,0.13); color: #fff; border: 1.5px solid rgba(255,255,255,0.36); }
+    .btn-white     { background: #fff; color: var(--ink); }
+    .btn-outline-white { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,0.5); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 92vh; display: grid; align-items: center;
+      background:
+        linear-gradient(108deg, rgba(6,22,16,0.93) 0%, rgba(6,22,16,0.68) 52%, rgba(6,22,16,0.28) 100%),
+        url("https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1800&q=80")
+        center / cover no-repeat;
+      color: #fff;
+    }
+    .hero-inner {
+      width: min(1160px, calc(100% - 36px)); margin: 0 auto; padding: 80px 0;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 999px; background: rgba(255,255,255,0.1);
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.07em;
+      text-transform: uppercase; margin-bottom: 24px;
+    }
+    .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: #5ddfb0; flex-shrink: 0; }
+    .hero h1 {
+      max-width: 880px;
+      font-size: clamp(2.8rem, 7.5vw, 6.2rem);
+      line-height: 0.93; letter-spacing: -0.03em; margin-bottom: 24px;
+    }
+    .hero h1 em { font-style: normal; color: #5ddfb0; }
+    .hero-desc {
+      max-width: 600px; margin-bottom: 36px;
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+      color: rgba(255,255,255,0.82); line-height: 1.7;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 64px; }
+    .btn-hero { font-size: 1rem; padding: 0 28px; min-height: 52px; }
+
+    .hero-strip {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      max-width: 880px; border-radius: 10px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.2); gap: 1px;
+      background: rgba(255,255,255,0.16);
+    }
+    .hero-stat {
+      padding: 18px 20px; background: rgba(255,255,255,0.1); backdrop-filter: blur(14px);
+    }
+    .hero-stat strong { display: block; font-size: 1.5rem; line-height: 1.1; }
+    .hero-stat span { display: block; margin-top: 5px; font-size: 0.78rem; color: rgba(255,255,255,0.7); }
+
+    /* ── LAYOUT ── */
+    .section { padding: 80px clamp(18px,5vw,64px); }
+    .section-band { background: var(--green3); }
+    .inner { width: min(1160px,100%); margin: 0 auto; }
+    .overline {
+      display: block; margin-bottom: 10px;
+      font-size: 0.74rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--green2);
+    }
+    h2 {
+      font-size: clamp(1.75rem,3.8vw,3rem);
+      line-height: 1; letter-spacing: -0.02em; margin-bottom: 14px;
+    }
+    .lead { font-size: 1.05rem; color: var(--muted); max-width: 620px; line-height: 1.65; }
+
+    /* ── MISSION ── */
+    .mission-split {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+    }
+    .mission-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 32px; }
+    .mstat {
+      padding: 18px 20px; background: var(--panel);
+      border: 1px solid var(--line); border-radius: 10px;
+    }
+    .mstat strong { display: block; font-size: 0.88rem; font-weight: 900; color: var(--green); margin-bottom: 5px; }
+    .mstat span { font-size: 0.81rem; color: var(--muted); line-height: 1.5; }
+    .mission-image {
+      border-radius: 14px; overflow: hidden; aspect-ratio: 4/3;
+      background:
+        linear-gradient(160deg, rgba(13,92,69,0.88), rgba(13,92,69,0.42)),
+        url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80")
+        center / cover no-repeat;
+      display: flex; align-items: flex-end; padding: 30px;
+    }
+    .mission-pull {
+      font-size: 1.12rem; font-weight: 700; color: #fff; line-height: 1.55;
+      border-left: 3px solid #5ddfb0; padding-left: 16px;
+    }
+
+    /* ── DOMAINS ── */
+    .domains-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 14px; margin-top: 36px; }
+    .domain-card {
+      padding: 26px 18px; border-radius: 12px; text-align: center;
+      border: 1px solid var(--line); background: var(--panel);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .domain-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+    .domain-icon { font-size: 2rem; margin-bottom: 12px; }
+    .domain-card h3 { font-size: 0.87rem; font-weight: 800; margin-bottom: 6px; line-height: 1.3; }
+    .domain-card span { font-size: 0.74rem; color: var(--muted); }
+    .domain-count {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--green3); color: var(--green);
+      font-size: 0.68rem; font-weight: 900; margin-top: 10px;
+    }
+
+    /* ── TWO PATHS ── */
+    .paths-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 36px; }
+    .path-card {
+      padding: 40px 36px; border-radius: 14px;
+      display: flex; flex-direction: column; gap: 14px;
+      min-height: 340px;
+    }
+    .path-card.learner { background: var(--green); color: #fff; }
+    .path-card.expert  { background: var(--ink);   color: #fff; }
+    .path-label {
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em;
+      text-transform: uppercase; opacity: 0.65;
+    }
+    .path-card h3 {
+      font-size: clamp(1.4rem,2.5vw,2rem); line-height: 1.1; font-weight: 900;
+    }
+    .path-card > p { font-size: 0.95rem; opacity: 0.8; line-height: 1.65; flex: 1; }
+    .path-list { list-style: none; display: grid; gap: 7px; }
+    .path-list li {
+      font-size: 0.84rem; opacity: 0.78;
+      display: flex; gap: 8px; align-items: flex-start;
+    }
+    .path-list li::before { content: "→"; opacity: 0.55; flex-shrink: 0; }
+    .path-cta { margin-top: 6px; }
+
+    /* ── GLOBAL BAND ── */
+    .global-band {
+      background:
+        linear-gradient(90deg, rgba(6,22,16,0.96), rgba(6,22,16,0.78)),
+        url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1800&q=80")
+        center / cover no-repeat;
+      color: #fff; padding: 80px clamp(18px,5vw,64px);
+    }
+    .global-inner { width: min(1160px,100%); margin: 0 auto; }
+    .global-band .overline { color: #5ddfb0; }
+    .global-band h2 { color: #fff; max-width: 800px; margin-bottom: 16px; }
+    .global-band .lead { color: rgba(255,255,255,0.74); max-width: 700px; margin-bottom: 44px; }
+    .global-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    .gstat {
+      padding: 26px 22px;
+      border: 1px solid rgba(255,255,255,0.14); border-radius: 10px;
+      background: rgba(255,255,255,0.07);
+    }
+    .gstat strong {
+      display: block; font-size: 2.2rem; font-weight: 900;
+      color: #5ddfb0; line-height: 1; margin-bottom: 10px;
+    }
+    .gstat span { font-size: 0.85rem; color: rgba(255,255,255,0.7); line-height: 1.6; }
+
+    /* ── CTA ── */
+    .cta-section {
+      text-align: center; padding: 90px clamp(18px,5vw,64px); background: var(--paper);
+    }
+    .cta-section .overline { color: var(--green2); }
+    .cta-section h2 { max-width: 680px; margin: 0 auto 16px; }
+    .cta-section p {
+      color: var(--muted); font-size: 1.05rem;
+      max-width: 560px; margin: 0 auto 32px; line-height: 1.7;
+    }
+    .cta-group { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 24px clamp(18px,5vw,64px); border-top: 1px solid var(--line);
+      font-size: 0.8rem; color: var(--muted);
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--ink); }
+    .footer-mark {
+      width: 24px; height: 24px; display: grid; place-items: center;
+      background: var(--green); color: #fff; border-radius: 6px;
+      font-weight: 900; font-size: 0.62rem; letter-spacing: -0.03em;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hero { min-height: 760px; }
+      .hero-strip { grid-template-columns: repeat(2,1fr); }
+      .mission-split { grid-template-columns: 1fr; gap: 40px; }
+      .domains-grid { grid-template-columns: repeat(3,1fr); }
+      .paths-grid { grid-template-columns: 1fr; }
+      .global-stats { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .hero h1 { font-size: 2.4rem; }
+      .hero-strip { grid-template-columns: 1fr; }
+      .domains-grid { grid-template-columns: repeat(2,1fr); }
+      .mission-stats { grid-template-columns: 1fr; }
+      .path-card { padding: 28px 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BANNER -->
+  <div class="np-banner">
+    <strong>Aesop Academy</strong> — 501(c)(3) non-profit advancing AI literacy education for youth and working professionals worldwide.
+  </div>
+
+  <!-- NAV -->
+  <header class="nav">
+    <a class="brand" href="#">
+      <span class="brand-mark">25</span>
+      <div class="brand-text">
+        <strong>25experts.com</strong>
+        <span>by Aesop Academy</span>
+      </div>
+    </a>
+    <nav class="nav-links" aria-label="Site navigation">
+      <a href="#mission">Mission</a>
+      <a href="#domains">Domains</a>
+      <a href="subscriber.html">Learn AI</a>
+      <a href="experts.html">Join as Expert</a>
+      <a class="btn btn-primary" href="subscriber.html">Get started free</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" aria-label="Hero">
+    <div class="hero-inner">
+      <div class="eyebrow"><span class="dot"></span> Aesop Academy · 501(c)(3) Non-Profit</div>
+      <h1>AI literacy<br>for <em>everyone.</em><br>Everywhere.</h1>
+      <p class="hero-desc">25experts.com is Aesop Academy's flagship platform — 25 verified AI educators, 5 domains, one mission: close the gap between where AI knowledge lives and who can reach it.</p>
+      <div class="hero-actions">
+        <a class="btn btn-white btn-hero" href="subscriber.html">Start learning free</a>
+        <a class="btn btn-ghost btn-hero" href="experts.html">Apply as a founding expert</a>
+      </div>
+      <div class="hero-strip">
+        <div class="hero-stat">
+          <strong>25</strong>
+          <span>Verified founding experts across 5 domains</span>
+        </div>
+        <div class="hero-stat">
+          <strong>5 × 5</strong>
+          <span>5 domains · 5 founding experts each — the name is structural</span>
+        </div>
+        <div class="hero-stat">
+          <strong>501(c)(3)</strong>
+          <span>Non-profit — access over profit, always</span>
+        </div>
+        <div class="hero-stat">
+          <strong>Free</strong>
+          <span>Discovery free · Paid depth · Scholarships always available</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSION -->
+  <section class="section" id="mission">
+    <div class="inner">
+      <div class="mission-split">
+        <div>
+          <span class="overline">Aesop Academy</span>
+          <h2>The AI literacy gap is the defining challenge of our time.</h2>
+          <p class="lead">The people who understand AI will shape what comes next. The people who don't will be shaped by it. Aesop Academy exists to close that gap — for youth, for working professionals, and for anyone who needs a trusted teacher.</p>
+          <p class="lead" style="margin-top:16px;">25experts.com is how we reach the world at scale: independent educators with real expertise, content organized by profession, and a live learning community built on direct access — not algorithms.</p>
+          <div class="mission-stats">
+            <div class="mstat">
+              <strong>Youth</strong>
+              <span>Free and sponsored access for students and young learners globally</span>
+            </div>
+            <div class="mstat">
+              <strong>Professionals</strong>
+              <span>Practical AI fluency for working people navigating the fastest disruption in history</span>
+            </div>
+            <div class="mstat">
+              <strong>Educators</strong>
+              <span>Supporting the independent teachers doing this work in the real world</span>
+            </div>
+            <div class="mstat">
+              <strong>Global</strong>
+              <span>Built from day one for learners anywhere — not just where AI resources already exist</span>
+            </div>
+          </div>
+        </div>
+        <div class="mission-image">
+          <p class="mission-pull">Nobody should be left behind because they couldn't find a trusted teacher.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOMAINS -->
+  <section class="section section-band" id="domains">
+    <div class="inner">
+      <span class="overline">The 5×5 architecture</span>
+      <h2 style="margin-bottom:10px">Five domains. Five founding experts each. Twenty-five total.</h2>
+      <p class="lead">The brand name is structural. 25experts.com launches with 25 verified founding experts — 5 per domain. Each founding cohort has a permanent cap. Once closed, it's closed.</p>
+      <div class="domains-grid">
+        <div class="domain-card">
+          <div class="domain-icon">🤖</div>
+          <h3>AI &amp; Automation</h3>
+          <span>Flagship vertical — live now</span>
+          <div class="domain-count">5</div>
+        </div>
+        <div class="domain-card">
+          <div class="domain-icon">📈</div>
+          <h3>Marketing, Sales &amp; Growth</h3>
+          <span>Recruiting now</span>
+          <div class="domain-count">5</div>
+        </div>
+        <div class="domain-card">
+          <div class="domain-icon">💰</div>
+          <h3>Finance &amp; Investing</h3>
+          <span>Recruiting now</span>
+          <div class="domain-count">5</div>
+        </div>
+        <div class="domain-card">
+          <div class="domain-icon">🏢</div>
+          <h3>Leadership &amp; Management</h3>
+          <span>Recruiting now</span>
+          <div class="domain-count">5</div>
+        </div>
+        <div class="domain-card">
+          <div class="domain-icon">🎨</div>
+          <h3>Design, Creative &amp; Gaming</h3>
+          <span>Recruiting now</span>
+          <div class="domain-count">5</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TWO PATHS -->
+  <section class="section">
+    <div class="inner">
+      <span class="overline">Two ways in</span>
+      <h2 style="margin-bottom:10px">Whether you're here to learn or here to teach.</h2>
+      <p class="lead">25experts.com serves two audiences. Both matter to the mission equally.</p>
+      <div class="paths-grid">
+        <a href="subscriber.html" class="path-card learner">
+          <span class="path-label">For learners &amp; professionals</span>
+          <h3>I want to learn AI at work.</h3>
+          <p>Practical AI education organized by profession — live access to verified experts, a weekly learning rhythm, and a community of professionals figuring out the same things you are.</p>
+          <ul class="path-list">
+            <li>Free to start — no credit card required</li>
+            <li>Professional rooms by domain and role</li>
+            <li>Live Q&amp;A with verified experts</li>
+            <li>Your first 30 days, step by step</li>
+            <li>AI Operator credentials from Aesop Academy</li>
+          </ul>
+          <div class="path-cta">
+            <span class="btn btn-white" style="display:inline-flex;margin-top:10px;">Start learning free →</span>
+          </div>
+        </a>
+        <a href="experts.html" class="path-card expert">
+          <span class="path-label">For AI educators &amp; experts</span>
+          <h3>I want to teach and earn more.</h3>
+          <p>Join as a verified expert — bring your patrons, earn 60–70% revenue share, and build standing inside a non-profit ecosystem that opens doors no individual channel can.</p>
+          <ul class="path-list">
+            <li>Up to 70% revenue share — best in the industry</li>
+            <li>90-Day Earnings Guarantee for founding experts</li>
+            <li>Aesop Academy Founding Fellow designation</li>
+            <li>Seat on the Expert Standards Board</li>
+            <li>White-glove patron migration kit</li>
+          </ul>
+          <div class="path-cta">
+            <span class="btn btn-outline-white" style="display:inline-flex;margin-top:10px;">Apply as a founding expert →</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GLOBAL REACH -->
+  <div class="global-band">
+    <div class="global-inner">
+      <span class="overline">Why this matters</span>
+      <h2>AI is the most disruptive force of our lifetimes. Most of the world still doesn't have access to a trusted teacher.</h2>
+      <p class="lead">Aesop Academy's mission has always been to close the gap between where knowledge lives and who can reach it. 25experts.com is the platform that makes that mission scalable — connecting verified educators with learners across every profession, every timezone, and every budget.</p>
+      <div class="global-stats">
+        <div class="gstat">
+          <strong>25</strong>
+          <span>Founding experts selected for teaching quality, practical wisdom, and genuine passion for helping people understand AI — not for follower count</span>
+        </div>
+        <div class="gstat">
+          <strong>Free</strong>
+          <span>Discovery, clips, weekly digest, and social search are always free — with scholarship and sponsored-access pathways for youth and students who need a way in</span>
+        </div>
+        <div class="gstat">
+          <strong>501(c)(3)</strong>
+          <span>Non-profit structure means the mission cannot be overridden by a business model. Access is a constraint built into how we operate — not a feature we might remove later</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="inner">
+      <span class="overline">Start here</span>
+      <h2>The AI education home the world has been waiting for.</h2>
+      <p>Join free. Find your professional room. Learn from experts who were selected because they can teach — not because they went viral.</p>
+      <div class="cta-group">
+        <a class="btn btn-primary" style="font-size:1rem;min-height:50px;padding:0 28px;" href="subscriber.html">Start learning free</a>
+        <a class="btn btn-secondary" style="font-size:1rem;min-height:50px;padding:0 28px;" href="experts.html">Join as a founding expert</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-brand">
+      <span class="footer-mark">25</span>
+      <span>25experts.com by Aesop Academy — 501(c)(3) Non-Profit</span>
+    </div>
+    <span>© 2026 Aesop Academy &nbsp;·&nbsp; <a href="mailto:info@aesopacademy.org" style="color:var(--green2)">info@aesopacademy.org</a> &nbsp;·&nbsp; AI literacy for youth and working professionals</span>
+  </footer>
+
+</body>
+</html>
