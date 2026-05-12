@@ -14,7 +14,10 @@
       "mcp__mcp-obsidian__obsidian_list_files_in_vault",
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\scott\\\\Code\\\\experts\" -Filter \"*.html\" -File)",
       "Bash(Select-Object -ExpandProperty Name)",
-      "Bash(Sort-Object)"
+      "Bash(Sort-Object)",
+      "Bash(ls C:/Users/scott/Code/)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(cp \"C:/Users/scott/Code/Aesop/ai-news/trend-data.json\" \"C:/Users/scott/Code/experts/trend-data.json\")"
     ]
   }
 }

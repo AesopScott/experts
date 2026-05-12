@@ -257,6 +257,7 @@
       background: var(--panel);
       transition: box-shadow 0.15s, transform 0.15s;
       cursor: pointer;
+      text-decoration: none; color: inherit;
     }
     .video-card:hover {
       box-shadow: 0 8px 28px rgba(17,31,25,0.14);
@@ -293,6 +294,13 @@
       padding: 3px 7px; border-radius: 4px;
       background: rgba(0,0,0,0.75); color: #fff;
       font-size: 11px; font-weight: 850; letter-spacing: 0.03em;
+    }
+
+    .yt-badge {
+      position: absolute; z-index: 1; top: 7px; right: 8px;
+      padding: 3px 7px; border-radius: 4px;
+      background: rgba(255,0,0,0.82); color: #fff;
+      font-size: 10px; font-weight: 850; letter-spacing: 0.04em;
     }
 
     /* Card info */
@@ -369,7 +377,7 @@
     <div class="hero-inner">
       <span class="eyebrow">Video library</span>
       <h1>Every video from every Expert.</h1>
-      <p>75–125 new videos each month from 25 experts across five domains. Filter by domain or expert to find exactly what you need.</p>
+      <p>75–125 new videos each month from 25 experts across five domains. Each card opens on YouTube — all streaming, quality, and captions handled there.</p>
       <div class="domain-pills" id="domain-pills"></div>
     </div>
   </section>
@@ -601,12 +609,15 @@
       const [title, dur] = video;
       const domain = expert.domain;
       const domainName = DOMAINS[domain].name.split(",")[0].split(" & ")[0];
+      const ytQuery = encodeURIComponent(title + " " + expert.name);
+      const ytUrl = "https://www.youtube.com/results?search_query=" + ytQuery;
       return `
-        <article class="video-card" data-domain="${domain}" data-expert="${expert.name}">
+        <a class="video-card" href="${ytUrl}" target="_blank" rel="noopener noreferrer" data-domain="${domain}" data-expert="${expert.name}" aria-label="${title} by ${expert.name} — opens on YouTube">
           <div class="thumb">
             <div class="thumb-bg ${domain}"></div>
             <div class="play-btn">▶</div>
             <span class="duration">${dur}</span>
+            <span class="yt-badge" aria-hidden="true">YouTube ↗</span>
           </div>
           <div class="card-info">
             <h3 class="card-title">${title}</h3>
@@ -615,7 +626,7 @@
               <span class="domain-tag ${domain}">${domainName}</span>
             </div>
           </div>
-        </article>`;
+        </a>`;
     }
 
     function buildMonth(month, monthIndex) {

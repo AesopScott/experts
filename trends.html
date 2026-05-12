@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Trends | 25experts</title>
+  <meta name="description" content="Live AI signal desk plus patron voting — see what's trending across the web and vote on what you want experts to cover next. Voting closes every Friday at 5pm CT.">
+  <meta name="page-version" content="v2026.05.12.5">
+  <meta name="page-updated" content="2026-05-12">
+  <link rel="canonical" href="https://25experts.com/trends.html">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="alternate icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="mask-icon" href="/assets/mask-icon.svg" color="#145f47">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#145f47">
+  <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="25experts by Aesop Academy">
+  <meta property="og:title" content="AI Trends | 25experts">
+  <meta property="og:description" content="Live AI signal desk plus patron voting on what experts cover next.">
+  <meta property="og:url" content="https://25experts.com/trends.html">
+  <meta property="og:image" content="https://25experts.com/assets/og-25experts.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI Trends | 25experts">
+  <meta name="twitter:description" content="Live AI signal desk plus patron voting on what experts cover next.">
+  <meta name="twitter:image" content="https://25experts.com/assets/og-25experts.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "AI Trends | 25experts",
+    "url": "https://25experts.com/trends.html",
+    "description": "Live AI signal desk plus patron voting on what experts cover next.",
+    "publisher": { "@type": "NGO", "name": "Aesop Academy", "url": "https://25experts.com/" }
+  }
+  </script>
+  <style>
+    :root {
+      --ink: #101615;
+      --muted: #66716e;
+      --paper: #fbfaf6;
+      --panel: #ffffff;
+      --line: #dfe5df;
+      --green: #145f47;
+      --mint: #e9f5ef;
+      --gold: #b87a22;
+      --gold2: #fff8e8;
+      --blue: #245a7d;
+      --teal: #2a9d8f;
+      --dark: #0f1716;
+      --shadow: 0 18px 46px rgba(17,31,25,.1);
+      --shadow-sm: 0 4px 16px rgba(17,31,25,.08);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); line-height: 1.45; }
+    a { color: inherit; text-decoration: none; }
+    h2, h3, p { margin-top: 0; }
+
+    .topbar { padding: 9px 18px; background: var(--green); color: #fff; font-size: 13px; text-align: center; font-weight: 650; }
+    .topbar a { color: #fff; text-decoration: underline; font-weight: 800; margin-left: 6px; }
+
+    /* ── HERO ── */
+    .hero { padding: clamp(44px,6vw,80px) clamp(18px,5vw,68px) 36px; }
+    .hero-inner { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: start; }
+    .eyebrow { display: inline-flex; padding: 7px 11px; border-radius: 999px; background: var(--mint); color: var(--green); font-size: 13px; font-weight: 850; letter-spacing: .07em; text-transform: uppercase; margin-bottom: 14px; }
+    h1 { max-width: 780px; margin: 0 0 12px; font-size: clamp(34px,4.8vw,62px); line-height: .97; }
+    .hero p { max-width: 660px; color: var(--muted); font-size: 17px; line-height: 1.6; margin: 0; }
+
+    /* ── COUNTDOWN CARD ── */
+    .countdown-card {
+      background: var(--dark); color: #fff; border-radius: 12px;
+      padding: 22px 24px; min-width: 220px; display: grid; gap: 10px;
+      box-shadow: 0 20px 48px rgba(0,0,0,.18);
+      flex-shrink: 0;
+    }
+    .countdown-card .label { font-size: 11px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.55); }
+    .countdown-digits { font-size: 32px; font-weight: 950; line-height: 1; letter-spacing: -.01em; color: #5ddfb0; }
+    .countdown-sub { font-size: 12px; color: rgba(255,255,255,.5); }
+    .vote-open-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; background: rgba(93,223,176,.18); border: 1px solid rgba(93,223,176,.32); font-size: 12px; font-weight: 850; color: #5ddfb0; }
+    .vote-closed-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); font-size: 12px; font-weight: 850; color: rgba(255,255,255,.55); }
+
+    /* ── PAGE LAYOUT ── */
+    .page { max-width: 1320px; margin: 0 auto; padding: 0 clamp(18px,5vw,68px) 80px; display: grid; gap: 40px; }
+
+    /* ── SECTION LABELS ── */
+    .section-hed { margin-bottom: 18px; }
+    .kicker { color: var(--green); font-size: 12px; font-weight: 950; text-transform: uppercase; letter-spacing: .09em; margin-bottom: 6px; }
+    .section-hed h2 { font-size: clamp(22px,3vw,34px); margin: 0 0 4px; }
+    .section-hed p { color: var(--muted); font-size: 15px; margin: 0; line-height: 1.55; }
+
+    /* ══════════════════════════════════════════
+       SIGNAL DESK
+    ══════════════════════════════════════════ */
+    .signal-desk { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+
+    .sd-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 18px 22px; background: var(--dark); }
+    .sd-header-left { display: flex; align-items: center; gap: 12px; }
+    .sd-title { font-size: 15px; font-weight: 900; color: #fff; }
+    .sd-intro { font-size: 13px; color: rgba(255,255,255,.55); max-width: 600px; line-height: 1.5; }
+    .sd-updated { font-size: 12px; color: rgba(255,255,255,.4); white-space: nowrap; }
+    .sd-pulse { width: 8px; height: 8px; border-radius: 50%; background: #5ddfb0; flex-shrink: 0; animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+
+    .sd-stats-bar { display: flex; gap: 0; border-bottom: 1px solid var(--line); }
+    .sd-stat { flex: 1; padding: 14px 18px; border-right: 1px solid var(--line); }
+    .sd-stat:last-child { border-right: 0; }
+    .sd-stat-value { display: block; font-size: 22px; font-weight: 900; line-height: 1; color: var(--green); }
+    .sd-stat-label { display: block; margin-top: 3px; font-size: 12px; color: var(--muted); font-weight: 750; }
+
+    .sd-panels { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.2fr); }
+    .sd-panel { padding: 20px 22px; }
+    .sd-panel + .sd-panel { border-left: 1px solid var(--line); }
+    .sd-panel-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
+    .sd-panel-title { font-size: 14px; font-weight: 900; }
+    .sd-panel-subtitle { font-size: 12px; color: var(--muted); }
+
+    /* Stories */
+    .sd-stories { display: grid; gap: 6px; }
+    .sd-story {
+      display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start;
+      padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px;
+      background: #fff; transition: border-color .15s, box-shadow .15s;
+      color: inherit;
+    }
+    a.sd-story:hover { border-color: var(--green); box-shadow: var(--shadow-sm); }
+    .sd-story-rank { font-size: 12px; font-weight: 900; color: var(--muted); padding-top: 2px; }
+    .sd-story-body { display: grid; gap: 3px; }
+    .sd-story-title { font-size: 13px; font-weight: 800; line-height: 1.3; }
+    .sd-story-summary { font-size: 12px; color: var(--muted); line-height: 1.4; }
+    .sd-story-meta { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 8px; margin-top: 2px; }
+    .sd-story-action { color: var(--green); font-weight: 850; }
+    .sd-stories-toggle { margin-top: 8px; background: none; border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; font: inherit; font-size: 12px; font-weight: 850; color: var(--muted); cursor: pointer; width: 100%; transition: border-color .15s; }
+    .sd-stories-toggle:hover { border-color: var(--green); color: var(--green); }
+
+    /* Clusters */
+    .sd-legend { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+    .sd-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
+    .sd-clusters-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .sd-cluster {
+      background: #fff; border: 1px solid var(--line); border-radius: 8px;
+      padding: 12px 14px; cursor: pointer; transition: border-color .15s, box-shadow .15s;
+    }
+    .sd-cluster:hover { border-color: #2a4a7a; box-shadow: var(--shadow-sm); }
+    .sd-cluster-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+    .sd-cluster-label { font-size: 13px; font-weight: 800; }
+    .sd-cluster-composite { font-size: 18px; font-weight: 950; line-height: 1; }
+    .sd-cluster-composite--high { color: var(--teal); }
+    .sd-cluster-composite--mid  { color: var(--gold); }
+    .sd-cluster-composite--low  { color: var(--muted); }
+    .sd-scores { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 6px; }
+    .sd-badge { display: inline-flex; align-items: center; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 850; }
+    .sd-badge--trend      { background: rgba(42,157,143,.12); color: #2a7f74; }
+    .sd-badge--velocity   { background: rgba(233,165,0,.14);  color: #a87700; }
+    .sd-badge--novelty    { background: rgba(86,162,120,.14); color: #2e7d50; }
+    .sd-badge--competition { background: rgba(210,80,80,.12); color: #b03030; }
+    .sd-cluster-count { font-size: 11px; color: var(--muted); font-weight: 750; }
+    .sd-cluster-signals { display: none; margin: 8px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+    .sd-cluster.sd-expanded .sd-cluster-signals { display: block; }
+    .sd-cluster-signals li { padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 12px; color: var(--muted); line-height: 1.4; }
+    .sd-cluster-signals li:last-child { border-bottom: 0; }
+    .sd-cluster-hint { display: block; margin-top: 6px; font-size: 11px; color: var(--muted); }
+    .sd-cluster.sd-expanded .sd-cluster-hint { display: none; }
+
+    .sd-loading { padding: 32px; text-align: center; color: var(--muted); font-size: 14px; }
+    .sd-error { padding: 20px 22px; color: var(--muted); font-size: 13px; }
+
+    /* ══════════════════════════════════════════
+       PATRON VOTE
+    ══════════════════════════════════════════ */
+    .vote-section { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+
+    .vote-header { background: linear-gradient(115deg, rgba(16,22,21,.96), rgba(20,95,71,.9)); color: #fff; padding: 24px 28px; display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: start; }
+    .vote-header h2 { font-size: clamp(20px,2.5vw,28px); margin: 0 0 6px; }
+    .vote-header p { color: rgba(255,255,255,.7); font-size: 14px; line-height: 1.55; margin: 0; max-width: 560px; }
+    .vote-meta { display: flex; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    .week-badge { display: inline-flex; padding: 5px 10px; border-radius: 6px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18); font-size: 12px; font-weight: 850; color: rgba(255,255,255,.8); }
+
+    /* Deadline card */
+    .deadline-card { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.14); border-radius: 10px; padding: 16px 18px; min-width: 180px; display: grid; gap: 6px; text-align: center; }
+    .deadline-label { font-size: 11px; font-weight: 900; letter-spacing: .07em; text-transform: uppercase; color: rgba(255,255,255,.45); }
+    .deadline-time { font-size: 28px; font-weight: 950; color: #5ddfb0; line-height: 1; letter-spacing: -.01em; }
+    .deadline-sub { font-size: 11px; color: rgba(255,255,255,.45); }
+
+    /* Closed banner */
+    .closed-banner { display: none; padding: 12px 20px; background: rgba(255,165,0,.1); border-bottom: 1px solid rgba(255,165,0,.2); color: #8a5e00; font-size: 13px; font-weight: 800; text-align: center; }
+    .vote-section.is-closed .closed-banner { display: block; }
+
+    /* Topic cards */
+    .topic-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; padding: 22px; }
+    .topic-card {
+      background: #fff; border: 1px solid var(--line); border-radius: 10px;
+      padding: 16px 18px; display: grid; gap: 10px;
+      transition: box-shadow .15s, border-color .15s;
+    }
+    .topic-card:hover { border-color: var(--green); box-shadow: var(--shadow-sm); }
+    .topic-card.has-voted { border-color: var(--green); background: linear-gradient(to bottom right, #fff, #f4fbf7); }
+
+    .topic-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .topic-num { font-size: 11px; font-weight: 900; color: var(--muted); background: #f3f5f3; border-radius: 5px; padding: 2px 7px; flex-shrink: 0; margin-top: 1px; }
+    .topic-domain { display: inline-flex; padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 850; letter-spacing: .04em; flex-shrink: 0; }
+
+    .topic-title { font-size: 15px; font-weight: 800; line-height: 1.3; margin: 0; }
+    .topic-desc { font-size: 13px; color: var(--muted); line-height: 1.55; margin: 0; }
+
+    .topic-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .vote-count { font-size: 13px; color: var(--muted); font-weight: 750; }
+    .vote-count strong { color: var(--ink); font-size: 15px; font-weight: 900; }
+
+    .vote-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      min-height: 34px; padding: 0 14px; border-radius: 8px;
+      border: 1px solid var(--line); background: var(--panel);
+      font: inherit; font-size: 13px; font-weight: 850; color: var(--muted);
+      cursor: pointer; transition: all .15s; flex-shrink: 0;
+    }
+    .vote-btn:hover:not(:disabled) { border-color: var(--green); color: var(--green); }
+    .vote-btn.voted { background: var(--mint); border-color: var(--green); color: var(--green); }
+    .vote-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+    /* Results bar (shown when closed) */
+    .results-bar { display: none; height: 4px; border-radius: 999px; background: var(--mint); overflow: hidden; margin-top: 4px; }
+    .results-fill { height: 100%; background: var(--green); border-radius: 999px; }
+    .vote-section.is-closed .results-bar { display: block; }
+
+    /* ── WRITE-IN ── */
+    .writein-section { padding: 0 22px 22px; }
+    .writein-card { background: #f8fbf9; border: 1px solid var(--line); border-radius: 10px; padding: 20px; }
+    .writein-card h3 { font-size: 17px; margin: 0 0 4px; }
+    .writein-card p { color: var(--muted); font-size: 13px; line-height: 1.55; margin: 0 0 14px; }
+    .writein-row { display: flex; gap: 10px; align-items: stretch; }
+    .writein-input {
+      flex: 1; min-height: 44px; padding: 0 14px;
+      border: 1px solid var(--line); border-radius: 8px;
+      font: inherit; font-size: 14px; color: var(--ink); background: #fff;
+    }
+    .writein-input:focus { outline: 2px solid var(--green); outline-offset: 2px; border-radius: 8px; }
+    .writein-btn {
+      min-height: 44px; padding: 0 18px; border: 0; border-radius: 8px;
+      background: var(--green); color: #fff; font: inherit; font-weight: 850; font-size: 14px;
+      cursor: pointer; white-space: nowrap;
+    }
+    .writein-btn:disabled { opacity: .45; cursor: not-allowed; }
+    .writein-confirm { display: none; margin-top: 10px; color: var(--green); font-size: 13px; font-weight: 850; padding: 9px 12px; background: var(--mint); border-radius: 6px; }
+    .writein-queue { margin-top: 14px; display: grid; gap: 6px; }
+    .writein-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 12px; background: #fff; border: 1px solid var(--line); border-radius: 8px; font-size: 13px; }
+    .writein-item span { color: var(--muted); font-size: 12px; }
+    .writein-vote-btn {
+      display: inline-flex; align-items: center; gap: 5px; min-height: 30px; padding: 0 10px;
+      border: 1px solid var(--line); border-radius: 6px;
+      font: inherit; font-size: 12px; font-weight: 850; color: var(--muted);
+      background: var(--paper); cursor: pointer; transition: all .15s; flex-shrink: 0;
+    }
+    .writein-vote-btn:hover:not(:disabled) { border-color: var(--green); color: var(--green); }
+    .writein-vote-btn.voted { background: var(--mint); border-color: var(--green); color: var(--green); }
+    .writein-vote-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+    :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 3px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+    footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-top: 1px solid var(--line); padding: 26px clamp(18px,5vw,68px); color: var(--muted); font-size: 13px; }
+
+    @media (max-width: 1080px) { .sd-panels { grid-template-columns: 1fr; } .sd-panel + .sd-panel { border-left: 0; border-top: 1px solid var(--line); } .sd-clusters-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 760px) { .hero-inner { grid-template-columns: 1fr; } .countdown-card { max-width: 300px; } .sd-stats-bar { flex-wrap: wrap; } .sd-stat { min-width: 50%; } .topic-grid { grid-template-columns: 1fr; } .vote-header { grid-template-columns: 1fr; } .writein-row { flex-direction: column; } .sd-clusters-grid { grid-template-columns: 1fr; } }
+  </style>
+  <link rel="stylesheet" href="assets/site-nav.css?v=20260512-navresponsive1">
+</head>
+<body>
+
+  <div class="topbar">
+    <strong>Aesop Academy</strong> is a 501(c)(3) nonprofit advancing AI literacy for youth and working professionals.
+    <a href="https://aesopacademy.org">aesopacademy.org</a>
+  </div>
+  <div id="site-nav"></div>
+  <script src="assets/site-nav.js?v=20260512-navresponsive1"></script>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow">AI Signal Desk + Patron Votes</span>
+        <h1>What's moving in AI — and what you want to learn.</h1>
+        <p>Every 24 hours our scanner reads signals from Hacker News, GitHub, Stack Overflow, and AI company feeds and clusters them by topic. Below that, vote on the topics you want experts to cover. Voting closes every Friday at 5pm CT.</p>
+      </div>
+      <div class="countdown-card" id="heroCountdown">
+        <span class="label">Voting closes in</span>
+        <div class="countdown-digits" id="heroDigits">—</div>
+        <div class="countdown-sub" id="heroSub">Friday 5pm CT</div>
+        <div id="heroBadge"></div>
+      </div>
+    </div>
+  </section>
+
+  <main class="page">
+
+    <!-- ══ SIGNAL DESK ══ -->
+    <section>
+      <div class="section-hed">
+        <div class="kicker">Live signal desk</div>
+        <h2>What's trending across the AI web right now</h2>
+        <p>Signals collected from Hacker News, GitHub trending, Stack Overflow, and major AI company blogs. Refreshed daily.</p>
+      </div>
+
+      <div class="signal-desk" id="signalDesk">
+        <div class="sd-loading" id="sdLoading">Loading signal data…</div>
+
+        <div id="sdContent" style="display:none">
+          <div class="sd-header">
+            <div class="sd-header-left">
+              <span class="sd-pulse" aria-hidden="true"></span>
+              <span class="sd-title">AI Signal Desk</span>
+            </div>
+            <span class="sd-intro">Trend = overall heat · Velocity = acceleration · Novelty = how underreported · Competition = how crowded</span>
+            <span class="sd-updated" id="sdUpdated"></span>
+          </div>
+
+          <div class="sd-stats-bar" id="sdStatsBar"></div>
+
+          <div class="sd-panels">
+            <div class="sd-panel">
+              <div class="sd-panel-header">
+                <span class="sd-panel-title">Top Stories</span>
+                <span class="sd-panel-subtitle">by signal score</span>
+              </div>
+              <div class="sd-stories" id="sdStoriesList"></div>
+              <button class="sd-stories-toggle" id="sdStoriesToggle" style="display:none" type="button"></button>
+            </div>
+            <div class="sd-panel">
+              <div class="sd-panel-header">
+                <span class="sd-panel-title">Ranked Clusters</span>
+                <span class="sd-panel-subtitle">click to see signals</span>
+              </div>
+              <div id="sdClustersGrid"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="sdError" style="display:none" class="sd-error">Signal data unavailable right now — check back later.</div>
+      </div>
+    </section>
+
+    <!-- ══ PATRON VOTE ══ -->
+    <section>
+      <div class="section-hed">
+        <div class="kicker">Patron vote</div>
+        <h2>Tell the experts what to cover next</h2>
+        <p>10 topics every week. Vote for the ones you most want covered. Top results go to the expert network Monday morning. Voting resets each week.</p>
+      </div>
+
+      <div class="vote-section" id="voteSection">
+        <div class="vote-header">
+          <div>
+            <h2>This week's topics</h2>
+            <p>Vote for the topics you most want experts to create content on. You can vote on multiple topics. Write-ins below if your topic isn't here.</p>
+            <div class="vote-meta">
+              <span class="week-badge" id="weekBadge"></span>
+              <span id="voteStatusBadge"></span>
+            </div>
+          </div>
+          <div class="deadline-card">
+            <span class="deadline-label">Closes</span>
+            <div class="deadline-time" id="deadlineDigits">—</div>
+            <div class="deadline-sub">Friday 5pm CT</div>
+          </div>
+        </div>
+
+        <div class="closed-banner" id="closedBanner">
+          🔒 Voting is closed for this week. Results sent to experts Monday morning. New topics open Monday.
+        </div>
+
+        <div class="topic-grid" id="topicGrid"></div>
+
+        <div class="writein-section">
+          <div class="writein-card">
+            <h3>Don't see your topic?</h3>
+            <p>Write in a topic you want experts to cover. Write-ins with the most community support get added to future voting rounds.</p>
+            <div class="writein-row">
+              <input class="writein-input" type="text" id="writeinInput" placeholder="e.g. Using AI for contract review in small businesses" aria-label="Suggest a topic">
+              <button class="writein-btn" type="button" id="writeinSubmit">Suggest →</button>
+            </div>
+            <div class="writein-confirm" id="writeinConfirm">Topic submitted! If it gets traction, it'll appear in a future voting round.</div>
+            <div class="writein-queue" id="writeinQueue"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <strong>25experts by <a href="https://aesopacademy.org" style="color:var(--green);">Aesop Academy</a></strong>
+    <span>Patron votes shape what experts cover every week.</span>
+  </footer>
+
+  <script>
+  /* ══════════════════════════════════════════
+     SIGNAL DESK
+  ══════════════════════════════════════════ */
+  (function () {
+    'use strict';
+
+    var TREND_URL = 'trend-data.json';
+    var STORIES_PREVIEW = 5;
+
+    function esc(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function timeAgo(iso) {
+      if (!iso) return '';
+      var diff = Math.floor((Date.now() - new Date(iso).getTime()) / 60000);
+      if (diff < 2)  return 'just now';
+      if (diff < 60) return diff + 'm ago';
+      var h = Math.floor(diff / 60);
+      if (h < 24)   return h + 'h ago';
+      return Math.floor(h / 24) + 'd ago';
+    }
+
+    function compositeClass(n) {
+      if (n >= 75) return 'high';
+      if (n >= 50) return 'mid';
+      return 'low';
+    }
+
+    function renderStats(stats, generatedAt) {
+      var bar = document.getElementById('sdStatsBar');
+      var fields = [
+        { value: stats.items_collected, label: '24h items' },
+        { value: stats.clusters_found,  label: 'clusters' },
+        { value: stats.ideas_generated, label: 'content ideas' },
+        { value: stats.sources_active,  label: 'sources' },
+      ];
+      bar.innerHTML = fields.map(function (f) {
+        return '<div class="sd-stat"><span class="sd-stat-value">' + esc(f.value) +
+               '</span><span class="sd-stat-label">' + esc(f.label) + '</span></div>';
+      }).join('');
+      var ago = timeAgo(generatedAt);
+      var stale = generatedAt && (Date.now() - new Date(generatedAt).getTime()) > 48 * 3600000;
+      document.getElementById('sdUpdated').textContent = ago ? 'Updated ' + ago + (stale ? ' — may be stale' : '') : '';
+    }
+
+    function renderStories(stories) {
+      var list = document.getElementById('sdStoriesList');
+      var toggle = document.getElementById('sdStoriesToggle');
+      var expanded = false;
+
+      list.innerHTML = stories.map(function (s, i) {
+        var href = s.article_url || s.url || s.source_url || '';
+        var isExt = /^https?:\/\//.test(href);
+        var hidden = i >= STORIES_PREVIEW ? ' style="display:none"' : '';
+        var tag = href ? 'a' : 'div';
+        var attrs = href
+          ? ' href="' + esc(href) + '"' + (isExt ? ' target="_blank" rel="noopener"' : '')
+          : '';
+        return '<' + tag + ' class="sd-story"' + attrs + hidden + '>' +
+          '<span class="sd-story-rank">' + esc(s.rank) + '</span>' +
+          '<div class="sd-story-body">' +
+            '<span class="sd-story-title">' + esc(s.title) + '</span>' +
+            '<span class="sd-story-summary">' + esc(s.summary) + '</span>' +
+            '<span class="sd-story-meta">Score ' + esc(s.score) + ' &middot; ' + esc(s.source_count) + ' signals' +
+              (href ? '<span class="sd-story-action">Open →</span>' : '') +
+            '</span>' +
+          '</div>' +
+        '</' + tag + '>';
+      }).join('');
+
+      if (stories.length > STORIES_PREVIEW) {
+        toggle.style.display = '';
+        toggle.textContent = 'Show ' + (stories.length - STORIES_PREVIEW) + ' more stories';
+        toggle.addEventListener('click', function () {
+          expanded = !expanded;
+          list.querySelectorAll('.sd-story').forEach(function (el, i) {
+            if (i >= STORIES_PREVIEW) el.style.display = expanded ? '' : 'none';
+          });
+          toggle.textContent = expanded
+            ? 'Show fewer stories'
+            : 'Show ' + (stories.length - STORIES_PREVIEW) + ' more stories';
+        });
+      }
+    }
+
+    function renderClusters(clusters) {
+      var grid = document.getElementById('sdClustersGrid');
+      var legendHTML = '<div class="sd-legend">' +
+        '<span class="sd-legend-item"><span class="sd-badge sd-badge--trend">T</span> Trend</span>' +
+        '<span class="sd-legend-item"><span class="sd-badge sd-badge--velocity">V</span> Velocity</span>' +
+        '<span class="sd-legend-item"><span class="sd-badge sd-badge--novelty">N</span> Novelty</span>' +
+        '<span class="sd-legend-item"><span class="sd-badge sd-badge--competition">C</span> Competition</span>' +
+      '</div>';
+
+      var cardsHTML = clusters.map(function (c) {
+        var s = c.scores;
+        var cls = compositeClass(c.composite);
+        var signals = (c.top_signals || []).map(function (sig) {
+          return '<li>' + esc(sig) + '</li>';
+        }).join('');
+        var signalsHTML = signals ? '<ul class="sd-cluster-signals">' + signals + '</ul>' : '';
+        return '<div class="sd-cluster" role="button" tabindex="0" aria-expanded="false"' +
+          ' onclick="this.classList.toggle(\'sd-expanded\');this.setAttribute(\'aria-expanded\',this.classList.contains(\'sd-expanded\'))">' +
+          '<div class="sd-cluster-header">' +
+            '<span class="sd-cluster-label">' + esc(c.label) + '</span>' +
+            '<span class="sd-cluster-composite sd-cluster-composite--' + cls + '" title="Composite = 35% Trend + 30% Velocity + 25% Novelty + 10% (100−Competition)">' + esc(c.composite) + '</span>' +
+          '</div>' +
+          '<div class="sd-scores">' +
+            '<span class="sd-badge sd-badge--trend" title="Overall relevance right now">T ' + esc(s.trend) + '</span>' +
+            '<span class="sd-badge sd-badge--velocity" title="How fast it\'s accelerating">V ' + esc(s.velocity) + '</span>' +
+            '<span class="sd-badge sd-badge--novelty" title="How underreported on 25experts">N ' + esc(s.novelty) + '</span>' +
+            '<span class="sd-badge sd-badge--competition" title="How crowded the space is">C ' + esc(s.competition) + '</span>' +
+          '</div>' +
+          '<span class="sd-cluster-count">' + esc(c.signal_count) + ' signals</span>' +
+          signalsHTML +
+          '<span class="sd-cluster-hint">▸ click to see raw signals</span>' +
+        '</div>';
+      }).join('');
+
+      grid.innerHTML = legendHTML + '<div class="sd-clusters-grid">' + cardsHTML + '</div>';
+    }
+
+    fetch(TREND_URL + '?_=' + Date.now())
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (data) {
+        if (!data || !data.stats) throw new Error('bad data');
+        document.getElementById('sdLoading').style.display = 'none';
+        document.getElementById('sdContent').style.display = '';
+        renderStats(data.stats, data.generated_at);
+        renderStories(data.top_stories || []);
+        renderClusters(data.clusters || []);
+      })
+      .catch(function () {
+        document.getElementById('sdLoading').style.display = 'none';
+        document.getElementById('sdError').style.display = '';
+      });
+  })();
+
+  /* ══════════════════════════════════════════
+     VOTING CYCLE + COUNTDOWN
+  ══════════════════════════════════════════ */
+  (function () {
+    'use strict';
+
+    /* ── Helpers ── */
+    function isoWeek(date) {
+      var d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+      d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+      var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+      return Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
+    }
+
+    /* Next Friday 17:00 local */
+    function nextFridayClose() {
+      var now = new Date();
+      var d = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 17, 0, 0);
+      var day = d.getDay(); // 0=Sun 5=Fri
+      var diff = (5 - day + 7) % 7;
+      if (diff === 0 && now >= d) diff = 7; // past close today → next Friday
+      d.setDate(d.getDate() + diff);
+      return d;
+    }
+
+    /* Is voting currently closed (Fri 17:00 → Sun 23:59) */
+    function votingClosed() {
+      var now = new Date();
+      var day = now.getDay();
+      var hour = now.getHours();
+      if (day === 6) return true;                          // Saturday
+      if (day === 0) return true;                          // Sunday
+      if (day === 5 && hour >= 17) return true;            // Friday after 5pm
+      return false;
+    }
+
+    /* Format countdown HH:MM:SS */
+    function formatCountdown(ms) {
+      if (ms <= 0) return '00:00:00';
+      var s = Math.floor(ms / 1000);
+      var h = Math.floor(s / 3600); s %= 3600;
+      var m = Math.floor(s / 60); s %= 60;
+      return pad(h) + ':' + pad(m) + ':' + pad(s);
+    }
+    function pad(n) { return n < 10 ? '0' + n : String(n); }
+
+    /* Deterministic shuffle using week number as seed */
+    function seededShuffle(arr, seed) {
+      var a = arr.slice();
+      var s = (seed * 1664525 + 1013904223) & 0x7fffffff;
+      for (var i = a.length - 1; i > 0; i--) {
+        s = (s * 1664525 + 1013904223) & 0x7fffffff;
+        var j = s % (i + 1);
+        var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+      }
+      return a;
+    }
+
+    /* ── Topic pool (30 topics across all domains) ── */
+    var TOPIC_POOL = [
+      { id: 1,  domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "Multi-Agent AI Systems in Practice",           desc: "How autonomous agents coordinate, delegate, and recover from failure in real workflows." },
+      { id: 2,  domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "Prompt Engineering for Business Consistency",   desc: "Systematic prompt design that produces auditable, repeatable outputs at work." },
+      { id: 3,  domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "Building Reliable AI Workflow Systems",         desc: "Error handling, human checkpoints, and audit trails that make automation trustworthy." },
+      { id: 4,  domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "AI Tool Evaluation: A Repeatable Framework",    desc: "How to assess any new AI tool before committing time, budget, or team habits to it." },
+      { id: 5,  domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "RAG in Practice: Retrieval-Augmented Generation", desc: "When and how to build RAG pipelines that actually stay accurate and maintainable." },
+      { id: 6,  domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "Fine-Tuning vs Prompting: When to Use Each",   desc: "The decision framework for customizing AI without wasting engineering resources." },
+      { id: 7,  domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "AI Memory Systems: Building Context That Persists", desc: "How to design AI systems that remember what matters across sessions and interactions." },
+      { id: 8,  domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "Automating Weekly Reports Without Drift",        desc: "Building report automation that stays accurate as your data, tools, and questions change." },
+      { id: 9,  domain: "finance",    color: "#b87a22", bg: "#f5ecd6", title: "AI-Assisted Portfolio Analysis: Where It Fails", desc: "The specific failure modes AI makes with numbers, ratios, and financial summaries." },
+      { id: 10, domain: "finance",    color: "#b87a22", bg: "#f5ecd6", title: "AI for Personal Financial Planning",            desc: "Practical and principled uses of AI in personal finance — where the guardrails matter most." },
+      { id: 11, domain: "finance",    color: "#b87a22", bg: "#f5ecd6", title: "Cash Flow Forecasting with AI Assistance",      desc: "How to augment financial modeling without over-trusting AI-generated projections." },
+      { id: 12, domain: "finance",    color: "#b87a22", bg: "#f5ecd6", title: "Detecting Hallucinations in Financial AI",      desc: "How to catch confident-sounding errors in AI financial analysis before they cost you." },
+      { id: 13, domain: "marketing",  color: "#245a7d", bg: "#ddeaf5", title: "Brand Voice Preservation with AI Content",      desc: "How to build brand voice systems that survive AI-generated drafts without endless editing." },
+      { id: 14, domain: "marketing",  color: "#245a7d", bg: "#ddeaf5", title: "AI-Powered Lead Research at Scale",             desc: "Account research and outreach personalization that doesn't produce robotic messages." },
+      { id: 15, domain: "marketing",  color: "#245a7d", bg: "#ddeaf5", title: "Content Repurposing Without the Sludge",        desc: "Turning one expert piece into platform-native assets without producing filler." },
+      { id: 16, domain: "marketing",  color: "#245a7d", bg: "#ddeaf5", title: "Measuring AI Content ROI Honestly",             desc: "How to distinguish genuine AI content gains from noise in your analytics." },
+      { id: 17, domain: "leadership", color: "#7b4b92", bg: "#ede5f5", title: "Managing AI-Skeptical Teams",                   desc: "Scripts, frameworks, and meeting structures for leaders navigating genuine resistance." },
+      { id: 18, domain: "leadership", color: "#7b4b92", bg: "#ede5f5", title: "AI Policy Writing That Teams Actually Follow",  desc: "How to write an AI use policy your team will read, apply, and help you update." },
+      { id: 19, domain: "leadership", color: "#7b4b92", bg: "#ede5f5", title: "Decision Frameworks for AI-Assisted Work",      desc: "Structured approaches for high-stakes decisions when AI was part of the analysis." },
+      { id: 20, domain: "leadership", color: "#7b4b92", bg: "#ede5f5", title: "Building an AI-Ready Team Culture",             desc: "The habits, rituals, and norms that make AI adoption stick instead of stall." },
+      { id: 21, domain: "leadership", color: "#7b4b92", bg: "#ede5f5", title: "AI Governance for Small Organizations",         desc: "Accountability structures that work when you don't have a dedicated AI ethics team." },
+      { id: 22, domain: "design",     color: "#bf563f", bg: "#f5e5e0", title: "Directing Generative AI Without Losing Taste",  desc: "How to maintain creative judgment when the first draft is always machine-made." },
+      { id: 23, domain: "design",     color: "#bf563f", bg: "#f5e5e0", title: "Rapid Prototyping with AI Image Tools",         desc: "From mood to testable concept in one session — workflow and judgment, not just prompting." },
+      { id: 24, domain: "design",     color: "#bf563f", bg: "#f5e5e0", title: "Brand System Governance with AI Assets",        desc: "How to keep brand consistency when AI is generating assets at volume." },
+      { id: 25, domain: "design",     color: "#bf563f", bg: "#f5e5e0", title: "Creative Direction for Mixed Human-AI Teams",   desc: "Setting standards and review processes when the draft is AI but the judgment is yours." },
+      { id: 26, domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "When NOT to Use AI: The Judgment Layer",        desc: "The mental model for deciding when AI adds risk rather than value — and what to do instead." },
+      { id: 27, domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "Open-Source vs Proprietary AI: Real Trade-offs", desc: "An honest cost-benefit analysis for teams choosing between models and deployment options." },
+      { id: 28, domain: "leadership", color: "#7b4b92", bg: "#ede5f5", title: "AI Literacy for Non-Technical Teams",           desc: "How leaders build shared mental models for AI across teams with no engineering background." },
+      { id: 29, domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "AI Bias Detection and Mitigation",              desc: "Practical approaches to auditing AI outputs for systematic bias before they reach customers." },
+      { id: 30, domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "The AI Skills Every Professional Needs in 2026", desc: "A clear, domain-agnostic inventory of the AI competencies that are already table stakes." },
+    ];
+
+    /* ── State ── */
+    var week = isoWeek(new Date());
+    var closed = votingClosed();
+    var votes = {};      // topic id → count (seed from pool)
+    var voted = {};      // topic id → bool
+    var writeins = [];   // { id, text, votes, voted }
+    var writeinIdSeed = 1000;
+
+    /* Seed base vote counts deterministically by week */
+    TOPIC_POOL.forEach(function (t) {
+      var s = (t.id * 17 + week * 31) & 0x3ff;
+      votes[t.id] = 80 + s;
+    });
+
+    /* Pick this week's 10 topics */
+    var weekTopics = seededShuffle(TOPIC_POOL, week).slice(0, 10);
+
+    /* ── Render vote topics ── */
+    function renderTopics() {
+      var grid = document.getElementById('topicGrid');
+      grid.innerHTML = weekTopics.map(function (t, i) {
+        var v = votes[t.id];
+        var isVoted = !!voted[t.id];
+        var max = Math.max.apply(null, weekTopics.map(function (x) { return votes[x.id]; }));
+        var pct = Math.round((v / max) * 100);
+        return '<div class="topic-card' + (isVoted ? ' has-voted' : '') + '" data-id="' + t.id + '">' +
+          '<div class="topic-top">' +
+            '<span class="topic-num">#' + (i + 1) + '</span>' +
+            '<span class="topic-domain" style="background:' + t.bg + ';color:' + t.color + ';">' + t.domain.charAt(0).toUpperCase() + t.domain.slice(1) + '</span>' +
+          '</div>' +
+          '<h3 class="topic-title">' + t.title + '</h3>' +
+          '<p class="topic-desc">' + t.desc + '</p>' +
+          '<div class="results-bar"><div class="results-fill" style="width:' + pct + '%"></div></div>' +
+          '<div class="topic-footer">' +
+            '<span class="vote-count"><strong id="vc-' + t.id + '">' + v + '</strong> votes</span>' +
+            '<button class="vote-btn' + (isVoted ? ' voted' : '') + '" data-id="' + t.id + '" type="button"' + (closed ? ' disabled' : '') + ' aria-label="' + (isVoted ? 'Unvote: ' : 'Vote for: ') + t.title + '">' +
+              (isVoted ? '▲ Voted' : '▲ Vote') +
+            '</button>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    function rerenderTopic(id) {
+      var card = document.querySelector('.topic-card[data-id="' + id + '"]');
+      if (!card) return;
+      var t = TOPIC_POOL.find(function (x) { return x.id === id; });
+      var isVoted = !!voted[id];
+      card.classList.toggle('has-voted', isVoted);
+      var btn = card.querySelector('.vote-btn[data-id="' + id + '"]');
+      if (btn) {
+        btn.classList.toggle('voted', isVoted);
+        btn.textContent = isVoted ? '▲ Voted' : '▲ Vote';
+        btn.setAttribute('aria-label', (isVoted ? 'Unvote: ' : 'Vote for: ') + t.title);
+      }
+      var vc = document.getElementById('vc-' + id);
+      if (vc) vc.textContent = votes[id];
+      var max = Math.max.apply(null, weekTopics.map(function (x) { return votes[x.id]; }));
+      var bar = card.querySelector('.results-fill');
+      if (bar) bar.style.width = Math.round((votes[id] / max) * 100) + '%';
+    }
+
+    /* ── Vote click handler ── */
+    document.getElementById('topicGrid').addEventListener('click', function (e) {
+      if (closed) return;
+      var btn = e.target.closest('.vote-btn');
+      if (!btn) return;
+      var id = parseInt(btn.dataset.id, 10);
+      if (voted[id]) { votes[id]--; voted[id] = false; }
+      else           { votes[id]++; voted[id] = true;  }
+      rerenderTopic(id);
+    });
+
+    /* ── Write-in ── */
+    function renderWriteins() {
+      var q = document.getElementById('writeinQueue');
+      if (!writeins.length) { q.innerHTML = ''; return; }
+      q.innerHTML = writeins.map(function (w) {
+        return '<div class="writein-item" data-wid="' + w.id + '">' +
+          '<span>' + w.text + '</span>' +
+          '<div style="display:flex;align-items:center;gap:8px;">' +
+            '<span><strong id="wvc-' + w.id + '">' + w.votes + '</strong> votes</span>' +
+            '<button class="writein-vote-btn' + (w.voted ? ' voted' : '') + '" data-wid="' + w.id + '" type="button"' + (closed ? ' disabled' : '') + '>' +
+              '▲ ' + (w.voted ? 'Voted' : 'Vote') +
+            '</button>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    document.getElementById('writeinSubmit').addEventListener('click', function () {
+      var input = document.getElementById('writeinInput');
+      var text = input.value.trim();
+      if (!text) return;
+      writeins.push({ id: writeinIdSeed++, text: text, votes: 1, voted: true });
+      input.value = '';
+      document.getElementById('writeinConfirm').style.display = 'block';
+      renderWriteins();
+    });
+
+    document.getElementById('writeinQueue').addEventListener('click', function (e) {
+      if (closed) return;
+      var btn = e.target.closest('.writein-vote-btn');
+      if (!btn) return;
+      var wid = parseInt(btn.dataset.wid, 10);
+      var w = writeins.find(function (x) { return x.id === wid; });
+      if (!w) return;
+      if (w.voted) { w.votes--; w.voted = false; }
+      else         { w.votes++; w.voted = true;  }
+      document.getElementById('wvc-' + wid).textContent = w.votes;
+      btn.classList.toggle('voted', w.voted);
+      btn.textContent = '▲ ' + (w.voted ? 'Voted' : 'Vote');
+    });
+
+    /* ── Closed state ── */
+    function applyClosed() {
+      var section = document.getElementById('voteSection');
+      section.classList.toggle('is-closed', closed);
+      document.querySelectorAll('.vote-btn, .writein-vote-btn, #writeinSubmit').forEach(function (b) {
+        b.disabled = closed;
+      });
+      document.getElementById('voteStatusBadge').innerHTML = closed
+        ? '<span class="vote-closed-badge">🔒 Voting closed</span>'
+        : '<span class="vote-open-badge">● Voting open</span>';
+    }
+
+    /* ── Countdown ── */
+    var closeTime = nextFridayClose();
+
+    function tick() {
+      var now = Date.now();
+      var ms = closeTime - now;
+      var str = closed ? 'Closed' : formatCountdown(ms);
+      document.getElementById('heroDigits').textContent = str;
+      document.getElementById('deadlineDigits').textContent = str;
+    }
+
+    function formatCountdown(ms) {
+      if (ms <= 0) return '00:00:00';
+      var s = Math.floor(ms / 1000);
+      var h = Math.floor(s / 3600); s %= 3600;
+      var m = Math.floor(s / 60);   s %= 60;
+      return pad(h) + ':' + pad(m) + ':' + pad(s);
+    }
+    function pad(n) { return n < 10 ? '0' + n : String(n); }
+
+    function nextFridayClose() {
+      var now = new Date();
+      var d = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 17, 0, 0);
+      var day = d.getDay();
+      var diff = (5 - day + 7) % 7;
+      if (diff === 0 && now >= d) diff = 7;
+      d.setDate(d.getDate() + diff);
+      return d.getTime();
+    }
+
+    /* ── Week badge ── */
+    document.getElementById('weekBadge').textContent = 'Week ' + week + ' · ' + new Date().getFullYear();
+
+    /* ── Hero badge ── */
+    document.getElementById('heroBadge').innerHTML = closed
+      ? '<span class="vote-closed-badge">🔒 Voting closed · Opens Monday</span>'
+      : '<span class="vote-open-badge">● Voting open now</span>';
+
+    /* ── Init ── */
+    renderTopics();
+    applyClosed();
+    tick();
+    setInterval(tick, 1000);
+  })();
+  </script>
+</body>
+</html>

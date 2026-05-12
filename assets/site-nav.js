@@ -4,6 +4,7 @@
       label: "Content",
       className: "site-nav-content",
       links: [
+        ["Trends", "trends.html"],
         ["Videos", "videos.html"],
         ["Blogs", "blogs.html"],
         ["Workshops", "workshopcalendar.html"],
@@ -24,7 +25,7 @@
       label: "Non-Profit Values",
       className: "site-nav-values",
       links: [
-        ["Sponsors", "sponsors.html"],
+        ["Support", "support.html"],
         ["Scholarships", "join.html"],
         ["Mission", "index.html"],
         ["Leader Boards", "leaderboards.html"]
@@ -36,8 +37,8 @@
       links: [
         ["Join Free", "join.html"],
         ["Expert Program", "experts.html"],
-        ["Calendar", "workshopcalendar.html"],
-        ["Donate", "donate.html"]
+        ["Post a Job", "jobs.html"],
+        ["Calendar", "workshopcalendar.html"]
       ]
     }
   ];
