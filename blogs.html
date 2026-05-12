@@ -3,10 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  <title>25experts — Video Library</title>
+  <title>25experts Blog Archive Mockup</title>
   <style>
     :root {
       --ink: #101615;
@@ -43,6 +40,7 @@
       font-size: 13px;
       font-weight: 650;
     }
+
     .mission-bar strong { color: #fff; }
     .mission-bar a { color: #fff; text-decoration: underline; margin-left: 6px; }
 
@@ -158,11 +156,12 @@
       border-radius: 50%;
       background: var(--green);
     }
-    .dot.ai         { background: var(--ai); }
-    .dot.finance    { background: var(--finance); }
-    .dot.marketing  { background: var(--marketing); }
+
+    .dot.ai { background: var(--ai); }
+    .dot.finance { background: var(--finance); }
+    .dot.marketing { background: var(--marketing); }
     .dot.leadership { background: var(--leadership); }
-    .dot.design     { background: var(--design); }
+    .dot.design { background: var(--design); }
 
     .filter-panel {
       display: grid;
@@ -191,7 +190,8 @@
       text-transform: uppercase;
     }
 
-    select, button {
+    select,
+    button {
       min-height: 42px;
       border: 1px solid var(--line);
       border-radius: 8px;
@@ -201,7 +201,9 @@
       font-weight: 750;
     }
 
-    select { padding: 0 12px; }
+    select {
+      padding: 0 12px;
+    }
 
     button {
       padding: 0 16px;
@@ -249,7 +251,6 @@
       font-weight: 750;
     }
 
-    /* ── MONTH SECTION ── */
     .month {
       margin-top: 26px;
       overflow: hidden;
@@ -291,8 +292,7 @@
       white-space: nowrap;
     }
 
-    /* ── VIDEO GRID ── */
-    .video-grid {
+    .blog-grid {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 1px;
@@ -324,167 +324,113 @@
       font-weight: 750;
     }
 
-    .video-list {
+    .post-list {
       display: grid;
       gap: 0;
     }
 
-    /* ── VIDEO CARD ── */
-    .video-card {
-      display: grid;
-      grid-template-rows: auto 1fr;
+    .post {
+      min-height: 205px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px;
       border-bottom: 1px solid var(--line);
+      border-left: 5px solid var(--green);
       background: #fff;
     }
 
-    .video-card.ai         { background: #f6faf7; }
-    .video-card.finance    { background: #fcf8ee; }
-    .video-card.marketing  { background: #f2f7fb; }
-    .video-card.leadership { background: #f8f3fa; }
-    .video-card.design     { background: #fcf4f1; }
+    .post.ai { border-left-color: var(--ai); background: #f6faf7; }
+    .post.finance { border-left-color: var(--finance); background: #fcf8ee; }
+    .post.marketing { border-left-color: var(--marketing); background: #f2f7fb; }
+    .post.leadership { border-left-color: var(--leadership); background: #f8f3fa; }
+    .post.design { border-left-color: var(--design); background: #fcf4f1; }
 
-    .video-card.is-hidden,
+    .post.is-hidden,
     .domain-column.is-hidden {
       display: none;
     }
 
-    /* Thumbnail */
-    .thumb {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
+    .empty-state {
+      display: none;
+      margin: 24px 0;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel);
+      color: var(--muted);
+      box-shadow: var(--shadow);
     }
 
-    .thumb-bg {
-      position: absolute;
-      inset: 0;
+    .empty-state.is-visible {
+      display: block;
     }
 
-    .thumb-bg.ai         { background: linear-gradient(135deg, #0d3d2e 0%, #1e7a56 100%); }
-    .thumb-bg.finance    { background: linear-gradient(135deg, #5c3d0c 0%, #c48a30 100%); }
-    .thumb-bg.marketing  { background: linear-gradient(135deg, #0f2f4a 0%, #2d6fa8 100%); }
-    .thumb-bg.leadership { background: linear-gradient(135deg, #3e1f54 0%, #9260b8 100%); }
-    .thumb-bg.design     { background: linear-gradient(135deg, #5c1f14 0%, #d4654e 100%); }
-
-    .play-btn {
-      position: relative;
-      z-index: 1;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.92);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      color: var(--ink);
-      padding-left: 3px;
-    }
-
-    .duration {
-      position: absolute;
-      z-index: 1;
-      bottom: 6px;
-      right: 6px;
-      padding: 3px 6px;
-      border-radius: 4px;
-      background: rgba(0, 0, 0, 0.72);
-      color: #fff;
-      font-size: 11px;
-      font-weight: 850;
-      letter-spacing: 0.04em;
-    }
-
-    /* Card body */
-    .card-body {
-      padding: 8px 12px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .video-meta {
+    .meta {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 8px;
       color: var(--muted);
       font-size: 11px;
       font-weight: 850;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      height: 16px;
     }
 
-    .video-card h3 {
+    .post h3 {
       margin: 0;
-      font-size: 14px;
-      line-height: 1.2;
-      height: calc(14px * 1.2 * 2);
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+      font-size: 16px;
+      line-height: 1.12;
     }
 
-    .video-card p {
-      margin: 0;
+    .post p {
+      margin: 7px 0 0;
       color: #41504b;
-      font-size: 12px;
-      line-height: 1.4;
-      height: calc(12px * 1.4 * 2);
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+      font-size: 13px;
+      line-height: 1.35;
     }
 
     .byline {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 6px;
+      gap: 8px;
       color: var(--muted);
       font-size: 12px;
       font-weight: 750;
-      margin-top: auto;
-      padding-top: 6px;
     }
 
-    .watch-link {
+    .read {
       display: inline-flex;
       align-self: flex-start;
-      padding: 5px 8px;
+      padding: 6px 8px;
       border-radius: 6px;
       background: rgba(255, 255, 255, 0.78);
       color: #33413d;
       font-size: 11px;
       font-weight: 850;
-      white-space: nowrap;
     }
 
     .status {
       display: inline-flex;
       align-items: center;
-      padding: 3px 7px;
+      padding: 4px 7px;
       border-radius: 999px;
       font-size: 10px;
       font-weight: 900;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      white-space: nowrap;
     }
 
-    .watched-status {
+    .status.read-status {
       background: #dfe9e2;
       color: #2d5b45;
     }
 
-    .unwatched-status {
-      background: #fff;
+    .status.unread-status {
+      background: #ffffff;
       color: #8b3f31;
       border: 1px solid rgba(191, 86, 63, 0.28);
     }
@@ -512,41 +458,40 @@
       font-size: 14px;
     }
 
-    .empty-state {
-      display: none;
-      margin: 24px 0;
-      padding: 24px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: var(--panel);
-      color: var(--muted);
-      box-shadow: var(--shadow);
-    }
-
-    .empty-state.is-visible { display: block; }
-
-    footer {
-      border-top: 1px solid var(--line);
-      padding: 28px clamp(18px, 5vw, 68px);
-      color: var(--muted);
-      font-size: 13px;
-      text-align: center;
-    }
-
     @media (max-width: 1100px) {
-      .video-grid { grid-template-columns: 1fr; }
+      .blog-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .post {
+        min-height: auto;
+      }
     }
 
     @media (max-width: 760px) {
-      .nav { align-items: flex-start; flex-direction: column; }
-      .nav-links { flex-wrap: wrap; }
-      .stats, .filter-panel, .archive-note { grid-template-columns: 1fr; }
-      .month-head { align-items: flex-start; flex-direction: column; }
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+      }
+
+      .stats,
+      .filter-panel,
+      .archive-note {
+        grid-template-columns: 1fr;
+      }
+
+      .month-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
     }
   </style>
 </head>
 <body>
-
   <div class="mission-bar">
     <strong>Aesop Academy</strong> is a 501(c)(3) nonprofit advancing AI literacy for youth and working professionals.
     <a href="https://aesopacademy.org">aesopacademy.org</a>
@@ -565,27 +510,27 @@
       <a href="subscriber.html">Follow the Experts</a>
       <a href="experts.html">Expert Program</a>
       <a href="workshopcalendar.html">Workshops</a>
-      <a href="blogs.html">Blogs</a>
+      <a href="videos.html">Videos</a>
     </nav>
   </header>
 
   <section class="hero">
     <div class="hero-inner">
-      <span class="eyebrow">Video library</span>
-      <h1>Every video from every Expert.</h1>
-      <p>A three-month archive of practical tutorials, walkthroughs, and expert sessions from all 25 experts across every domain. Filter by domain or expert to find exactly what you need.</p>
-      <div class="filters" aria-label="Domain filter">
-        <span class="pill"><span class="dot ai"></span>AI &amp; Automation</span>
-        <span class="pill"><span class="dot finance"></span>Finance &amp; Investing</span>
-        <span class="pill"><span class="dot marketing"></span>Marketing, Sales &amp; Growth</span>
-        <span class="pill"><span class="dot leadership"></span>Leadership &amp; Management</span>
-        <span class="pill"><span class="dot design"></span>Design, Creative &amp; Gaming</span>
+      <span class="eyebrow">Curator blog archive mockup</span>
+      <h1>Fresh thinking from all 25 Experts.</h1>
+      <p>A three-month archive of practical essays, explainers, playbooks, and field notes from the full 25experts curator network. Each domain publishes weekly, giving learners a browsable record of what the experts have already taught.</p>
+      <div class="filters" aria-label="Domain filter mockup">
+        <span class="pill"><span class="dot ai"></span>AI & Automation</span>
+        <span class="pill"><span class="dot finance"></span>Finance & Investing</span>
+        <span class="pill"><span class="dot marketing"></span>Marketing, Sales & Growth</span>
+        <span class="pill"><span class="dot leadership"></span>Leadership & Management</span>
+        <span class="pill"><span class="dot design"></span>Design, Creative & Gaming</span>
       </div>
     </div>
   </section>
 
-  <main id="video-root">
-    <section class="filter-panel" aria-label="Video filters">
+  <main id="blog-root">
+    <section class="filter-panel" aria-label="Blog filters">
       <div class="field">
         <label for="domain-filter">Filter by domain</label>
         <select id="domain-filter">
@@ -601,13 +546,13 @@
       <button class="primary" id="clear-filters" type="button">Clear filters</button>
     </section>
     <section class="empty-state" id="empty-state">
-      No videos match this filter combination.
+      No posts match this filter combination.
     </section>
-    <section class="stats" aria-label="Library summary">
-      <article class="stat"><strong>75</strong><span>videos across three months</span></article>
-      <article class="stat"><strong>25</strong><span>experts represented</span></article>
+    <section class="stats" aria-label="Archive summary">
+      <article class="stat"><strong>75</strong><span>blog posts across three months</span></article>
+      <article class="stat"><strong>25</strong><span>curators represented</span></article>
       <article class="stat"><strong>5</strong><span>professional learning domains</span></article>
-      <article class="stat"><strong>18+ hrs</strong><span>of practical content</span></article>
+      <article class="stat"><strong>100%</strong><span>practical, current, and curated</span></article>
     </section>
   </main>
 
@@ -617,54 +562,54 @@
         key: "ai",
         name: "AI & Automation",
         experts: [
-          ["Dr. Maya Chen", "Build an AI Workflow You Can Actually Trust", "A step-by-step walkthrough for assembling automations that hold up in real work."],
-          ["Owen Patel", "The Prompt Library Your Team Will Really Use", "How to structure prompts by role and task so everyone stops reinventing them."],
-          ["Lena Brooks", "Five Agentic Workflows That Save a Real Hour", "Live demos of agent patterns for research, writing, and daily ops."],
-          ["Theo Ramirez", "When Not to Automate: A Manager's Framework", "Where AI hands-off breaks down and what to do instead."],
-          ["Priya Shah", "The Lean AI Stack for 2026", "Tool-by-tool walkthrough of a practical AI setup for small operators."]
+          ["Dr. Maya Chen", "How to Build an AI Workflow You Can Actually Trust", "A practical rubric for deciding when an automation is ready for real work."],
+          ["Owen Patel", "The Prompt Library Your Team Will Really Use", "How to organize prompt patterns by job, not by tool."],
+          ["Lena Brooks", "Five Agentic Workflows That Save a Real Hour", "Field notes on useful agent patterns for research, reporting, and prep."],
+          ["Theo Ramirez", "When Not to Automate: A Manager's Guide", "A simple framework for keeping humans in the loop where judgment matters."],
+          ["Priya Shah", "The Small Business AI Stack for Spring 2026", "A lean tool stack for operators who do not want app sprawl."]
         ]
       },
       {
         key: "finance",
         name: "Finance & Investing",
         experts: [
-          ["Marcus Bell", "Reading an AI-Generated Portfolio Summary", "What to trust, what to check, and where models overstate confidence."],
-          ["Anika Rao", "A Calm Framework for Volatile Markets", "Separating signal from narrative and emotional reaction — live example."],
-          ["Jonah Price", "Cash Flow Forecasting with AI Assistance", "Spreadsheet walkthrough for founders and lean finance teams."],
-          ["Elena Foster", "Risk Terms Every New Investor Should Know", "Plain-language definitions that help you ask better questions."],
-          ["Samir Haddad", "The Finance Dashboard That Gets Opened", "Designing visibility for non-finance teams — a live build."]
+          ["Marcus Bell", "Reading an AI-Generated Portfolio Summary", "What to trust, what to verify, and where the model tends to overstate confidence."],
+          ["Anika Rao", "A Calm Framework for Volatile Markets", "How to separate signal, narrative, and emotional reaction."],
+          ["Jonah Price", "Building a Cash Flow Forecast with AI", "A spreadsheet-first approach for founders and small teams."],
+          ["Elena Foster", "Risk Terms Every New Investor Should Know", "Plain-English definitions that help you ask better questions."],
+          ["Samir Haddad", "The Finance Dashboard That Actually Gets Opened", "Designing simple financial visibility for non-finance teams."]
         ]
       },
       {
         key: "marketing",
         name: "Marketing, Sales & Growth",
         experts: [
-          ["Nora Kim", "AI Content That Still Sounds Like You", "A live editing session: keeping voice and judgment in the loop."],
-          ["Caleb Stone", "The Weekly Lead Research Sprint", "Using AI to prep account intel before outreach — a real workflow."],
-          ["Mei Tan", "Follow-Up Emails That Don't Feel Automated", "Structure with AI, personalize by hand — a walkthrough."],
-          ["Victor Hale", "Customer Interviews at AI Speed", "Turning raw call notes into themes, objections, and copy in minutes."],
-          ["Isabel Cruz", "One Webinar, Twenty Useful Assets", "A repurposing workflow demo — no content sludge."]
+          ["Nora Kim", "AI Content That Still Sounds Like a Person", "A checklist for keeping voice, taste, and judgment in the loop."],
+          ["Caleb Stone", "The Weekly Lead Research Sprint", "How to use AI to prep account research before outreach."],
+          ["Mei Tan", "Follow-Up Emails That Do Not Feel Automated", "Using AI for structure while preserving timing and context."],
+          ["Victor Hale", "Customer Interviews at AI Speed", "Turning raw call notes into themes, objections, and product language."],
+          ["Isabel Cruz", "One Webinar, Twenty Useful Assets", "A repurposing workflow that avoids generic content sludge."]
         ]
       },
       {
         key: "leadership",
         name: "Leadership & Management",
         experts: [
-          ["Dana Wright", "Talking to Your Team About AI Anxiety", "A leadership script and framing session for real conversations."],
-          ["Hugo Bennett", "AI Policy Without the Legal Fog", "Building a first-draft AI use policy your team will actually read."],
-          ["Farah Nasser", "The Decision Brief Template for AI Work", "Using AI to surface tradeoffs without outsourcing judgment."],
-          ["Miles Ortega", "What an AI-Ready Team Culture Looks Like", "Habits and rituals from teams that made adoption stick."],
-          ["Rachel Moore", "Delegation Maps for Human + AI Teams", "Deciding what belongs to people, tools, and review — live example."]
+          ["Dana Wright", "Talking to Your Team About AI Anxiety", "A leadership script for turning fear into useful experimentation."],
+          ["Hugo Bennett", "AI Policy Without the Legal Fog", "A practical first draft for managers who need rules people can follow."],
+          ["Farah Nasser", "The Decision Brief Template for AI-Supported Work", "How to use AI to clarify tradeoffs without outsourcing judgment."],
+          ["Miles Ortega", "What an AI-Ready Team Culture Looks Like", "Habits, rituals, and norms that make adoption less chaotic."],
+          ["Rachel Moore", "Delegation Maps for Human + AI Teams", "A framework for deciding what belongs to people, tools, and review."]
         ]
       },
       {
         key: "design",
         name: "Design, Creative & Gaming",
         experts: [
-          ["Ari Fox", "Generative Design Without Losing Taste", "Using AI options without letting volume replace creative direction."],
-          ["Jules Rivera", "Rapid Prototyping with AI Image Tools", "From mood to testable concept in a single work session."],
-          ["Mina Park", "Game Concepts from Constraints, Not Prompts", "Why better constraints produce better AI-assisted ideas — live demo."],
-          ["Elliot Gray", "Creative Direction for AI-Assisted Teams", "How to review and redirect work when the first draft came from a model."],
+          ["Ari Fox", "Generative Design Without Losing Taste", "How to use AI options without letting volume replace direction."],
+          ["Jules Rivera", "Rapid Prototyping with AI Image Tools", "A workflow for getting from mood to testable concept quickly."],
+          ["Mina Park", "Game Concepts from Constraints, Not Prompts", "Why better creative constraints produce better AI-assisted ideas."],
+          ["Elliot Gray", "Creative Direction for AI-Assisted Teams", "How to review work when the first draft came from a model."],
           ["Sofia Lane", "Building Brand Systems with AI", "Keeping consistency across copy, visuals, and interaction patterns."]
         ]
       }
@@ -673,31 +618,25 @@
     const months = [
       {
         name: "May 2026",
-        description: "The latest drop: live workshop follow-ups, current AI shifts, and practical operating sessions.",
-        durationOffset: 0
+        description: "The newest month in the archive: live workshop follow-ups, current AI shifts, and practical operating notes.",
+        readOffset: 1
       },
       {
         name: "April 2026",
-        description: "Foundational tutorials, current tools, and domain-specific walkthroughs from launch month.",
-        durationOffset: 1
+        description: "The first month of the archive: practical foundations, current tools, and domain-specific playbooks.",
+        readOffset: 0
       },
       {
         name: "March 2026",
-        description: "Early expert sessions and deep-dives from across the full network.",
-        durationOffset: 2
+        description: "Earlier curator essays and field notes from the full network.",
+        readOffset: 2
       }
     ];
 
-    function videoDate(monthIndex, expertIndex, domainIndex) {
+    function postDate(monthIndex, expertIndex, domainIndex) {
       const month = monthIndex === 0 ? "May" : monthIndex === 1 ? "Apr" : "Mar";
       const day = 2 + expertIndex * 5 + domainIndex;
       return `${month} ${day}`;
-    }
-
-    function duration(monthIndex, expertIndex, domainIndex, offset) {
-      const mins = 8 + ((expertIndex * 3 + domainIndex * 2 + offset) % 22);
-      const secs = (expertIndex * 7 + domainIndex * 11) % 60;
-      return `${mins}:${String(secs).padStart(2, "0")}`;
     }
 
     function renderMonth(month, monthIndex) {
@@ -709,37 +648,34 @@
             <h2>${month.name}</h2>
             <p>${month.description}</p>
           </div>
-          <span class="month-count">25 videos</span>
+          <span class="month-count">25 published posts</span>
         </div>
-        <div class="video-grid">
+        <div class="blog-grid">
           ${domains.map((domain, domainIndex) => `
             <div class="domain-column">
               <div class="domain-head">
                 <strong>${domain.name}</strong>
-                <span>5 expert videos</span>
+                <span>5 curator posts</span>
               </div>
-              <div class="video-list">
+              <div class="post-list">
                 ${domain.experts.map(([expert, title, dek], expertIndex) => {
-                  const dur = duration(monthIndex, expertIndex, domainIndex, month.durationOffset);
-                  const isWatched = ((monthIndex + domainIndex + expertIndex) % 3) !== 0;
+                  const readTime = 5 + ((expertIndex + domainIndex + month.readOffset) % 4);
+                  const titleText = monthIndex === 0 ? title : title.replace("AI", "Practical AI").replace("The ", "A ");
+                  const isRead = ((monthIndex + domainIndex + expertIndex) % 3) !== 0;
                   return `
-                    <article class="video-card ${domain.key}" data-domain="${domain.key}" data-expert="${expert}">
-                      <div class="thumb">
-                        <div class="thumb-bg ${domain.key}"></div>
-                        <div class="play-btn">▶</div>
-                        <span class="duration">${dur}</span>
-                      </div>
-                      <div class="card-body">
-                        <div class="video-meta">
-                          <span>${videoDate(monthIndex, expertIndex, domainIndex)}</span>
+                    <article class="post ${domain.key}" data-domain="${domain.key}" data-expert="${expert}" data-status="${isRead ? "read" : "unread"}">
+                      <div>
+                        <div class="meta">
+                          <span>${postDate(monthIndex, expertIndex, domainIndex)}</span>
+                          <span>${readTime} min read</span>
                         </div>
-                        <h3>${title}</h3>
+                        <h3>${titleText}</h3>
                         <p>${dek}</p>
-                        <div class="byline">
-                          <span>${expert}</span>
-                          <span class="status ${isWatched ? "watched-status" : "unwatched-status"}">${isWatched ? "Watched" : "New"}</span>
-                          <a class="watch-link" href="#">Watch →</a>
-                        </div>
+                      </div>
+                      <div class="byline">
+                        <span>${expert}</span>
+                        <span class="status ${isRead ? "read-status" : "unread-status"}">${isRead ? "Read" : "Unread"}</span>
+                        <a class="read" href="#">Read post</a>
                       </div>
                     </article>
                   `;
@@ -749,15 +685,15 @@
           `).join("")}
         </div>
         <div class="archive-note">
-          <div class="note-card"><strong>Social search ready</strong>Videos are indexed around the question they answer, not just the topic.</div>
-          <div class="note-card"><strong>Quality ranked</strong>Every video is graded so the best content rises to the top of each domain.</div>
-          <div class="note-card"><strong>Expert attribution</strong>Every video ties back to a verified expert profile and patron pathway.</div>
+          <div class="note-card"><strong>Social search ready</strong>Posts are indexed around the question they answer, not just the topic.</div>
+          <div class="note-card"><strong>Freshness aware</strong>Fast-moving posts can be flagged for review after six months.</div>
+          <div class="note-card"><strong>Creator attribution</strong>Every article ties back to a curator profile and patron pathway.</div>
         </div>
       `;
       return section;
     }
 
-    const root = document.getElementById("video-root");
+    const root = document.getElementById("blog-root");
     months.forEach((month, index) => root.appendChild(renderMonth(month, index)));
 
     const domainFilter = document.getElementById("domain-filter");
@@ -776,9 +712,9 @@
       const selectedDomain = domainFilter.value;
       expertFilter.innerHTML = '<option value="all">All experts</option>';
       domains
-        .filter(d => selectedDomain === "all" || d.key === selectedDomain)
-        .forEach(d => {
-          d.experts.forEach(([expert]) => {
+        .filter(domain => selectedDomain === "all" || domain.key === selectedDomain)
+        .forEach(domain => {
+          domain.experts.forEach(([expert]) => {
             const option = document.createElement("option");
             option.value = expert;
             option.textContent = expert;
@@ -790,25 +726,31 @@
     function applyFilters() {
       const selectedDomain = domainFilter.value;
       const selectedExpert = expertFilter.value;
-      let visibleCount = 0;
+      let visiblePosts = 0;
 
-      document.querySelectorAll(".video-card").forEach(card => {
-        const domainMatch = selectedDomain === "all" || card.dataset.domain === selectedDomain;
-        const expertMatch = selectedExpert === "all" || card.dataset.expert === selectedExpert;
+      document.querySelectorAll(".post").forEach(post => {
+        const domainMatch = selectedDomain === "all" || post.dataset.domain === selectedDomain;
+        const expertMatch = selectedExpert === "all" || post.dataset.expert === selectedExpert;
         const visible = domainMatch && expertMatch;
-        card.classList.toggle("is-hidden", !visible);
-        if (visible) visibleCount++;
+        post.classList.toggle("is-hidden", !visible);
+        if (visible) visiblePosts += 1;
       });
 
-      document.querySelectorAll(".domain-column").forEach(col => {
-        col.classList.toggle("is-hidden", !col.querySelector(".video-card:not(.is-hidden)"));
+      document.querySelectorAll(".domain-column").forEach(column => {
+        const hasVisiblePosts = column.querySelector(".post:not(.is-hidden)");
+        column.classList.toggle("is-hidden", !hasVisiblePosts);
       });
 
-      emptyState.classList.toggle("is-visible", visibleCount === 0);
+      emptyState.classList.toggle("is-visible", visiblePosts === 0);
     }
 
-    domainFilter.addEventListener("change", () => { populateExperts(); applyFilters(); });
+    domainFilter.addEventListener("change", () => {
+      populateExperts();
+      applyFilters();
+    });
+
     expertFilter.addEventListener("change", applyFilters);
+
     clearFilters.addEventListener("click", () => {
       domainFilter.value = "all";
       populateExperts();
@@ -819,10 +761,5 @@
     populateExperts();
     applyFilters();
   </script>
-
-  <footer>
-    <span>© 2026 25experts.com · A project of <a href="https://aesopacademy.org" style="color:var(--green);font-weight:700;">Aesop Academy</a></span>
-  </footer>
-
 </body>
 </html>
