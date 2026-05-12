@@ -73,8 +73,16 @@
     </header>
   `;
 
-  const mount = document.getElementById("site-nav");
-  if (mount) {
-    mount.outerHTML = navMarkup;
+  function renderSiteNav() {
+    const mount = document.getElementById("site-nav");
+    if (mount) {
+      mount.outerHTML = navMarkup;
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", renderSiteNav);
+  } else {
+    renderSiteNav();
   }
 })();
