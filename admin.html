@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>25experts — Admin</title>
+  <style>
+    :root {
+      --ink:    #101615;
+      --muted:  #66716e;
+      --paper:  #f4f6f4;
+      --panel:  #ffffff;
+      --line:   #dfe5df;
+      --green:  #145f47;
+      --green2: #1a7a5e;
+      --green3: #e5f2e8;
+      --gold:   #b87a22;
+      --gold3:  #fdf3e3;
+      --fellow: #1c3a5e;
+      --fellow3:#e8f0fb;
+      --red:    #c0392b;
+      --red3:   #fdecea;
+      --amber:  #b87a22;
+      --dark:   #0f1716;
+      --shadow-sm: 0 2px 8px rgba(17,31,25,0.08);
+      --shadow: 0 8px 28px rgba(17,31,25,0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── GATE ── */
+    #gate {
+      position: fixed; inset: 0;
+      background: var(--dark);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1000;
+    }
+
+    .gate-box {
+      background: var(--panel);
+      border-radius: 12px;
+      padding: 40px 48px;
+      width: 360px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .gate-box .logo {
+      font-size: 1.1rem; font-weight: 800; letter-spacing: -0.04em;
+      margin-bottom: 8px;
+    }
+
+    .gate-box .logo sup { font-size: 0.5em; vertical-align: super; }
+
+    .gate-box p {
+      color: var(--muted); font-size: 0.82rem; margin-bottom: 24px;
+    }
+
+    .gate-box input[type="password"] {
+      width: 100%; padding: 10px 14px;
+      border: 1.5px solid var(--line); border-radius: 7px;
+      font-size: 0.9rem; margin-bottom: 12px;
+      outline: none;
+    }
+
+    .gate-box input[type="password"]:focus { border-color: var(--green); }
+
+    .gate-box button {
+      width: 100%; padding: 11px;
+      background: var(--green); color: #fff;
+      border: none; border-radius: 7px;
+      font-size: 0.88rem; font-weight: 600; cursor: pointer;
+    }
+
+    .gate-box button:hover { background: var(--green2); }
+
+    #gate-error {
+      color: var(--red); font-size: 0.78rem; margin-top: 8px;
+      min-height: 18px;
+    }
+
+    /* ── LAYOUT ── */
+    #app { display: none; min-height: 100vh; }
+
+    .sidebar {
+      position: fixed; top: 0; left: 0; bottom: 0;
+      width: 220px;
+      background: var(--dark);
+      color: #e8ede8;
+      display: flex; flex-direction: column;
+      z-index: 100;
+    }
+
+    .sidebar-logo {
+      padding: 22px 20px 16px;
+      font-size: 0.95rem; font-weight: 800; letter-spacing: -0.04em;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      color: #fff;
+    }
+
+    .sidebar-logo small {
+      display: block; font-size: 0.62rem; font-weight: 400;
+      letter-spacing: 0.06em; color: rgba(255,255,255,0.4);
+      margin-top: 2px; text-transform: uppercase;
+    }
+
+    .sidebar nav {
+      padding: 16px 0; flex: 1;
+    }
+
+    .sidebar nav a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 20px;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.82rem; font-weight: 500;
+      border-left: 3px solid transparent;
+      transition: all 0.15s;
+    }
+
+    .sidebar nav a:hover,
+    .sidebar nav a.active {
+      color: #fff;
+      background: rgba(255,255,255,0.06);
+      border-left-color: var(--green2);
+    }
+
+    .sidebar nav a .icon { font-size: 1rem; width: 18px; text-align: center; }
+
+    .sidebar-footer {
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 0.75rem; color: rgba(255,255,255,0.3);
+    }
+
+    .main {
+      margin-left: 220px;
+      padding: 32px 36px;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 28px;
+    }
+
+    .topbar h1 {
+      font-size: 1.2rem; font-weight: 700; letter-spacing: -0.02em;
+    }
+
+    .topbar .wip-badge {
+      background: var(--gold3); color: var(--gold);
+      border: 1px solid #e8c278;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em;
+      padding: 4px 10px; border-radius: 20px; text-transform: uppercase;
+    }
+
+    /* ── SECTION WRAPPERS ── */
+    .section { margin-bottom: 36px; }
+
+    .section-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .section-header h2 {
+      font-size: 0.95rem; font-weight: 700; letter-spacing: -0.01em;
+    }
+
+    .section-header .hint {
+      font-size: 0.75rem; color: var(--muted);
+    }
+
+    /* ── STAT CARDS ── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 14px;
+    }
+
+    .stat-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 18px 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-card .label {
+      font-size: 0.72rem; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    .stat-card .value {
+      font-size: 1.7rem; font-weight: 800; letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .stat-card .sub {
+      font-size: 0.72rem; color: var(--muted); margin-top: 4px;
+    }
+
+    .stat-card.green .value { color: var(--green); }
+    .stat-card.gold  .value { color: var(--gold); }
+    .stat-card.navy  .value { color: var(--fellow); }
+    .stat-card.red   .value { color: var(--red); }
+
+    /* ── TABLES ── */
+    .table-wrap {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    thead th {
+      background: var(--paper);
+      font-size: 0.7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--muted);
+      padding: 10px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+    }
+
+    tbody td {
+      padding: 11px 16px;
+      font-size: 0.82rem;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle;
+    }
+
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: #f9faf9; }
+
+    .tier-badge {
+      display: inline-block;
+      font-size: 0.68rem; font-weight: 700;
+      padding: 3px 8px; border-radius: 20px;
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+
+    .tier-founding  { background: #1a1a1a; color: #c9b26a; }
+    .tier-fellow    { background: var(--fellow3); color: var(--fellow); }
+    .tier-expert    { background: var(--green3); color: var(--green); }
+    .tier-contributor { background: #f0f0f0; color: #555; }
+
+    .status-badge {
+      display: inline-block;
+      font-size: 0.68rem; font-weight: 600;
+      padding: 3px 8px; border-radius: 20px;
+    }
+
+    .status-pending  { background: var(--gold3);  color: var(--gold); }
+    .status-approved { background: var(--green3); color: var(--green); }
+    .status-rejected { background: var(--red3);   color: var(--red); }
+    .status-review   { background: var(--fellow3); color: var(--fellow); }
+
+    .spots-bar {
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .bar-track {
+      height: 6px; width: 80px; border-radius: 3px;
+      background: var(--line); overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%; border-radius: 3px;
+      transition: width 0.3s;
+    }
+
+    .action-btn {
+      padding: 5px 12px;
+      border-radius: 5px; border: 1px solid var(--line);
+      font-size: 0.75rem; font-weight: 600; cursor: pointer;
+      background: var(--panel); color: var(--ink);
+      margin-right: 4px;
+    }
+
+    .action-btn:hover { background: var(--paper); }
+    .action-btn.approve { border-color: var(--green); color: var(--green); }
+    .action-btn.approve:hover { background: var(--green3); }
+    .action-btn.reject  { border-color: var(--red);   color: var(--red); }
+    .action-btn.reject:hover  { background: var(--red3); }
+
+    .coming-soon {
+      font-size: 0.68rem; color: var(--muted);
+      font-style: italic; margin-left: 4px;
+    }
+
+    .expert-name { font-weight: 600; }
+    .expert-domain { font-size: 0.75rem; color: var(--muted); }
+
+    .avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+    }
+
+    .name-cell { display: flex; align-items: center; gap: 10px; }
+
+    /* ── PILL TABS ── */
+    .pill-tabs {
+      display: flex; gap: 4px; margin-bottom: 14px;
+    }
+
+    .pill-tab {
+      padding: 5px 14px;
+      border-radius: 20px; border: 1px solid var(--line);
+      font-size: 0.75rem; font-weight: 600; cursor: pointer;
+      background: var(--panel); color: var(--muted);
+    }
+
+    .pill-tab.active {
+      background: var(--green); color: #fff; border-color: var(--green);
+    }
+
+    /* ── NOTICE STRIP ── */
+    .notice {
+      background: var(--gold3);
+      border: 1px solid #e8c278;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.78rem;
+      color: #7a5015;
+      margin-bottom: 28px;
+    }
+
+    .notice strong { font-weight: 700; }
+  </style>
+</head>
+<body>
+
+<!-- ── GATE ── -->
+<div id="gate">
+  <div class="gate-box">
+    <div class="logo">25<sup>experts</sup></div>
+    <p>Admin access only</p>
+    <input type="password" id="gate-pw" placeholder="Enter password" onkeydown="if(event.key==='Enter')unlock()">
+    <button onclick="unlock()">Sign in</button>
+    <div id="gate-error"></div>
+  </div>
+</div>
+
+<!-- ── APP ── -->
+<div id="app">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      25<sup style="font-size:0.5em;vertical-align:super">experts</sup>
+      <small>Admin Console</small>
+    </div>
+    <nav>
+      <a href="#overview"     class="active"><span class="icon">◈</span> Overview</a>
+      <a href="#experts"      ><span class="icon">★</span> Expert Roster</a>
+      <a href="#applications" ><span class="icon">✉</span> Applications</a>
+      <a href="#spots"        ><span class="icon">◉</span> Founding Spots</a>
+      <a href="experts.html"  ><span class="icon">↗</span> Expert Program</a>
+      <a href="join.html"     ><span class="icon">↗</span> Join Page</a>
+    </nav>
+    <div class="sidebar-footer">Aesop Academy · 501(c)(3)</div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <h1>Platform Overview</h1>
+      <span class="wip-badge">Interface mockup — no live data</span>
+    </div>
+
+    <div class="notice">
+      <strong>Wiring note:</strong> All data below is static mockup. Connect to backend (Stripe, database, email) when platform launches.
+    </div>
+
+    <!-- ── STATS ── -->
+    <div class="section" id="overview">
+      <div class="section-header">
+        <h2>Platform Stats</h2>
+        <span class="hint">Static placeholders</span>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card green">
+          <div class="label">Active Experts</div>
+          <div class="value">7</div>
+          <div class="sub">of 25 target slots</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Contributors</div>
+          <div class="value">11</div>
+          <div class="sub">in current cohort</div>
+        </div>
+        <div class="stat-card navy">
+          <div class="label">Expert Fellows</div>
+          <div class="value">2</div>
+          <div class="sub">elevated tier</div>
+        </div>
+        <div class="stat-card gold">
+          <div class="label">Founding Experts</div>
+          <div class="value">5</div>
+          <div class="sub">charter members</div>
+        </div>
+        <div class="stat-card green">
+          <div class="label">Total Patrons</div>
+          <div class="value">—</div>
+          <div class="sub">Stripe not connected</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Founding Patron Spots</div>
+          <div class="value">312</div>
+          <div class="sub">claimed across all experts</div>
+        </div>
+        <div class="stat-card red">
+          <div class="label">Pending Applications</div>
+          <div class="value">4</div>
+          <div class="sub">awaiting review</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">MRR (est.)</div>
+          <div class="value">—</div>
+          <div class="sub">Stripe not connected</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── EXPERT ROSTER ── -->
+    <div class="section" id="experts">
+      <div class="section-header">
+        <h2>Expert Roster</h2>
+        <span class="hint">Tier, domain, patron count</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Expert</th>
+              <th>Domain</th>
+              <th>Tier</th>
+              <th>Patrons</th>
+              <th>Founding Spots Left</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="roster-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── APPLICATIONS ── -->
+    <div class="section" id="applications">
+      <div class="section-header">
+        <h2>Applications</h2>
+        <span class="hint">Review and approve / reject <span class="coming-soon">(email wiring coming soon)</span></span>
+      </div>
+      <div class="pill-tabs">
+        <button class="pill-tab active" onclick="filterApps('all',this)">All (8)</button>
+        <button class="pill-tab" onclick="filterApps('pending',this)">Pending (4)</button>
+        <button class="pill-tab" onclick="filterApps('review',this)">In Review (2)</button>
+        <button class="pill-tab" onclick="filterApps('approved',this)">Approved (2)</button>
+        <button class="pill-tab" onclick="filterApps('rejected',this)">Rejected (0)</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Applicant</th>
+              <th>Domain</th>
+              <th>Audience Size</th>
+              <th>Patreon Migration</th>
+              <th>Applied</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="apps-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── FOUNDING SPOTS ── -->
+    <div class="section" id="spots">
+      <div class="section-header">
+        <h2>Founding Patron Spots</h2>
+        <span class="hint">25 spots per expert · mirrors join page modal</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Expert</th>
+              <th>Tier</th>
+              <th>Spots Claimed</th>
+              <th>Spots Remaining</th>
+              <th>Fill Rate</th>
+              <th>Urgency</th>
+            </tr>
+          </thead>
+          <tbody id="spots-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  /* ── GATE ── */
+  const PASS = 'aesop2026';
+
+  function unlock() {
+    const pw = document.getElementById('gate-pw').value;
+    if (pw === PASS) {
+      document.getElementById('gate').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+    } else {
+      document.getElementById('gate-error').textContent = 'Incorrect password.';
+    }
+  }
+
+  /* ── DATA ── */
+  const DOMAIN_COLORS = {
+    ai:         '#145f47',
+    finance:    '#b87a22',
+    marketing:  '#245a7d',
+    leadership: '#7b4b92',
+    design:     '#bf563f',
+  };
+
+  const EXPERTS = [
+    { name:'Priya Nair',      domain:'ai',         tier:'founding',    patrons:18, spots:4  },
+    { name:'Marcus Webb',     domain:'finance',     tier:'founding',    patrons:22, spots:3  },
+    { name:'Yuki Tanaka',     domain:'ai',          tier:'founding',    patrons:15, spots:6  },
+    { name:'Aisha Okonkwo',   domain:'leadership',  tier:'founding',    patrons:20, spots:5  },
+    { name:'Dev Kapoor',      domain:'marketing',   tier:'founding',    patrons:19, spots:7  },
+    { name:'Sofia Reyes',     domain:'ai',          tier:'fellow',      patrons:14, spots:9  },
+    { name:'James Thornton',  domain:'design',      tier:'fellow',      patrons:11, spots:8  },
+    { name:'Lena Brandt',     domain:'ai',          tier:'expert',      patrons:9,  spots:12 },
+    { name:'Omar Hassan',     domain:'finance',     tier:'expert',      patrons:13, spots:10 },
+    { name:'Rachel Kim',      domain:'marketing',   tier:'expert',      patrons:8,  spots:14 },
+    { name:'Tom Eriksson',    domain:'ai',          tier:'expert',      patrons:11, spots:11 },
+    { name:'Nadia Volkov',    domain:'leadership',  tier:'expert',      patrons:7,  spots:15 },
+    { name:'Carlos Mendes',   domain:'design',      tier:'expert',      patrons:10, spots:13 },
+    { name:'Fatima Al-Rashid',domain:'ai',          tier:'expert',      patrons:6,  spots:16 },
+    { name:'Ben Oduya',       domain:'finance',     tier:'contributor', patrons:3,  spots:19 },
+    { name:'Mei Lin',         domain:'marketing',   tier:'contributor', patrons:4,  spots:18 },
+    { name:'Alex Drummond',   domain:'ai',          tier:'contributor', patrons:2,  spots:21 },
+    { name:'Sasha Petrov',    domain:'leadership',  tier:'contributor', patrons:5,  spots:20 },
+    { name:'Ingrid Holm',     domain:'design',      tier:'contributor', patrons:3,  spots:22 },
+    { name:'Kwame Asante',    domain:'ai',          tier:'contributor', patrons:4,  spots:18 },
+    { name:'Diana Osei',      domain:'finance',     tier:'contributor', patrons:2,  spots:23 },
+    { name:'Paulo Silva',     domain:'marketing',   tier:'contributor', patrons:6,  spots:17 },
+    { name:'Yara Shahin',     domain:'ai',          tier:'contributor', patrons:3,  spots:21 },
+    { name:'Finn Larsen',     domain:'leadership',  tier:'contributor', patrons:5,  spots:19 },
+    { name:'Nia Clarke',      domain:'design',      tier:'contributor', patrons:4,  spots:24 },
+  ];
+
+  const APPLICATIONS = [
+    { name:'Jordan Blake',    domain:'ai',         audience:'1k–5k',   patreon:'Yes (180 patrons)', date:'May 10 2026', status:'pending'  },
+    { name:'Amara Diallo',    domain:'finance',    audience:'5k–10k',  patreon:'No',                 date:'May 9 2026',  status:'pending'  },
+    { name:'Ethan Cho',       domain:'marketing',  audience:'500–1k',  patreon:'Yes (45 patrons)',   date:'May 8 2026',  status:'pending'  },
+    { name:'Layla Mansour',   domain:'ai',         audience:'10k+',    patreon:'No',                 date:'May 7 2026',  status:'pending'  },
+    { name:'Sam Okonkwo',     domain:'leadership', audience:'1k–5k',   patreon:'Yes (90 patrons)',   date:'May 5 2026',  status:'review'   },
+    { name:'Tara Finch',      domain:'design',     audience:'5k–10k',  patreon:'No',                 date:'May 3 2026',  status:'review'   },
+    { name:'Rhys Morgan',     domain:'ai',         audience:'1k–5k',   patreon:'Yes (220 patrons)',  date:'Apr 28 2026', status:'approved' },
+    { name:'Priti Shah',      domain:'finance',    audience:'500–1k',  patreon:'No',                 date:'Apr 22 2026', status:'approved' },
+  ];
+
+  /* ── RENDER HELPERS ── */
+  function initials(name) {
+    return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  }
+
+  function tierBadge(tier) {
+    const map = {
+      founding:    ['tier-founding',    'Founding Expert'],
+      fellow:      ['tier-fellow',      'Expert Fellow'],
+      expert:      ['tier-expert',      'Expert'],
+      contributor: ['tier-contributor', 'Contributor'],
+    };
+    const [cls, label] = map[tier] || ['tier-contributor','Contributor'];
+    return `<span class="tier-badge ${cls}">${label}</span>`;
+  }
+
+  function spotsUrgency(spots) {
+    if (spots <= 5)  return '<span style="color:#c0392b;font-weight:700">Critical</span>';
+    if (spots <= 12) return '<span style="color:#b87a22;font-weight:700">Limited</span>';
+    return '<span style="color:#145f47">Open</span>';
+  }
+
+  /* ── BUILD ROSTER ── */
+  const rosterBody = document.getElementById('roster-body');
+  EXPERTS.forEach(e => {
+    const color = DOMAIN_COLORS[e.domain] || '#555';
+    const claimed = 25 - e.spots;
+    const pct = Math.round((claimed / 25) * 100);
+    rosterBody.innerHTML += `
+      <tr>
+        <td>
+          <div class="name-cell">
+            <span class="avatar" style="background:${color}">${initials(e.name)}</span>
+            <span class="expert-name">${e.name}</span>
+          </div>
+        </td>
+        <td><span class="expert-domain" style="color:${color};font-weight:600;text-transform:capitalize">${e.domain}</span></td>
+        <td>${tierBadge(e.tier)}</td>
+        <td>${e.patrons}</td>
+        <td>
+          <div class="spots-bar">
+            <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div>
+            <span>${e.spots} left</span>
+          </div>
+        </td>
+        <td><span class="status-badge status-approved">Active</span></td>
+        <td>
+          <button class="action-btn">View</button>
+          <button class="action-btn">Edit <span class="coming-soon">soon</span></button>
+        </td>
+      </tr>`;
+  });
+
+  /* ── BUILD APPLICATIONS ── */
+  function renderApps(filter) {
+    const body = document.getElementById('apps-body');
+    const list = filter === 'all' ? APPLICATIONS : APPLICATIONS.filter(a => a.status === filter);
+    body.innerHTML = '';
+    list.forEach(a => {
+      const color = DOMAIN_COLORS[a.domain] || '#555';
+      body.innerHTML += `
+        <tr data-status="${a.status}">
+          <td>
+            <div class="name-cell">
+              <span class="avatar" style="background:${color}">${initials(a.name)}</span>
+              <span class="expert-name">${a.name}</span>
+            </div>
+          </td>
+          <td><span style="color:${color};font-weight:600;text-transform:capitalize">${a.domain}</span></td>
+          <td>${a.audience}</td>
+          <td>${a.patreon}</td>
+          <td style="color:var(--muted)">${a.date}</td>
+          <td><span class="status-badge status-${a.status}">${a.status.charAt(0).toUpperCase()+a.status.slice(1)}</span></td>
+          <td>
+            <button class="action-btn">View</button>
+            <button class="action-btn approve">Approve <span class="coming-soon">soon</span></button>
+            <button class="action-btn reject">Reject <span class="coming-soon">soon</span></button>
+          </td>
+        </tr>`;
+    });
+  }
+
+  renderApps('all');
+
+  function filterApps(filter, btn) {
+    document.querySelectorAll('.pill-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    renderApps(filter);
+  }
+
+  /* ── BUILD SPOTS TABLE ── */
+  const spotsBody = document.getElementById('spots-body');
+  EXPERTS.forEach(e => {
+    const color = DOMAIN_COLORS[e.domain] || '#555';
+    const claimed = 25 - e.spots;
+    const pct = Math.round((claimed / 25) * 100);
+    spotsBody.innerHTML += `
+      <tr>
+        <td>
+          <div class="name-cell">
+            <span class="avatar" style="background:${color}">${initials(e.name)}</span>
+            <span class="expert-name">${e.name}</span>
+          </div>
+        </td>
+        <td>${tierBadge(e.tier)}</td>
+        <td>${claimed} / 25</td>
+        <td><strong>${e.spots}</strong></td>
+        <td>
+          <div class="spots-bar">
+            <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div>
+            <span style="font-size:0.75rem;color:var(--muted)">${pct}%</span>
+          </div>
+        </td>
+        <td>${spotsUrgency(e.spots)}</td>
+      </tr>`;
+  });
+</script>
+</body>
+</html>
