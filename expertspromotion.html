@@ -19,6 +19,9 @@
       --green3: #e5f2e8;
       --gold:   #b87a22;
       --gold3:  #fdf3e3;
+      --fellow: #1c3a5e;
+      --fellow2:#2a5298;
+      --fellow3:#e8f0fb;
       --dark:   #0f1716;
       --shadow: 0 18px 46px rgba(17,31,25,0.12);
       --shadow-sm: 0 4px 16px rgba(17,31,25,0.08);
@@ -114,7 +117,7 @@
     /* ── TIER LADDER ── */
     .ladder {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 0;
       border: 1px solid var(--line);
       border-radius: 14px;
@@ -303,6 +306,54 @@
     .gate-box.gold-gate .gate-body { background: var(--gold3); }
     .gate-box.gold-gate .gate-check { background: var(--gold); }
 
+    .gate-box.fellow-gate { border-color: var(--fellow); }
+    .gate-box.fellow-gate .gate-head { background: var(--fellow); }
+    .gate-box.fellow-gate .gate-body { background: var(--fellow3); }
+    .gate-box.fellow-gate .gate-check { background: var(--fellow); }
+
+    .ladder-step.is-fellow {
+      background: var(--fellow);
+      color: #fff;
+    }
+    .ladder-step.is-fellow p { color: rgba(255,255,255,0.65); }
+    .ladder-step.is-fellow h3 { color: #a8c8f8; }
+    .ladder-step.is-fellow .tier-badge { background: rgba(255,255,255,0.12); color: #fff; }
+    .ladder-step.is-fellow .tier-share { color: #a8c8f8; }
+    .ladder-step.is-fellow .tier-share span { color: rgba(255,255,255,0.4); }
+    .ladder-step.is-fellow .arrow-connector { background: var(--fellow2); }
+
+    .criteria-card.fellow-card {
+      border-color: var(--fellow);
+      border-width: 2px;
+      background: var(--fellow3);
+    }
+    .fellow-card .criteria-list li::before {
+      background: var(--fellow3);
+      color: var(--fellow);
+      border: 1px solid var(--fellow2);
+    }
+
+    .threshold-card.fellow-thresh {
+      border-color: var(--fellow);
+      border-width: 2px;
+      background: var(--fellow3);
+    }
+    .threshold-card.fellow-thresh .threshold-num { color: var(--fellow); }
+
+    .peer-callout {
+      margin-top: 40px;
+      padding: 24px 28px;
+      border: 1.5px solid var(--gold);
+      border-radius: 12px;
+      background: var(--gold3);
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .peer-callout-icon { font-size: 24px; flex-shrink: 0; }
+    .peer-callout h4 { font-size: 15px; margin: 0 0 6px; }
+    .peer-callout p  { font-size: 14px; color: var(--muted); }
+
     /* ── SOUL BOX ── */
     .soul-box {
       margin-top: 40px;
@@ -331,6 +382,9 @@
       color: var(--muted); font-size: 13px; text-align: center;
     }
 
+    @media (max-width: 1080px) {
+      .ladder              { grid-template-columns: 1fr 1fr; }
+    }
     @media (max-width: 860px) {
       .ladder              { grid-template-columns: 1fr; }
       .ladder-step         { border-right: none; border-bottom: 1px solid var(--line); }
@@ -383,9 +437,9 @@
   <!-- TIER LADDER -->
   <section class="section section-alt">
     <div class="inner">
-      <span class="overline">The three tiers</span>
+      <span class="overline">The four designations</span>
       <h2>Where you start. Where you can go.</h2>
-      <p>Every creator enters as a Contributor. Advancement is earned — not granted — and each tier unlocks better economics and deeper platform privileges.</p>
+      <p>Every creator enters as a Contributor. The path leads to Expert — and from there, to one of two co-equal top designations: Fellow (earned through promotion) or Founding Expert (reserved for vertical founders).</p>
 
       <div class="ladder">
         <div class="ladder-step">
@@ -402,11 +456,18 @@
           <div class="tier-share">60–70%<span> revenue share</span></div>
           <p class="tier-desc">Editorial-reviewed, patron-backed creators who have demonstrated sustained quality and real learner outcomes.</p>
         </div>
+        <div class="ladder-step is-fellow">
+          <div class="arrow-connector" style="background:var(--gold);box-shadow:0 2px 8px rgba(184,122,34,0.3);">=</div>
+          <span class="tier-badge">Promoted · earned</span>
+          <h3>Fellow</h3>
+          <div class="tier-share">70%<span> locked for life</span></div>
+          <p class="tier-desc">An Expert promoted to the highest designation through sustained patron loyalty, content excellence, and Standards Board review. The earned path to the top.</p>
+        </div>
         <div class="ladder-step is-founding">
-          <span class="tier-badge">5 per vertical · permanent</span>
+          <span class="tier-badge">5 per vertical · founders only</span>
           <h3>Founding Expert</h3>
           <div class="tier-share">70%<span style="color:rgba(255,255,255,0.4)"> locked for life</span></div>
-          <p class="tier-desc">The five creators who define the standard for a vertical. Permanent status, governance seat on the Standards Board, and the highest revenue share — locked forever.</p>
+          <p class="tier-desc">The five creators who built the vertical from day one. Same privileges and revenue share as Fellow — different title, different path. Not a promotion; a founding designation.</p>
         </div>
       </div>
     </div>
@@ -421,9 +482,9 @@
 
       <div class="patron-thresholds">
         <div class="threshold-card">
-          <div class="threshold-num">25</div>
+          <div class="threshold-num">100</div>
           <div class="threshold-label">Minimum patrons</div>
-          <div class="threshold-sub">The floor. You need at least 25 paying patrons before an Expert review can begin.</div>
+          <div class="threshold-sub">The floor. You need at least 100 paying patrons before an Expert review can begin.</div>
         </div>
         <div class="threshold-card active">
           <div class="threshold-num">60%</div>
@@ -488,7 +549,7 @@
       <div class="gate-box">
         <div class="gate-head">Expert review gate — all of the following must be true</div>
         <div class="gate-body">
-          <div class="gate-item"><span class="gate-check">✓</span><span>Minimum 25 active patrons</span></div>
+          <div class="gate-item"><span class="gate-check">✓</span><span>Minimum 100 active patrons</span></div>
           <div class="gate-item"><span class="gate-check">✓</span><span>Patron renewal rate ≥ 60% over 3 consecutive months</span></div>
           <div class="gate-item"><span class="gate-check">✓</span><span>At least 6 qualifying original videos, 3 blog posts, and 1 live workshop</span></div>
           <div class="gate-item"><span class="gate-check">✓</span><span>Editorial quality review passed (initiated by platform, not creator)</span></div>
@@ -505,47 +566,47 @@
     </div>
   </section>
 
-  <!-- EXPERT → FOUNDING EXPERT -->
-  <section class="section section-alt" id="expert-to-founding">
+  <!-- EXPERT → FELLOW -->
+  <section class="section section-alt" id="expert-to-fellow">
     <div class="inner">
-      <span class="overline gold">Path two</span>
-      <h2>Expert → Founding Expert</h2>
-      <p>Founding Expert is not a promotion you apply for. There are only 5 seats per vertical — ever. When a vertical launches, the strongest aligned Expert becomes the first Founding Expert. When subsequent seats open, they are filled by the Standards Board, not by application.</p>
+      <span class="overline" style="color:var(--fellow2)">Path two</span>
+      <h2>Expert → Fellow</h2>
+      <p>Fellowship is the highest designation an Expert can earn through promotion. It requires 250 active patrons, sustained retention, and a Standards Board review. Unlike Founding Expert — which belongs to vertical founders — Fellowship is the path every Expert can work toward.</p>
 
       <div class="patron-thresholds">
-        <div class="threshold-card gold-thresh">
-          <div class="threshold-num">5</div>
-          <div class="threshold-label">Seats per vertical</div>
-          <div class="threshold-sub">The cap is permanent. Once all 5 seats in a vertical are filled, they are closed until a seat formally reopens under governance rules.</div>
-        </div>
-        <div class="threshold-card gold-thresh">
-          <div class="threshold-num">100</div>
+        <div class="threshold-card fellow-thresh">
+          <div class="threshold-num">250</div>
           <div class="threshold-label">Minimum patrons</div>
-          <div class="threshold-sub">100 active patrons is the floor for Founding Expert consideration. Patron count alone is not sufficient — but without it, review will not begin.</div>
+          <div class="threshold-sub">The floor for Fellow consideration. 250 active paying patrons demonstrates real, sustained demand for your teaching.</div>
         </div>
-        <div class="threshold-card gold-thresh">
+        <div class="threshold-card fellow-thresh">
           <div class="threshold-num">75%</div>
           <div class="threshold-label">Patron retention</div>
-          <div class="threshold-sub">Founding Experts are the standard-setters for their vertical. Retention must reflect that.</div>
+          <div class="threshold-sub">Three quarters of your patrons renew month-over-month over at least 6 consecutive months.</div>
+        </div>
+        <div class="threshold-card fellow-thresh">
+          <div class="threshold-num">12 mo</div>
+          <div class="threshold-label">Time as Expert</div>
+          <div class="threshold-sub">At least 12 months as a verified Expert in good standing before a Fellow review can begin.</div>
         </div>
       </div>
 
       <div class="criteria-grid">
-        <div class="criteria-card gold-card">
+        <div class="criteria-card fellow-card">
           <span class="criteria-icon">⭐</span>
           <h3>Platform influence</h3>
-          <p>Founding Experts define the quality bar for their entire vertical, not just their own content.</p>
+          <p>Fellows define the quality bar for their entire vertical, not just their own content.</p>
           <ul class="criteria-list">
-            <li>Content consistently ranked in the top of its vertical by completion and saves</li>
+            <li>Content consistently ranked at the top of its vertical by completion and saves</li>
             <li>Other creators cite or build on your work in the forum</li>
             <li>Patron testimonials demonstrate measurable career or skill impact</li>
             <li>Learners complete entire learning paths anchored by your content</li>
           </ul>
         </div>
-        <div class="criteria-card gold-card">
+        <div class="criteria-card fellow-card">
           <span class="criteria-icon">🏛️</span>
           <h3>Governance readiness</h3>
-          <p>Founding Experts hold a seat on the Standards Board. The role carries real responsibility.</p>
+          <p>Fellows hold a seat on the Standards Board. The role carries real responsibility.</p>
           <ul class="criteria-list">
             <li>At least 12 months as a verified Expert in good standing</li>
             <li>Demonstrated commitment to the Aesop Academy mission and access values</li>
@@ -553,10 +614,10 @@
             <li>Willingness to participate in quarterly Standards Board reviews</li>
           </ul>
         </div>
-        <div class="criteria-card gold-card">
+        <div class="criteria-card fellow-card">
           <span class="criteria-icon">📡</span>
           <h3>Vertical authority</h3>
-          <p>Founding Experts are recognized as authoritative voices in their domain — on and off the platform.</p>
+          <p>Fellows are recognized as authoritative voices in their domain — on and off the platform.</p>
           <ul class="criteria-list">
             <li>Actively publishing in at least 3 content formats</li>
             <li>Live workshop attendance consistently above 40% of patrons</li>
@@ -564,10 +625,10 @@
             <li>Patron base growing or stable over 6+ months</li>
           </ul>
         </div>
-        <div class="criteria-card gold-card">
+        <div class="criteria-card fellow-card">
           <span class="criteria-icon">🤝</span>
           <h3>Community trust</h3>
-          <p>The platform's most trusted creators set the tone for everyone else.</p>
+          <p>Fellows set the tone for the entire platform community.</p>
           <ul class="criteria-list">
             <li>Patron renewal rate ≥ 75% over 6 consecutive months</li>
             <li>Active and respected presence in the forum and patron rooms</li>
@@ -577,21 +638,28 @@
         </div>
       </div>
 
-      <div class="gate-box gold-gate">
-        <div class="gate-head">Founding Expert review gate — Standards Board decision</div>
+      <div class="gate-box fellow-gate">
+        <div class="gate-head">Fellow review gate — Standards Board decision</div>
         <div class="gate-body">
-          <div class="gate-item"><span class="gate-check">✓</span><span>Minimum 100 active patrons</span></div>
+          <div class="gate-item"><span class="gate-check">✓</span><span>Minimum 250 active patrons</span></div>
           <div class="gate-item"><span class="gate-check">✓</span><span>Patron renewal rate ≥ 75% over 6 consecutive months</span></div>
           <div class="gate-item"><span class="gate-check">✓</span><span>At least 12 months as a verified Expert in good standing</span></div>
-          <div class="gate-item"><span class="gate-check">✓</span><span>Content ranked in the top tier of the vertical for quality, completion, and saves</span></div>
+          <div class="gate-item"><span class="gate-check">✓</span><span>Content ranked at the top of the vertical for quality, completion, and saves</span></div>
           <div class="gate-item"><span class="gate-check">✓</span><span>Demonstrated vertical authority — on platform and externally</span></div>
           <div class="gate-item"><span class="gate-check">✓</span><span>Standards Board review and majority vote</span></div>
-          <div class="gate-item"><span class="gate-check">✓</span><span>A seat is formally available (new vertical launch or governed seat reopening)</span></div>
         </div>
       </div>
 
-      <div class="soul-box" style="border-color: var(--gold); background: var(--gold3);">
-        <p>"Founding Expert is not the top of a ladder. It is the beginning of a responsibility — to the patrons who trusted you first, to the creators who come after you, and to the learners who depend on this platform to be honest about what good teaching looks like."</p>
+      <div class="peer-callout">
+        <span class="peer-callout-icon">⭐</span>
+        <div>
+          <h4>What about Founding Expert?</h4>
+          <p>Founding Expert is a parallel designation — not a promotion path. The 5 founders of each vertical hold Founding Expert status permanently. It carries the same privileges, revenue share, and Standards Board seat as Fellow. The difference is origin: Founding Experts built the vertical. Fellows earned their way to the top after it was built.</p>
+        </div>
+      </div>
+
+      <div class="soul-box" style="border-color: var(--fellow2); background: var(--fellow3);">
+        <p>"Fellowship is the platform saying: you earned this. Your patrons stayed, your content held up, and your community trusts you. That is the standard — and it is available to every Expert who meets it."</p>
         <cite>— 25experts Standards Board</cite>
       </div>
     </div>
