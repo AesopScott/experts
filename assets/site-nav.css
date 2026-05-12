@@ -2,8 +2,8 @@
 .nav {
   min-height: auto;
   align-items: center;
-  gap: 14px;
-  padding: 10px clamp(16px, 3.5vw, 44px);
+  gap: 10px;
+  padding: 8px clamp(16px, 3.5vw, 44px);
   background: #101615;
   border-bottom: 1px solid #243330;
   box-shadow: 0 18px 38px rgba(0, 0, 0, 0.18);
@@ -32,17 +32,17 @@
   flex: 1 1 auto;
   display: grid;
   grid-template-columns: repeat(4, minmax(132px, 1fr));
-  gap: 7px;
+  gap: 6px;
   align-items: stretch;
   color: var(--muted, #66716e);
 }
 
 .site-nav-group {
-  min-height: 78px;
+  min-height: 52px;
   display: grid;
-  grid-template-columns: 20px 1fr;
-  gap: 7px;
-  padding: 7px;
+  grid-template-columns: 18px 1fr;
+  gap: 6px;
+  padding: 6px;
   border: 1px solid #2c3c38;
   border-radius: 8px;
   background: #17211f;
@@ -65,7 +65,8 @@
 .site-nav-items {
   display: grid;
   grid-template-columns: repeat(2, minmax(56px, 1fr));
-  gap: 6px;
+  grid-template-rows: repeat(2, 17px);
+  gap: 5px;
   align-content: center;
   align-items: center;
 }
@@ -73,6 +74,7 @@
 .nav .site-nav-group a {
   min-height: 17px;
   height: 17px;
+  align-self: center;
   display: grid;
   place-items: center;
   padding: 0 6px;
