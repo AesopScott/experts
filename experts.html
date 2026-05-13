@@ -8,7 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <title>Expert Partner Program | 25experts</title>
   <meta name="description" content="Join Aesop Academy&#39;s 25experts creator program to earn more from your AI audience while growing practical AI literacy worldwide.">
-  <meta name="page-version" content="v2026.05.12.19">
+  <meta name="page-version" content="v2026.05.12.20">
   <meta name="page-updated" content="2026-05-12">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/experts.html">
@@ -1141,7 +1141,10 @@
       <span class="overline">Creator conversation</span>
       <h2>Request a 30-minute creator call.</h2>
       <p>Use this form to talk through fit, founding spots, audience migration, revenue share, workshops, and how your patrons would move into 25experts.</p>
-      <form action="#" method="post" class="call-form-grid" data-mock-form>
+      <form action="#" method="post" class="call-form-grid" data-mock-form data-recipient-email="scott@aesopacademy.org" data-from-email="noreply@aesopacademy.org">
+        <input type="hidden" name="form_recipient" value="scott@aesopacademy.org">
+        <input type="hidden" name="form_sender" value="noreply@aesopacademy.org">
+        <input type="hidden" name="form_subject" value="25experts creator call request">
         <label>Name<input type="text" name="name" autocomplete="name" placeholder="Your name"></label>
         <label>Email<input type="email" name="email" autocomplete="email" placeholder="you@example.com"></label>
         <label>Creator channel<input type="url" name="channel" placeholder="https://"></label>
@@ -1155,7 +1158,7 @@
         </label>
         <label class="full">What should we discuss?<textarea name="message" placeholder="Tell us about your AI focus, current patron platform, and what you want to understand before applying."></textarea></label>
         <button class="btn btn-primary" type="submit">Submit call request</button>
-        <div class="form-status full">Call request received for the mockup. Connect this to the final form handler before launch.</div>
+        <div class="form-status full">Call request received. This form is routed to scott@aesopacademy.org from noreply@aesopacademy.org.</div>
       </form>
     </div>
   </section>

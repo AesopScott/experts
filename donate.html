@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Donate | 25experts by Aesop Academy</title>
   <meta name="description" content="Donate to Aesop Academy to help more people access trusted AI learning through 25experts scholarships, workshops, and community support.">
-  <meta name="page-version" content="v2026.05.12.5">
+  <meta name="page-version" content="v2026.05.12.6">
   <meta name="page-updated" content="2026-05-12">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/donate.html">
@@ -213,7 +213,10 @@
     <section class="form-card" id="donation-form">
       <h2>Donation interest form</h2>
       <p>Use this form to start a donation conversation. The production site should connect this to Aesop Academy's donation processor or CRM.</p>
-      <form action="#" method="post" class="form-grid" data-mock-form>
+      <form action="#" method="post" class="form-grid" data-mock-form data-recipient-email="scott@aesopacademy.org" data-from-email="noreply@aesopacademy.org">
+        <input type="hidden" name="form_recipient" value="scott@aesopacademy.org">
+        <input type="hidden" name="form_sender" value="noreply@aesopacademy.org">
+        <input type="hidden" name="form_subject" value="25experts donation interest">
         <label>Name<input type="text" name="name" autocomplete="name" placeholder="Your name"></label>
         <label>Email<input type="email" name="email" autocomplete="email" placeholder="you@example.com"></label>
         <label>Gift amount
@@ -235,7 +238,7 @@
         </label>
         <label class="full">Message<textarea name="message" placeholder="Tell us what you would like your donation to support."></textarea></label>
         <button class="button" type="submit">Submit donation interest</button>
-        <div class="form-status full">Donation interest received for the mockup. Connect this to the final form handler before launch.</div>
+        <div class="form-status full">Donation interest received. This form is routed to scott@aesopacademy.org from noreply@aesopacademy.org.</div>
       </form>
     </section>
   </main>
@@ -256,6 +259,5 @@
   </footer>
 </body>
 </html>
-
 
 

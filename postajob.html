@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Post a Job | 25experts</title>
   <meta name="description" content="Post an AI job to the 25experts community — professionals actively learning AI from vetted experts across five domains.">
-  <meta name="page-version" content="v2026.05.12.7">
+  <meta name="page-version" content="v2026.05.12.8">
   <meta name="page-updated" content="2026-05-12">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/postajob.html">
@@ -178,7 +178,10 @@
         <div class="kicker">Job listing</div>
         <h2>Tell us about the role</h2>
         <p>Fill out the details below. Your listing goes live as soon as it's reviewed — typically within the hour.</p>
-        <form action="#" method="post" class="form-grid" data-mock-form>
+        <form action="#" method="post" class="form-grid" data-mock-form data-recipient-email="scott@aesopacademy.org" data-from-email="noreply@aesopacademy.org">
+          <input type="hidden" name="form_recipient" value="scott@aesopacademy.org">
+          <input type="hidden" name="form_sender" value="noreply@aesopacademy.org">
+          <input type="hidden" name="form_subject" value="25experts job listing">
           <label>Job title<input type="text" name="title" placeholder="e.g. AI Product Manager" autocomplete="off"></label>
           <label>Company name<input type="text" name="company" autocomplete="organization" placeholder="Your company or org"></label>
           <label>Location / remote policy

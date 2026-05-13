@@ -8,7 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <title>Learn AI from People Who Actually Know It | 25experts</title>
   <meta name="description" content="Follow trusted AI experts for $14 per expert and get videos, blogs, workshops, forums, and paid member access to live events and AI companions.">
-  <meta name="page-version" content="v2026.05.12.13">
+  <meta name="page-version" content="v2026.05.12.14">
   <meta name="page-updated" content="2026-05-12">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/subscriber.html">
@@ -1130,7 +1130,10 @@
         <span class="overline">Ask before you join</span>
         <h3>Send us your question.</h3>
         <p>Use this form for pricing, access, expert selection, student pathways, sponsorship, or anything else you want clarified.</p>
-        <form action="#" method="post" id="subscriber-question-form">
+        <form action="#" method="post" id="subscriber-question-form" data-recipient-email="scott@aesopacademy.org" data-from-email="noreply@aesopacademy.org">
+          <input type="hidden" name="form_recipient" value="scott@aesopacademy.org">
+          <input type="hidden" name="form_sender" value="noreply@aesopacademy.org">
+          <input type="hidden" name="form_subject" value="25experts subscriber question">
           <div class="form-row">
             <label>
               Name
@@ -1157,8 +1160,8 @@
             <textarea name="question" placeholder="What would you like to know?"></textarea>
           </label>
           <button class="btn btn-primary" type="submit">Submit question</button>
-          <div class="form-status" id="question-form-status">Question received for the mockup. Connect this to the final form handler before launch.</div>
-          <div class="form-fineprint">Mockup form only. Connect this to the final site form handler before launch.</div>
+          <div class="form-status" id="question-form-status">Question received. This form is routed to scott@aesopacademy.org from noreply@aesopacademy.org.</div>
+          <div class="form-fineprint">Messages are routed to Aesop Academy for follow-up.</div>
         </form>
       </div>
     </div>

@@ -8,7 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <title>Expert Program Application | 25experts</title>
   <meta name="description" content="Apply to join the 25experts creator program and help Aesop Academy bring practical AI expertise to a global audience.">
-  <meta name="page-version" content="v2026.05.12.5">
+  <meta name="page-version" content="v2026.05.12.6">
   <meta name="page-updated" content="2026-05-12">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/expertapplication.html">
@@ -417,7 +417,10 @@
   <!-- FORM -->
   <div class="form-wrap" id="form-wrap">
     <div class="form-inner">
-      <form id="application-form" onsubmit="handleSubmit(event)" novalidate>
+      <form id="application-form" method="post" data-recipient-email="scott@aesopacademy.org" data-from-email="noreply@aesopacademy.org" onsubmit="handleSubmit(event)" novalidate>
+        <input type="hidden" name="form_recipient" value="scott@aesopacademy.org">
+        <input type="hidden" name="form_sender" value="noreply@aesopacademy.org">
+        <input type="hidden" name="form_subject" value="25experts expert application">
 
         <!-- SECTION 1: About You -->
         <div class="form-section">
@@ -651,6 +654,5 @@
 
 </body>
 </html>
-
 
 

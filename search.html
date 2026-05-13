@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Social Search | 25experts</title>
   <meta name="description" content="Search 25experts by the question you are trying to answer, then discover videos, blogs, workshops, forums, and experts organized by intent.">
-  <meta name="page-version" content="v2026.05.12.1">
+  <meta name="page-version" content="v2026.05.12.2">
   <meta name="page-updated" content="2026-05-12">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/search.html">
@@ -211,10 +211,13 @@
         <section class="side-card">
           <h3>Ask the network</h3>
           <p>If search does not answer your question, submit it. Patrons can vote it into a workshop, forum thread, or expert video.</p>
-          <form class="ask-form" id="ask-form">
-            <textarea placeholder="What are you trying to solve?"></textarea>
+          <form class="ask-form" id="ask-form" method="post" data-recipient-email="scott@aesopacademy.org" data-from-email="noreply@aesopacademy.org">
+            <input type="hidden" name="form_recipient" value="scott@aesopacademy.org">
+            <input type="hidden" name="form_sender" value="noreply@aesopacademy.org">
+            <input type="hidden" name="form_subject" value="25experts search network question">
+            <textarea name="question" placeholder="What are you trying to solve?"></textarea>
             <button class="button" type="submit">Submit question</button>
-            <div class="status" id="ask-status">Question submitted for the mockup. In production this becomes a votable topic.</div>
+            <div class="status" id="ask-status">Question submitted. This form is routed to scott@aesopacademy.org from noreply@aesopacademy.org.</div>
           </form>
         </section>
       </aside>
