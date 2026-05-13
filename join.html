@@ -8,7 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <title>Join Free | 25experts</title>
   <meta name="description" content="Join 25experts for free, explore expert AI content, and support Aesop Academy&#39;s nonprofit mission to expand practical AI literacy.">
-  <meta name="page-version" content="v2026.05.12.5">
+  <meta name="page-version" content="v2026.05.12.6">
   <meta name="page-updated" content="2026-05-12">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/join.html">
@@ -489,6 +489,20 @@
     /* ── ACCESSIBILITY ── */
     :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 3px; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+    /* ── SIGNUP MODAL FORM ── */
+    .signup-field { display: grid; gap: 6px; font-size: 14px; font-weight: 800; color: var(--ink); }
+    .signup-input {
+      width: 100%; border: 1px solid var(--line); border-radius: 8px;
+      padding: 11px 13px; font: inherit; color: var(--ink); background: #fff;
+      transition: border-color 0.15s;
+    }
+    .signup-input:focus { outline: none; border-color: var(--green); }
+    .signup-error { display: none; background: #fef2f2; color: #c0392b; border-radius: 8px; padding: 11px 13px; font-size: 13px; font-weight: 700; }
+    .signup-success { display: none; text-align: center; padding: 24px 0; }
+    .signup-success-icon { font-size: 52px; margin-bottom: 12px; }
+    .signup-success h3 { color: var(--green); margin: 0 0 8px; font-size: 22px; }
+    .signup-success p { color: var(--muted); margin: 0; font-size: 15px; }
   </style>
   <link rel="stylesheet" href="assets/site-nav.css?v=20260512-nav6">
 </head>
@@ -509,7 +523,7 @@
       <h1>Free to follow.<br><em>Patronize to go deeper.</em></h1>
       <p>Create a free account and follow up to 5 experts — no credit card needed. When you're ready to go deeper, become a patron to unlock full content, live workshops, and direct access.</p>
       <div class="hero-actions">
-        <a href="#" class="btn btn-green btn-lg">Follow the Experts — it's free</a>
+        <a href="#" class="btn btn-green btn-lg" data-signup="free">Follow the Experts — it's free</a>
         <a href="#patron" class="btn btn-outline btn-lg">See patron pricing</a>
       </div>
     </div>
@@ -557,7 +571,7 @@
               <li><span class="check no">✗</span><span>Learning paths</span></li>
             </ul>
             <div class="tier-cta">
-              <a href="#" class="btn btn-outline" style="width:100%">Create free account</a>
+              <a href="#" class="btn btn-outline" style="width:100%" data-signup="free">Create free account</a>
             </div>
           </div>
         </div>
@@ -585,8 +599,8 @@
               <li><span class="check yes">✓</span><span>Patron badge on your profile</span></li>
             </ul>
             <div class="tier-cta">
-              <a href="#" class="btn btn-green" style="width:100%">Start 7-day free trial</a>
-              <a href="#" class="btn btn-outline" style="width:100%">Convert from Patreon</a>
+              <a href="#" class="btn btn-green" style="width:100%" data-signup="patron">Start 7-day free trial</a>
+              <a href="#" class="btn btn-outline" style="width:100%" data-signup="patron">Convert from Patreon</a>
               <p class="soon-note">Stripe payments coming soon</p>
             </div>
           </div>
@@ -636,7 +650,7 @@
   <section class="patron-cta-band">
     <h2>Start your patronage today.</h2>
     <p>Pick any expert. Your first 7 days are free. Cancel before then and you won't be charged a thing.</p>
-    <a href="#" class="btn btn-green btn-lg">Become a Patron — 7 days free</a>
+    <a href="#" class="btn btn-green btn-lg" data-signup="patron">Become a Patron — 7 days free</a>
     <p class="soon-note">Stripe payments coming soon</p>
   </section>
 
@@ -774,7 +788,7 @@
   <section class="patron-cta-band">
     <h2>Everything you need to go deep on AI.</h2>
     <p>Full video archive, live workshops, replays, Q&amp;A, blogs, and learning paths — starting at $14/month per expert.</p>
-    <a href="#" class="btn btn-green btn-lg">Become a Patron Today</a>
+    <a href="#" class="btn btn-green btn-lg" data-signup="patron">Become a Patron Today</a>
     <p class="soon-note">Stripe payments coming soon</p>
   </section>
 
@@ -831,12 +845,56 @@
     <h2 style="color:#5ddfb0;">Ready to go deeper?</h2>
     <p style="color:rgba(255,255,255,0.7);">Join thousands of professionals learning AI from the people who actually use it.</p>
     <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
-      <a href="#" class="btn btn-mint btn-lg">Start 7-day free trial</a>
-      <a href="#" class="btn btn-lg" style="background:rgba(255,255,255,0.1);color:#fff;border:1.5px solid rgba(255,255,255,0.28);">Convert from Patreon</a>
-      <a href="#" class="btn btn-lg" style="background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.6);border:1.5px solid rgba(255,255,255,0.15);">Create free account</a>
+      <a href="#" class="btn btn-mint btn-lg" data-signup="patron">Start 7-day free trial</a>
+      <a href="#" class="btn btn-lg" style="background:rgba(255,255,255,0.1);color:#fff;border:1.5px solid rgba(255,255,255,0.28);" data-signup="patron">Convert from Patreon</a>
+      <a href="#" class="btn btn-lg" style="background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.6);border:1.5px solid rgba(255,255,255,0.15);" data-signup="free">Create free account</a>
     </div>
     <p class="soon-note" style="color:rgba(255,255,255,0.4);">Stripe payments coming soon</p>
   </section>
+
+  <!-- SIGNUP MODAL -->
+  <div class="modal-overlay" id="signupModal" role="dialog" aria-modal="true" aria-labelledby="signup-modal-title" onclick="if(event.target===this)document.getElementById('signupModal').classList.remove('open')">
+    <div class="modal-box" style="max-width:480px">
+      <div class="modal-header">
+        <div>
+          <h3 id="signup-modal-title">Create your free account</h3>
+          <p id="signupModalSubtitle">Start following AI experts — no credit card needed.</p>
+        </div>
+        <button class="modal-close" onclick="document.getElementById('signupModal').classList.remove('open')" aria-label="Close">✕</button>
+      </div>
+      <div style="padding:28px">
+        <form id="signupForm" novalidate>
+          <div style="display:grid;gap:14px">
+            <label class="signup-field">
+              Your name
+              <input type="text" id="signupName" class="signup-input" autocomplete="name" placeholder="First and last name" required>
+            </label>
+            <label class="signup-field">
+              Email address
+              <input type="email" id="signupEmail" class="signup-input" autocomplete="email" placeholder="you@example.com" required>
+            </label>
+            <label class="signup-field">
+              Password
+              <input type="password" id="signupPassword" class="signup-input" autocomplete="new-password" placeholder="At least 8 characters" required minlength="8">
+            </label>
+            <div id="signupError" class="signup-error"></div>
+            <button type="submit" id="signupSubmit" class="btn btn-green" style="width:100%;min-height:48px;font-size:15px;border:none">Create free account</button>
+            <p style="text-align:center;font-size:13px;color:var(--muted);margin:0">
+              Already have an account? <a href="profile.html" style="color:var(--green);font-weight:800">Sign in</a>
+            </p>
+          </div>
+        </form>
+        <div id="signupSuccess" class="signup-success">
+          <div class="signup-success-icon">✓</div>
+          <h3>Welcome to 25experts!</h3>
+          <p>Your account is ready. Taking you to your profile...</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <strong>Aesop Academy</strong> is a 501(c)(3) nonprofit — your data is never sold or shared.
+      </div>
+    </div>
+  </div>
 
   <!-- FOUNDING PATRON MODAL -->
   <div class="modal-overlay" id="foundingModal" role="dialog" aria-modal="true" aria-labelledby="founding-modal-title" onclick="if(event.target===this)this.classList.remove('open')">
@@ -922,6 +980,84 @@
   <footer>
     <span>© 2026 25experts.com · A project of <a href="https://aesopacademy.org" style="color:var(--green);font-weight:700;">Aesop Academy</a></span>
   </footer>
+
+  <script type="module">
+    import { auth, db } from "./assets/firebase-init.js";
+    import { createUserWithEmailAndPassword, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // If already signed in, redirect to profile
+    onAuthStateChanged(auth, user => {
+      if (user) window.location.href = "profile.html";
+    });
+
+    // Wire all signup buttons
+    document.querySelectorAll("[data-signup]").forEach(btn => {
+      btn.addEventListener("click", e => {
+        e.preventDefault();
+        const type = btn.dataset.signup;
+        const subtitle = document.getElementById("signupModalSubtitle");
+        subtitle.textContent = type === "patron"
+          ? "Create a free account first — patron billing via Stripe coming soon."
+          : "Start following AI experts — no credit card needed.";
+        document.getElementById("signupModal").classList.add("open");
+        setTimeout(() => document.getElementById("signupName").focus(), 100);
+      });
+    });
+
+    // Signup form submission
+    document.getElementById("signupForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const name     = document.getElementById("signupName").value.trim();
+      const email    = document.getElementById("signupEmail").value.trim();
+      const password = document.getElementById("signupPassword").value;
+      const errorEl  = document.getElementById("signupError");
+      const submitBtn = document.getElementById("signupSubmit");
+
+      if (!name) { showError("Please enter your name."); return; }
+
+      errorEl.style.display = "none";
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Creating account...";
+
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(cred.user, { displayName: name });
+        await setDoc(doc(db, "users", cred.user.uid), {
+          uid: cred.user.uid,
+          displayName: name,
+          email,
+          role: "patron",
+          accountType: "free",
+          followedExperts: [],
+          createdAt: serverTimestamp(),
+        });
+        document.getElementById("signupForm").style.display = "none";
+        document.getElementById("signupSuccess").style.display = "block";
+        setTimeout(() => { window.location.href = "profile.html"; }, 1800);
+      } catch (err) {
+        showError(friendlyError(err.code));
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Create free account";
+      }
+
+      function showError(msg) {
+        errorEl.textContent = msg;
+        errorEl.style.display = "block";
+      }
+    });
+
+    function friendlyError(code) {
+      const map = {
+        "auth/email-already-in-use": "That email is already registered. Try signing in instead.",
+        "auth/invalid-email":         "Please enter a valid email address.",
+        "auth/weak-password":         "Password must be at least 8 characters.",
+        "auth/network-request-failed":"Network error — please check your connection and try again.",
+        "auth/too-many-requests":     "Too many attempts. Please wait a moment and try again.",
+      };
+      return map[code] || "Something went wrong. Please try again.";
+    }
+  </script>
 
 </body>
 </html>

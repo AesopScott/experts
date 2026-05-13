@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Profile | 25experts</title>
   <meta name="description" content="Manage your 25experts patron profile and expert profile access.">
-  <meta name="page-version" content="v2026.05.12.5">
+  <meta name="page-version" content="v2026.05.12.6">
   <meta name="page-updated" content="2026-05-12">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/profile.html">
@@ -160,6 +160,57 @@
         document.querySelectorAll(".switch[data-target]").forEach(item => item.classList.toggle("active", item === button));
         document.getElementById("profileFrame").src = button.dataset.target;
       });
+    });
+  </script>
+
+  <script type="module">
+    import { auth, db } from "./assets/firebase-init.js";
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    onAuthStateChanged(auth, async user => {
+      if (!user) {
+        window.location.href = "join.html";
+        return;
+      }
+
+      // Update hero with real user name
+      const h1 = document.querySelector(".hero h1");
+      if (h1) h1.textContent = `Welcome back, ${user.displayName || user.email}.`;
+
+      // Update status panel
+      const statusStrong = document.querySelector(".status strong");
+      const statusSpan   = document.querySelector(".status span");
+      if (statusStrong) statusStrong.textContent = user.displayName || user.email;
+      if (statusSpan)   statusSpan.textContent   = user.email;
+
+      // Check role in Firestore and gate expert button
+      try {
+        const snap = await getDoc(doc(db, "users", user.uid));
+        if (snap.exists()) {
+          const { role } = snap.data();
+          const expertBtn = document.getElementById("expertButton");
+          if (expertBtn && !["contributor", "expert", "founding_expert"].includes(role)) {
+            expertBtn.disabled = true;
+            expertBtn.classList.add("disabled");
+            expertBtn.title = "Expert access not yet enabled for this account";
+          }
+        }
+      } catch (_) {}
+
+      // Add sign-out button
+      const switcher = document.querySelector(".switcher");
+      if (switcher) {
+        const signOutBtn = document.createElement("button");
+        signOutBtn.className = "switch";
+        signOutBtn.style.cssText = "margin-left:auto;background:#fef2f2;color:#c0392b;border-color:#f5c6c6";
+        signOutBtn.textContent = "Sign Out";
+        signOutBtn.addEventListener("click", async () => {
+          await signOut(auth);
+          window.location.href = "join.html";
+        });
+        switcher.appendChild(signOutBtn);
+      }
     });
   </script>
 </body>

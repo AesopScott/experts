@@ -8,7 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <title>Expert Partner Program | 25experts</title>
   <meta name="description" content="Join Aesop Academy&#39;s 25experts creator program to earn more from your AI audience while growing practical AI literacy worldwide.">
-  <meta name="page-version" content="v2026.05.12.5">
+  <meta name="page-version" content="v2026.05.12.6">
   <meta name="page-updated" content="2026-05-12">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/experts.html">
@@ -1178,12 +1178,40 @@
     </div>
   </section>
 
-  <script>
-    document.querySelectorAll("[data-mock-form]").forEach((form) => {
-      form.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const status = form.querySelector(".form-status");
-        if (status) status.style.display = "block";
+  <script type="module">
+    import { db } from "./assets/firebase-init.js";
+    import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    document.querySelectorAll("[data-mock-form]").forEach(form => {
+      const status    = form.querySelector(".form-status");
+      const submitBtn = form.querySelector("button[type='submit']");
+
+      form.addEventListener("submit", async e => {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(form));
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Submitting...";
+        status.style.background = "";
+        status.style.color = "";
+
+        try {
+          await addDoc(collection(db, "creator_calls"), {
+            ...data,
+            createdAt: serverTimestamp(),
+            status: "pending",
+          });
+          status.textContent = "Request received! We'll be in touch within 1–2 business days.";
+          status.style.display = "block";
+          form.reset();
+        } catch (err) {
+          status.textContent = "Something went wrong — please email us at hello@25experts.com";
+          status.style.background = "#fef2f2";
+          status.style.color = "#c0392b";
+          status.style.display = "block";
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Submit call request";
+        }
       });
     });
   </script>
