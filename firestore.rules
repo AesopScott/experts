@@ -23,6 +23,16 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
 
+    match /form_submissions/{id} {
+      allow create: if request.resource.data.to == "scott@aesopacademy.org"
+        && request.resource.data.from == "noreply@aesopacademy.org"
+        && request.resource.data.status == "queued"
+        && request.resource.data.subject is string
+        && request.resource.data.fields is map
+        && request.resource.data.readable is list;
+      allow read, update, delete: if isAdmin();
+    }
+
     match /jobs/{id} {
       allow read: if resource.data.status == "live" || isAdmin();
       allow create: if true;

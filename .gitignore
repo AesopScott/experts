@@ -7,6 +7,9 @@ serviceAccountKey.json
 .env.local
 .env.*.local
 
+# Node dependencies
+node_modules/
+
 # OS
 .DS_Store
 Thumbs.db
