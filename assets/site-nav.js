@@ -100,12 +100,37 @@
       </div>
     </nav>
     </div>
+    <a class="site-jobs-ribbon" href="jobs.html" aria-label="Open the AI jobs board">
+      <span class="site-jobs-tail site-jobs-tail-left" aria-hidden="true"></span>
+      <span class="site-jobs-tail site-jobs-tail-right" aria-hidden="true"></span>
+      <span class="site-jobs-seal" aria-hidden="true">
+        <span>Jobs</span>
+      </span>
+    </a>
   `;
 
   function renderSiteNav() {
     const mount = document.getElementById("site-nav");
     if (mount) {
       mount.outerHTML = navMarkup;
+    }
+  }
+
+  function positionJobsRibbon() {
+    const shell = document.querySelector(".site-nav-shell");
+    const ribbon = document.querySelector(".site-jobs-ribbon");
+    if (!shell || !ribbon) return;
+    const bottom = shell.getBoundingClientRect().bottom;
+    const offset = window.innerWidth <= 760 ? 10 : 18;
+    ribbon.style.setProperty("--jobs-ribbon-top", `${Math.max(72, bottom + offset)}px`);
+  }
+
+  function watchJobsRibbon() {
+    positionJobsRibbon();
+    window.addEventListener("resize", positionJobsRibbon, { passive: true });
+    if ("ResizeObserver" in window) {
+      const shell = document.querySelector(".site-nav-shell");
+      if (shell) new ResizeObserver(positionJobsRibbon).observe(shell);
     }
   }
 
@@ -119,9 +144,10 @@
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => { renderSiteNav(); renderVersionBadge(); });
+    document.addEventListener("DOMContentLoaded", () => { renderSiteNav(); watchJobsRibbon(); renderVersionBadge(); });
   } else {
     renderSiteNav();
+    watchJobsRibbon();
     renderVersionBadge();
   }
 })();
