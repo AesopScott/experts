@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Expert Profiles | 25experts</title>
   <meta name="description" content="Browse AI expert profiles, follow trusted creators, and discover their videos, blogs, workshops, and forum contributions.">
-  <meta name="page-version" content="v2026.05.13.11">
+  <meta name="page-version" content="v2026.05.13.12">
   <meta name="page-updated" content="2026-05-13">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/expertprofiles.html">
@@ -947,10 +947,10 @@
         { value: `${expert.workshops}`, label: "workshops" }
       ].map(stat => `<div class="stat"><strong>${stat.value}</strong>${stat.label ? `<span>${stat.label}</span>` : ""}</div>`).join("");
       document.getElementById("learningMap").innerHTML = [
-        ["1. Watch", "Start with the highest-rated short lessons and free previews."],
-        ["2. Practice", "Use the blog playbooks, downloads, and forum prompts to apply the idea."],
-        ["3. Go live", "Bring real questions to workshops and keep momentum with the AI companion."]
-      ].map(item => `<article class="map-card"><b>${expert.name.split(" ")[0]}'s path</b><h3>${item[0]}</h3><p>${item[1]}</p></article>`).join("");
+        [`${expert.name.split(" ")[0]}'s Top Rated Videos`, "1. Watch", "Start with the highest-rated short lessons and free previews."],
+        [`${expert.name.split(" ")[0]}'s Top Rated Writings`, "2. Practice", "Use the blog playbooks, downloads, and forum prompts to apply the idea."],
+        [`${expert.name.split(" ")[0]}'s Top Workshops`, "3. Go live", "Bring real questions to workshops and keep momentum with the AI companion."]
+      ].map(item => `<article class="map-card"><b>${item[0]}</b><h3>${item[1]}</h3><p>${item[2]}</p></article>`).join("");
       document.getElementById("aiReply").textContent = `I would start with ${expert.name.split(" ")[0]}'s workflow map lesson, then bring one real example to the next workshop so the advice becomes specific to your work.`;
       document.getElementById("threads").innerHTML = [
         [`${expert.name} just answered`, "What is the safest first automation for a small team with no technical support?"],
