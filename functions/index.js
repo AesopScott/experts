@@ -1,12 +1,10 @@
 const { onDocumentCreated } = require("firebase-functions/v2/firestore");
 const { defineSecret } = require("firebase-functions/params");
 const admin = require("firebase-admin");
-const nodemailer = require("nodemailer");
 
 admin.initializeApp();
 
-const brevoSmtpUser = defineSecret("BREVO_SMTP_USER");
-const brevoSmtpKey = defineSecret("BREVO_SMTP_KEY");
+const brevoApiKey = defineSecret("BREVO_SMTP_KEY");
 
 const DEFAULT_TO = "scott@aesopacademy.org";
 const DEFAULT_FROM = "noreply@aesopacademy.org";
@@ -55,7 +53,7 @@ function formatHtml(submission) {
 
 exports.sendFormSubmissionEmail = onDocumentCreated({
   document: "form_submissions/{submissionId}",
-  secrets: [brevoSmtpUser, brevoSmtpKey],
+  secrets: [brevoApiKey],
 }, async event => {
   const snapshot = event.data;
   if (!snapshot) return;
@@ -64,30 +62,35 @@ exports.sendFormSubmissionEmail = onDocumentCreated({
   const to = submission.to || DEFAULT_TO;
   const from = submission.from || DEFAULT_FROM;
 
-  const transporter = nodemailer.createTransport({
-    host: "smtp-relay.brevo.com",
-    port: 587,
-    secure: false,
-    auth: {
-      user: brevoSmtpUser.value(),
-      pass: brevoSmtpKey.value(),
-    },
-  });
-
   try {
-    const result = await transporter.sendMail({
-      to,
-      from,
-      replyTo: submission.fields?.email || undefined,
-      subject: submission.subject || "25experts form submission",
-      text: formatPlain(submission),
-      html: formatHtml(submission),
+    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        "api-key": brevoApiKey.value(),
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        sender: { email: from, name: "25experts" },
+        to: [{ email: to }],
+        replyTo: submission.fields?.email ? { email: submission.fields.email } : undefined,
+        subject: submission.subject || "25experts form submission",
+        textContent: formatPlain(submission),
+        htmlContent: formatHtml(submission),
+      }),
     });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Brevo API error ${response.status}: ${errorText}`);
+    }
+
+    const result = await response.json();
 
     await snapshot.ref.update({
       status: "sent",
       sentAt: admin.firestore.FieldValue.serverTimestamp(),
-      messageId: result.messageId || null,
+      messageId: result.messageId || result.messageIds?.[0] || null,
     });
   } catch (error) {
     await snapshot.ref.update({
