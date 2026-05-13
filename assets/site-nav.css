@@ -31,7 +31,11 @@
 .nav .nav-links.site-nav {
   flex: 1 1 auto;
   display: grid;
-  grid-template-columns: repeat(4, minmax(132px, 1fr));
+  grid-template-columns:
+    minmax(230px, 0.9fr)
+    minmax(340px, 1.35fr)
+    minmax(310px, 1.2fr)
+    minmax(230px, 0.9fr);
   gap: 6px;
   align-items: stretch;
   color: var(--muted, #66716e);
@@ -87,14 +91,14 @@
   border-radius: 7px;
   background: #fff;
   color: #15211e;
-  font-size: 13.7px;
+  font-size: clamp(10.6px, 0.72vw, 13px);
   font-weight: 850;
   line-height: 1.05;
   text-align: center;
   text-decoration: none;
   overflow: hidden;
-  text-wrap: balance;
-  white-space: normal;
+  text-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .site-nav-trail {
