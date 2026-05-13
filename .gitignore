@@ -1,0 +1,12 @@
+# Firebase service account keys
+*-firebase-adminsdk-*.json
+serviceAccountKey.json
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
