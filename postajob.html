@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Post a Job | 25experts</title>
   <meta name="description" content="Post an AI job to the 25experts community — professionals actively learning AI from vetted experts across five domains.">
-  <meta name="page-version" content="v2026.05.12.6">
+  <meta name="page-version" content="v2026.05.12.7">
   <meta name="page-updated" content="2026-05-12">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/postajob.html">
@@ -183,20 +183,20 @@
           <label>Company name<input type="text" name="company" autocomplete="organization" placeholder="Your company or org"></label>
           <label>Location / remote policy
             <select name="location">
-              <option>Remote — worldwide</option>
-              <option>Remote — US only</option>
-              <option>Hybrid — specify city</option>
-              <option>On-site</option>
+              <option value="remote-worldwide">Remote — worldwide</option>
+              <option value="remote-us">Remote — US only</option>
+              <option value="hybrid">Hybrid — specify city</option>
+              <option value="onsite">On-site</option>
             </select>
           </label>
           <label>Domain focus
             <select name="domain">
-              <option>AI &amp; Automation</option>
-              <option>Finance &amp; Investing</option>
-              <option>Marketing &amp; Sales</option>
-              <option>Leadership &amp; Management</option>
-              <option>Design &amp; Creative</option>
-              <option>Cross-domain / General AI</option>
+              <option value="ai">AI &amp; Automation</option>
+              <option value="finance">Finance &amp; Investing</option>
+              <option value="marketing">Marketing &amp; Sales</option>
+              <option value="leadership">Leadership &amp; Management</option>
+              <option value="design">Design &amp; Creative</option>
+              <option value="ai">Cross-domain / General AI</option>
             </select>
           </label>
           <label>Salary range<input type="text" name="salary" placeholder="e.g. $90k–$130k" autocomplete="off"></label>
@@ -226,8 +226,9 @@
           <h3>Who sees your listing</h3>
           <p>Every visitor to the jobs board is an active participant in structured AI learning — not someone who stumbled across a feed. These are practitioners who have chosen to invest in AI skills.</p>
         </div>
-        <div class="notice">
-          <strong>Mockup note:</strong> This form is not yet connected to a backend or payment processor. Submissions go nowhere until launch wiring is complete.
+        <div class="info-card">
+          <h3>Free during launch</h3>
+          <p>All listings submitted now go live at no charge. Pricing will be introduced after launch. You will not be billed retroactively.</p>
         </div>
       </aside>
     </section>
@@ -239,10 +240,58 @@
     <span>Reach AI practitioners, not passive job-seekers.</span>
   </footer>
 
-  <script>
-    document.querySelector("[data-mock-form]").addEventListener("submit", e => {
+  <script type="module">
+    import { auth, db } from "./assets/firebase-init.js";
+    import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    let currentUser = null;
+    onAuthStateChanged(auth, user => { currentUser = user; });
+
+    document.querySelector("[data-mock-form]").addEventListener("submit", async e => {
       e.preventDefault();
-      document.querySelector(".form-status").style.display = "block";
+      const form = e.target;
+      const btn = form.querySelector(".submit-btn");
+      const statusEl = document.querySelector(".form-status");
+      btn.disabled = true;
+      btn.textContent = "Submitting…";
+
+      const data = new FormData(form);
+      const locationVal = data.get("location") || "";
+      const type = locationVal.startsWith("remote") ? "remote"
+                 : locationVal === "hybrid"          ? "hybrid"
+                 : "onsite";
+
+      try {
+        await addDoc(collection(db, "jobs"), {
+          title:       data.get("title"),
+          company:     data.get("company"),
+          location:    locationVal,
+          domain:      data.get("domain"),
+          type,
+          salary:      data.get("salary"),
+          email:       data.get("email"),
+          description: data.get("description"),
+          status:      "pending",
+          featured:    false,
+          createdAt:   serverTimestamp(),
+          postedBy:    currentUser ? currentUser.uid : null,
+        });
+        form.reset();
+        statusEl.style.display = "block";
+        statusEl.style.background = "var(--mint)";
+        statusEl.style.color = "var(--green)";
+        statusEl.textContent = "Listing received. We'll have it live shortly — thank you for posting with 25experts.";
+        btn.style.display = "none";
+      } catch (err) {
+        console.error(err);
+        btn.disabled = false;
+        btn.textContent = "Submit listing";
+        statusEl.style.display = "block";
+        statusEl.style.background = "#fef2f2";
+        statusEl.style.color = "#c0392b";
+        statusEl.textContent = "Something went wrong. Please try again.";
+      }
     });
   </script>
 </body>

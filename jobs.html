@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI Jobs | 25experts</title>
   <meta name="description" content="Browse AI jobs posted by organizations hiring from the 25experts community — active AI learners, practitioners, and patrons across five domains.">
-  <meta name="page-version" content="v2026.05.12.6">
+  <meta name="page-version" content="v2026.05.12.7">
   <meta name="page-updated" content="2026-05-12">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/jobs.html">
@@ -200,21 +200,11 @@
     <span>AI jobs for an AI-ready audience.</span>
   </footer>
 
-  <script>
-    const JOBS = [
-      { title: "AI Product Manager",            company: "Meridian Labs",        logo: "ML", domain: "ai",         type: "remote",  salary: "$120k–$160k", age: "2 days ago",  featured: true  },
-      { title: "Senior Prompt Engineer",         company: "Vertex AI Studio",     logo: "VA", domain: "ai",         type: "remote",  salary: "$95k–$135k",  age: "3 days ago",  featured: false },
-      { title: "AI Operations Lead",             company: "Calibre Financial",    logo: "CF", domain: "finance",    type: "hybrid",  salary: "$110k–$145k", age: "1 day ago",   featured: false },
-      { title: "Machine Learning Engineer",      company: "Threadline",           logo: "TL", domain: "ai",         type: "remote",  salary: "$145k–$185k", age: "4 days ago",  featured: false },
-      { title: "AI Content Strategist",          company: "Forge Agency",         logo: "FA", domain: "marketing",  type: "hybrid",  salary: "$72k–$98k",   age: "5 days ago",  featured: false },
-      { title: "Head of AI Adoption",            company: "Solis Group",          logo: "SG", domain: "leadership", type: "onsite",  salary: "$160k–$200k", age: "2 days ago",  featured: true  },
-      { title: "AI RLHF / Trainer Specialist",   company: "Foundry Research",     logo: "FR", domain: "ai",         type: "remote",  salary: "$80k–$118k",  age: "6 days ago",  featured: false },
-      { title: "AI Design Systems Lead",         company: "Ember Creative",       logo: "EC", domain: "design",     type: "hybrid",  salary: "$95k–$130k",  age: "1 day ago",   featured: false },
-      { title: "AI Sales Enablement Manager",    company: "Atlas Revenue",        logo: "AR", domain: "marketing",  type: "remote",  salary: "$88k–$120k",  age: "3 days ago",  featured: false },
-      { title: "Generative AI Risk Analyst",     company: "Northmark Capital",    logo: "NC", domain: "finance",    type: "hybrid",  salary: "$105k–$140k", age: "5 days ago",  featured: false },
-    ];
+  <script type="module">
+    import { db } from "./assets/firebase-init.js";
+    import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    const TYPE_LABELS = { remote: "Remote", hybrid: "Hybrid", onsite: "On-site" };
+    const TYPE_LABELS   = { remote: "Remote", hybrid: "Hybrid", onsite: "On-site" };
     const DOMAIN_COLORS = {
       ai:         { bg: "#e9f5ef", color: "#145f47" },
       finance:    { bg: "#f5ecd6", color: "#b87a22" },
@@ -222,51 +212,102 @@
       leadership: { bg: "#ede5f5", color: "#7b4b92" },
       design:     { bg: "#f5e5e0", color: "#bf563f" },
     };
-    const DOMAIN_NAMES = { ai: "AI & Automation", finance: "Finance", marketing: "Marketing", leadership: "Leadership", design: "Design" };
+    const DOMAIN_NAMES  = { ai: "AI & Automation", finance: "Finance", marketing: "Marketing", leadership: "Leadership", design: "Design" };
+
+    let allJobs = [];
+
+    function timeAgo(ts) {
+      if (!ts) return "";
+      const secs = Math.floor((Date.now() - ts.toDate().getTime()) / 1000);
+      if (secs < 60) return "just now";
+      const mins = Math.floor(secs / 60);
+      if (mins < 60) return mins + "m ago";
+      const hrs = Math.floor(mins / 60);
+      if (hrs < 24) return hrs + "h ago";
+      const days = Math.floor(hrs / 24);
+      return days + " day" + (days !== 1 ? "s" : "") + " ago";
+    }
 
     function renderJob(job) {
-      const dc = DOMAIN_COLORS[job.domain];
+      const dc   = DOMAIN_COLORS[job.domain] || DOMAIN_COLORS.ai;
+      const logo = (job.company || "?").replace(/[^A-Za-z]/g, "").substring(0, 2).toUpperCase() || "?";
       const card = document.createElement("a");
-      card.className = "job-card" + (job.featured ? " featured" : "");
-      card.href = "#";
-      card.dataset.type = job.type;
+      card.className    = "job-card" + (job.featured ? " featured" : "");
+      card.href         = "#";
+      card.dataset.type   = job.type;
       card.dataset.domain = job.domain;
       card.innerHTML = `
-        <div class="company-logo">${job.logo}</div>
+        <div class="company-logo">${logo}</div>
         <div class="job-main">
           <div class="job-title">${job.title}${job.featured ? ' <span class="job-tag featured-tag">Featured</span>' : ""}</div>
           <div class="job-meta">
             <span class="job-company">${job.company}</span>
-            <span class="job-tag ${job.type}">${TYPE_LABELS[job.type]}</span>
-            <span class="job-tag" style="background:${dc.bg};color:${dc.color};">${DOMAIN_NAMES[job.domain]}</span>
-            <span class="job-salary">${job.salary}</span>
+            <span class="job-tag ${job.type}">${TYPE_LABELS[job.type] || job.type}</span>
+            <span class="job-tag" style="background:${dc.bg};color:${dc.color};">${DOMAIN_NAMES[job.domain] || job.domain}</span>
+            ${job.salary ? `<span class="job-salary">${job.salary}</span>` : ""}
           </div>
         </div>
         <div class="job-right">
-          <span class="job-age">${job.age}</span>
+          <span class="job-age">${timeAgo(job.createdAt)}</span>
           <span class="apply-btn">Apply</span>
         </div>`;
       return card;
     }
 
-    function buildJobs() {
-      const typeVal = document.getElementById("filter-type").value;
+    function applyFilters() {
+      const typeVal   = document.getElementById("filter-type").value;
       const domainVal = document.getElementById("filter-domain").value;
-      const grid = document.getElementById("job-grid");
+      const grid      = document.getElementById("job-grid");
+      const filtered  = allJobs.filter(j =>
+        (typeVal   === "all" || j.type   === typeVal) &&
+        (domainVal === "all" || j.domain === domainVal)
+      );
       grid.innerHTML = "";
-      let count = 0;
-      [...JOBS].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0)).forEach(job => {
-        if ((typeVal === "all" || job.type === typeVal) && (domainVal === "all" || job.domain === domainVal)) {
-          grid.appendChild(renderJob(job));
-          count++;
-        }
-      });
-      document.getElementById("job-count").textContent = count + " role" + (count !== 1 ? "s" : "");
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="padding:48px;text-align:center;color:var(--muted);font-size:15px;">
+          No roles match the selected filters.
+          <a href="#" id="clear-filters" style="color:var(--green);font-weight:800;margin-left:6px;">Clear filters</a>
+        </div>`;
+        document.getElementById("clear-filters")?.addEventListener("click", e => {
+          e.preventDefault();
+          document.getElementById("filter-type").value   = "all";
+          document.getElementById("filter-domain").value = "all";
+          applyFilters();
+        });
+      } else {
+        filtered.forEach(j => grid.appendChild(renderJob(j)));
+      }
+      document.getElementById("job-count").textContent = filtered.length + " role" + (filtered.length !== 1 ? "s" : "");
     }
 
-    document.getElementById("filter-type").addEventListener("change", buildJobs);
-    document.getElementById("filter-domain").addEventListener("change", buildJobs);
-    buildJobs();
+    async function loadJobs() {
+      const grid = document.getElementById("job-grid");
+      grid.innerHTML = `<div style="padding:48px;text-align:center;color:var(--muted);">Loading roles…</div>`;
+      try {
+        const snap = await getDocs(query(collection(db, "jobs"), where("status", "==", "live")));
+        allJobs = snap.docs
+          .map(d => ({ id: d.id, ...d.data() }))
+          .sort((a, b) => {
+            if (a.featured !== b.featured) return b.featured ? 1 : -1;
+            return (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0);
+          });
+        if (allJobs.length === 0) {
+          grid.innerHTML = `<div style="padding:48px;text-align:center;color:var(--muted);font-size:15px;">
+            No open roles right now. Check back soon — or <a href="postajob.html" style="color:var(--green);font-weight:800;">post one</a>.
+          </div>`;
+          document.getElementById("job-count").textContent = "0 roles";
+        } else {
+          applyFilters();
+        }
+      } catch (err) {
+        console.error(err);
+        grid.innerHTML = `<div style="padding:48px;text-align:center;color:var(--muted);">Unable to load jobs right now. Please try again shortly.</div>`;
+      }
+    }
+
+    document.getElementById("filter-type").addEventListener("change", applyFilters);
+    document.getElementById("filter-domain").addEventListener("change", applyFilters);
+    loadJobs();
   </script>
 </body>
 </html>

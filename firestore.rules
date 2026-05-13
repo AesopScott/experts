@@ -2,21 +2,31 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Users can read and write only their own profile document
+    function isAdmin() {
+      return request.auth != null &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+    }
+
     match /users/{uid} {
       allow read, write: if request.auth != null && request.auth.uid == uid;
+      allow read, write: if isAdmin();
     }
 
-    // Creator call requests — anyone can submit, no one can read via client
     match /creator_calls/{id} {
       allow create: if true;
-      allow read, update, delete: if false;
+      allow read, update, delete: if isAdmin();
     }
 
-    // Expert applications — anyone can submit, no one can read via client
     match /expert_applications/{id} {
       allow create: if true;
-      allow read, update, delete: if false;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /jobs/{id} {
+      allow read: if resource.data.status == "live" || isAdmin();
+      allow create: if true;
+      allow update, delete: if isAdmin();
     }
   }
 }
