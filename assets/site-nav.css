@@ -253,12 +253,12 @@
   display: block;
   text-decoration: none;
   filter: drop-shadow(0 0 15px rgba(216, 183, 99, 0.52));
-  transform: rotate(-20deg);
+  transform: rotate(20deg);
   transition: transform 0.18s ease, filter 0.18s ease;
 }
 
 .site-jobs-ribbon:hover {
-  transform: translateY(-2px) rotate(-22deg);
+  transform: translateY(-2px) rotate(22deg);
   filter: drop-shadow(0 0 22px rgba(216, 183, 99, 0.72));
 }
 
@@ -452,12 +452,12 @@
 
   .site-jobs-ribbon {
     right: calc(10px + 48px);
-    transform: scale(0.86) rotate(-20deg);
+    transform: scale(0.86) rotate(20deg);
     transform-origin: top right;
   }
 
   .site-jobs-ribbon:hover {
-    transform: scale(0.86) translateY(-2px) rotate(-22deg);
+    transform: scale(0.86) translateY(-2px) rotate(22deg);
   }
 }
 
