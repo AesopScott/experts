@@ -4,10 +4,9 @@
       label: "Content",
       className: "site-nav-content",
       links: [
-        ["Search", "search.html"],
         ["Videos", "videos.html"],
         ["Blogs", "blogs.html"],
-        ["Workshops", "workshopcalendar.html"],
+        ["Workshop Calendar", "workshopcalendar.html"],
         ["Forums", "forums.html"]
       ]
     },
@@ -38,7 +37,7 @@
         ["Join Now", "join.html"],
         ["Expert Program", "experts.html"],
         ["Post a Job", "postajob.html"],
-        ["Workshop Calendar", "workshopcalendar.html"]
+        ["Search", "search.html"]
       ]
     }
   ];
