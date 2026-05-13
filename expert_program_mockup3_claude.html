@@ -528,6 +528,7 @@
     .beyond-tag.live { background: var(--mint); color: var(--green); }
     @media (max-width: 900px) { .beyond-grid { grid-template-columns: repeat(3,1fr); } }
   </style>
+  <link rel="stylesheet" href="assets/site-nav.css?v=20260513-domainbar2">
 </head>
 <body>
 
@@ -537,24 +538,8 @@
   </div>
 
   <!-- NAV -->
-  <header class="nav">
-    <a class="brand" href="#">
-      <span class="brand-mark" style="font-size:0.72rem;letter-spacing:-0.03em">25</span>
-      <div class="brand-text">
-        <strong>25experts.com</strong>
-        <span>by Aesop Academy</span>
-      </div>
-    </a>
-    <nav class="nav-links" aria-label="Page navigation">
-      <a href="#model">The model</a>
-      <a href="#why">Why join</a>
-      <a href="#earn">How you earn</a>
-      <a href="#patrons">Patron experience</a>
-      <a href="#ecosystem">The bigger picture</a>
-      <a href="#faq">FAQ</a>
-      <a class="btn btn-primary" href="#apply">Apply as a Founding Expert</a>
-    </nav>
-  </header>
+  <div id="site-nav"></div>
+  <script src="assets/site-nav.js?v=20260513-domainbar2"></script>
 
   <!-- HERO -->
   <section class="hero" aria-label="Hero">
