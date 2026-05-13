@@ -8,7 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <title>Join Free | 25experts</title>
   <meta name="description" content="Join 25experts for free, explore expert AI content, and support Aesop Academy&#39;s nonprofit mission to expand practical AI literacy.">
-  <meta name="page-version" content="v2026.05.12.6">
+  <meta name="page-version" content="v2026.05.12.13">
   <meta name="page-updated" content="2026-05-12">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/join.html">
@@ -556,7 +556,7 @@
           <div class="tier-body">
             <ul class="feature-list">
               <li><span class="check yes">✓</span><span>All videos published in the last 30 days</span></li>
-              <li><span class="check yes">✓</span><span>Full blog posts from Founding Experts</span></li>
+              <li><span class="check yes">✓</span><span>Full blog posts from Founding Experts / Expert Fellows</span></li>
               <li><span class="check partial" style="background:#fef3e2;color:#b87a22;">~</span><span>Blog post previews from Experts and Contributors</span></li>
               <li><span class="check yes">✓</span><span>Full workshop calendar with preview clips of recorded sessions</span></li>
               <li><span class="check yes">✓</span><span>Full forum and community access</span></li>
@@ -588,7 +588,7 @@
             <ul class="feature-list">
               <li><span class="check yes">✓</span><span>Everything in free</span></li>
               <li><span class="check yes">✓</span><span>Full video archive — no time limit</span></li>
-              <li><span class="check yes">✓</span><span>Full blog posts from all Founding Experts, Experts, and Contributors</span></li>
+              <li><span class="check yes">✓</span><span>Full blog posts from all Founding Experts / Expert Fellows, Experts, and Contributors</span></li>
               <li><span class="check yes">✓</span><span>Live workshop attendance for experts you patronize (single-use access code per event)</span></li>
               <li><span class="check yes">✓</span><span>All workshop replays for experts you patronize</span></li>
               <li><span class="check yes">✓</span><span>Platform-wide access to all workshop replays older than 30 days</span></li>
@@ -671,7 +671,7 @@
         <p>Locked for life. First 25 patrons per expert only.</p>
         <ul class="founding-perks">
           <li><span class="perk-check">✓</span><span>$10/month for this expert — locked forever, no price increases</span></li>
-          <li><span class="perk-check">✓</span><span>Multi-expert discounts still apply (e.g. 4+ experts → $7/mo for your founding expert)</span></li>
+          <li><span class="perk-check">✓</span><span>Multi-expert discounts still apply (e.g. 4+ experts → $7/mo for your Founding Expert / Expert Fellow)</span></li>
           <li><span class="perk-check">✓</span><span>Founding Patron badge on your profile</span></li>
           <li><span class="perk-check">✓</span><span>All patron access — full content, live events, Q&amp;A, replays</span></li>
           <li><span class="perk-check">✓</span><span>7-day free trial · cancel any time</span></li>
@@ -702,7 +702,7 @@
             <td class="yes-cell">Full archive, no limit</td>
           </tr>
           <tr>
-            <td>Blog posts — Founding Experts</td>
+            <td>Blog posts — Founding Experts / Expert Fellows</td>
             <td class="yes-cell">Full posts</td>
             <td class="yes-cell">Full posts</td>
           </tr>
@@ -913,11 +913,11 @@
 
   <script>
     const FOUNDING_EXPERTS = [
-      { name: "Dr. Maya Chen",  domain: "ai",         label: "AI & Automation",          tier: "Founding Expert", spots: 3  },
-      { name: "Marcus Bell",    domain: "finance",    label: "Finance & Investing",       tier: "Founding Expert", spots: 6  },
-      { name: "Nora Kim",       domain: "marketing",  label: "Marketing, Sales & Growth", tier: "Founding Expert", spots: 4  },
-      { name: "Dana Wright",    domain: "leadership", label: "Leadership & Management",   tier: "Founding Expert", spots: 9  },
-      { name: "Ari Fox",        domain: "design",     label: "Design, Creative & Gaming", tier: "Founding Expert", spots: 7  },
+      { name: "Dr. Maya Chen",  domain: "ai",         label: "AI & Automation",          tier: "Founding Expert / Expert Fellow", spots: 3  },
+      { name: "Marcus Bell",    domain: "finance",    label: "Finance & Investing",       tier: "Founding Expert / Expert Fellow", spots: 6  },
+      { name: "Nora Kim",       domain: "marketing",  label: "Marketing, Sales & Growth", tier: "Founding Expert / Expert Fellow", spots: 4  },
+      { name: "Dana Wright",    domain: "leadership", label: "Leadership & Management",   tier: "Founding Expert / Expert Fellow", spots: 9  },
+      { name: "Ari Fox",        domain: "design",     label: "Design, Creative & Gaming", tier: "Founding Expert / Expert Fellow", spots: 7  },
       { name: "Owen Patel",     domain: "ai",         label: "AI & Automation",          tier: "Expert",          spots: 11 },
       { name: "Lena Brooks",    domain: "ai",         label: "AI & Automation",          tier: "Expert",          spots: 17 },
       { name: "Anika Rao",      domain: "finance",    label: "Finance & Investing",       tier: "Expert",          spots: 13 },
@@ -946,7 +946,7 @@
       return "#145f47";
     }
 
-    const tiers = ["Founding Expert", "Expert", "Contributor"];
+    const tiers = ["Founding Expert / Expert Fellow", "Expert", "Contributor"];
     const list = document.getElementById("modal-expert-list");
 
     tiers.forEach(tier => {
