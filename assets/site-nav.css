@@ -197,7 +197,7 @@
   grid-template-columns: 76px minmax(0, 1fr);
   gap: 8px;
   align-items: center;
-  padding: 0 clamp(16px, 3.5vw, 44px) 8px;
+  padding: 10px clamp(16px, 3.5vw, 44px) 8px;
   background: #101615;
 }
 
