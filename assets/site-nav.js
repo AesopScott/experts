@@ -4,6 +4,7 @@
       label: "Content",
       className: "site-nav-content",
       links: [
+        ["Search", "search.html"],
         ["Videos", "videos.html"],
         ["Blogs", "blogs.html"],
         ["Workshops", "workshopcalendar.html"],

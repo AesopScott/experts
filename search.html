@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Social Search | 25experts</title>
+  <meta name="description" content="Search 25experts by the question you are trying to answer, then discover videos, blogs, workshops, forums, and experts organized by intent.">
+  <meta name="page-version" content="v2026.05.12.1">
+  <meta name="page-updated" content="2026-05-12">
+  <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
+  <link rel="canonical" href="https://25experts.com/search.html">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="alternate icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="mask-icon" href="/assets/mask-icon.svg" color="#145f47">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#145f47">
+  <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="25experts by Aesop Academy">
+  <meta property="og:title" content="Social Search | 25experts">
+  <meta property="og:description" content="Search by question intent across expert videos, blogs, workshops, forums, and profiles.">
+  <meta property="og:url" content="https://25experts.com/search.html">
+  <meta property="og:image" content="https://25experts.com/assets/og-25experts.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Social Search | 25experts">
+  <meta name="twitter:description" content="Search by question intent across expert videos, blogs, workshops, forums, and profiles.">
+  <meta name="twitter:image" content="https://25experts.com/assets/og-25experts.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Social Search | 25experts",
+    "url": "https://25experts.com/search.html",
+    "description": "Search 25experts by the question you are trying to answer, then discover videos, blogs, workshops, forums, and experts organized by intent.",
+    "publisher": { "@type": "NGO", "name": "Aesop Academy", "url": "https://25experts.com/" }
+  }
+  </script>
+  <style>
+    :root {
+      --ink: #101615;
+      --muted: #66716e;
+      --paper: #fbfaf6;
+      --panel: #ffffff;
+      --line: #dfe5df;
+      --green: #145f47;
+      --mint: #e9f5ef;
+      --gold: #b87a22;
+      --gold2: #fff4df;
+      --blue: #245a7d;
+      --blue2: #e6f0fb;
+      --purple: #7b4b92;
+      --coral: #bf563f;
+      --dark: #101615;
+      --shadow: 0 18px 46px rgba(17,31,25,.11);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.45; }
+    a { color: inherit; text-decoration: none; }
+    h2, h3, p { margin-top: 0; }
+    .topbar { padding: 9px 18px; background: var(--green); color: #fff; font-size: 13px; text-align: center; font-weight: 650; }
+    .topbar a { color: #fff; text-decoration: underline; font-weight: 800; margin-left: 6px; }
+    .hero { padding: clamp(44px,6vw,82px) clamp(18px,5vw,68px) 34px; color: #fff; background: linear-gradient(114deg, rgba(16,22,21,.97), rgba(20,95,71,.94)), radial-gradient(circle at 80% 18%, rgba(255,255,255,.2), transparent 28%); }
+    .hero-inner { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: minmax(0,1fr) minmax(300px,.42fr); gap: 28px; align-items: end; }
+    .eyebrow { display: inline-flex; margin-bottom: 14px; padding: 7px 11px; border-radius: 999px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2); font-size: 12px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+    h1 { max-width: 840px; margin: 0 0 14px; font-size: clamp(42px,6.6vw,84px); line-height: .95; letter-spacing: 0; font-family: Georgia, "Times New Roman", serif; }
+    .hero p { max-width: 760px; margin: 0; color: rgba(255,255,255,.8); font-size: 18px; line-height: 1.58; }
+    .hero-card { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.22); border-radius: 12px; padding: 20px; display: grid; gap: 10px; }
+    .hero-card strong { font-size: 28px; line-height: 1; }
+    .hero-card span { color: rgba(255,255,255,.72); font-size: 14px; line-height: 1.45; }
+    .page { max-width: 1420px; margin: 0 auto; padding: 28px clamp(18px,5vw,68px) 76px; display: grid; gap: 22px; }
+    .search-panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); padding: 20px; display: grid; gap: 16px; }
+    .searchbar { display: grid; grid-template-columns: 1fr auto; gap: 10px; }
+    .searchbar input { min-height: 56px; border: 1px solid var(--line); border-radius: 10px; padding: 0 16px; font: inherit; font-size: 17px; color: var(--ink); }
+    .button { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; border-radius: 9px; border: 0; padding: 0 18px; background: var(--green); color: #fff; font-weight: 900; cursor: pointer; }
+    .filter-row { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; }
+    label { display: grid; gap: 6px; color: var(--muted); font-size: 12px; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; }
+    select { min-height: 42px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); padding: 0 11px; font: inherit; text-transform: none; letter-spacing: 0; }
+    .suggestions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { border: 1px solid var(--line); background: #fff; color: var(--green); border-radius: 999px; min-height: 34px; padding: 0 12px; font-weight: 850; cursor: pointer; }
+    .layout { display: grid; grid-template-columns: minmax(0,1fr) 330px; gap: 22px; align-items: start; }
+    .results-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 14px; }
+    .results-head h2 { margin: 0; font-size: 30px; }
+    .count { color: var(--muted); font-size: 14px; font-weight: 800; }
+    .results { display: grid; gap: 12px; }
+    .result-card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; grid-template-columns: 130px minmax(0,1fr) auto; gap: 16px; align-items: start; box-shadow: 0 10px 26px rgba(17,31,25,.05); }
+    .type { border-radius: 8px; min-height: 82px; padding: 12px; display: grid; align-content: space-between; color: #fff; font-weight: 900; }
+    .type span { display: block; font-size: 11px; opacity: .8; text-transform: uppercase; letter-spacing: .08em; }
+    .type.video { background: var(--green); }
+    .type.blog { background: var(--blue); }
+    .type.workshop { background: var(--gold); }
+    .type.forum { background: var(--purple); }
+    .type.expert { background: var(--coral); }
+    .result-main h3 { margin: 0 0 6px; font-size: 22px; line-height: 1.12; }
+    .result-main p { margin: 0; color: var(--muted); line-height: 1.5; }
+    .meta { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
+    .pill { border-radius: 999px; background: var(--mint); color: var(--green); padding: 5px 9px; font-size: 12px; font-weight: 850; }
+    .quality { text-align: right; display: grid; gap: 6px; justify-items: end; min-width: 92px; }
+    .score { font-size: 28px; font-weight: 950; color: var(--green); line-height: 1; }
+    .score-label { font-size: 11px; color: var(--muted); font-weight: 850; text-transform: uppercase; letter-spacing: .07em; }
+    .side { display: grid; gap: 14px; position: sticky; top: 92px; }
+    .side-card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; box-shadow: 0 10px 26px rgba(17,31,25,.05); }
+    .side-card h3 { margin-bottom: 8px; font-size: 20px; }
+    .side-card p, .side-card li { color: var(--muted); font-size: 14px; line-height: 1.5; }
+    .side-card ul { margin: 12px 0 0; padding-left: 18px; }
+    .ask-form { display: grid; gap: 10px; }
+    .ask-form textarea { width: 100%; min-height: 112px; resize: vertical; border: 1px solid var(--line); border-radius: 8px; padding: 11px; font: inherit; }
+    .status { display: none; background: var(--mint); color: var(--green); padding: 10px 12px; border-radius: 8px; font-size: 13px; font-weight: 850; }
+    .empty { display: none; background: var(--gold2); color: #67450f; border: 1px solid rgba(184,122,34,.25); border-radius: 10px; padding: 18px; }
+    @media(max-width:980px){.hero-inner,.layout{grid-template-columns:1fr}.side{position:static}.filter-row{grid-template-columns:repeat(2,1fr)}.result-card{grid-template-columns:1fr}.quality{text-align:left;justify-items:start}}
+    @media(max-width:620px){.searchbar,.filter-row{grid-template-columns:1fr}h1{font-size:42px}.type{min-height:64px}}
+  </style>
+  <link rel="stylesheet" href="assets/site-nav.css?v=20260512-nav7">
+</head>
+<body>
+  <div class="topbar">
+    <strong>25experts.com</strong> is a program of <strong>Aesop Academy</strong>, 501(c)(3), advancing practical AI literacy.
+    <a href="https://aesopacademy.org">aesopacademy.org</a>
+  </div>
+  <div id="site-nav"></div>
+  <script src="assets/site-nav.js?v=20260512-nav7"></script>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow">Social search</span>
+        <h1>Search by the question you are trying to solve.</h1>
+        <p>25experts search is built around intent, not keywords alone. Patrons can find the best videos, blogs, workshops, forum rooms, and experts by asking the practical question already in their head.</p>
+      </div>
+      <aside class="hero-card">
+        <strong>Not a feed</strong>
+        <span>Search rewards usefulness, quality, completion, saves, reviews, and community answers instead of paid placement or algorithmic noise.</span>
+      </aside>
+    </div>
+  </section>
+
+  <main class="page">
+    <section class="search-panel" aria-label="Social search controls">
+      <div class="searchbar">
+        <input id="search-input" type="search" placeholder="Example: how do I automate client onboarding with AI?" value="how do I automate client onboarding with AI?">
+        <button class="button" id="search-button" type="button">Search</button>
+      </div>
+      <div class="filter-row">
+        <label>Domain
+          <select id="domain-filter">
+            <option value="all">All domains</option>
+            <option value="AI & Automation">AI & Automation</option>
+            <option value="Finance & Investing">Finance & Investing</option>
+            <option value="Marketing & Growth">Marketing & Growth</option>
+            <option value="Leadership & Management">Leadership & Management</option>
+            <option value="Design & Creative">Design & Creative</option>
+          </select>
+        </label>
+        <label>Content type
+          <select id="type-filter">
+            <option value="all">All types</option>
+            <option value="Video">Videos</option>
+            <option value="Blog">Blogs</option>
+            <option value="Workshop">Workshops</option>
+            <option value="Forum">Forums</option>
+            <option value="Expert">Experts</option>
+          </select>
+        </label>
+        <label>Access
+          <select id="access-filter">
+            <option value="all">All access</option>
+            <option value="Free">Free</option>
+            <option value="Patron">Patron</option>
+            <option value="Live">Live</option>
+          </select>
+        </label>
+        <label>Sort
+          <select id="sort-filter">
+            <option value="quality">Quality score</option>
+            <option value="saved">Most saved</option>
+            <option value="recent">Newest</option>
+          </select>
+        </label>
+      </div>
+      <div class="suggestions" aria-label="Suggested searches">
+        <button class="chip" type="button">How do I automate reports?</button>
+        <button class="chip" type="button">Which AI tools should my team trust?</button>
+        <button class="chip" type="button">How do I use AI for lead research?</button>
+        <button class="chip" type="button">How do I keep creative work original?</button>
+      </div>
+    </section>
+
+    <section class="layout">
+      <div>
+        <div class="results-head">
+          <h2>Best matches</h2>
+          <span class="count" id="result-count">0 results</span>
+        </div>
+        <div class="empty" id="empty-state">No results match this combination. Try another question, domain, or content type.</div>
+        <div class="results" id="results"></div>
+      </div>
+
+      <aside class="side">
+        <section class="side-card">
+          <h3>How social search ranks</h3>
+          <p>Results rise when patrons complete them, save them, review them well, cite them in forums, and use them to shape new workshop questions.</p>
+          <ul>
+            <li>Question intent match</li>
+            <li>Expert quality score</li>
+            <li>Patron saves and reviews</li>
+            <li>Workshop and forum activity</li>
+          </ul>
+        </section>
+        <section class="side-card">
+          <h3>Ask the network</h3>
+          <p>If search does not answer your question, submit it. Patrons can vote it into a workshop, forum thread, or expert video.</p>
+          <form class="ask-form" id="ask-form">
+            <textarea placeholder="What are you trying to solve?"></textarea>
+            <button class="button" type="submit">Submit question</button>
+            <div class="status" id="ask-status">Question submitted for the mockup. In production this becomes a votable topic.</div>
+          </form>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const results = [
+      { type: "Video", domain: "AI & Automation", access: "Patron", title: "Automating Client Onboarding Without Losing the Human Touch", expert: "Lena Brooks", desc: "A practical workflow for intake forms, kickoff summaries, task routing, and client follow-up.", tags: ["client onboarding", "automation", "service business"], quality: 96, saved: 420, recent: 8 },
+      { type: "Workshop", domain: "AI & Automation", access: "Live", title: "Live Build: Your First Reliable Onboarding Agent", expert: "Dr. Maya Chen", desc: "Bring one messy onboarding process and leave with a mapped AI-assisted workflow.", tags: ["live Q&A", "agents", "templates"], quality: 94, saved: 310, recent: 3 },
+      { type: "Blog", domain: "AI & Automation", access: "Free", title: "Five Agentic Workflows That Save a Real Hour", expert: "Lena Brooks", desc: "Field notes on useful agent patterns for research, reporting, prep, and onboarding.", tags: ["agents", "workflow", "operations"], quality: 91, saved: 287, recent: 10 },
+      { type: "Forum", domain: "AI & Automation", access: "Free", title: "Operations Room: Client Onboarding Questions", expert: "Community", desc: "Patrons compare tools, checklists, and failure points from real onboarding systems.", tags: ["forum", "templates", "peer review"], quality: 88, saved: 154, recent: 2 },
+      { type: "Expert", domain: "AI & Automation", access: "Free", title: "Lena Brooks", expert: "Automation Systems Lead", desc: "Known for practical AI workflows that reduce admin work without overbuilding.", tags: ["follow expert", "workflows", "$14/month"], quality: 93, saved: 221, recent: 14 },
+      { type: "Video", domain: "Marketing & Growth", access: "Patron", title: "Account Research in 15 Minutes with AI", expert: "Caleb Stone", desc: "Turn public company signals into useful outreach notes without sounding robotic.", tags: ["lead research", "sales", "outreach"], quality: 92, saved: 338, recent: 5 },
+      { type: "Blog", domain: "Finance & Investing", access: "Free", title: "Using AI to Improve Financial Research Without Outsourcing Judgment", expert: "Julian Park", desc: "A guardrail-first approach to comparing narratives, numbers, and risk.", tags: ["finance", "research", "judgment"], quality: 89, saved: 196, recent: 12 },
+      { type: "Workshop", domain: "Leadership & Management", access: "Live", title: "Building Team Norms Around AI Use", expert: "Miles Ortega", desc: "A leadership workshop for managers setting clear team rules around AI adoption.", tags: ["leadership", "governance", "teams"], quality: 90, saved: 242, recent: 7 },
+      { type: "Video", domain: "Design & Creative", access: "Patron", title: "Testing Visual Concepts Before You Build", expert: "Tessa Hart", desc: "Use AI to test creative directions quickly while preserving taste and originality.", tags: ["creative AI", "design", "testing"], quality: 87, saved: 176, recent: 11 }
+    ];
+
+    const typeClass = { Video: "video", Blog: "blog", Workshop: "workshop", Forum: "forum", Expert: "expert" };
+    const input = document.getElementById("search-input");
+    const domainFilter = document.getElementById("domain-filter");
+    const typeFilter = document.getElementById("type-filter");
+    const accessFilter = document.getElementById("access-filter");
+    const sortFilter = document.getElementById("sort-filter");
+    const resultList = document.getElementById("results");
+    const resultCount = document.getElementById("result-count");
+    const emptyState = document.getElementById("empty-state");
+
+    function scoreMatch(item, query) {
+      const haystack = `${item.title} ${item.expert} ${item.desc} ${item.tags.join(" ")} ${item.domain}`.toLowerCase();
+      const words = query.toLowerCase().split(/\s+/).filter(Boolean);
+      return words.reduce((score, word) => score + (haystack.includes(word) ? 1 : 0), 0);
+    }
+
+    function render() {
+      const query = input.value.trim();
+      let filtered = results
+        .map(item => ({ ...item, match: scoreMatch(item, query) }))
+        .filter(item => !query || item.match > 0)
+        .filter(item => domainFilter.value === "all" || item.domain === domainFilter.value)
+        .filter(item => typeFilter.value === "all" || item.type === typeFilter.value)
+        .filter(item => accessFilter.value === "all" || item.access === accessFilter.value);
+
+      const sortKey = sortFilter.value;
+      filtered.sort((a, b) => {
+        if (sortKey === "saved") return b.saved - a.saved;
+        if (sortKey === "recent") return a.recent - b.recent;
+        return b.quality - a.quality;
+      });
+
+      resultCount.textContent = `${filtered.length} result${filtered.length === 1 ? "" : "s"}`;
+      emptyState.style.display = filtered.length ? "none" : "block";
+      resultList.innerHTML = filtered.map(item => `
+        <article class="result-card">
+          <div class="type ${typeClass[item.type]}">
+            <span>${item.type}</span>
+            ${item.access}
+          </div>
+          <div class="result-main">
+            <h3>${item.title}</h3>
+            <p><strong>${item.expert}</strong> - ${item.desc}</p>
+            <div class="meta">
+              <span class="pill">${item.domain}</span>
+              ${item.tags.map(tag => `<span class="pill">${tag}</span>`).join("")}
+            </div>
+          </div>
+          <div class="quality">
+            <span class="score">${item.quality}</span>
+            <span class="score-label">quality</span>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    document.getElementById("search-button").addEventListener("click", render);
+    [input, domainFilter, typeFilter, accessFilter, sortFilter].forEach(el => el.addEventListener("input", render));
+    document.querySelectorAll(".chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        input.value = chip.textContent;
+        render();
+      });
+    });
+    document.getElementById("ask-form").addEventListener("submit", event => {
+      event.preventDefault();
+      document.getElementById("ask-status").style.display = "block";
+    });
+    render();
+  </script>
+</body>
+</html>
