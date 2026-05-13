@@ -87,15 +87,32 @@
     return domainIndex * 9 + index + 1;
   }
 
+  function audienceStats(seed, domainIndex, index) {
+    const followerBands = [
+      487000, 318000, 226000, 174000, 143000,
+      98000, 76000, 61000, 44500, 38200,
+      29100, 22600, 18400, 13900, 9600
+    ];
+    const base = followerBands[(seed * 7) % followerBands.length];
+    const wobble = 1 + ((((seed * 37) % 23) - 11) / 100);
+    let followers = Math.round(base * wobble / 100) * 100;
+    if (index === domainIndex % 5) {
+      followers = Math.max(followers, 185000 + domainIndex * 42000);
+    }
+    const patreonRate = 0.006 + (((seed * 11) % 19) / 1000);
+    const expertsRate = 0.0014 + (((seed * 13) % 11) / 10000);
+    const patrons = Math.max(48, Math.round(followers * patreonRate));
+    const expertsPatrons = Math.max(9, Math.round(followers * expertsRate));
+    const videos = 11 + ((seed * 17) % 64);
+    const blogs = 5 + ((seed * 19) % 42);
+    const workshops = 1 + ((seed * 23) % 18);
+    return { followers, patrons, expertsPatrons, videos, blogs, workshops };
+  }
+
   function founderCards(domain, domainIndex) {
     return domain.founders.map((name, index) => {
       const seed = seedFor(domainIndex, index);
-      const followers = index === 0 ? 52143 : 9800 + seed * 1187;
-      const patrons = index === 0 ? 456 : 72 + seed * 19;
-      const expertsPatrons = index === 0 ? 65 : 12 + seed * 4;
-      const videos = 17 + (seed % 7);
-      const blogs = 9 + (seed % 6);
-      const workshops = 3 + (seed % 4);
+      const { followers, patrons, expertsPatrons, videos, blogs, workshops } = audienceStats(seed, domainIndex, index);
       return `
         <article class="expert-card">
           <div class="portrait"><img src="${portraitPath(name)}" alt="Professional headshot of ${name}"></div>
