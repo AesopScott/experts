@@ -1,42 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "mcp__obsidian__obsidian_append_content",
-      "mcp__mcp-obsidian__obsidian_append_content",
-      "mcp__mcp-obsidian__obsidian_list_files_in_dir",
-      "mcp__mcp-obsidian__obsidian_get_file_contents",
-      "mcp__mcp-obsidian__obsidian_simple_search",
-      "mcp__mcp-obsidian__obsidian_patch_content",
-      "Bash(Rename-Item \"C:\\\\Users\\\\scott\\\\Code\\\\experts\\\\influencer_program_mockup3_claude.html\" \"expert_program_mockup3_claude.html\")",
-      "Bash(mv \"C:/Users/scott/Code/experts/influencer_program_mockup3_claude.html\" \"C:/Users/scott/Code/experts/expert_program_mockup3_claude.html\")",
-      "mcp__Claude_Preview__preview_start",
-      "PowerShell(Rename-Item \"C:\\\\Users\\\\scott\\\\Code\\\\experts\\\\index.html\" \"index_Claude.html\")",
-      "mcp__mcp-obsidian__obsidian_list_files_in_vault",
-      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\scott\\\\Code\\\\experts\" -Filter \"*.html\" -File)",
-      "Bash(Select-Object -ExpandProperty Name)",
-      "Bash(Sort-Object)",
-      "Bash(ls C:/Users/scott/Code/)",
-      "mcp__Claude_in_Chrome__tabs_context_mcp",
-      "Bash(cp \"C:/Users/scott/Code/Aesop/ai-news/trend-data.json\" \"C:/Users/scott/Code/experts/trend-data.json\")",
-      "WebFetch(domain:25experts.com)",
-      "mcp__github__get_file_contents",
-      "Bash(gh run *)",
-      "mcp__Claude_in_Chrome__navigate",
-      "mcp__Claude_in_Chrome__computer",
-      "mcp__Claude_in_Chrome__javascript_tool",
-      "mcp__Claude_in_Chrome__browser_batch",
-      "Bash(firebase projects:list)",
-      "Bash(gcloud auth *)",
-      "Bash(curl -s -X POST https://identitytoolkit.googleapis.com/admin/v2/projects/aesop-experts/config -H 'Authorization: Bearer __TRACKED_VAR__' -H 'Content-Type: application/json' -H 'x-goog-user-project: aesop-experts' -d '{ *)",
-      "Bash(curl -s -X PATCH 'https://identitytoolkit.googleapis.com/admin/v2/projects/experts-d7c3d/config?updateMask=signIn' -H 'Authorization: Bearer __TRACKED_VAR__' -H 'Content-Type: application/json' -H 'x-goog-user-project: experts-d7c3d' -d '{ *)",
-      "Bash(curl -s -X POST https://identitytoolkit.googleapis.com/admin/v2/projects/experts-d7c3d/config -H 'Authorization: Bearer __TRACKED_VAR__' -H 'Content-Type: application/json' -H 'x-goog-user-project: experts-d7c3d' -d '{ *)",
-      "Bash(curl -s -X POST https://identitytoolkit.googleapis.com/v2/projects/experts-d7c3d/defaultSupportedIdps -H 'Authorization: Bearer __TRACKED_VAR__' -H 'Content-Type: application/json' -H 'x-goog-user-project: experts-d7c3d' -d '{\"idpId\":\"password\",\"enabled\":true}')",
-      "Bash(gcloud services *)",
-      "Bash(gcloud config *)",
-      "Bash(curl -s -X POST 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/setProjectConfig?key=AIzaSyAMMMdI12N9scrGrV0CrbIE3Huk04g8vfw' -H 'Authorization: Bearer __TRACKED_VAR__' -H 'Content-Type: application/json' -d '{\"allowPasswordUser\": true}')",
-      "Bash(curl -s -X DELETE https://identitytoolkit.googleapis.com/v1/projects/experts-d7c3d/accounts/XPOQjvVekKfo8qOjSjiZ3kdXKgy2 -H 'Authorization: Bearer __TRACKED_VAR__' -H 'x-goog-user-project: experts-d7c3d')",
-      "Bash(curl -s -X POST 'https://identitytoolkit.googleapis.com/v1/accounts:delete?key=AIzaSyAMMMdI12N9scrGrV0CrbIE3Huk04g8vfw' -H 'Content-Type: application/json' -d '{\"idToken\":\"eyJhbGciOiJSUzI1NiIsImtpZCI6Ijg2OGU0YWNlMGI2NTE2ZDM2YjlmNTZkZThjZTQ5Nzg4ZmNjZGFjNDMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZXhwZXJ0cy1kN2MzZCIsImF1ZCI6ImV4cGVydHMtZDdjM2QiLCJhdXRoX3RpbWUiOjE3Nzg2MzQ1NTUsInVzZXJfaWQiOiJYUE9RanZWZWtLZm84cU9qU2ppWjNrZFhLZ3kyIiwic3ViIjoiWFBPUWp2VmVrS2ZvOHFPalNqaVoza2RYS2d5MiIsImlhdCI6MTc3ODYzNDU1NSwiZXhwIjoxNzc4NjM4MTU1LCJlbWFpbCI6InByb2JlLXRlc3RAMjVleHBlcnRzLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJwcm9iZS10ZXN0QDI1ZXhwZXJ0cy5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.mjl_e_OzTPXZeaviPFrO0YVWqx1QeS655C2Mrj7MgkL_tqyalmobchUoCkVUteeDg_BoISJp8buO9y3Z_scSuzRfx6j5jhdU-R-4r1EEUZye8OvBp2v7jq3HdmVlK7FG-HS2eJMN3E-_B1_OpR-VhNbkhwSLp9xBc7tlVkNDiq7QlZMdJgGWg4iw7t3isOw7kwhhEt6iWaI6fsqzNv8-DWC1FAz6zfggI6xMtFv7H0cb-fJKVwUvVraFyITw9-YMYAHcrz25VgI0m4OGIvY6WLkSh1JiP2dBzke6a_56EYoXq4eKkccsa3xVDCH_EPFbuRvQAi4WSqJ0Y5_OvmTu4w\"}')",
-      "Bash(firebase deploy *)"
-    ]
+      "*",
+      "mcp__you-com__you-search"
+    ],
+    "defaultMode": "bypassPermissions"
   }
 }

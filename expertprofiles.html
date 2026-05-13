@@ -261,12 +261,11 @@
     .avatar {
       width: 44px;
       height: 44px;
-      display: grid;
-      place-items: center;
+      display: block;
       border-radius: 50%;
-      color: #fff;
-      font-weight: 950;
-      font-size: 13px;
+      object-fit: cover;
+      object-position: center 22%;
+      border: 1px solid rgba(20,95,71,0.18);
       flex-shrink: 0;
     }
     .expert-button strong {
@@ -318,10 +317,18 @@
       display: grid;
       place-items: center;
       border-radius: 18px;
+      overflow: hidden;
       color: #fff;
       font-size: 24px;
       font-weight: 950;
       box-shadow: 0 18px 38px rgba(16,22,21,0.18);
+    }
+    .big-avatar img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center 22%;
     }
     .identity h2 {
       margin: 0;
@@ -692,7 +699,7 @@
     :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 3px; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
   </style>
-  <link rel="stylesheet" href="assets/site-nav.css?v=20260513-communitynav2">
+  <link rel="stylesheet" href="assets/site-nav.css?v=20260513-domainbar1">
 </head>
 <body>
   <div class="topbar">
@@ -700,7 +707,7 @@
     <a href="https://aesopacademy.org">aesopacademy.org</a>
   </div>
   <div id="site-nav"></div>
-  <script src="assets/site-nav.js?v=20260513-communitynav1"></script>
+  <script src="assets/site-nav.js?v=20260513-domainbar1"></script>
 
 
   <section class="hero">
@@ -830,6 +837,10 @@
       ]}
     ];
 
+    function slug(name) {
+      return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    }
+
     const experts = domains.flatMap((domain, domainIndex) => domain.experts.map((item, index) => {
       const initials = item[0].split(" ").map(part => part[0]).join("");
       const seed = domainIndex * 5 + index + 1;
@@ -839,6 +850,7 @@
         title: item[1],
         bio: item[2],
         initials,
+        image: `assets/portraits/${slug(item[0])}.jpg`,
         domain: domain.name,
         color: domain.color,
         score: 91 + ((seed * 3) % 8),
@@ -909,7 +921,7 @@
       });
       expertList.innerHTML = visible.map(expert => `
         <button class="expert-button ${expert.id === selectedId ? "active" : ""}" data-id="${expert.id}">
-          <span class="avatar" style="background:${expert.color}">${expert.initials}</span>
+          <img class="avatar" src="${expert.image}" alt="Professional headshot of ${expert.name}">
           <span>
             <strong>${expert.name}</strong>
             <span>${expert.title}</span>
@@ -928,7 +940,7 @@
 
     function renderProfile() {
       const expert = experts.find(item => item.id === selectedId) || experts[0];
-      document.getElementById("bigAvatar").textContent = expert.initials;
+      document.getElementById("bigAvatar").innerHTML = `<img src="${expert.image}" alt="Professional headshot of ${expert.name}">`;
       document.getElementById("bigAvatar").style.background = expert.color;
       document.getElementById("expertName").textContent = expert.name;
       document.getElementById("expertTitle").textContent = expert.title;

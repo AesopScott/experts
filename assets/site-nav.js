@@ -42,6 +42,14 @@
     }
   ];
 
+  const domainItems = [
+    ["AI & Automation", "domain-ai-automation.html"],
+    ["AI in Finance & Investing", "domain-finance-investing.html"],
+    ["AI in Marketing, Sales & Growth", "domain-marketing-growth.html"],
+    ["AI in Leadership & Management", "domain-leadership-management.html"],
+    ["AI in Design, Creative & Gaming", "domain-design-creative-gaming.html"]
+  ];
+
   const current = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
 
   function isActive(href) {
@@ -66,6 +74,7 @@
   }
 
   const navMarkup = `
+    <div class="site-nav-shell">
     <header class="nav">
       <a class="brand" href="index.html">
         <span class="brand-mark">25</span>
@@ -84,6 +93,13 @@
         `).join("")}
       </nav>
     </header>
+    <nav class="site-domain-bar" aria-label="AI domains">
+      <span class="site-domain-label">Domains</span>
+      <div class="site-domain-links">
+        ${domainItems.map(linkMarkup).join("")}
+      </div>
+    </nav>
+    </div>
   `;
 
   function renderSiteNav() {

@@ -1,12 +1,16 @@
 /* Shared 25experts navigation */
+.site-nav-shell {
+  background: #101615;
+  border-bottom: 1px solid #243330;
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.18);
+}
+
 .nav {
   min-height: auto;
   align-items: center;
   gap: 10px;
   padding: 8px clamp(16px, 3.5vw, 44px);
   background: #101615;
-  border-bottom: 1px solid #243330;
-  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.18);
 }
 
 .nav .brand {
@@ -177,12 +181,62 @@
 }
 
 .nav .site-nav-group a:hover,
-.nav .site-nav-group a.active {
+.nav .site-nav-group a.active,
+.site-domain-bar a:hover,
+.site-domain-bar a.active {
   background: #dff3e5;
   color: #145f47;
   border-color: #dff3e5;
   transform: translateY(-1px);
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+}
+
+.site-domain-bar {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  padding: 0 clamp(16px, 3.5vw, 44px) 8px;
+  background: #101615;
+}
+
+.site-domain-label {
+  display: grid;
+  place-items: center;
+  min-height: 26px;
+  border: 1px solid #2c3c38;
+  border-radius: 8px;
+  background: #17211f;
+  color: #8fd8b5;
+  font-size: 9px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.site-domain-links {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.site-domain-bar a {
+  min-height: 26px;
+  display: grid;
+  place-items: center;
+  padding: 0 8px;
+  border: 1px solid rgba(93, 223, 176, 0.28);
+  border-radius: 8px;
+  background: rgba(93, 223, 176, 0.14);
+  color: #9ff0c9;
+  font-size: clamp(10px, 0.68vw, 12px);
+  font-weight: 900;
+  line-height: 1.05;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .site-nav-content {
@@ -227,13 +281,35 @@
   .nav .site-nav-group a {
     font-size: 12.4px;
   }
+
+  .site-domain-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .site-domain-links {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .site-domain-bar a {
+    font-size: 11px;
+  }
 }
 
 @media (max-width: 640px) {
   .nav .nav-links.site-nav { grid-template-columns: 1fr; }
 
+  .site-domain-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .nav .site-nav-group a {
     font-size: 11.4px;
+  }
+
+  .site-domain-bar a {
+    min-height: 28px;
+    font-size: 10.5px;
+    white-space: normal;
   }
 }
 
