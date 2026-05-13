@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Expert Profiles | 25experts</title>
   <meta name="description" content="Browse AI expert profiles, follow trusted creators, and discover their videos, blogs, workshops, and forum contributions.">
-  <meta name="page-version" content="v2026.05.13.8">
+  <meta name="page-version" content="v2026.05.13.10">
   <meta name="page-updated" content="2026-05-13">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/expertprofiles.html">
@@ -414,6 +414,12 @@
     .stat {
       padding: 18px 20px;
       border-right: 1px solid var(--line);
+      display: flex;
+      min-height: 118px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
     }
     .stat:last-child { border-right: 0; }
     .stat strong {
@@ -425,9 +431,16 @@
     .stat .split-number {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      align-items: center;
+      gap: 8px;
       font-size: 18px;
       line-height: 1.18;
+    }
+    .stat .split-number > span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
     }
     .stat .split-number .subscriber-count {
       display: inline-block;
