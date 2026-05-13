@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Expert Profiles | 25experts</title>
   <meta name="description" content="Browse AI expert profiles, follow trusted creators, and discover their videos, blogs, workshops, and forum contributions.">
-  <meta name="page-version" content="v2026.05.12.5">
-  <meta name="page-updated" content="2026-05-12">
+  <meta name="page-version" content="v2026.05.13.5">
+  <meta name="page-updated" content="2026-05-13">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/expertprofiles.html">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -407,7 +407,7 @@
     }
     .profile-stats {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       border-top: 1px solid var(--line);
       background: #fff;
     }
@@ -420,9 +420,33 @@
       display: block;
       font-size: 24px;
       margin-bottom: 4px;
+      color: var(--green);
+    }
+    .stat .split-number {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 18px;
+      line-height: 1.18;
+    }
+    .stat .split-number b {
+      display: inline-block;
+      font-family: inherit;
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 0;
+      line-height: 1;
+      color: var(--green);
+    }
+    .stat .split-number small {
+      color: var(--ink);
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
     .stat span {
-      color: var(--muted);
+      color: var(--ink);
       font-size: 12px;
       font-weight: 800;
       text-transform: uppercase;
@@ -655,7 +679,7 @@
     :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 3px; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
   </style>
-  <link rel="stylesheet" href="assets/site-nav.css?v=20260512-nav6">
+  <link rel="stylesheet" href="assets/site-nav.css?v=20260513-communitynav1">
 </head>
 <body>
   <div class="topbar">
@@ -663,7 +687,7 @@
     <a href="https://aesopacademy.org">aesopacademy.org</a>
   </div>
   <div id="site-nav"></div>
-  <script src="assets/site-nav.js?v=20260512-nav6"></script>
+  <script src="assets/site-nav.js?v=20260513-communitynav1"></script>
 
 
   <section class="hero">
@@ -805,7 +829,9 @@
         domain: domain.name,
         color: domain.color,
         score: 91 + ((seed * 3) % 8),
-        followers: 820 + seed * 137,
+        followers: initials.toLowerCase() === "ml" ? 52143 : 820 + seed * 137,
+        patreonSubscribers: initials.toLowerCase() === "ml" ? 456 : 40 + seed * 18,
+        expertsSubscribers: initials.toLowerCase() === "ml" ? 65 : 8 + seed * 4,
         videos: 18 + (seed % 6),
         blogs: 10 + (seed % 5),
         workshops: 3 + (seed % 4)
@@ -898,11 +924,15 @@
       document.getElementById("chips").innerHTML = [expert.domain, "AI graded content", "Live events", "Forum access", "AI companion"]
         .map((chip, index) => `<span class="chip" style="${index === 0 ? `color:${expert.color}` : ""}"><span class="dot"></span>${chip}</span>`).join("");
       document.getElementById("stats").innerHTML = [
-        [`${expert.followers.toLocaleString()}`, "followers"],
-        [`${expert.videos}`, "videos"],
-        [`${expert.blogs}`, "blogs"],
-        [`${expert.workshops}`, "workshops"]
-      ].map(stat => `<div class="stat"><strong>${stat[0]}</strong><span>${stat[1]}</span></div>`).join("");
+        { value: `${expert.followers.toLocaleString()}`, label: "YouTube followers" },
+        {
+          value: `<span class="split-number"><span><b>${expert.patreonSubscribers.toLocaleString()}</b> <small>Patreon subscribers</small></span><span><b>${expert.expertsSubscribers.toLocaleString()}</b> <small>25experts subscribers</small></span></span>`,
+          label: ""
+        },
+        { value: `${expert.videos}`, label: "videos" },
+        { value: `${expert.blogs}`, label: "blogs" },
+        { value: `${expert.workshops}`, label: "workshops" }
+      ].map(stat => `<div class="stat"><strong>${stat.value}</strong>${stat.label ? `<span>${stat.label}</span>` : ""}</div>`).join("");
       document.getElementById("learningMap").innerHTML = [
         ["1. Watch", "Start with the highest-rated short lessons and free previews."],
         ["2. Practice", "Use the blog playbooks, downloads, and forum prompts to apply the idea."],
@@ -957,6 +987,3 @@
   </script>
 </body>
 </html>
-
-
-

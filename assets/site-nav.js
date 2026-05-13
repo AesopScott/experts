@@ -14,7 +14,7 @@
       label: "Growth",
       className: "site-nav-growth",
       links: [
-        ["Patron Recognition", "patronrecognition.html"],
+        ["Community Recognition", "communityrecognition.html"],
         ["Expert Recognition", "expertsrecognition.html"],
         ["Expert Profiles", "expertprofiles.html"],
         ["My Profile", "profile.html"]
