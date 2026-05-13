@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Expert Profiles | 25experts</title>
   <meta name="description" content="Browse AI expert profiles, follow trusted creators, and discover their videos, blogs, workshops, and forum contributions.">
-  <meta name="page-version" content="v2026.05.13.5">
+  <meta name="page-version" content="v2026.05.13.8">
   <meta name="page-updated" content="2026-05-13">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/expertprofiles.html">
@@ -429,11 +429,11 @@
       font-size: 18px;
       line-height: 1.18;
     }
-    .stat .split-number b {
+    .stat .split-number .subscriber-count {
       display: inline-block;
       font-family: inherit;
       font-size: 24px;
-      font-weight: 900;
+      font-weight: 400;
       letter-spacing: 0;
       line-height: 1;
       color: var(--green);
@@ -926,7 +926,7 @@
       document.getElementById("stats").innerHTML = [
         { value: `${expert.followers.toLocaleString()}`, label: "YouTube followers" },
         {
-          value: `<span class="split-number"><span><b>${expert.patreonSubscribers.toLocaleString()}</b> <small>Patreon subscribers</small></span><span><b>${expert.expertsSubscribers.toLocaleString()}</b> <small>25experts subscribers</small></span></span>`,
+          value: `<span class="split-number"><span><span class="subscriber-count">${expert.patreonSubscribers.toLocaleString()}</span> <small>Patreon subscribers</small></span><span><span class="subscriber-count">${expert.expertsSubscribers.toLocaleString()}</span> <small>25experts subscribers</small></span></span>`,
           label: ""
         },
         { value: `${expert.videos}`, label: "videos" },
