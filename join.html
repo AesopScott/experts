@@ -8,7 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <title>Join Free | 25experts</title>
   <meta name="description" content="Join 25experts for free, explore expert AI content, and support Aesop Academy&#39;s nonprofit mission to expand practical AI literacy.">
-  <meta name="page-version" content="v2026.05.12.13">
+  <meta name="page-version" content="v2026.05.12.14">
   <meta name="page-updated" content="2026-05-12">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/join.html">
@@ -557,7 +557,7 @@
             <ul class="feature-list">
               <li><span class="check yes">✓</span><span>All videos published in the last 30 days</span></li>
               <li><span class="check yes">✓</span><span>Full blog posts from Founding Experts / Expert Fellows</span></li>
-              <li><span class="check partial" style="background:#fef3e2;color:#b87a22;">~</span><span>Blog post previews from Experts and Contributors</span></li>
+              <li><span class="check partial" style="background:#fef3e2;color:#b87a22;">~</span><span>Blog post previews from Specialists and Contributors</span></li>
               <li><span class="check yes">✓</span><span>Full workshop calendar with preview clips of recorded sessions</span></li>
               <li><span class="check yes">✓</span><span>Full forum and community access</span></li>
               <li><span class="check yes">✓</span><span>Follow up to 5 experts with notifications</span></li>
@@ -588,7 +588,7 @@
             <ul class="feature-list">
               <li><span class="check yes">✓</span><span>Everything in free</span></li>
               <li><span class="check yes">✓</span><span>Full video archive — no time limit</span></li>
-              <li><span class="check yes">✓</span><span>Full blog posts from all Founding Experts / Expert Fellows, Experts, and Contributors</span></li>
+              <li><span class="check yes">✓</span><span>Full blog posts from all Founding Experts / Expert Fellows, Specialists, and Contributors</span></li>
               <li><span class="check yes">✓</span><span>Live workshop attendance for experts you patronize (single-use access code per event)</span></li>
               <li><span class="check yes">✓</span><span>All workshop replays for experts you patronize</span></li>
               <li><span class="check yes">✓</span><span>Platform-wide access to all workshop replays older than 30 days</span></li>
@@ -707,7 +707,7 @@
             <td class="yes-cell">Full posts</td>
           </tr>
           <tr>
-            <td>Blog posts — Experts &amp; Contributors</td>
+            <td>Blog posts — Specialists &amp; Contributors</td>
             <td class="partial">Previews only</td>
             <td class="yes-cell">Full posts</td>
           </tr>
@@ -918,16 +918,16 @@
       { name: "Nora Kim",       domain: "marketing",  label: "Marketing, Sales & Growth", tier: "Founding Expert / Expert Fellow", spots: 4  },
       { name: "Dana Wright",    domain: "leadership", label: "Leadership & Management",   tier: "Founding Expert / Expert Fellow", spots: 9  },
       { name: "Ari Fox",        domain: "design",     label: "Design, Creative & Gaming", tier: "Founding Expert / Expert Fellow", spots: 7  },
-      { name: "Owen Patel",     domain: "ai",         label: "AI & Automation",          tier: "Expert",          spots: 11 },
-      { name: "Lena Brooks",    domain: "ai",         label: "AI & Automation",          tier: "Expert",          spots: 17 },
-      { name: "Anika Rao",      domain: "finance",    label: "Finance & Investing",       tier: "Expert",          spots: 13 },
-      { name: "Jonah Price",    domain: "finance",    label: "Finance & Investing",       tier: "Expert",          spots: 19 },
-      { name: "Caleb Stone",    domain: "marketing",  label: "Marketing, Sales & Growth", tier: "Expert",          spots: 8  },
-      { name: "Mei Tan",        domain: "marketing",  label: "Marketing, Sales & Growth", tier: "Expert",          spots: 15 },
-      { name: "Hugo Bennett",   domain: "leadership", label: "Leadership & Management",   tier: "Expert",          spots: 12 },
-      { name: "Farah Nasser",   domain: "leadership", label: "Leadership & Management",   tier: "Expert",          spots: 18 },
-      { name: "Jules Rivera",   domain: "design",     label: "Design, Creative & Gaming", tier: "Expert",          spots: 10 },
-      { name: "Mina Park",      domain: "design",     label: "Design, Creative & Gaming", tier: "Expert",          spots: 16 },
+      { name: "Owen Patel",     domain: "ai",         label: "AI & Automation",          tier: "Specialist",          spots: 11 },
+      { name: "Lena Brooks",    domain: "ai",         label: "AI & Automation",          tier: "Specialist",          spots: 17 },
+      { name: "Anika Rao",      domain: "finance",    label: "Finance & Investing",       tier: "Specialist",          spots: 13 },
+      { name: "Jonah Price",    domain: "finance",    label: "Finance & Investing",       tier: "Specialist",          spots: 19 },
+      { name: "Caleb Stone",    domain: "marketing",  label: "Marketing, Sales & Growth", tier: "Specialist",          spots: 8  },
+      { name: "Mei Tan",        domain: "marketing",  label: "Marketing, Sales & Growth", tier: "Specialist",          spots: 15 },
+      { name: "Hugo Bennett",   domain: "leadership", label: "Leadership & Management",   tier: "Specialist",          spots: 12 },
+      { name: "Farah Nasser",   domain: "leadership", label: "Leadership & Management",   tier: "Specialist",          spots: 18 },
+      { name: "Jules Rivera",   domain: "design",     label: "Design, Creative & Gaming", tier: "Specialist",          spots: 10 },
+      { name: "Mina Park",      domain: "design",     label: "Design, Creative & Gaming", tier: "Specialist",          spots: 16 },
       { name: "Theo Ramirez",   domain: "ai",         label: "AI & Automation",          tier: "Contributor",     spots: 20 },
       { name: "Priya Shah",     domain: "ai",         label: "AI & Automation",          tier: "Contributor",     spots: 22 },
       { name: "Elena Foster",   domain: "finance",    label: "Finance & Investing",       tier: "Contributor",     spots: 19 },
@@ -946,7 +946,7 @@
       return "#145f47";
     }
 
-    const tiers = ["Founding Expert / Expert Fellow", "Expert", "Contributor"];
+    const tiers = ["Founding Expert / Expert Fellow", "Specialist", "Contributor"];
     const list = document.getElementById("modal-expert-list");
 
     tiers.forEach(tier => {
@@ -1061,6 +1061,3 @@
 
 </body>
 </html>
-
-
-
