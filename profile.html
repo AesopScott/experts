@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My Profile | 25experts</title>
   <meta name="description" content="A 25experts profile mockup showing badges, watched videos, read blogs, followed experts, forum connections, and learning activity.">
-  <meta name="page-version" content="v2026.05.14.8">
+  <meta name="page-version" content="v2026.05.14.9">
   <meta name="page-updated" content="2026-05-14">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/profile.html">
@@ -94,12 +94,13 @@
     .panel{overflow:hidden}.panel-pad{padding:20px}.panel-head{padding:19px 20px;border-bottom:1px solid var(--line)}
     .panel-head h2{margin:0;font-size:25px}.panel-head p{margin:5px 0 0;color:var(--muted);line-height:1.45;font-size:14px}
     .badge-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:18px}
-    .badge{position:relative;min-height:160px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:15px;display:grid;align-content:start;gap:10px;overflow:hidden}
-    .badge::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(20,95,71,.07),transparent 46%,rgba(184,122,34,.08));pointer-events:none}
-    .badge-icon{--badge-main:var(--green);--badge-light:#45b98c;position:relative;width:58px;height:62px;display:grid;place-items:center;border-radius:18px 18px 16px 16px;background:linear-gradient(150deg,var(--badge-light),var(--badge-main) 64%,#0d3228);color:#fff;font-size:21px;font-weight:950;box-shadow:0 13px 26px rgba(16,22,21,.18),inset 0 1px 0 rgba(255,255,255,.42);isolation:isolate}
-    .badge-icon::before{content:"";position:absolute;inset:7px;border:1px solid rgba(255,255,255,.62);border-radius:14px;box-shadow:inset 0 0 16px rgba(255,255,255,.18)}
-    .badge-icon::after{content:"";position:absolute;left:12px;right:12px;bottom:-13px;height:24px;background:linear-gradient(180deg,var(--badge-main),#0d3228);clip-path:polygon(0 0,43% 0,50% 100%,57% 0,100% 0,100% 78%,0 78%);z-index:-1;filter:drop-shadow(0 8px 8px rgba(16,22,21,.16))}
-    .badge-icon span{position:relative;z-index:1;line-height:1;text-shadow:0 1px 2px rgba(0,0,0,.22)}
+    .badge{position:relative;min-height:160px;border:1px solid rgba(223,229,223,.9);border-radius:10px;background:linear-gradient(180deg,#fff,#fbfaf6);padding:16px;display:grid;align-content:start;gap:10px;overflow:hidden}
+    .badge::before{content:"";position:absolute;inset:-40% -20% auto auto;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(184,122,34,.18),transparent 66%);pointer-events:none}
+    .badge::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(20,95,71,.05),transparent 42%,rgba(255,255,255,.55));pointer-events:none}
+    .badge-icon{--badge-main:var(--green);--badge-light:#45b98c;position:relative;width:64px;height:64px;display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle at 35% 24%,#fff 0 5%,var(--badge-light) 6% 30%,var(--badge-main) 68%,#0d3228);color:#fff;font-size:22px;font-weight:950;box-shadow:0 16px 30px rgba(16,22,21,.2),0 0 0 5px rgba(255,255,255,.92),0 0 0 6px rgba(184,122,34,.26),inset 0 1px 0 rgba(255,255,255,.55);isolation:isolate}
+    .badge-icon::before{content:"";position:absolute;inset:7px;border:1px solid rgba(255,255,255,.72);border-radius:50%;box-shadow:inset 0 0 18px rgba(255,255,255,.2)}
+    .badge-icon::after{content:"";position:absolute;left:9px;right:9px;bottom:-18px;height:30px;background:linear-gradient(180deg,var(--badge-main),#0d3228);clip-path:polygon(0 0,38% 0,50% 100%,62% 0,100% 0,90% 100%,50% 70%,10% 100%);z-index:-1;filter:drop-shadow(0 10px 8px rgba(16,22,21,.16));opacity:.92}
+    .badge-icon span{position:relative;z-index:1;line-height:1;text-shadow:0 1px 3px rgba(0,0,0,.28)}
     .badge-icon.badge-video{--badge-main:#145f47;--badge-light:#5fd0a0}
     .badge-icon.badge-workshop{--badge-main:#1f7a5f;--badge-light:#7fd7b2}
     .badge-icon.badge-review{--badge-main:#245a7d;--badge-light:#5aa1ce}
@@ -129,12 +130,12 @@
     @media(max-width:1180px){.hero-inner,.two-col{grid-template-columns:1fr}.score-grid,.badge-grid,.connection-list{grid-template-columns:repeat(2,1fr)}.expert-grid,.expert-grid.is-subscribed,.expert-grid.is-followed,.content-grid{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:720px){.score-grid,.badge-grid,.content-grid,.expert-grid,.connection-list,.profile-metrics{grid-template-columns:1fr}.event{grid-template-columns:1fr}.identity{grid-template-columns:1fr}.avatar{width:70px;height:70px}}
   </style>
-  <link rel="stylesheet" href="assets/site-nav.css?v=20260514-profile2">
+  <link rel="stylesheet" href="assets/site-nav.css?v=20260514-profile3">
 </head>
 <body>
   <div class="topbar"><strong>25experts</strong> is a centralized social platform for AI engagement.</div>
   <div id="site-nav"></div>
-  <script src="assets/site-nav.js?v=20260514-profile2"></script>
+  <script src="assets/site-nav.js?v=20260514-profile3"></script>
 
   <section class="hero">
     <div class="hero-inner">
