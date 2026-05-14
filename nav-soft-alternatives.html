@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shared Nav Preview | 25experts</title>
+  <meta name="page-version" content="v2026.05.14.1">
+  <meta name="page-updated" content="2026-05-14">
+  <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
+  <style>
+    :root {
+      --bg: #101615;
+      --panel: #17211f;
+      --panel-2: #1b2b27;
+      --line: #2e443e;
+      --mint: #8fd8b5;
+      --green: #2f664f;
+      --cream: #f7f7f3;
+      --ink: #13201d;
+      --gold: #f7d98b;
+      --page: #f6f6f0;
+      --muted: #5d6b66;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .site-preview {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(143, 216, 181, .18), transparent 28%),
+        linear-gradient(180deg, #f8f8f2 0%, #eef5ef 100%);
+    }
+
+    .site-nav-shell {
+      position: relative;
+      background: var(--bg);
+      border-bottom: 1px solid #d7ddd6;
+      box-shadow: 0 16px 34px rgba(0, 0, 0, .18);
+    }
+
+    .nav {
+      display: grid;
+      gap: 10px;
+      padding: 10px 27px 12px;
+    }
+
+    .nav-top {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 10px;
+      background: var(--green);
+      font-weight: 950;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .brand-text {
+      display: grid;
+      gap: 0;
+      font-weight: 950;
+      font-size: 24px;
+      line-height: .86;
+    }
+
+    .brand-text span {
+      color: rgba(255, 255, 255, .78);
+      font-size: 16px;
+      font-weight: 950;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }
+
+    .nav-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .site-nav-group {
+      min-height: 120px;
+      display: grid;
+      grid-template-columns: 30px minmax(0, 1fr);
+      gap: 10px;
+      padding: 23px 10px 21px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel);
+    }
+
+    .site-nav-label {
+      display: grid;
+      place-items: center;
+      color: var(--mint);
+      font-size: 13px;
+      font-weight: 950;
+      letter-spacing: .12em;
+      line-height: 1;
+      text-transform: uppercase;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+
+    .site-nav-items {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(2, 34px);
+      gap: 5px 6px;
+      align-content: center;
+      overflow: hidden;
+      padding: 1px 0;
+    }
+
+    .site-nav-items::before,
+    .site-nav-items::after {
+      content: "";
+      position: absolute;
+      left: 4%;
+      right: 4%;
+      height: 3px;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 70% 50%, rgba(255, 255, 255, .98) 0 3px, transparent 4px),
+        linear-gradient(90deg, transparent, rgba(247, 217, 139, .62), rgba(255, 246, 197, .9), rgba(247, 217, 139, .56), transparent);
+      filter: drop-shadow(0 0 5px rgba(247, 217, 139, .35));
+      opacity: .78;
+      pointer-events: none;
+    }
+
+    .site-nav-items::before { top: 0; }
+    .site-nav-items::after { bottom: 0; }
+
+    .site-nav-items a {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      min-height: 33px;
+      padding: 0 10px;
+      border-radius: 8px;
+      background: var(--cream);
+      color: var(--ink);
+      font-size: clamp(14px, 1.03vw, 18px);
+      font-weight: 950;
+      line-height: 1;
+      text-align: center;
+      white-space: nowrap;
+      box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .05);
+    }
+
+    .site-nav-items a.long {
+      font-size: clamp(12px, .9vw, 17px);
+    }
+
+    .domain-wrap {
+      display: grid;
+      gap: 11px;
+      padding: 15px 27px 13px;
+      border-top: 1px solid rgba(255, 255, 255, .08);
+      background: #101615;
+    }
+
+    .domain-label {
+      display: grid;
+      place-items: center;
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel);
+      color: var(--mint);
+      font-size: 14px;
+      font-weight: 950;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .domain-links {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .domain-links a {
+      display: grid;
+      place-items: center;
+      min-height: 38px;
+      padding: 0 12px;
+      border: 1px solid rgba(143, 216, 181, .35);
+      border-radius: 10px;
+      background: #1d3a30;
+      color: #e5fff0;
+      font-size: clamp(12px, .94vw, 16px);
+      font-weight: 950;
+      line-height: 1;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .jobs-ribbon {
+      position: absolute;
+      right: 36px;
+      bottom: -86px;
+      display: grid;
+      place-items: center;
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      background: #2f74a5;
+      color: white;
+      font-size: 15px;
+      font-weight: 950;
+      text-transform: uppercase;
+      transform: rotate(20deg);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, .24);
+    }
+
+    .jobs-ribbon::before,
+    .jobs-ribbon::after {
+      content: "";
+      position: absolute;
+      top: 54px;
+      width: 23px;
+      height: 48px;
+      background: #245d87;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 74%, 0 100%);
+      z-index: -1;
+    }
+
+    .jobs-ribbon::before { left: 14px; transform: rotate(11deg); }
+    .jobs-ribbon::after { right: 14px; transform: rotate(-11deg); }
+
+    .page-content {
+      width: min(1320px, calc(100% - 54px));
+      margin: 0 auto;
+      padding: 24px 0 80px;
+    }
+
+    .page-hero {
+      display: grid;
+      gap: 14px;
+      max-width: 950px;
+    }
+
+    .page-hero .eyebrow {
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 950;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .page-hero h1 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(46px, 6vw, 88px);
+      line-height: .92;
+      letter-spacing: 0;
+    }
+
+    .page-hero p {
+      max-width: 720px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 980px) {
+      .nav-grid,
+      .domain-links {
+        grid-template-columns: 1fr;
+      }
+
+      .site-nav-items a {
+        font-size: 14px;
+      }
+
+      .jobs-ribbon {
+        right: 18px;
+        bottom: -76px;
+        transform: scale(.86) rotate(20deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="site-preview">
+    <header class="site-nav-shell">
+      <nav class="nav" aria-label="Site navigation preview">
+        <div class="nav-top">
+          <a class="brand" href="#">
+            <span class="brand-mark">25</span>
+            <span class="brand-text">25experts<span>by Aesop Academy</span></span>
+          </a>
+        </div>
+
+        <div class="nav-grid">
+          <section class="site-nav-group">
+            <div class="site-nav-label">Content</div>
+            <div class="site-nav-items">
+              <a>Videos</a>
+              <a>Blogs</a>
+              <a class="long">Workshop Calendar</a>
+              <a>Forums</a>
+            </div>
+          </section>
+
+          <section class="site-nav-group">
+            <div class="site-nav-label">Growth</div>
+            <div class="site-nav-items">
+              <a class="long">Community Recognition</a>
+              <a class="long">Expert Recognition</a>
+              <a>Expert Profiles</a>
+              <a>My Profile</a>
+            </div>
+          </section>
+
+          <section class="site-nav-group">
+            <div class="site-nav-label">Give</div>
+            <div class="site-nav-items">
+              <a>Donate or Sponsor</a>
+              <a>Scholarships</a>
+              <a>Trends</a>
+              <a>Leader Boards</a>
+            </div>
+          </section>
+
+          <section class="site-nav-group">
+            <div class="site-nav-label">Actions</div>
+            <div class="site-nav-items">
+              <a>Join Now</a>
+              <a>Expert Program</a>
+              <a>Post a Job</a>
+              <a>Search</a>
+            </div>
+          </section>
+        </div>
+      </nav>
+
+      <div class="domain-wrap">
+        <div class="domain-label">Domains</div>
+        <nav class="domain-links" aria-label="AI domains preview">
+          <a>AI &amp; Automation</a>
+          <a>AI in Finance &amp; Investing</a>
+          <a>AI in Marketing, Sales &amp; Growth</a>
+          <a>AI in Leadership &amp; Management</a>
+          <a>AI in Design, Creative &amp; Gaming</a>
+        </nav>
+      </div>
+
+      <a class="jobs-ribbon" href="#">Jobs</a>
+    </header>
+
+    <main class="page-content">
+      <section class="page-hero">
+        <div class="eyebrow">Aesop Academy 501(c)(3)</div>
+        <h1>Are you an AI expert?</h1>
+        <p>25experts helps Aesop Academy bring practical AI literacy to the world through trusted experts, live workshops, forums, blogs, videos, and a nonprofit community built for learning instead of noise.</p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
