@@ -127,6 +127,9 @@
 
   function watchJobsRibbon() {
     positionJobsRibbon();
+    requestAnimationFrame(positionJobsRibbon);
+    window.setTimeout(positionJobsRibbon, 150);
+    window.addEventListener("load", positionJobsRibbon, { once: true });
     window.addEventListener("resize", positionJobsRibbon, { passive: true });
     if ("ResizeObserver" in window) {
       const shell = document.querySelector(".site-nav-shell");
