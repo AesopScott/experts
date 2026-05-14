@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "*",
-      "mcp__you-com__you-search"
+      "mcp__you-com__you-search",
+      "mcp__brave-search__brave_web_search"
     ],
     "defaultMode": "bypassPermissions"
   }

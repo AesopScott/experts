@@ -285,78 +285,6 @@ body:not(.home) main > :is(.hero, .domain-hero, .page-hero):first-child > * {
   overflow: hidden;
 }
 
-.site-jobs-ribbon {
-  --jobs-blue: #2f74a5;
-  --jobs-blue-dark: #255e87;
-  position: fixed;
-  top: var(--jobs-ribbon-top, 158px);
-  right: calc(clamp(14px, 2vw, 30px) + 96px);
-  width: 78px;
-  height: 90px;
-  z-index: 55;
-  display: block;
-  text-decoration: none;
-  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.34));
-  transform: rotate(20deg);
-  transition: transform 0.18s ease, filter 0.18s ease;
-}
-
-.site-jobs-ribbon:hover {
-  transform: translateY(-2px) rotate(22deg);
-  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.44));
-}
-
-.site-jobs-seal {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 78px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  border-radius: 9px 9px 5px 5px;
-  background: linear-gradient(180deg, var(--jobs-blue), var(--jobs-blue-dark));
-  color: #fff;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
-}
-
-.site-jobs-seal::before {
-  display: none;
-}
-
-.site-jobs-seal span {
-  position: relative;
-  z-index: 1;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 950;
-  letter-spacing: 0.08em;
-  line-height: 1;
-  text-transform: uppercase;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
-}
-
-.site-jobs-tail {
-  position: absolute;
-  top: 40px;
-  width: 24px;
-  height: 46px;
-  background: linear-gradient(180deg, var(--jobs-blue) 0%, var(--jobs-blue-dark) 100%);
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 74%, 0 100%);
-  transform-origin: top center;
-  box-shadow: inset -3px 0 6px rgba(0, 0, 0, 0.12);
-}
-
-.site-jobs-tail-left {
-  left: 12px;
-  transform: rotate(9deg);
-}
-
-.site-jobs-tail-right {
-  right: 12px;
-  transform: rotate(-9deg);
-}
-
 .site-nav-content {
   border: 1px solid #2c3c38;
   background: #17211f;
@@ -415,28 +343,6 @@ body:not(.home) main > :is(.hero, .domain-hero, .page-hero):first-child > * {
     font-size: 10px;
   }
 
-  .site-jobs-ribbon {
-    width: 64px;
-    height: 84px;
-  }
-
-  .site-jobs-seal {
-    width: 64px;
-    height: 38px;
-  }
-
-  .site-jobs-seal span {
-    font-size: 12px;
-  }
-
-  .site-jobs-tail {
-    top: 36px;
-    width: 19px;
-    height: 40px;
-  }
-
-  .site-jobs-tail-left { left: 12px; }
-  .site-jobs-tail-right { right: 12px; }
 }
 
 @media (max-width: 640px) {
@@ -456,15 +362,6 @@ body:not(.home) main > :is(.hero, .domain-hero, .page-hero):first-child > * {
     white-space: normal;
   }
 
-  .site-jobs-ribbon {
-    right: calc(10px + 48px);
-    transform: scale(0.86) rotate(20deg);
-    transform-origin: top right;
-  }
-
-  .site-jobs-ribbon:hover {
-    transform: scale(0.86) translateY(-2px) rotate(22deg);
-  }
 }
 
 @media (max-width: 390px) {

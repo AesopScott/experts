@@ -21,11 +21,11 @@
       ]
     },
     {
-      label: "Give",
+      label: "Engage",
       className: "site-nav-values",
       links: [
-        ["Donate or Sponsor", "support.html"],
-        ["Scholarships", "scholarships.html"],
+        ["Jobs Search", "jobs.html"],
+        ["Post a Job", "postajob.html"],
         ["Trends", "trends.html"],
         ["Leader Boards", "leaderboards.html"]
       ]
@@ -36,7 +36,7 @@
       links: [
         ["Join Now", "join.html"],
         ["Expert Program", "experts.html"],
-        ["Post a Job", "postajob.html"],
+        ["Support", "support.html"],
         ["Search", "search.html"]
       ]
     }
@@ -78,7 +78,7 @@
     <header class="nav">
       <a class="brand" href="index.html">
         <span class="brand-mark">25</span>
-        <span class="brand-text">25experts<span>by Aesop Academy</span></span>
+        <span class="brand-text">25experts<span>AI Engagement Platform</span></span>
       </a>
       <nav class="nav-links site-nav" aria-label="Site navigation">
         ${navItems.map((group) => `
@@ -100,40 +100,12 @@
       </div>
     </nav>
     </div>
-    <a class="site-jobs-ribbon" href="jobs.html" aria-label="Open the AI jobs board">
-      <span class="site-jobs-tail site-jobs-tail-left" aria-hidden="true"></span>
-      <span class="site-jobs-tail site-jobs-tail-right" aria-hidden="true"></span>
-      <span class="site-jobs-seal" aria-hidden="true">
-        <span>Jobs</span>
-      </span>
-    </a>
   `;
 
   function renderSiteNav() {
     const mount = document.getElementById("site-nav");
     if (mount) {
       mount.outerHTML = navMarkup;
-    }
-  }
-
-  function positionJobsRibbon() {
-    const shell = document.querySelector(".site-nav-shell");
-    const ribbon = document.querySelector(".site-jobs-ribbon");
-    if (!shell || !ribbon) return;
-    const bottom = shell.getBoundingClientRect().bottom;
-    const offset = window.innerWidth <= 760 ? 10 : 18;
-    ribbon.style.setProperty("--jobs-ribbon-top", `${Math.max(72, bottom + offset)}px`);
-  }
-
-  function watchJobsRibbon() {
-    positionJobsRibbon();
-    requestAnimationFrame(positionJobsRibbon);
-    window.setTimeout(positionJobsRibbon, 150);
-    window.addEventListener("load", positionJobsRibbon, { once: true });
-    window.addEventListener("resize", positionJobsRibbon, { passive: true });
-    if ("ResizeObserver" in window) {
-      const shell = document.querySelector(".site-nav-shell");
-      if (shell) new ResizeObserver(positionJobsRibbon).observe(shell);
     }
   }
 
@@ -147,10 +119,9 @@
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => { renderSiteNav(); watchJobsRibbon(); renderVersionBadge(); });
+    document.addEventListener("DOMContentLoaded", () => { renderSiteNav(); renderVersionBadge(); });
   } else {
     renderSiteNav();
-    watchJobsRibbon();
     renderVersionBadge();
   }
 })();
