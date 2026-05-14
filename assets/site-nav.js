@@ -21,7 +21,7 @@
       ]
     },
     {
-      label: "Non-Profit Values",
+      label: "Give",
       className: "site-nav-values",
       links: [
         ["Donate or Sponsor", "support.html"],

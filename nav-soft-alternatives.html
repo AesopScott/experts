@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Shared Nav Preview | 25experts</title>
-  <meta name="page-version" content="v2026.05.14.1">
+  <title>Index Dark Nav Preview | 25experts</title>
+  <meta name="page-version" content="v2026.05.14.2">
   <meta name="page-updated" content="2026-05-14">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <style>
@@ -224,15 +224,17 @@
     .jobs-ribbon {
       position: absolute;
       right: 36px;
-      bottom: -86px;
-      display: grid;
-      place-items: center;
-      width: 66px;
-      height: 66px;
-      border-radius: 50%;
-      background: #2f74a5;
+      bottom: -72px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 74px;
+      height: 42px;
+      padding: 0 14px;
+      border-radius: 9px 9px 5px 5px;
+      background: linear-gradient(180deg, #2f74a5 0%, #255e87 100%);
       color: white;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 950;
       text-transform: uppercase;
       transform: rotate(20deg);
@@ -243,26 +245,26 @@
     .jobs-ribbon::after {
       content: "";
       position: absolute;
-      top: 54px;
-      width: 23px;
-      height: 48px;
-      background: #245d87;
+      top: 40px;
+      width: 24px;
+      height: 46px;
+      background: #1f5378;
       clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 74%, 0 100%);
       z-index: -1;
     }
 
-    .jobs-ribbon::before { left: 14px; transform: rotate(11deg); }
-    .jobs-ribbon::after { right: 14px; transform: rotate(-11deg); }
+    .jobs-ribbon::before { left: 12px; transform: rotate(9deg); }
+    .jobs-ribbon::after { right: 12px; transform: rotate(-9deg); }
 
     .page-content {
       width: min(1320px, calc(100% - 54px));
       margin: 0 auto;
-      padding: 24px 0 80px;
+      padding: 18px 0 80px;
     }
 
     .page-hero {
       display: grid;
-      gap: 14px;
+      gap: 12px;
       max-width: 950px;
     }
 
@@ -290,6 +292,42 @@
       line-height: 1.55;
     }
 
+    .button-audit {
+      display: grid;
+      gap: 11px;
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(21, 81, 63, .16);
+    }
+
+    .button-audit strong {
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 950;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .button-audit-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .button-audit-row span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 30px;
+      padding: 0 11px;
+      border-radius: 7px;
+      background: #101615;
+      color: #f7f7f3;
+      font-size: 12px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
     @media (max-width: 980px) {
       .nav-grid,
       .domain-links {
@@ -302,7 +340,7 @@
 
       .jobs-ribbon {
         right: 18px;
-        bottom: -76px;
+        bottom: -66px;
         transform: scale(.86) rotate(20deg);
       }
     }
@@ -381,6 +419,16 @@
         <div class="eyebrow">Aesop Academy 501(c)(3)</div>
         <h1>Are you an AI expert?</h1>
         <p>25experts helps Aesop Academy bring practical AI literacy to the world through trusted experts, live workshops, forums, blogs, videos, and a nonprofit community built for learning instead of noise.</p>
+        <div class="button-audit" aria-label="All navigation buttons shown for fit review">
+          <strong>All nav labels</strong>
+          <div class="button-audit-row">
+            <span>Videos</span><span>Blogs</span><span>Workshop Calendar</span><span>Forums</span>
+            <span>Community Recognition</span><span>Expert Recognition</span><span>Expert Profiles</span><span>My Profile</span>
+            <span>Donate or Sponsor</span><span>Scholarships</span><span>Trends</span><span>Leader Boards</span>
+            <span>Join Now</span><span>Expert Program</span><span>Post a Job</span><span>Search</span>
+            <span>AI &amp; Automation</span><span>AI in Finance &amp; Investing</span><span>AI in Marketing, Sales &amp; Growth</span><span>AI in Leadership &amp; Management</span><span>AI in Design, Creative &amp; Gaming</span>
+          </div>
+        </div>
       </section>
     </main>
   </div>

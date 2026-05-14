@@ -1,59 +1,66 @@
 /* Shared 25experts navigation */
 .site-nav-shell {
   background: #101615;
-  border-bottom: 1px solid #243330;
-  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.18);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.2);
 }
 
 .nav {
   min-height: auto;
-  display: flex;
-  align-items: center;
+  display: grid;
   gap: 10px;
-  padding: 8px clamp(16px, 3.5vw, 44px);
+  padding: 10px clamp(18px, 3.5vw, 44px) 12px;
   background: #101615;
 }
 
 .nav .brand {
-  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  width: fit-content;
   color: #fff;
   white-space: nowrap;
 }
 
+.nav .brand-mark {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  background: #2f664f;
+  font-size: 18px;
+}
+
 .nav .brand-text {
   display: grid;
-  line-height: 1.08;
+  color: #fff;
+  font-size: 24px;
+  line-height: 0.86;
 }
 
 .nav .brand-text span {
-  color: rgba(255, 255, 255, 0.68);
-  font-size: 11px;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 16px;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
 .nav .nav-links.site-nav {
-  flex: 1 1 auto;
   display: grid;
-  grid-template-columns:
-    minmax(230px, 0.9fr)
-    minmax(340px, 1.35fr)
-    minmax(310px, 1.2fr)
-    minmax(230px, 0.9fr);
-  gap: 6px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
   align-items: stretch;
   color: var(--muted, #66716e);
 }
 
 .site-nav-group {
-  min-height: 52px;
+  min-height: 120px;
   display: grid;
-  grid-template-columns: 18px 1fr;
-  gap: 6px;
-  padding: 6px;
+  grid-template-columns: 30px 1fr;
+  gap: 10px;
+  padding: 23px 10px 21px;
   border: 1px solid #2c3c38;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #17211f;
 }
 
@@ -64,9 +71,9 @@
   transform: rotate(180deg);
   text-align: center;
   color: #8fd8b5;
-  font-size: 9px;
+  font-size: 13px;
   font-weight: 950;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   line-height: 1;
   text-transform: uppercase;
 }
@@ -75,29 +82,29 @@
   position: relative;
   display: grid;
   grid-template-columns: repeat(2, minmax(56px, 1fr));
-  grid-template-rows: repeat(2, 21px);
-  gap: 4px;
+  grid-template-rows: repeat(2, 34px);
+  gap: 5px 6px;
   align-content: center;
   align-items: center;
-  padding: 11px 0;
+  padding: 1px 0;
   overflow: hidden;
 }
 
 .nav .site-nav-group a {
-  min-height: 22px;
-  height: 21px;
+  min-height: 33px;
+  height: auto;
   position: relative;
   z-index: 1;
   align-self: center;
   display: grid;
   place-items: center;
-  padding: 0 6px;
+  padding: 0 10px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 7px;
-  background: #fff;
-  color: #15211e;
-  font-size: clamp(10.6px, 0.72vw, 13px);
-  font-weight: 850;
+  border-radius: 8px;
+  background: #f7f7f3;
+  color: #13201d;
+  font-size: clamp(14px, 1.03vw, 18px);
+  font-weight: 950;
   line-height: 1.05;
   text-align: center;
   text-decoration: none;
@@ -110,7 +117,7 @@
 .site-nav-content a[href="expertprofiles.html"],
 .site-nav-growth a[href="communityrecognition.html"],
 .site-nav-values a[href="expertsrecognition.html"] {
-  font-size: clamp(9px, 0.62vw, 11px);
+  font-size: clamp(12px, 0.9vw, 17px);
 }
 
 .site-nav-trail {
@@ -201,24 +208,25 @@
 
 .site-domain-bar {
   display: grid;
-  grid-template-columns: 76px minmax(0, 1fr);
-  gap: 8px;
+  grid-template-columns: 1fr;
+  gap: 11px;
   align-items: center;
-  padding: 10px clamp(16px, 3.5vw, 44px) 8px;
+  padding: 15px clamp(18px, 3.5vw, 44px) 13px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   background: #101615;
 }
 
 .site-domain-label {
   display: grid;
   place-items: center;
-  min-height: 26px;
+  min-height: 38px;
   border: 1px solid #2c3c38;
   border-radius: 8px;
   background: #17211f;
   color: #8fd8b5;
-  font-size: 9px;
+  font-size: 14px;
   font-weight: 950;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   line-height: 1;
   text-transform: uppercase;
 }
@@ -226,20 +234,20 @@
 .site-domain-links {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 6px;
+  gap: 10px;
 }
 
 .site-domain-bar a {
-  min-height: 26px;
+  min-height: 38px;
   display: grid;
   place-items: center;
-  padding: 0 8px;
-  border: 1px solid rgba(93, 223, 176, 0.28);
+  padding: 0 6px;
+  border: 1px solid rgba(143, 216, 181, 0.35);
   border-radius: 8px;
-  background: rgba(93, 223, 176, 0.14);
-  color: #9ff0c9;
-  font-size: clamp(10px, 0.68vw, 12px);
-  font-weight: 900;
+  background: #1d3a30;
+  color: #e5fff0;
+  font-size: clamp(9px, 0.78vw, 14px);
+  font-weight: 950;
   line-height: 1.05;
   text-align: center;
   text-decoration: none;
@@ -248,92 +256,51 @@
 }
 
 .site-jobs-ribbon {
-  --jobs-blue: #3157c7;
-  --jobs-blue-dark: #223c9e;
-  --jobs-gold: #d8b763;
+  --jobs-blue: #2f74a5;
+  --jobs-blue-dark: #255e87;
   position: fixed;
   top: var(--jobs-ribbon-top, 158px);
   right: calc(clamp(14px, 2vw, 30px) + 96px);
-  width: 72px;
-  height: 104px;
+  width: 78px;
+  height: 90px;
   z-index: 55;
   display: block;
   text-decoration: none;
-  filter: drop-shadow(0 0 15px rgba(216, 183, 99, 0.52));
+  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.34));
   transform: rotate(20deg);
   transition: transform 0.18s ease, filter 0.18s ease;
 }
 
 .site-jobs-ribbon:hover {
   transform: translateY(-2px) rotate(22deg);
-  filter: drop-shadow(0 0 22px rgba(216, 183, 99, 0.72));
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.44));
 }
 
 .site-jobs-seal {
   position: absolute;
   top: 0;
-  left: 5px;
-  width: 62px;
-  height: 62px;
+  left: 0;
+  width: 78px;
+  height: 42px;
   display: grid;
   place-items: center;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.28), transparent 24px),
-    linear-gradient(145deg, #426de7, var(--jobs-blue) 52%, var(--jobs-blue-dark));
+  border-radius: 9px 9px 5px 5px;
+  background: linear-gradient(180deg, var(--jobs-blue), var(--jobs-blue-dark));
   color: #fff;
-  box-shadow:
-    inset 0 0 0 5px rgba(255, 255, 255, 0.08),
-    inset 0 -9px 14px rgba(0, 0, 0, 0.16),
-    0 0 0 2px rgba(216, 183, 99, 0.18);
-  transform: rotate(8deg);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
 }
 
 .site-jobs-seal::before {
-  content: "";
-  position: absolute;
-  inset: -8px;
-  z-index: -1;
-  background: linear-gradient(145deg, #456fed, #294cbf 64%, #203990);
-  clip-path: polygon(
-    50% 0,
-    58% 10%,
-    69% 5%,
-    74% 17%,
-    86% 16%,
-    88% 29%,
-    100% 36%,
-    93% 48%,
-    100% 60%,
-    88% 67%,
-    86% 80%,
-    73% 79%,
-    67% 91%,
-    56% 85%,
-    46% 100%,
-    39% 87%,
-    27% 93%,
-    22% 80%,
-    9% 81%,
-    12% 66%,
-    0 59%,
-    8% 49%,
-    1% 37%,
-    13% 31%,
-    12% 18%,
-    26% 17%,
-    31% 6%,
-    42% 11%
-  );
+  display: none;
 }
 
 .site-jobs-seal span {
   position: relative;
   z-index: 1;
   color: #fff;
-  font-size: 17px;
+  font-size: 14px;
   font-weight: 950;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   line-height: 1;
   text-transform: uppercase;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
@@ -341,9 +308,9 @@
 
 .site-jobs-tail {
   position: absolute;
-  top: 54px;
+  top: 40px;
   width: 24px;
-  height: 50px;
+  height: 46px;
   background: linear-gradient(180deg, var(--jobs-blue) 0%, var(--jobs-blue-dark) 100%);
   clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 74%, 0 100%);
   transform-origin: top center;
@@ -351,13 +318,13 @@
 }
 
 .site-jobs-tail-left {
-  left: 15px;
-  transform: rotate(11deg);
+  left: 12px;
+  transform: rotate(9deg);
 }
 
 .site-jobs-tail-right {
-  right: 15px;
-  transform: rotate(-11deg);
+  right: 12px;
+  transform: rotate(-9deg);
 }
 
 .site-nav-content {
@@ -389,18 +356,13 @@
 .site-nav-actions a { border-color: rgba(255, 255, 255, 0.08); color: #15211e; }
 
 @media (max-width: 1180px) {
-  .nav {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
   .nav .nav-links.site-nav {
     width: 100%;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .nav .site-nav-group a {
-    font-size: 12.4px;
+    font-size: 14px;
   }
 
   .site-domain-bar {
@@ -412,26 +374,25 @@
   }
 
   .site-domain-bar a {
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .site-jobs-ribbon {
-    width: 58px;
+    width: 64px;
     height: 84px;
   }
 
   .site-jobs-seal {
-    left: 4px;
-    width: 50px;
-    height: 50px;
+    width: 64px;
+    height: 38px;
   }
 
   .site-jobs-seal span {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .site-jobs-tail {
-    top: 44px;
+    top: 36px;
     width: 19px;
     height: 40px;
   }
@@ -448,12 +409,12 @@
   }
 
   .nav .site-nav-group a {
-    font-size: 11.4px;
+    font-size: 13px;
   }
 
   .site-domain-bar a {
     min-height: 28px;
-    font-size: 10.5px;
+    font-size: 12px;
     white-space: normal;
   }
 
