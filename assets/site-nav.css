@@ -106,6 +106,13 @@
   white-space: nowrap;
 }
 
+.site-nav-content a[href="workshopcalendar.html"],
+.site-nav-content a[href="expertprofiles.html"],
+.site-nav-growth a[href="communityrecognition.html"],
+.site-nav-values a[href="expertsrecognition.html"] {
+  font-size: clamp(9px, 0.62vw, 11px);
+}
+
 .site-nav-trail {
   position: absolute;
   left: 2%;
