@@ -1,4 +1,29 @@
 /* Shared 25experts navigation */
+body:not(.home) > :is(.hero, .domain-hero, .page-hero),
+body:not(.home) main > :is(.hero, .domain-hero, .page-hero):first-child {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+body:not(.home) > :is(.hero, .domain-hero, .page-hero)::after,
+body:not(.home) main > :is(.hero, .domain-hero, .page-hero):first-child::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    repeating-linear-gradient(115deg, transparent 0 22px, rgba(20, 95, 71, 0.08) 22px 24px, transparent 24px 58px),
+    radial-gradient(circle at 82% 26%, rgba(93, 223, 176, 0.16), transparent 32%);
+  pointer-events: none;
+}
+
+body:not(.home) > :is(.hero, .domain-hero, .page-hero) > *,
+body:not(.home) main > :is(.hero, .domain-hero, .page-hero):first-child > * {
+  position: relative;
+  z-index: 1;
+}
+
 .site-nav-shell {
   background: #101615;
   border-bottom: 1px solid rgba(255, 255, 255, 0.16);
