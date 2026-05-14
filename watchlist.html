@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Watchlist | 25experts</title>
-  <meta name="description" content="The 25experts Watchlist curates public AI videos from creators we follow, credit, and celebrate.">
-  <meta name="page-version" content="v2026.05.14.1">
+  <meta name="description" content="The 25experts Watchlist celebrates public AI videos from creators we follow, love, and send viewers back to directly.">
+  <meta name="page-version" content="v2026.05.14.2">
   <meta name="page-updated" content="2026-05-14">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/watchlist.html">
@@ -19,12 +19,12 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="25experts">
   <meta property="og:title" content="Watchlist | 25experts">
-  <meta property="og:description" content="Curated public AI videos from creators we follow, credit, and celebrate.">
+  <meta property="og:description" content="Curated public AI videos from creators we follow, love, and send viewers back to directly.">
   <meta property="og:url" content="https://25experts.com/watchlist.html">
   <meta property="og:image" content="https://25experts.com/assets/og-25experts.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Watchlist | 25experts">
-  <meta name="twitter:description" content="Curated public AI videos from creators we follow, credit, and celebrate.">
+  <meta name="twitter:description" content="Curated public AI videos from creators we follow, love, and send viewers back to directly.">
   <meta name="twitter:image" content="https://25experts.com/assets/og-25experts.png">
   <style>
     :root {
@@ -53,6 +53,10 @@
     .hero p{max-width:760px;margin:20px 0 0;color:rgba(255,255,255,.82);font-size:clamp(17px,2vw,21px)}
     .note{border:1px solid rgba(255,255,255,.22);border-radius:10px;background:rgba(255,255,255,.1);padding:18px;color:rgba(255,255,255,.83);font-weight:700}
     .page{width:min(1320px,calc(100% - 36px));margin:0 auto;padding:26px 0 70px;display:grid;gap:22px}
+    .creator-celebration{border:1px solid rgba(20,95,71,.22);border-radius:12px;background:linear-gradient(135deg,#fff,#f0faf5);box-shadow:var(--shadow);padding:clamp(22px,3vw,34px);display:grid;gap:12px}
+    .creator-celebration h2{max-width:980px;margin:0;font-size:clamp(30px,4vw,48px);line-height:1.02}
+    .creator-celebration p{max-width:980px;margin:0;color:var(--muted);font-size:18px;line-height:1.55}
+    .creator-celebration strong{color:var(--green)}
     .watchlist-intro{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;border:1px solid var(--line);border-radius:10px;background:var(--panel);box-shadow:var(--shadow);padding:18px}
     .watchlist-intro h2{margin:0;font-size:28px}
     .watchlist-intro p{margin:6px 0 0;color:var(--muted);max-width:820px}
@@ -88,13 +92,19 @@
       <div>
         <span class="eyebrow">The Watchlist</span>
         <h1>Public AI videos worth watching next.</h1>
-        <p>We follow sharp AI creators across the web, curate the videos that deserve more attention, and give learners a better place to save, discuss, and discover what matters.</p>
+        <p>We follow sharp AI creators across the web, curate the videos that deserve more attention, and send people directly to the creator's original YouTube or source.</p>
       </div>
       <aside class="note">Creator-first curation: every featured video is credited, linked, and celebrated. Inclusion means we recommend the public video, not that the creator is affiliated with 25experts unless we say so.</aside>
     </div>
   </section>
 
   <main class="page">
+    <section class="creator-celebration">
+      <h2>This page is about the creators.</h2>
+      <p>We love finding people who make AI easier to understand, more practical, and more useful. The Watchlist exists to celebrate their work, highlight videos we think deserve attention, and send viewers straight back to the creator's YouTube or original channel. No comments, no pretending the work is ours, no friction. Just credit, context, and a direct path to the person who made it.</p>
+      <p><strong>Every featured video should include a direct creator link.</strong></p>
+    </section>
+
     <section class="watchlist-intro">
       <div>
         <h2>Curated by 25experts</h2>
@@ -110,7 +120,7 @@
           <div class="meta"><span class="tag green">AI & Automation</span><span class="tag gold">Outside creator</span></div>
           <h3>Agent workflow breakdown</h3>
           <p>Feature a creator who clearly explains how AI agents fit into real work, not just demos.</p>
-          <div class="card-actions"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch original</a><a href="forums.html">Discuss</a></div>
+          <div class="card-actions"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch on YouTube</a></div>
         </div>
       </article>
 
@@ -120,7 +130,7 @@
           <div class="meta"><span class="tag blue">Marketing & Growth</span><span class="tag gold">Outside creator</span></div>
           <h3>AI content system worth studying</h3>
           <p>Use this slot for a creator showing a practical marketing workflow that learners can adapt.</p>
-          <div class="card-actions"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch original</a><a href="forums.html">Discuss</a></div>
+          <div class="card-actions"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch on YouTube</a></div>
         </div>
       </article>
 
@@ -130,7 +140,7 @@
           <div class="meta"><span class="tag violet">Leadership</span><span class="tag gold">Outside creator</span></div>
           <h3>Leadership lesson on AI adoption</h3>
           <p>Highlight a video that helps managers make better AI decisions with their teams.</p>
-          <div class="card-actions"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch original</a><a href="forums.html">Discuss</a></div>
+          <div class="card-actions"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch on YouTube</a></div>
         </div>
       </article>
 
@@ -140,7 +150,7 @@
           <div class="meta"><span class="tag gold">Finance & Investing</span><span class="tag gold">Outside creator</span></div>
           <h3>AI finance explainer</h3>
           <p>Feature a creator who makes AI in finance understandable without hype or shortcuts.</p>
-          <div class="card-actions"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch original</a><a href="forums.html">Discuss</a></div>
+          <div class="card-actions"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch on YouTube</a></div>
         </div>
       </article>
 
@@ -150,7 +160,7 @@
           <div class="meta"><span class="tag rose">Design & Gaming</span><span class="tag gold">Outside creator</span></div>
           <h3>Creative AI workflow</h3>
           <p>Use this for a creator demonstrating the practical craft side of AI design or game creation.</p>
-          <div class="card-actions"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch original</a><a href="forums.html">Discuss</a></div>
+          <div class="card-actions"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch on YouTube</a></div>
         </div>
       </article>
 
@@ -160,13 +170,13 @@
           <div class="meta"><span class="tag green">Editor's pick</span><span class="tag gold">Outside creator</span></div>
           <h3>One to send around</h3>
           <p>A high-signal video that belongs in the social feed because it makes people smarter fast.</p>
-          <div class="card-actions"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch original</a><a href="forums.html">Discuss</a></div>
+          <div class="card-actions"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch on YouTube</a></div>
         </div>
       </article>
     </section>
 
     <section class="disclaimer">
-      Featured creators keep their identity, platform, and original audience. 25experts adds curation, context, discussion, and discovery.
+      Featured creators keep their identity, platform, and original audience. 25experts adds curation, context, and discovery, then points viewers directly back to the creator.
     </section>
   </main>
 
