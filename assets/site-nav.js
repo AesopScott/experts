@@ -25,7 +25,7 @@
       className: "site-nav-values",
       links: [
         ["Donate or Sponsor", "support.html"],
-        ["Scholarships", "join.html"],
+        ["Scholarships", "scholarships.html"],
         ["Trends", "trends.html"],
         ["Leader Boards", "leaderboards.html"]
       ]
