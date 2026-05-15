@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import fsSync from "node:fs";
 import https from "node:https";
 import path from "node:path";
 
@@ -32,6 +33,23 @@ const args = new Map(
     return [key, rest.length ? rest.join("=") : "true"];
   })
 );
+
+function loadLocalEnv(filePath = ".env.local") {
+  if (!fsSync.existsSync(filePath)) return;
+  const lines = fsSync.readFileSync(filePath, "utf8").split(/\r?\n/);
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+    const eq = trimmed.indexOf("=");
+    if (eq === -1) continue;
+    const key = trimmed.slice(0, eq).trim();
+    let value = trimmed.slice(eq + 1).trim();
+    value = value.replace(/^['"]|['"]$/g, "");
+    if (key && !process.env[key]) process.env[key] = value;
+  }
+}
+
+loadLocalEnv(args.get("env") || ".env.local");
 
 const v2Root = args.get("v2-root") || DEFAULT_V2_ROOT;
 const embeddingModelPath = args.get("embedding-model") || DEFAULT_EMBEDDING_MODEL_PATH;
