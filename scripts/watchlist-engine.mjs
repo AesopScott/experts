@@ -3,9 +3,11 @@ import https from "node:https";
 import path from "node:path";
 
 const DEFAULT_V2_ROOT = "C:/Users/scott/Code/Aesop/ai-academy/modules/v2";
+const DEFAULT_EMBEDDING_MODEL_PATH = "C:/Users/scott/Code/Aesop/models/embeddings/all-MiniLM-L6-v2";
 const DEFAULT_OBSIDIAN_PATH = "G:/My Drive/Aesop Academy/Obsidian/diamond_Build/7-Integrations.md";
 const DEFAULT_PINECONE_HOST = "https://aesop-academy-sqe0vz2.svc.aped-4627-b74a.pinecone.io";
 const DEFAULT_PINECONE_INDEX = "aesop-academy";
+const LOCAL_EMBEDDING_DIMENSION = 384;
 const START = "<!-- watchlist-engine:start -->";
 const END = "<!-- watchlist-engine:end -->";
 
@@ -32,6 +34,7 @@ const args = new Map(
 );
 
 const v2Root = args.get("v2-root") || DEFAULT_V2_ROOT;
+const embeddingModelPath = args.get("embedding-model") || DEFAULT_EMBEDDING_MODEL_PATH;
 const obsidianPath = args.get("obsidian") || DEFAULT_OBSIDIAN_PATH;
 const videosPerCourse = Number(args.get("videos-per-course") || 2);
 const topK = Number(args.get("pinecone-top-k") || 8);
@@ -43,12 +46,13 @@ const pineconeApiKey = process.env.PINECONE_API_KEY || "";
 const pineconeHost = process.env.PINECONE_HOST || DEFAULT_PINECONE_HOST;
 const pineconeIndex = process.env.PINECONE_INDEX || DEFAULT_PINECONE_INDEX;
 const pineconeNamespace = process.env.PINECONE_NAMESPACE || "";
-const voyageApiKey = process.env.VOYAGE_API_KEY || "";
+let localExtractor;
+const embeddingModelBasePath = embeddingModelPath.replace(/[\\/][^\\/]+[\\/]?$/, "/");
+const embeddingModelName = embeddingModelPath.replace(/[\\/]$/, "").split(/[\\/]/).pop();
 
 function requireEnv() {
   const missing = [];
   if (!pineconeApiKey) missing.push("PINECONE_API_KEY");
-  if (!voyageApiKey) missing.push("VOYAGE_API_KEY");
 
   if (missing.length) {
     throw new Error(
@@ -58,9 +62,8 @@ function requireEnv() {
         "The Watchlist engine now requires Pinecone as the course source of truth.",
         "Set these before running:",
         "  $env:PINECONE_API_KEY='...'",
-        `  $env:PINECONE_HOST='${pineconeHost}'`,
+        "  $env:PINECONE_HOST='<384-dimension Pinecone index host>'",
         `  $env:PINECONE_INDEX='${pineconeIndex}'`,
-        "  $env:VOYAGE_API_KEY='...'",
         "",
         "No YouTube selections were generated because V2 course presence in Pinecone could not be verified."
       ].join("\n")
@@ -193,17 +196,22 @@ async function readV2Courses() {
   return courses;
 }
 
-async function embed(text, inputType = "query") {
-  const result = await requestJson("https://api.voyageai.com/v1/embeddings", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${voyageApiKey}` },
-    body: {
-      model: "voyage-3",
-      input: [text],
-      input_type: inputType
-    }
+async function embed(text) {
+  if (!localExtractor) {
+    const { env, pipeline } = await import("@xenova/transformers");
+    env.allowRemoteModels = false;
+    env.allowLocalModels = true;
+    env.localModelPath = embeddingModelBasePath;
+    localExtractor = await pipeline("feature-extraction", embeddingModelName, {
+      quantized: true
+    });
+  }
+
+  const output = await localExtractor(text, {
+    pooling: "mean",
+    normalize: true
   });
-  return result.data?.[0]?.embedding || [];
+  return Array.from(output.data);
 }
 
 async function pineconeStats() {
@@ -212,6 +220,25 @@ async function pineconeStats() {
     headers: { "Api-Key": pineconeApiKey },
     body: {}
   });
+}
+
+async function assertPineconeDimension() {
+  const stats = await pineconeStats();
+  const dimension = Number(stats.dimension || 0);
+  if (dimension && dimension !== LOCAL_EMBEDDING_DIMENSION) {
+    throw new Error(
+      [
+        `Pinecone index dimension mismatch: host reports ${dimension}, local model emits ${LOCAL_EMBEDDING_DIMENSION}.`,
+        "",
+        `Current host: ${pineconeHost}`,
+        `Local model: ${embeddingModelPath}`,
+        "",
+        "Use or create a Pinecone index with dimension 384 for the local embedding model.",
+        "Do not upsert these vectors into the existing 1024-dimension index."
+      ].join("\n")
+    );
+  }
+  return stats;
 }
 
 async function queryPinecone(vector, namespace) {
@@ -271,7 +298,7 @@ async function indexCoursesInPinecone(courses) {
     const vectors = [];
     for (const module of course.modules) {
       const text = [course.title, ...module.titles, module.text].join("\n").slice(0, 12000);
-      const vector = await embed(text, "document");
+      const vector = await embed(text);
       vectors.push({
         id: `v2:${course.aliases[0] || course.slug}:${module.id}`,
         values: vector,
@@ -297,7 +324,7 @@ async function indexCoursesInPinecone(courses) {
 }
 
 async function verifyCoursesInPinecone(courses) {
-  const stats = await pineconeStats();
+  const stats = await assertPineconeDimension();
   const namespaces = pineconeNamespace
     ? [pineconeNamespace]
     : Object.keys(stats.namespaces || {});
@@ -306,7 +333,7 @@ async function verifyCoursesInPinecone(courses) {
   const verified = [];
   for (const course of courses) {
     const moduleTitles = course.modules.flatMap((module) => module.titles).slice(0, 10).join("; ");
-    const vector = await embed(`${course.title}. ${moduleTitles}`, "query");
+    const vector = await embed(`${course.title}. ${moduleTitles}`);
     const allMatches = [];
 
     for (const namespace of queryNamespaces) {
@@ -470,6 +497,8 @@ function renderMarkdown(courses, results) {
     "",
     "Engine status:",
     `- V2 course source: \`${v2Root}\``,
+    `- Local embedding model: \`${embeddingModelPath}\``,
+    `- Embedding dimension: \`${LOCAL_EMBEDDING_DIMENSION}\``,
     `- Pinecone index: \`${pineconeIndex}\``,
     `- Pinecone host: \`${pineconeHost}\``,
     `- Pinecone namespace(s): \`${pineconeNamespace || "all namespaces reported by stats"}\``,
@@ -568,5 +597,5 @@ async function main() {
 
 main().catch((error) => {
   console.error(error.message || error);
-  process.exitCode = 1;
+  process.exit(1);
 });
