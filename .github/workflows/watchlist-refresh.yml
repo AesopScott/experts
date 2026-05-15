@@ -1,0 +1,62 @@
+name: Daily Watchlist Refresh
+
+on:
+  schedule:
+    - cron: "0 13 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+
+    env:
+      PINECONE_API_KEY: ${{ secrets.PINECONE_API_KEY }}
+      PINECONE_HOST: https://aesop-v2-watchlist-u8ga0nc.svc.aped-4627-b74a.pinecone.io
+      PINECONE_INDEX: aesop-v2-watchlist
+
+    steps:
+      - name: Checkout 25experts
+        uses: actions/checkout@v4
+        with:
+          path: experts
+
+      - name: Checkout Aesop course source
+        uses: actions/checkout@v4
+        with:
+          repository: AesopScott/Aesop
+          path: Aesop
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: experts/package-lock.json
+
+      - name: Install dependencies
+        working-directory: experts
+        run: npm ci
+
+      - name: Install Git LFS
+        run: |
+          git lfs install
+          git clone https://huggingface.co/Xenova/all-MiniLM-L6-v2 Aesop/models/embeddings/all-MiniLM-L6-v2
+
+      - name: Run Watchlist engine
+        working-directory: experts
+        run: |
+          mkdir -p assets
+          node scripts/watchlist-engine.mjs \
+            --v2-root="${GITHUB_WORKSPACE}/Aesop/ai-academy/modules/v2" \
+            --embedding-model="${GITHUB_WORKSPACE}/Aesop/models/embeddings/all-MiniLM-L6-v2" \
+            --obsidian="${GITHUB_WORKSPACE}/experts/assets/watchlist-items.md" \
+            --videos-per-course=2
+
+      - name: Upload Watchlist output
+        uses: actions/upload-artifact@v4
+        with:
+          name: watchlist-items
+          path: experts/assets/watchlist-items.md
