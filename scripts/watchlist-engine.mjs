@@ -2,10 +2,27 @@ import fs from "node:fs/promises";
 import https from "node:https";
 import path from "node:path";
 
-const DEFAULT_COURSES_PATH = "C:/Users/scott/Code/Aesop/ai-academy/modules/courses-data.json";
+const DEFAULT_V2_ROOT = "C:/Users/scott/Code/Aesop/ai-academy/modules/v2";
 const DEFAULT_OBSIDIAN_PATH = "G:/My Drive/Aesop Academy/Obsidian/diamond_Build/7-Integrations.md";
+const DEFAULT_PINECONE_HOST = "https://aesop-academy-sqe0vz2.svc.aped-4627-b74a.pinecone.io";
+const DEFAULT_PINECONE_INDEX = "aesop-academy";
 const START = "<!-- watchlist-engine:start -->";
 const END = "<!-- watchlist-engine:end -->";
+
+const COURSE_TITLES = {
+  "ai-ethics-decision-making": "AI Ethics & Decision Making",
+  "building-with-ai": "Building with AI",
+  "building-ai-agents-use-cases": "Building AI Agents: Use Cases"
+};
+
+const COURSE_ID_ALIASES = {
+  "ai-ethics-decision-making": ["ai-ethics-decision-making-v2"],
+  "building-with-ai": ["building-with-ai-v2"],
+  "building-ai-agents-use-cases": [
+    "building-ai-agents-use-cases-v2",
+    "building-ai-agents-v2"
+  ]
+};
 
 const args = new Map(
   process.argv.slice(2).map((arg) => {
@@ -14,102 +31,80 @@ const args = new Map(
   })
 );
 
-const coursesPath = args.get("courses") || DEFAULT_COURSES_PATH;
+const v2Root = args.get("v2-root") || DEFAULT_V2_ROOT;
 const obsidianPath = args.get("obsidian") || DEFAULT_OBSIDIAN_PATH;
-const maxCourses = Number(args.get("limit-courses") || 12);
 const videosPerCourse = Number(args.get("videos-per-course") || 2);
+const topK = Number(args.get("pinecone-top-k") || 8);
 const dryRun = args.get("dry-run") === "true";
+const auditOnly = args.get("audit-only") === "true";
+const indexV2 = args.get("index-v2") === "true";
 
-const preferredCourseIds = [
-  "ai-agents-in-the-wild",
-  "how-large-language-models-work",
-  "gpt-vs-claude-vs-gemini",
-  "running-models-locally",
-  "model-evaluation-and-benchmarks",
-  "the-alignment-problem",
-  "the-reasoning-revolution",
-  "the-context-window-race",
-  "voice-and-real-time-ai",
-  "synthetic-data-and-self-improvement",
-  "ai-for-marketing-and-growth",
-  "ai-leadership",
-  "ai-risk-for-business-leaders",
-  "ai-tools-for-solo-founders",
-  "ai-and-finance",
-  "image-generation-models"
-];
+const pineconeApiKey = process.env.PINECONE_API_KEY || "";
+const pineconeHost = process.env.PINECONE_HOST || DEFAULT_PINECONE_HOST;
+const pineconeIndex = process.env.PINECONE_INDEX || DEFAULT_PINECONE_INDEX;
+const pineconeNamespace = process.env.PINECONE_NAMESPACE || "";
+const voyageApiKey = process.env.VOYAGE_API_KEY || "";
 
-const courseSearchAliases = {
-  "model-evaluation-and-benchmarks": [
-    "AI model evaluation benchmarks",
-    "LLM evaluation benchmarks"
-  ],
-  "the-alignment-problem": [
-    "AI alignment problem explained",
-    "AI safety alignment problem"
-  ],
-  "the-reasoning-revolution": [
-    "AI reasoning models explained",
-    "large reasoning models explained"
-  ],
-  "the-context-window-race": [
-    "long context window LLM",
-    "LLM context length explained",
-    "Gemini context window explained"
-  ],
-  "voice-and-real-time-ai": [
-    "OpenAI realtime voice AI demo",
-    "AI voice agents tutorial"
-  ],
-  "synthetic-data-and-self-improvement": [
-    "synthetic data machine learning explained",
-    "synthetic data LLM training"
-  ],
-  "ai-for-marketing-and-growth": [
-    "AI marketing automation tutorial",
-    "AI for marketing tutorial"
-  ],
-  "ai-leadership": [
-    "AI leadership for executives",
-    "AI adoption strategy for leaders",
-    "leading AI transformation"
-  ]
-};
+function requireEnv() {
+  const missing = [];
+  if (!pineconeApiKey) missing.push("PINECONE_API_KEY");
+  if (!voyageApiKey) missing.push("VOYAGE_API_KEY");
 
-const fallbackVideos = {
-  "model-evaluation-and-benchmarks": [
-    ["kDY4TodQwbg", "What are Large Language Model (LLM) Benchmarks?", "IBM Technology", "6:21"],
-    ["a3SMraZWNNs", "How to Systematically Setup LLM Evals (Metrics, Unit Tests, LLM-as-a-Judge)", "Dave Ebbelaar", "55:02"]
-  ],
-  "the-alignment-problem": [
-    ["Sp3aCsQUsDc", "The Alignment Problem Explained: Crash Course Futures of AI #4", "CrashCourse", "12:23"],
-    ["MUjvQvVJxHw", "What is AI Alignment and Why is it Important?", "Eye on Tech", "2:16"]
-  ],
-  "the-reasoning-revolution": [
-    ["enLbj0igyx4", "What Are Large Reasoning Models (LRMs)? Smarter AI Beyond LLMs", "IBM Technology", "8:38"],
-    ["xCRvOUykOX0", "How do thinking and reasoning models work?", "Google for Developers", "13:26"]
-  ],
-  "the-context-window-race": [
-    ["-QVoIxEpFkM", "What is a Context Window? Unlocking LLM Secrets", "IBM Technology", "11:31"],
-    ["TeQDr4DkLYo", "Why LLMs get dumb (Context Windows Explained)", "NetworkChuck", "15:18"]
-  ],
-  "voice-and-real-time-ai": [
-    ["nfBbmtMJhX0", "Introducing gpt-realtime in the API", "OpenAI", "17:54"],
-    ["qq13yG32rUk", "OpenAI Realtime API - The NEW ERA of Speech to Speech? - TESTED", "All About AI", "14:05"]
-  ],
-  "synthetic-data-and-self-improvement": [
-    ["HIusawrGBN4", "What is Synthetic Data? No, It's Not \"Fake\" Data", "IBM Technology", "6:49"],
-    ["4L-CB0lMq_I", "Synthetic Data Generation for Smarter AI Workflows", "IBM Technology", "3:50"]
-  ],
-  "ai-for-marketing-and-growth": [
-    ["XKqNdX0qNRI", "How I Use AI to Automate 80% of My Marketing | 13 Strategies for Success", "Leveling Up with Eric Siu", "11:42"],
-    ["ZT4LqD2_GwM", "How to Start an AI Marketing Agency (Step-by-Step Agency Startup Guide)", "Adam Erhart", "13:03"]
-  ],
-  "ai-leadership": [
-    ["f-6wAvkaO-g", "AI and Leadership: The Smart Way for Managers to Use Artificial Intelligence | 2025", "David Burkus", "11:38"],
-    ["CWEWBgVwFc8", "Leadership in the Age of AI | Paul Hudson and Lindsay Levin | TED", "TED", "17:34"]
-  ]
-};
+  if (missing.length) {
+    throw new Error(
+      [
+        `Missing required environment variable(s): ${missing.join(", ")}`,
+        "",
+        "The Watchlist engine now requires Pinecone as the course source of truth.",
+        "Set these before running:",
+        "  $env:PINECONE_API_KEY='...'",
+        `  $env:PINECONE_HOST='${pineconeHost}'`,
+        `  $env:PINECONE_INDEX='${pineconeIndex}'`,
+        "  $env:VOYAGE_API_KEY='...'",
+        "",
+        "No YouTube selections were generated because V2 course presence in Pinecone could not be verified."
+      ].join("\n")
+    );
+  }
+}
+
+function requestJson(url, options = {}) {
+  return new Promise((resolve, reject) => {
+    const body = options.body ? JSON.stringify(options.body) : undefined;
+    const request = https.request(
+      url,
+      {
+        method: options.method || "GET",
+        headers: {
+          "content-type": "application/json",
+          ...(body ? { "content-length": Buffer.byteLength(body) } : {}),
+          ...(options.headers || {})
+        }
+      },
+      (response) => {
+        let text = "";
+        response.setEncoding("utf8");
+        response.on("data", (chunk) => {
+          text += chunk;
+        });
+        response.on("end", () => {
+          if (response.statusCode < 200 || response.statusCode >= 300) {
+            reject(new Error(`${response.statusCode} ${response.statusMessage}: ${text.slice(0, 500)}`));
+            return;
+          }
+          try {
+            resolve(text ? JSON.parse(text) : {});
+          } catch (error) {
+            reject(new Error(`Invalid JSON from ${url}: ${error.message}`));
+          }
+        });
+      }
+    );
+    request.on("error", reject);
+    if (body) request.write(body);
+    request.end();
+  });
+}
 
 function requestText(url) {
   return new Promise((resolve, reject) => {
@@ -134,6 +129,220 @@ function requestText(url) {
       )
       .on("error", reject);
   });
+}
+
+function stripHtml(html) {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, "\"")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function extractTitles(html) {
+  const titles = [];
+  const regex = /<h1[^>]*class=["'][^"']*read-title[^"']*["'][^>]*>([\s\S]*?)<\/h1>/gi;
+  let match;
+  while ((match = regex.exec(html)) !== null) {
+    titles.push(stripHtml(match[1]));
+  }
+  return titles.filter(Boolean);
+}
+
+function extractCourseIds(html) {
+  return [...html.matchAll(/(?:var|const)\s+COURSE_ID\s*=\s*['"]([^'"]+)['"]/g)].map((match) => match[1]);
+}
+
+async function readV2Courses() {
+  const entries = await fs.readdir(v2Root, { withFileTypes: true });
+  const dirs = entries.filter((entry) => entry.isDirectory());
+  const courses = [];
+
+  for (const dir of dirs) {
+    const coursePath = path.join(v2Root, dir.name);
+    const files = (await fs.readdir(coursePath))
+      .filter((file) => /^m\d+\.html$/.test(file))
+      .sort((a, b) => Number(a.match(/\d+/)[0]) - Number(b.match(/\d+/)[0]));
+    const modules = [];
+    const ids = new Set(COURSE_ID_ALIASES[dir.name] || []);
+
+    for (const file of files) {
+      const html = await fs.readFile(path.join(coursePath, file), "utf8");
+      for (const id of extractCourseIds(html)) ids.add(id);
+      modules.push({
+        id: file.replace(".html", ""),
+        titles: extractTitles(html),
+        text: stripHtml(html).slice(0, 6000)
+      });
+    }
+
+    courses.push({
+      slug: dir.name,
+      title: COURSE_TITLES[dir.name] || dir.name,
+      aliases: [...ids],
+      modules,
+      sourcePath: coursePath
+    });
+  }
+
+  return courses;
+}
+
+async function embed(text, inputType = "query") {
+  const result = await requestJson("https://api.voyageai.com/v1/embeddings", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${voyageApiKey}` },
+    body: {
+      model: "voyage-3",
+      input: [text],
+      input_type: inputType
+    }
+  });
+  return result.data?.[0]?.embedding || [];
+}
+
+async function pineconeStats() {
+  return requestJson(`${pineconeHost.replace(/\/$/, "")}/describe_index_stats`, {
+    method: "POST",
+    headers: { "Api-Key": pineconeApiKey },
+    body: {}
+  });
+}
+
+async function queryPinecone(vector, namespace) {
+  const body = {
+    vector,
+    topK,
+    includeMetadata: true
+  };
+  if (namespace) body.namespace = namespace;
+
+  return requestJson(`${pineconeHost.replace(/\/$/, "")}/query`, {
+    method: "POST",
+    headers: { "Api-Key": pineconeApiKey },
+    body
+  });
+}
+
+async function upsertPinecone(vectors, namespace) {
+  const body = { vectors };
+  if (namespace) body.namespace = namespace;
+
+  return requestJson(`${pineconeHost.replace(/\/$/, "")}/vectors/upsert`, {
+    method: "POST",
+    headers: { "Api-Key": pineconeApiKey },
+    body
+  });
+}
+
+function metadataText(match) {
+  const metadata = match.metadata || {};
+  return Object.entries(metadata)
+    .map(([key, value]) => `${key}: ${typeof value === "string" ? value : JSON.stringify(value)}`)
+    .join(" ");
+}
+
+function normalized(text) {
+  return String(text || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function looksLikeCourseMatch(course, match) {
+  const haystack = normalized(`${match.id || ""} ${metadataText(match)}`);
+  const titleWords = normalized(course.title).split(" ").filter((word) => word.length > 2);
+  return (
+    haystack.includes(normalized(course.slug)) ||
+    course.aliases.some((alias) => haystack.includes(normalized(alias))) ||
+    titleWords.every((word) => haystack.includes(word))
+  );
+}
+
+async function indexCoursesInPinecone(courses) {
+  let total = 0;
+  for (const course of courses) {
+    const vectors = [];
+    for (const module of course.modules) {
+      const text = [course.title, ...module.titles, module.text].join("\n").slice(0, 12000);
+      const vector = await embed(text, "document");
+      vectors.push({
+        id: `v2:${course.aliases[0] || course.slug}:${module.id}`,
+        values: vector,
+        metadata: {
+          source: "aesop-v2-course",
+          courseId: course.aliases[0] || course.slug,
+          courseAliases: course.aliases.join(", "),
+          courseSlug: course.slug,
+          courseTitle: course.title,
+          moduleId: module.id,
+          moduleTitle: module.titles[0] || module.id,
+          moduleTitles: module.titles.join(" | "),
+          sourcePath: `${course.sourcePath}/${module.id}.html`,
+          textPreview: module.text.slice(0, 900)
+        }
+      });
+    }
+    const result = await upsertPinecone(vectors, pineconeNamespace);
+    total += Number(result.upsertedCount || vectors.length);
+    console.log(`Indexed ${vectors.length} chunks for ${course.title}`);
+  }
+  return total;
+}
+
+async function verifyCoursesInPinecone(courses) {
+  const stats = await pineconeStats();
+  const namespaces = pineconeNamespace
+    ? [pineconeNamespace]
+    : Object.keys(stats.namespaces || {});
+  const queryNamespaces = namespaces.length ? namespaces : [""];
+
+  const verified = [];
+  for (const course of courses) {
+    const moduleTitles = course.modules.flatMap((module) => module.titles).slice(0, 10).join("; ");
+    const vector = await embed(`${course.title}. ${moduleTitles}`, "query");
+    const allMatches = [];
+
+    for (const namespace of queryNamespaces) {
+      const result = await queryPinecone(vector, namespace);
+      const matches = (result.matches || []).map((match) => ({ ...match, namespace }));
+      allMatches.push(...matches);
+    }
+
+    const directMatches = allMatches.filter((match) => looksLikeCourseMatch(course, match));
+    verified.push({
+      ...course,
+      pineconeMatches: directMatches.length ? directMatches : allMatches.slice(0, 3),
+      verifiedInPinecone: directMatches.length > 0
+    });
+  }
+
+  const missing = verified.filter((course) => !course.verifiedInPinecone);
+  if (missing.length) {
+    const details = missing
+      .map((course) => `- ${course.title} (${course.aliases.join(", ") || course.slug})`)
+      .join("\n");
+    throw new Error(
+      [
+        "V2 course presence could not be verified in Pinecone.",
+        details,
+        "",
+        `Index: ${pineconeIndex}`,
+        `Host: ${pineconeHost}`,
+        `Namespaces checked: ${queryNamespaces.map((item) => item || "(default)").join(", ")}`,
+        "",
+        "Stopping before YouTube selection. Index the V2 course chunks first, then rerun this engine."
+      ].join("\n")
+    );
+  }
+
+  return verified;
 }
 
 function extractJsonObjects(html, key) {
@@ -173,34 +382,12 @@ function extractJsonObjects(html, key) {
     try {
       out.push(JSON.parse(html.slice(start, end)));
     } catch {
-      // YouTube occasionally emits renderer variants that are not clean JSON once extracted.
+      // YouTube emits renderer variants that are not always clean JSON once extracted.
     }
     pos = end;
   }
 
   return out;
-}
-
-function courseText(course) {
-  const modules = (course.modules || [])
-    .slice(0, 4)
-    .map((module) => [module.title, module.name, module.sub, module.subtitle].filter(Boolean).join(" "))
-    .join(" ");
-  return [course.name, course.title, course.desc, course.description, modules].filter(Boolean).join(" ");
-}
-
-function searchQueries(course) {
-  const name = course.name || course.title || course.id;
-  const firstModule = (course.modules || [])[0]?.title;
-  const secondModule = (course.modules || [])[1]?.title;
-  return [
-    ...(courseSearchAliases[course.id] || []),
-    [name, firstModule, "AI explained tutorial"].filter(Boolean).join(" "),
-    [name, "AI explained"].filter(Boolean).join(" "),
-    [firstModule, "AI tutorial"].filter(Boolean).join(" "),
-    [secondModule, "AI explained"].filter(Boolean).join(" "),
-    name
-  ].filter(Boolean);
 }
 
 function words(text) {
@@ -213,14 +400,33 @@ function words(text) {
   );
 }
 
+function pineconeEvidence(course) {
+  return course.pineconeMatches.map((match) => metadataText(match)).join(" ");
+}
+
+function searchQueries(course) {
+  const moduleTitles = course.modules.flatMap((module) => module.titles).slice(0, 5);
+  const evidence = pineconeEvidence(course)
+    .split(/\s+/)
+    .filter((word) => /^[a-zA-Z][a-zA-Z-]{4,}$/.test(word))
+    .slice(0, 16)
+    .join(" ");
+  return [
+    `${course.title} AI tutorial`,
+    `${moduleTitles[0] || course.title} AI explained`,
+    `${moduleTitles[1] || course.title} AI tutorial`,
+    `${course.title} ${evidence} YouTube`
+  ].filter(Boolean);
+}
+
 function scoreVideo(course, video) {
-  const courseWords = words(courseText(course));
+  const courseWords = words(`${course.title} ${pineconeEvidence(course)} ${course.modules.flatMap((m) => m.titles).join(" ")}`);
   const videoWords = words(`${video.title} ${video.channel}`);
   let overlap = 0;
   for (const word of videoWords) {
     if (courseWords.has(word)) overlap += 1;
   }
-  const titleBonus = /explained|tutorial|guide|course|learn|beginner|clearly|deep dive/i.test(video.title) ? 3 : 0;
+  const titleBonus = /explained|tutorial|guide|course|learn|beginner|deep dive|how to/i.test(video.title) ? 3 : 0;
   return overlap + titleBonus;
 }
 
@@ -245,20 +451,7 @@ async function searchYouTube(course) {
       if (!unique.has(video.id)) unique.set(video.id, video);
     }
 
-    if (unique.size >= videosPerCourse * 3) break;
-  }
-
-  if (unique.size === 0 && fallbackVideos[course.id]) {
-    for (const [id, title, channel, duration] of fallbackVideos[course.id]) {
-      unique.set(id, {
-        id,
-        title,
-        channel,
-        duration,
-        url: `https://www.youtube.com/watch?v=${id}`,
-        sourceQuery: "researched fallback seed"
-      });
-    }
+    if (unique.size >= videosPerCourse * 5) break;
   }
 
   return [...unique.values()]
@@ -267,42 +460,48 @@ async function searchYouTube(course) {
     .slice(0, videosPerCourse);
 }
 
-function pickCourses(courses) {
-  const byId = new Map(courses.map((course) => [course.id, course]));
-  const preferred = preferredCourseIds.map((id) => byId.get(id)).filter(Boolean);
-  const fallback = courses.filter((course) => course.live && !preferredCourseIds.includes(course.id));
-  return [...preferred, ...fallback].slice(0, maxCourses);
-}
-
-function renderMarkdown(results) {
+function renderMarkdown(courses, results) {
   const now = new Date().toISOString();
   const lines = [
     START,
     `Generated: ${now}`,
     "",
-    "Purpose: curate public AI creator videos that match Aesop course topics, then route viewers back to the original creator video and the related Aesop course.",
+    "Purpose: curate public AI creator videos that match the V2 Aesop course content already present in Pinecone, then route viewers back to the original creator video and the related structured course.",
     "",
     "Engine status:",
-    "- Course source: `C:/Users/scott/Code/Aesop/ai-academy/modules/courses-data.json`",
-    "- Current matching: YouTube search + local course/title relevance scoring",
-    "- Pinecone next step: replace local scoring with embedding similarity against the existing course index",
+    `- V2 course source: \`${v2Root}\``,
+    `- Pinecone index: \`${pineconeIndex}\``,
+    `- Pinecone host: \`${pineconeHost}\``,
+    `- Pinecone namespace(s): \`${pineconeNamespace || "all namespaces reported by stats"}\``,
+    "- Matching rule: V2 course must verify in Pinecone before YouTube selection runs",
+    "- Optional indexing rule: run `--index-v2` to upsert the local V2 course chunks into Pinecone first",
     "- Publishing rule: human approval before anything goes live on 25experts",
     "",
-    "### Candidate Videos",
+    "### Pinecone V2 Verification",
     ""
   ];
 
+  for (const course of courses) {
+    lines.push(`- ${course.title}: verified in Pinecone`);
+    for (const match of course.pineconeMatches.slice(0, 2)) {
+      const title = match.metadata?.title || match.metadata?.source || match.id || "Pinecone match";
+      lines.push(`  - Evidence: ${title} (score ${Number(match.score || 0).toFixed(3)}, namespace ${match.namespace || "default"})`);
+    }
+  }
+
+  lines.push("", "### Watchlist Items", "");
+
   for (const item of results) {
-    lines.push(`#### ${item.course.name || item.course.title} (${item.course.id})`);
-    lines.push(`Course focus: ${item.course.desc || item.course.description || "No course description found."}`);
+    lines.push(`#### ${item.course.title}`);
+    lines.push(`Course IDs checked: ${item.course.aliases.join(", ")}`);
     lines.push("");
     for (const video of item.videos) {
       lines.push(`- [${video.title}](${video.url})`);
       lines.push(`  - Creator/channel: ${video.channel || "Unknown"}`);
       lines.push(`  - Duration: ${video.duration || "Unknown"}`);
-      lines.push(`  - Match query: \`${video.sourceQuery}\``);
+      lines.push(`  - Pinecone-derived query: \`${video.sourceQuery}\``);
       lines.push(`  - Relevance score: ${video.score}`);
-      lines.push("  - Watchlist angle: Celebrate the creator's explanation, then connect learners to the related Aesop course if they want structured practice.");
+      lines.push("  - Watchlist angle: celebrate the creator's explanation, link directly to YouTube, and point learners to the related Aesop course for structured practice.");
     }
     lines.push("");
   }
@@ -328,19 +527,34 @@ function upsertSection(note, block) {
 }
 
 async function main() {
-  const raw = await fs.readFile(coursesPath, "utf8");
-  const data = JSON.parse(raw);
-  const courses = pickCourses(data.courses || []);
-  const results = [];
+  requireEnv();
+  const courses = await readV2Courses();
+  console.log(`Found ${courses.length} V2 courses in ${v2Root}`);
 
-  for (const course of courses) {
-    process.stdout.write(`Searching YouTube for ${course.id}... `);
+  if (indexV2) {
+    const count = await indexCoursesInPinecone(courses);
+    console.log(`Upserted ${count} V2 chunks into Pinecone`);
+  }
+
+  const verifiedCourses = await verifyCoursesInPinecone(courses);
+  console.log(`Verified ${verifiedCourses.length} V2 courses in Pinecone`);
+
+  if (auditOnly) {
+    for (const course of verifiedCourses) {
+      console.log(`${course.title}: ${course.pineconeMatches.length} Pinecone evidence matches`);
+    }
+    return;
+  }
+
+  const results = [];
+  for (const course of verifiedCourses) {
+    process.stdout.write(`Searching YouTube from Pinecone evidence for ${course.title}... `);
     const videos = await searchYouTube(course);
     process.stdout.write(`${videos.length} candidates\n`);
     results.push({ course, videos });
   }
 
-  const block = renderMarkdown(results);
+  const block = renderMarkdown(verifiedCourses, results);
   if (dryRun) {
     console.log(block);
     return;
@@ -353,6 +567,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error(error);
+  console.error(error.message || error);
   process.exitCode = 1;
 });
