@@ -6,10 +6,73 @@
       "description": "I want to remove everything in the site that references that someone else is going to create content like blogs, create content like workshops, and that we're looking for experts. I'm going to turn this site into nothing but a curated video site featuring the videos I find the most valuable are reference AESOP Academy courses that can further the conversation along the lines of those videos.",
       "category": "Rebuild",
       "priority": 100,
-      "status": "backlog",
+      "status": "ready",
       "created_at": "2026-05-19",
       "completed_at": null,
-      "dependencies": []
+      "dependencies": [],
+      "plan": "## Context\n\nTask #1 strips the public 25experts site away from the previous expert-recruitment/community-platform direction. The reachable public entry path is `index.html -> videos.html -> watchlist.html`, with shared navigation from `assets/site-nav.js` and search/legal remaining as secondary utilities.\n\n## Implementation Plan\n\n1. Collapse the shared navigation so public visitors are directed to the curated video library, watchlist, Aesop Academy course links, support, and search only.\n2. Rewrite homepage positioning from social AI expert engagement, founding experts, blogs, workshops, and applications to curated AI videos plus Aesop Academy course pathways.\n3. Rewrite the video library copy and metadata so visible text describes curated sources, AI learning themes, and course follow-up instead of expert output quotas or expert recruitment.\n4. Rewrite watchlist copy around useful public AI videos, original source attribution, and Aesop Academy course references.\n5. Remove obsolete expert/blog/workshop/recruitment URLs from `sitemap.xml`.\n6. Add a repo-level Codex instruction file so future Codex sessions run `/ship-task {number}` before editing numbered backlog tasks.\n\n## First Proof Unit\n\nWhen a public visitor opens the surfaced site, the nav and primary pages should no longer advertise blogs, workshops, expert applications, founding expert recruitment, or someone else producing content for 25experts. Verify with a targeted text scan across `index.html`, `videos.html`, `watchlist.html`, `assets/site-nav.js`, and `sitemap.xml`.\n\n## Recovery Note\n\nImplementation edits were made before this plan was saved. The remaining workflow is being handled as a recovery pass: document the plan/proof units, preserve the existing implementation, verify it, and explicitly note the out-of-order start in the handoff.",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Public navigation stripped down",
+          "expectedBehavior": "The shared site navigation only surfaces the curated video experience, Aesop Academy learning links, support, and search.",
+          "proofType": "ui-check",
+          "exactCommand": "Inspect `assets/site-nav.js` and open `index.html`; confirm nav groups are Watch, Learn, and Actions with no Blogs, Workshop Calendar, Expert Program, Join Now, jobs, leaderboards, or recognition links.",
+          "expectedInitialFailure": "Navigation contains old platform sections such as Blogs, Workshop Calendar, Expert Program, Join Now, jobs, recognition, or leaderboards.",
+          "expectedPassingEvidence": "`assets/site-nav.js` contains only Home, Videos, Watchlist, Aesop Academy, Courses, Support, and Search in the rendered nav.",
+          "waiverGuidance": "If browser verification is not available, use source inspection plus targeted text scan as the manual proof."
+        },
+        {
+          "number": 2,
+          "title": "Home page repositioned as curated video library",
+          "expectedBehavior": "`index.html` describes 25experts as a curated AI video library with Aesop Academy course pathways.",
+          "proofType": "ui-check",
+          "exactCommand": "Inspect `index.html` hero, mission bar, CTAs, stats, metadata, and footer.",
+          "expectedInitialFailure": "Home page describes a social AI expert engagement platform, founding expert applications, blogs, workshops, forums, or community recognition.",
+          "expectedPassingEvidence": "Home page copy points to curated videos and Aesop Academy courses, with no recruiting or blog/workshop platform promises in surfaced copy.",
+          "waiverGuidance": "If browser verification is not available, use source inspection plus targeted text scan as the manual proof."
+        },
+        {
+          "number": 3,
+          "title": "Video and watchlist pages use curated-source framing",
+          "expectedBehavior": "`videos.html` and `watchlist.html` frame the site around selected public AI videos, direct source links, and Aesop Academy follow-up learning.",
+          "proofType": "ui-check",
+          "exactCommand": "Inspect the hero, filters, stats, card labels, disclaimers, and metadata in `videos.html` and `watchlist.html`.",
+          "expectedInitialFailure": "Pages describe every video from every expert, creator affiliation, expert output quotas, or expert recruitment.",
+          "expectedPassingEvidence": "Pages use curated videos, public sources, selected sources, AI learning themes, and Aesop Academy course pathway language.",
+          "waiverGuidance": "If browser verification is not available, use source inspection plus targeted text scan as the manual proof."
+        },
+        {
+          "number": 4,
+          "title": "Sitemap no longer advertises removed platform sections",
+          "expectedBehavior": "`sitemap.xml` lists only the stripped public surface and required utility pages.",
+          "proofType": "smoke-command",
+          "exactCommand": "Run `rg -n \"blogs|workshopcalendar|expertapplication|creator-pitch|experts.html|join.html\" sitemap.xml` and expect no matches.",
+          "expectedInitialFailure": "Sitemap includes obsolete expert, blog, workshop, join, or creator pitch pages.",
+          "expectedPassingEvidence": "Search exits with no matches; sitemap contains only `/`, `videos.html`, `watchlist.html`, `search.html`, and `legal.html`.",
+          "waiverGuidance": "N/A."
+        },
+        {
+          "number": 5,
+          "title": "Future Codex sessions are instructed to run ship-task first",
+          "expectedBehavior": "A repo-level Codex instruction tells future sessions to run or manually follow `/ship-task {number}` before changing numbered backlog tasks.",
+          "proofType": "manual-script",
+          "exactCommand": "Inspect `AGENTS.md` and confirm it references `C:\\Users\\scott\\.claude\\commands\\ship-task.md`, backlog reading, planning first, and explicit recovery when out of order.",
+          "expectedInitialFailure": "No repo-level Codex instruction exists, so future sessions may implement backlog tasks before invoking `/ship-task`.",
+          "expectedPassingEvidence": "`AGENTS.md` contains the backlog workflow rule for Codex sessions.",
+          "waiverGuidance": "N/A."
+        },
+        {
+          "number": 6,
+          "title": "Final text scan and diff hygiene",
+          "expectedBehavior": "The surfaced pages no longer contain old platform promises, and the diff has no whitespace errors.",
+          "proofType": "smoke-command",
+          "exactCommand": "Run `rg -n \"Are You an AI Expert|Founding|Expert Fellow|Apply as|Become|workshop|Workshop|blogs|Blogs|blog|centralized social|Expert Program|Join Now|looking for experts|expert-led|experts represented|new videos per expert|creator-pitch|expertapplication|workshopcalendar\" index.html videos.html watchlist.html assets\\site-nav.js sitemap.xml`; run `git diff --check`.",
+          "expectedInitialFailure": "The targeted scan finds old expert/community platform language or `git diff --check` reports whitespace errors.",
+          "expectedPassingEvidence": "The targeted scan has no matches; `git diff --check` exits 0 except line-ending warnings if Git reports CRLF normalization.",
+          "waiverGuidance": "Line-ending normalization warnings are acceptable if there are no whitespace errors."
+        }
+      ]
     }
   ]
 }
