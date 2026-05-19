@@ -12,3 +12,14 @@ Codex must not make code, content, configuration, documentation, or backlog-stat
 4. Do not skip directly from a `backlog` task to implementation. A `backlog` task must go through `/plan-task {number}` first.
 5. If a task workflow is already out of order, stop and make the recovery explicit before continuing. Do not pretend ShipTask ran.
 6. If ShipTask blocks on a human gate, Codex must pause and ask for the required confirmation instead of proceeding around the gate.
+
+# Human-Readable Output Rule
+
+Codex must keep user-facing updates and final answers readable.
+
+- Do not paste raw command output, full HTML, full diffs, logs, JSON blobs, or long tool results into the chat unless Scott explicitly asks for the raw output.
+- For verification commands, reduce output at the command level using booleans, counts, filenames, or targeted matches.
+- In final answers, summarize what was checked and report pass/fail evidence in short lines.
+- If a command produces noisy output unexpectedly, do not repeat it to the user. Summarize the relevant result instead.
+- Prefer: "Live check passed: root references `site-nav.js?v=...`; old text not found."
+- Avoid dumping full page source, full workflow logs, or full command transcripts.
