@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Watchlist | 25experts</title>
-  <meta name="description" content="The 25experts Watchlist collects public AI videos worth revisiting, with direct source links and course follow-up notes.">
-  <meta name="page-version" content="v2026.05.19.1">
+  <title>Creator Watchlist | 25experts</title>
+  <meta name="description" content="Profiles of AI video creators whose work has been shared by 25experts, with source context, creator links, and Aesop Academy course pathways.">
+  <meta name="page-version" content="v2026.05.19.2">
   <meta name="page-updated" content="2026-05-19">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/watchlist.html">
@@ -18,13 +18,13 @@
   <meta name="robots" content="index, follow">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="25experts">
-  <meta property="og:title" content="Watchlist | 25experts">
-  <meta property="og:description" content="Curated public AI videos worth revisiting, with direct source links and course follow-up notes.">
+  <meta property="og:title" content="Creator Watchlist | 25experts">
+  <meta property="og:description" content="Profiles of AI video creators whose work has been shared by 25experts, with source context, creator links, and Aesop Academy course pathways.">
   <meta property="og:url" content="https://25experts.com/watchlist.html">
   <meta property="og:image" content="https://25experts.com/assets/og-25experts.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Watchlist | 25experts">
-  <meta name="twitter:description" content="Curated public AI videos worth revisiting, with direct source links and course follow-up notes.">
+  <meta name="twitter:title" content="Creator Watchlist | 25experts">
+  <meta name="twitter:description" content="Profiles of AI video creators whose work has been shared by 25experts, with source context, creator links, and Aesop Academy course pathways.">
   <meta name="twitter:image" content="https://25experts.com/assets/og-25experts.png">
   <style>
     :root {
@@ -46,41 +46,43 @@
     a{color:inherit;text-decoration:none}
     .mission-bar{padding:9px 18px;background:var(--green);color:rgba(255,255,255,.9);text-align:center;font-size:13px;font-weight:650}
     .mission-bar strong{color:#fff}
-    .hero{padding:clamp(42px,6vw,72px) clamp(18px,5vw,68px) 28px;background:linear-gradient(115deg,rgba(16,22,21,.97),rgba(20,95,71,.92));color:#fff}
-    .hero-inner{width:min(1320px,100%);margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.42fr);gap:28px;align-items:end}
+    .hero{padding:clamp(44px,6vw,78px) clamp(18px,5vw,68px) 34px;background:linear-gradient(115deg,rgba(16,22,21,.97),rgba(20,95,71,.92));color:#fff}
+    .hero-inner{width:min(1320px,100%);margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.44fr);gap:28px;align-items:end}
     .eyebrow{display:inline-flex;width:max-content;margin-bottom:16px;padding:7px 11px;border:1px solid rgba(255,255,255,.22);border-radius:999px;background:rgba(255,255,255,.12);font-size:12px;font-weight:950;letter-spacing:.08em;text-transform:uppercase}
-    h1{max-width:820px;margin:0;font-size:clamp(42px,6vw,74px);line-height:.96;letter-spacing:0}
+    h1{max-width:860px;margin:0;font-size:clamp(42px,6vw,74px);line-height:.96;letter-spacing:0}
     .hero p{max-width:760px;margin:20px 0 0;color:rgba(255,255,255,.82);font-size:clamp(17px,2vw,21px)}
-    .note{border:1px solid rgba(255,255,255,.22);border-radius:10px;background:rgba(255,255,255,.1);padding:18px;color:rgba(255,255,255,.83);font-weight:700}
-    .page{width:min(1320px,calc(100% - 36px));margin:0 auto;padding:26px 0 70px;display:grid;gap:22px}
-    .creator-celebration{border:1px solid rgba(20,95,71,.22);border-radius:12px;background:linear-gradient(135deg,#fff,#f0faf5);box-shadow:var(--shadow);padding:clamp(22px,3vw,34px);display:grid;gap:12px}
-    .creator-celebration h2{max-width:980px;margin:0;font-size:clamp(30px,4vw,48px);line-height:1.02}
-    .creator-celebration p{max-width:980px;margin:0;color:var(--muted);font-size:18px;line-height:1.55}
-    .creator-celebration strong{color:var(--green)}
-    .launch-button{display:inline-flex;width:max-content;align-items:center;justify-content:center;min-height:58px;margin-top:6px;padding:0 24px;border-radius:10px;background:var(--green);color:#fff;font-size:18px;font-weight:950;box-shadow:0 18px 40px rgba(20,95,71,.22)}
-    .launch-button:hover{background:#0f4d39;transform:translateY(-1px)}
-    .watchlist-intro{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;border:1px solid var(--line);border-radius:10px;background:var(--panel);box-shadow:var(--shadow);padding:18px}
-    .watchlist-intro h2{margin:0;font-size:28px}
-    .watchlist-intro p{margin:6px 0 0;color:var(--muted);max-width:820px}
-    .creator-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border-radius:8px;background:var(--green);color:#fff;font-weight:950}
-    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-    .card{border:1px solid var(--line);border-radius:10px;background:var(--panel);box-shadow:var(--shadow);overflow:hidden;display:grid}
-    .thumb{position:relative;aspect-ratio:16/9;background:linear-gradient(135deg,#10251f,#145f47 55%,#b87a22);display:grid;place-items:center;color:#fff}
-    .thumb::before{content:"";position:absolute;inset:18%;border:1px solid rgba(255,255,255,.28);border-radius:999px}
-    .play{position:relative;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.92);color:var(--ink);font-weight:950;padding-left:3px}
-    .card-body{padding:16px;display:grid;gap:12px}
-    .meta{display:flex;flex-wrap:wrap;gap:8px}
+    .note{border:1px solid rgba(255,255,255,.22);border-radius:10px;background:rgba(255,255,255,.1);padding:18px;color:rgba(255,255,255,.83);font-weight:750}
+    .page{width:min(1320px,calc(100% - 36px));margin:0 auto;padding:28px 0 72px;display:grid;gap:22px}
+    .intro{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;border:1px solid rgba(20,95,71,.22);border-radius:10px;background:linear-gradient(135deg,#fff,#f0faf5);box-shadow:var(--shadow);padding:clamp(20px,3vw,30px)}
+    .intro h2{max-width:900px;margin:0;font-size:clamp(30px,4vw,48px);line-height:1.02}
+    .intro p{max-width:920px;margin:8px 0 0;color:var(--muted);font-size:18px}
+    .button{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 16px;border-radius:8px;background:var(--green);color:#fff;font-weight:950;white-space:nowrap}
+    .profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .profile-card{border:1px solid var(--line);border-radius:10px;background:var(--panel);box-shadow:var(--shadow);overflow:hidden}
+    .profile-head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;padding:18px;border-bottom:1px solid var(--line);background:#f7faf6}
+    .avatar{width:72px;height:72px;border-radius:14px;display:grid;place-items:center;background:var(--green);color:#fff;font-size:22px;font-weight:950}
+    .profile-head h3{margin:0;font-size:25px;line-height:1.05}
+    .profile-head p{margin:6px 0 0;color:var(--muted);font-weight:700}
+    .profile-body{padding:18px;display:grid;gap:16px}
+    .tags{display:flex;flex-wrap:wrap;gap:8px}
     .tag{display:inline-flex;align-items:center;min-height:28px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:900}
     .green{background:var(--mint);color:var(--green)}.gold{background:#fff2dc;color:var(--gold)}.blue{background:#e7f0f6;color:var(--blue)}.violet{background:#eee9fa;color:var(--violet)}.rose{background:#fde9ed;color:var(--rose)}
-    .card h3{margin:0;font-size:21px;line-height:1.15}
-    .card p{margin:0;color:var(--muted)}
-    .card-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:4px}
-    .card-actions a{min-height:38px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:8px;padding:0 12px;font-weight:900;font-size:13px}
-    .card-actions a.primary{background:var(--green);border-color:var(--green);color:#fff}
-    .disclaimer{border:1px dashed rgba(20,95,71,.35);border-radius:10px;background:#f4faf7;color:var(--muted);padding:16px;font-size:14px}
+    .profile-body p{margin:0;color:var(--muted)}
+    .facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+    .fact{min-height:84px;padding:12px;border:1px solid var(--line);border-radius:8px;background:#fbfcfa}
+    .fact strong{display:block;font-size:20px;line-height:1}
+    .fact span{display:block;margin-top:6px;color:var(--muted);font-size:12px;font-weight:800}
+    .sections{display:grid;gap:10px}
+    .section-block{border-top:1px solid var(--line);padding-top:12px}
+    .section-block h4{margin:0 0 7px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--green)}
+    .section-block ul{margin:0;padding-left:18px;color:var(--muted)}
+    .links{display:flex;flex-wrap:wrap;gap:9px}
+    .links a{min-height:38px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:8px;padding:0 12px;font-weight:900;font-size:13px}
+    .links a.primary{background:var(--green);border-color:var(--green);color:#fff}
+    .schema-note{border:1px dashed rgba(20,95,71,.35);border-radius:10px;background:#f4faf7;color:var(--muted);padding:16px;font-size:14px}
     footer{border-top:1px solid var(--line);padding:28px clamp(18px,5vw,68px);color:var(--muted);font-size:13px;text-align:center}
-    @media(max-width:1000px){.hero-inner,.watchlist-intro{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media(max-width:640px){.grid{grid-template-columns:1fr}h1{font-size:42px}}
+    @media(max-width:1000px){.hero-inner,.intro,.profile-grid{grid-template-columns:1fr}.button{width:max-content}}
+    @media(max-width:640px){h1{font-size:42px}.facts{grid-template-columns:1fr}.profile-head{grid-template-columns:1fr}.avatar{width:64px;height:64px}.button{width:100%}}
   </style>
   <link rel="stylesheet" href="assets/site-nav.css?v=20260514-watchlist1">
 </head>
@@ -93,96 +95,175 @@
     <div class="hero-inner">
       <div>
         <span class="eyebrow">The Watchlist</span>
-        <h1>Public AI videos worth watching next.</h1>
-        <p>We collect useful public AI videos, add short context for why each one matters, and send people directly to the original YouTube or source.</p>
+        <h1>Creator profiles behind the videos we share.</h1>
+        <p>The Watchlist tracks the people and channels behind useful AI videos. Profiles collect source links, teaching focus, credibility signals, and Aesop Academy course paths connected to the topics they cover.</p>
       </div>
-      <aside class="note">Every featured video is credited and linked. Inclusion means we recommend the public video, not that the source is affiliated with 25experts unless we say so.</aside>
+      <aside class="note">Video pulls should enrich creator profiles here. The videos themselves belong in the curated video library, not on the Watchlist.</aside>
     </div>
   </section>
 
   <main class="page">
-    <section class="creator-celebration">
-      <h2>Useful AI videos, kept close.</h2>
-      <p>The Watchlist is a reference shelf for videos that make AI easier to understand, more practical, or more useful. Each listing adds context, preserves attribution, and points viewers straight back to the original source.</p>
-      <p><strong>Each featured video can also point to an Aesop Academy course that continues the topic.</strong></p>
-      <a class="launch-button" href="https://aesopacademy.org">Aesop Academy courses</a>
-    </section>
-
-    <section class="watchlist-intro">
+    <section class="intro">
       <div>
-        <h2>Curated by 25experts</h2>
-        <p>These are placeholder slots for videos worth highlighting. Each card points to the original source and adds a short editorial reason for why the video belongs here.</p>
+        <h2>Profiles, not video cards.</h2>
+        <p>When a video is added to 25experts, the Watchlist should preserve what we can learn about the creator: who they are, where their work lives, what topics they teach well, and which Aesop Academy courses can continue the learning path.</p>
       </div>
-      <a class="creator-link" href="videos.html">Back to Videos</a>
+      <a class="button" href="videos.html">Curated Videos</a>
     </section>
 
-    <section class="grid" aria-label="Curated watchlist videos">
-      <article class="card">
-        <div class="thumb"><div class="play">&#9654;</div></div>
-        <div class="card-body">
-          <div class="meta"><span class="tag green">AI & Automation</span><span class="tag gold">Public source</span></div>
-          <h3>Agent workflow breakdown</h3>
-          <p>Feature a video that clearly explains how AI agents fit into real work, not just demos.</p>
-          <div class="card-actions"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch on YouTube</a></div>
+    <section class="profile-grid" aria-label="Creator watchlist profiles">
+      <article class="profile-card">
+        <div class="profile-head">
+          <div class="avatar">AI</div>
+          <div>
+            <h3>Agent Workflow Educator</h3>
+            <p>YouTube channel profile placeholder</p>
+          </div>
+        </div>
+        <div class="profile-body">
+          <div class="tags"><span class="tag green">AI & Automation</span><span class="tag gold">Workflow design</span><span class="tag blue">Tools</span></div>
+          <p>Strong at making agent workflows concrete: system boundaries, repeatable steps, and judgment calls that matter after the demo ends.</p>
+          <div class="facts">
+            <div class="fact"><strong>4</strong><span>shared videos informing profile</span></div>
+            <div class="fact"><strong>High</strong><span>practical clarity signal</span></div>
+            <div class="fact"><strong>2</strong><span>Aesop course paths</span></div>
+          </div>
+          <div class="sections">
+            <div class="section-block">
+              <h4>Profile Data To Pull</h4>
+              <ul>
+                <li>Channel name, handle, profile image, description, country or region when public.</li>
+                <li>Source links: YouTube, site, newsletter, course, LinkedIn, GitHub, or community.</li>
+                <li>Topic tags, teaching style, audience level, publishing cadence, and attribution notes.</li>
+              </ul>
+            </div>
+            <div class="section-block">
+              <h4>Aesop Course Pathways</h4>
+              <ul>
+                <li>AI Workflow Foundations</li>
+                <li>Applied Automation Review</li>
+              </ul>
+            </div>
+          </div>
+          <div class="links"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Source Channel</a><a href="https://aesopacademy.org">Related Courses</a></div>
         </div>
       </article>
 
-      <article class="card">
-        <div class="thumb" style="background:linear-gradient(135deg,#102236,#245a7d 58%,#b87a22)"><div class="play">&#9654;</div></div>
-        <div class="card-body">
-          <div class="meta"><span class="tag blue">Marketing & Growth</span><span class="tag gold">Public source</span></div>
-          <h3>AI content system worth studying</h3>
-          <p>Use this slot for a practical marketing workflow that learners can adapt.</p>
-          <div class="card-actions"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch on YouTube</a></div>
+      <article class="profile-card">
+        <div class="profile-head">
+          <div class="avatar" style="background:#245a7d">MG</div>
+          <div>
+            <h3>Marketing Systems Teacher</h3>
+            <p>Public creator source placeholder</p>
+          </div>
+        </div>
+        <div class="profile-body">
+          <div class="tags"><span class="tag blue">Marketing & Growth</span><span class="tag gold">Content systems</span><span class="tag green">Operations</span></div>
+          <p>Useful for practical examples of turning one idea, interview, or webinar into a reusable AI-assisted marketing workflow.</p>
+          <div class="facts">
+            <div class="fact"><strong>3</strong><span>shared videos informing profile</span></div>
+            <div class="fact"><strong>Med</strong><span>source depth signal</span></div>
+            <div class="fact"><strong>1</strong><span>Aesop course path</span></div>
+          </div>
+          <div class="sections">
+            <div class="section-block">
+              <h4>Profile Data To Pull</h4>
+              <ul>
+                <li>Creator bio, business or publication name, source-channel links, and disclosed affiliations.</li>
+                <li>Recurring frameworks, recommended tools, and content examples worth cross-referencing.</li>
+                <li>Audience fit: founder, marketer, sales team, agency, operator, or educator.</li>
+              </ul>
+            </div>
+            <div class="section-block">
+              <h4>Aesop Course Pathways</h4>
+              <ul>
+                <li>AI Content Operations</li>
+              </ul>
+            </div>
+          </div>
+          <div class="links"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Source Channel</a><a href="https://aesopacademy.org">Related Courses</a></div>
         </div>
       </article>
 
-      <article class="card">
-        <div class="thumb" style="background:linear-gradient(135deg,#2f1f3f,#6a529c 58%,#145f47)"><div class="play">&#9654;</div></div>
-        <div class="card-body">
-          <div class="meta"><span class="tag violet">Leadership</span><span class="tag gold">Public source</span></div>
-          <h3>Leadership lesson on AI adoption</h3>
-          <p>Highlight a video that helps managers make better AI decisions with their teams.</p>
-          <div class="card-actions"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch on YouTube</a></div>
+      <article class="profile-card">
+        <div class="profile-head">
+          <div class="avatar" style="background:#6a529c">LD</div>
+          <div>
+            <h3>AI Leadership Analyst</h3>
+            <p>Public educator profile placeholder</p>
+          </div>
+        </div>
+        <div class="profile-body">
+          <div class="tags"><span class="tag violet">Leadership</span><span class="tag green">AI adoption</span><span class="tag gold">Governance</span></div>
+          <p>Good fit for leadership content that helps managers discuss adoption, policy, risk, and team trust without reducing AI to tool demos.</p>
+          <div class="facts">
+            <div class="fact"><strong>2</strong><span>shared videos informing profile</span></div>
+            <div class="fact"><strong>High</strong><span>judgment signal</span></div>
+            <div class="fact"><strong>2</strong><span>Aesop course paths</span></div>
+          </div>
+          <div class="sections">
+            <div class="section-block">
+              <h4>Profile Data To Pull</h4>
+              <ul>
+                <li>Professional background, role, public credentials, and organizational focus.</li>
+                <li>Repeated themes across shared videos: risk, policy, culture, communication, or decision quality.</li>
+                <li>Source reliability notes and any sponsorship or vendor relationship disclosed by the creator.</li>
+              </ul>
+            </div>
+            <div class="section-block">
+              <h4>Aesop Course Pathways</h4>
+              <ul>
+                <li>AI Leadership Foundations</li>
+                <li>Responsible AI Adoption</li>
+              </ul>
+            </div>
+          </div>
+          <div class="links"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Source Channel</a><a href="https://aesopacademy.org">Related Courses</a></div>
         </div>
       </article>
 
-      <article class="card">
-        <div class="thumb" style="background:linear-gradient(135deg,#3a2a11,#b87a22 58%,#245a7d)"><div class="play">&#9654;</div></div>
-        <div class="card-body">
-          <div class="meta"><span class="tag gold">Finance & Investing</span><span class="tag gold">Public source</span></div>
-          <h3>AI finance explainer</h3>
-          <p>Feature a video that makes AI in finance understandable without hype or shortcuts.</p>
-          <div class="card-actions"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch on YouTube</a></div>
+      <article class="profile-card">
+        <div class="profile-head">
+          <div class="avatar" style="background:#bf563f">CR</div>
+          <div>
+            <h3>Creative AI Practitioner</h3>
+            <p>Design and media source placeholder</p>
+          </div>
         </div>
-      </article>
-
-      <article class="card">
-        <div class="thumb" style="background:linear-gradient(135deg,#3d1713,#bf563f 58%,#145f47)"><div class="play">&#9654;</div></div>
-        <div class="card-body">
-          <div class="meta"><span class="tag rose">Design & Gaming</span><span class="tag gold">Public source</span></div>
-          <h3>Creative AI workflow</h3>
-          <p>Use this for a video demonstrating the practical craft side of AI design or game creation.</p>
-          <div class="card-actions"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch on YouTube</a></div>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="thumb" style="background:linear-gradient(135deg,#101615,#145f47 48%,#6a529c)"><div class="play">&#9654;</div></div>
-        <div class="card-body">
-          <div class="meta"><span class="tag green">Editor's pick</span><span class="tag gold">Public source</span></div>
-          <h3>One to send around</h3>
-          <p>A high-signal video that belongs in the social feed because it makes people smarter fast.</p>
-          <div class="card-actions"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch on YouTube</a></div>
+        <div class="profile-body">
+          <div class="tags"><span class="tag rose">Design & Gaming</span><span class="tag blue">Media</span><span class="tag green">Creative workflow</span></div>
+          <p>Best tracked for practical creative process: how prompts, taste, critique, and iteration combine in real visual or interactive work.</p>
+          <div class="facts">
+            <div class="fact"><strong>3</strong><span>shared videos informing profile</span></div>
+            <div class="fact"><strong>High</strong><span>craft signal</span></div>
+            <div class="fact"><strong>1</strong><span>Aesop course path</span></div>
+          </div>
+          <div class="sections">
+            <div class="section-block">
+              <h4>Profile Data To Pull</h4>
+              <ul>
+                <li>Portfolio links, platform handles, tools used, and visible project examples.</li>
+                <li>Creative domain tags: image, video, game, brand, storytelling, prototyping, or critique.</li>
+                <li>Rights and attribution notes for any public work referenced by shared videos.</li>
+              </ul>
+            </div>
+            <div class="section-block">
+              <h4>Aesop Course Pathways</h4>
+              <ul>
+                <li>Creative AI Workflow Studio</li>
+              </ul>
+            </div>
+          </div>
+          <div class="links"><a class="primary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Source Channel</a><a href="https://aesopacademy.org">Related Courses</a></div>
         </div>
       </article>
     </section>
 
-    <section class="disclaimer">
-      Featured videos keep their original source, platform, and audience. 25experts adds curation, context, and discovery, then points viewers directly back to the source.
+    <section class="schema-note">
+      Suggested creator profile fields: creator name, channel title, handle, avatar, bio, source URLs, public location, topic tags, audience level, video count referenced by 25experts, recurring themes, credibility notes, sponsorship disclosures, related Aesop course paths, and last profile refresh date.
     </section>
   </main>
 
-  <footer>25experts Watchlist: curated public AI videos with creator credit and original-source links.</footer>
+  <footer>25experts Watchlist: creator profiles for the public AI video sources we reference.</footer>
 </body>
 </html>

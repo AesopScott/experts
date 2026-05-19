@@ -6,7 +6,7 @@
       links: [
         ["Home", "index.html"],
         ["Videos", "videos.html"],
-        ["Watchlist", "watchlist.html"]
+        ["Creator Watchlist", "watchlist.html"]
       ]
     },
     {
