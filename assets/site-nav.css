@@ -51,6 +51,9 @@ body:not(.home) main > :is(.hero, .domain-hero, .page-hero):first-child > * {
 }
 
 .nav .brand-mark {
+  display: flex;
+  place-items: center;
+  justify-content: center;
   width: 56px;
   height: 56px;
   border-radius: 10px;
