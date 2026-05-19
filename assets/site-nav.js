@@ -13,8 +13,7 @@
       label: "Learn",
       className: "site-nav-growth",
       links: [
-        ["Aesop Academy", "https://aesopacademy.org"],
-        ["Courses", "https://aesopacademy.org"]
+        ["Courses", "courses.html"]
       ]
     },
     {
