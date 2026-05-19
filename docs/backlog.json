@@ -75,6 +75,17 @@
           "waiverGuidance": "Line-ending normalization warnings are acceptable if there are no whitespace errors."
         }
       ]
+    },
+    {
+      "number": 2,
+      "title": "Build the video curation engine.",
+      "description": "Build the engine that will create videos from YouTube to share from 25 experts.",
+      "category": "feature",
+      "priority": 90,
+      "status": "backlog",
+      "created_at": "2026-05-19",
+      "completed_at": null,
+      "dependencies": []
     }
   ]
 }
