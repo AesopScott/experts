@@ -5,7 +5,9 @@
       className: "site-nav-growth",
       links: [
         ["Videos", "videos.html"],
-        ["Courses", "https://aesopacademy.org/courses.html"]
+        ["Courses", "https://aesopacademy.org/courses.html"],
+        ["Search", "search.html"],
+        ["Watch List", "watchlist.html"]
       ]
     },
     {
@@ -13,9 +15,7 @@
       className: "site-nav-actions",
       links: [
         ["Home", "index.html"],
-        ["Support", "support.html"],
-        ["Search", "search.html"],
-        ["Watch List", "watchlist.html"]
+        ["Support", "support.html"]
       ]
     }
   ];
