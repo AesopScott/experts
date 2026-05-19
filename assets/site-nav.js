@@ -1,54 +1,33 @@
 (function () {
   const navItems = [
     {
-      label: "Content",
+      label: "Watch",
       className: "site-nav-content",
       links: [
+        ["Home", "index.html"],
         ["Videos", "videos.html"],
-        ["Blogs", "blogs.html"],
-        ["Workshop Calendar", "workshopcalendar.html"],
-        ["Forums", "forums.html"]
+        ["Watchlist", "watchlist.html"]
       ]
     },
     {
-      label: "Growth",
+      label: "Learn",
       className: "site-nav-growth",
       links: [
-        ["Community Recognition", "communityrecognition.html"],
-        ["Expert Recognition", "expertsrecognition.html"],
-        ["Expert Profiles", "expertprofiles.html"],
-        ["My Profile", "profile.html"]
-      ]
-    },
-    {
-      label: "Engage",
-      className: "site-nav-values",
-      links: [
-        ["Jobs Search", "jobs.html"],
-        ["Post a Job", "postajob.html"],
-        ["Trends", "trends.html"],
-        ["Leader Boards", "leaderboards.html"]
+        ["Aesop Academy", "https://aesopacademy.org"],
+        ["Courses", "https://aesopacademy.org"]
       ]
     },
     {
       label: "Actions",
       className: "site-nav-actions",
       links: [
-        ["Join Now", "join.html"],
-        ["Expert Program", "experts.html"],
         ["Support", "support.html"],
         ["Search", "search.html"]
       ]
     }
   ];
 
-  const domainItems = [
-    ["AI & Automation", "domain-ai-automation.html"],
-    ["AI in Finance & Investing", "domain-finance-investing.html"],
-    ["AI in Marketing, Sales & Growth", "domain-marketing-growth.html"],
-    ["AI in Leadership & Management", "domain-leadership-management.html"],
-    ["AI in Design, Creative & Gaming", "domain-design-creative-gaming.html"]
-  ];
+  const domainItems = [];
 
   const current = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
 
@@ -78,7 +57,7 @@
     <header class="nav">
       <a class="brand" href="index.html">
         <span class="brand-mark">25</span>
-        <span class="brand-text">25experts<span>AI Engagement Platform</span></span>
+        <span class="brand-text">25experts<span>Curated AI Video Library</span></span>
       </a>
       <nav class="nav-links site-nav" aria-label="Site navigation">
         ${navItems.map((group) => `
@@ -93,12 +72,14 @@
         `).join("")}
       </nav>
     </header>
-    <nav class="site-domain-bar" aria-label="AI domains">
-      <span class="site-domain-label">Domains</span>
-      <div class="site-domain-links">
-        ${domainItems.map(linkMarkup).join("")}
-      </div>
-    </nav>
+    ${domainItems.length ? `
+      <nav class="site-domain-bar" aria-label="AI domains">
+        <span class="site-domain-label">Domains</span>
+        <div class="site-domain-links">
+          ${domainItems.map(linkMarkup).join("")}
+        </div>
+      </nav>
+    ` : ""}
     </div>
   `;
 
