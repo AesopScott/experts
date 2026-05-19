@@ -52,13 +52,15 @@ body:not(.home) main > :is(.hero, .domain-hero, .page-hero):first-child > * {
 
 .nav .brand-mark {
   display: flex;
-  place-items: center;
+  align-items: center;
   justify-content: center;
   width: 56px;
   height: 56px;
   border-radius: 10px;
   background: #2f664f;
   font-size: 18px;
+  font-weight: 950;
+  color: #fff;
 }
 
 .nav .brand-text {
