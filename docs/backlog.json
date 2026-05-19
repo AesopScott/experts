@@ -86,6 +86,17 @@
       "created_at": "2026-05-19",
       "completed_at": null,
       "dependencies": []
+    },
+    {
+      "number": 3,
+      "title": "Build the Aesop Academy synchronization engine.",
+      "description": "Build the engine that will review curated YouTube videos and research Aesop Academy Courses with material related to those videos and link them on 25experts.com",
+      "category": "feature",
+      "priority": 80,
+      "status": "backlog",
+      "created_at": "2026-05-19",
+      "completed_at": null,
+      "dependencies": []
     }
   ]
 }
