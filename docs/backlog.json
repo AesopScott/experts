@@ -6,10 +6,12 @@
       "description": "I want to remove everything in the site that references that someone else is going to create content like blogs, create content like workshops, and that we're looking for experts. I'm going to turn this site into nothing but a curated video site featuring the videos I find the most valuable are reference AESOP Academy courses that can further the conversation along the lines of those videos.",
       "category": "Rebuild",
       "priority": 100,
-      "status": "ready",
+      "status": "in-review",
       "created_at": "2026-05-19",
       "completed_at": null,
       "dependencies": [],
+      "branch": "task/1-strip-the-site-down",
+      "pr_url": "https://github.com/AesopScott/experts/pull/1",
       "plan": "## Context\n\nTask #1 strips the public 25experts site away from the previous expert-recruitment/community-platform direction. The reachable public entry path is `index.html -> videos.html -> watchlist.html`, with shared navigation from `assets/site-nav.js` and search/legal remaining as secondary utilities.\n\n## Implementation Plan\n\n1. Collapse the shared navigation so public visitors are directed to the curated video library, watchlist, Aesop Academy course links, support, and search only.\n2. Rewrite homepage positioning from social AI expert engagement, founding experts, blogs, workshops, and applications to curated AI videos plus Aesop Academy course pathways.\n3. Rewrite the video library copy and metadata so visible text describes curated sources, AI learning themes, and course follow-up instead of expert output quotas or expert recruitment.\n4. Rewrite watchlist copy around useful public AI videos, original source attribution, and Aesop Academy course references.\n5. Remove obsolete expert/blog/workshop/recruitment URLs from `sitemap.xml`.\n6. Add a repo-level Codex instruction file so future Codex sessions run `/ship-task {number}` before editing numbered backlog tasks.\n\n## First Proof Unit\n\nWhen a public visitor opens the surfaced site, the nav and primary pages should no longer advertise blogs, workshops, expert applications, founding expert recruitment, or someone else producing content for 25experts. Verify with a targeted text scan across `index.html`, `videos.html`, `watchlist.html`, `assets/site-nav.js`, and `sitemap.xml`.\n\n## Recovery Note\n\nImplementation edits were made before this plan was saved. The remaining workflow is being handled as a recovery pass: document the plan/proof units, preserve the existing implementation, verify it, and explicitly note the out-of-order start in the handoff.",
       "proofUnits": [
         {

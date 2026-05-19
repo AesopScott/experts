@@ -6,10 +6,10 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>AI Video Library | 25experts</title>
-  <meta name="description" content="Explore practical AI videos from trusted experts across five domains, plus the 25experts Watchlist for curated outside creator videos worth celebrating.">
-  <meta name="page-version" content="v2026.05.14.5">
-  <meta name="page-updated" content="2026-05-14">
+  <title>Curated AI Videos | 25experts</title>
+  <meta name="description" content="Browse curated AI videos selected for practical value, with direct source links and Aesop Academy course pathways.">
+  <meta name="page-version" content="v2026.05.19.1">
+  <meta name="page-updated" content="2026-05-19">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/videos.html">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -21,26 +21,26 @@
   <meta name="robots" content="index, follow">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="25experts by Aesop Academy">
-  <meta property="og:title" content="AI Video Library | 25experts">
-  <meta property="og:description" content="Explore practical AI videos from trusted experts across five domains, plus the 25experts Watchlist for curated outside creator videos worth celebrating.">
+  <meta property="og:title" content="Curated AI Videos | 25experts">
+  <meta property="og:description" content="Browse curated AI videos selected for practical value, with direct source links and Aesop Academy course pathways.">
   <meta property="og:url" content="https://25experts.com/videos.html">
   <meta property="og:image" content="https://25experts.com/assets/og-25experts.png">
   <meta property="og:image:secure_url" content="https://25experts.com/assets/og-25experts.png">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Are You an AI Expert? Do You Want to Be? 25experts by Aesop Academy">
+  <meta property="og:image:alt" content="25experts curated AI video library by Aesop Academy">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="AI Video Library | 25experts">
-  <meta name="twitter:description" content="Explore practical AI videos from trusted experts across five domains, plus the 25experts Watchlist for curated outside creator videos worth celebrating.">
+  <meta name="twitter:title" content="Curated AI Videos | 25experts">
+  <meta name="twitter:description" content="Browse curated AI videos selected for practical value, with direct source links and Aesop Academy course pathways.">
   <meta name="twitter:image" content="https://25experts.com/assets/og-25experts.png">
-  <meta name="twitter:image:alt" content="Are You an AI Expert? Do You Want to Be? 25experts by Aesop Academy">
+  <meta name="twitter:image:alt" content="25experts curated AI video library by Aesop Academy">
   <script type="application/ld+json">
     {
         "@type":  "WebPage",
         "url":  "https://25experts.com/videos.html",
-        "name":  "AI Video Library | 25experts",
-        "description":  "Explore practical AI videos from trusted experts across five domains, plus the 25experts Watchlist for curated outside creator videos worth celebrating.",
+        "name":  "Curated AI Videos | 25experts",
+        "description":  "Browse curated AI videos selected for practical value, with direct source links and Aesop Academy course pathways.",
         "@context":  "https://schema.org",
         "publisher":  {
                           "url":  "https://25experts.com/",
@@ -375,7 +375,7 @@
 <body>
 
   <div class="mission-bar">
-    <strong>25experts</strong> is a centralized social platform for AI engagement.
+    <strong>25experts</strong> is a curated AI video library from Aesop Academy.
   </div>
   <div id="site-nav"></div>
   <script src="assets/site-nav.js?v=20260514-watchlist1"></script>
@@ -383,12 +383,12 @@
 
   <section class="hero">
     <div class="hero-inner">
-      <span class="eyebrow">Video library</span>
-      <h1>Every video from every Expert.</h1>
-      <p>75–125 new videos each month from 25 experts across five domains. Each card opens on YouTube — all streaming, quality, and captions handled there.</p>
+      <span class="eyebrow">Curated video library</span>
+      <h1>Useful AI videos, organized for follow-up learning.</h1>
+      <p>Selected videos are grouped by practical AI topic. Each card opens at the original source, and the library points learners toward Aesop Academy courses when a topic deserves deeper study.</p>
       <div class="hero-actions">
         <a class="watchlist-btn" href="watchlist.html">Watchlist</a>
-        <span class="watchlist-note">Curated public videos from AI creators we follow, credit, and celebrate, including creators who are not affiliated with 25experts.</span>
+        <span class="watchlist-note">Public videos we find valuable, with direct attribution and room for related Aesop Academy course references.</span>
       </div>
       <div class="domain-pills" id="domain-pills"></div>
     </div>
@@ -403,9 +403,9 @@
         </select>
       </div>
       <div class="field">
-        <label for="expert-filter">Select expert</label>
+        <label for="expert-filter">Select source</label>
         <select id="expert-filter">
-          <option value="all">All experts</option>
+          <option value="all">All sources</option>
         </select>
       </div>
       <button class="primary" id="clear-filters" type="button">Clear filters</button>
@@ -413,9 +413,9 @@
     <section class="empty-state" id="empty-state">No videos match this filter combination.</section>
     <section class="stats" aria-label="Library summary">
       <article class="stat"><strong id="stat-total">300</strong><span>videos in the library</span></article>
-      <article class="stat"><strong>25</strong><span>experts represented</span></article>
-      <article class="stat"><strong>5</strong><span>professional learning domains</span></article>
-      <article class="stat"><strong>4–5</strong><span>new videos per expert per month</span></article>
+      <article class="stat"><strong>25</strong><span>sources represented</span></article>
+      <article class="stat"><strong>5</strong><span>AI learning themes</span></article>
+      <article class="stat"><strong>Aesop</strong><span>course pathways for deeper study</span></article>
     </section>
   </main>
 
@@ -595,9 +595,9 @@
     ];
 
     const MONTHS = [
-      { name: "May 2026",   desc: "The latest drop — live sessions, current shifts, and practical operating videos.", open: true },
-      { name: "April 2026", desc: "Foundational tutorials and domain-specific walkthroughs from launch month.", open: false },
-      { name: "March 2026", desc: "Earlier expert sessions and deep-dives from across the full network.", open: false },
+      { name: "May 2026",   desc: "The latest curated set: current shifts, useful workflows, and practical operating videos.", open: true },
+      { name: "April 2026", desc: "Foundational tutorials and topic-specific walkthroughs worth keeping close.", open: false },
+      { name: "March 2026", desc: "Earlier videos and deep dives that still hold reference value.", open: false },
     ];
 
     function seededPick(arr, monthIndex, expertIndex) {
@@ -718,7 +718,7 @@
 
     function populateExperts() {
       const sel = domainFilter.value;
-      expertFilter.innerHTML = '<option value="all">All experts</option>';
+      expertFilter.innerHTML = '<option value="all">All sources</option>';
       EXPERTS
         .filter(e => sel === "all" || e.domain === sel)
         .forEach(e => {
