@@ -1,18 +1,10 @@
 (function () {
   const navItems = [
     {
-      label: "Watch",
-      className: "site-nav-content",
-      links: [
-        ["Home", "index.html"],
-        ["Videos", "videos.html"],
-        ["Creator Watchlist", "watchlist.html"]
-      ]
-    },
-    {
       label: "Learn",
       className: "site-nav-growth",
       links: [
+        ["Videos", "videos.html"],
         ["Courses", "https://aesopacademy.org/courses.html"]
       ]
     },
@@ -20,8 +12,10 @@
       label: "Actions",
       className: "site-nav-actions",
       links: [
+        ["Home", "index.html"],
         ["Support", "support.html"],
-        ["Search", "search.html"]
+        ["Search", "search.html"],
+        ["Watch List", "watchlist.html"]
       ]
     }
   ];
