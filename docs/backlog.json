@@ -97,6 +97,18 @@
       "created_at": "2026-05-19",
       "completed_at": null,
       "dependencies": []
+    },
+    {
+      "number": 4,
+      "title": "Build an AI project school.",
+      "description": "Build a live video school where people can watch me build projects, companies, orchestration, etc., instead of learning basic AI skills.",
+      "category": "feature",
+      "priority": 80,
+      "impact": "standard",
+      "status": "backlog",
+      "created_at": "2026-05-21",
+      "completed_at": null,
+      "dependencies": []
     }
   ]
 }
