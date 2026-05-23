@@ -239,11 +239,12 @@ exports.discoverChannels = onSchedule({
 
   if (candidates.length === 0) return;
 
-  const batch = db.batch();
-  for (const c of candidates) {
-    batch.set(db.collection("candidateChannels").doc(c.channelId), c);
-  }
-  await batch.commit();
+  const operations = candidates.map(c => ({
+    type: "set",
+    ref: db.collection("candidateChannels").doc(c.channelId),
+    data: c,
+  }));
+  await commitInBatches(db, operations);
 });
 
 exports.lookupChannel = onCall({
