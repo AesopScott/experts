@@ -190,15 +190,7 @@ exports.harvestVideos = onSchedule({
   await commitInBatches(db, operations);
 });
 
-exports.discoverChannels = onSchedule({
-  schedule: "0 0 * * *",
-  secrets: [youtubeApiKey],
-  timeoutSeconds: 300,
-  memory: "256MiB",
-}, async () => {
-  const db = admin.firestore();
-  const apiKey = youtubeApiKey.value();
-
+async function runDiscovery(db, apiKey) {
   const [followedSnap, candidateSnap] = await Promise.all([
     db.collection("followedChannels").get(),
     db.collection("candidateChannels").get(),
@@ -237,7 +229,7 @@ exports.discoverChannels = onSchedule({
     }
   }
 
-  if (candidates.length === 0) return;
+  if (candidates.length === 0) return 0;
 
   const operations = candidates.map(c => ({
     type: "set",
@@ -245,6 +237,28 @@ exports.discoverChannels = onSchedule({
     data: c,
   }));
   await commitInBatches(db, operations);
+  return candidates.length;
+}
+
+exports.discoverChannels = onSchedule({
+  schedule: "0 0 * * *",
+  secrets: [youtubeApiKey],
+  timeoutSeconds: 300,
+  memory: "256MiB",
+}, async () => {
+  const db = admin.firestore();
+  await runDiscovery(db, youtubeApiKey.value());
+});
+
+exports.runDiscoveryNow = onCall({
+  secrets: [youtubeApiKey],
+  timeoutSeconds: 300,
+  memory: "256MiB",
+}, async request => {
+  await requireAdmin(request);
+  const db = admin.firestore();
+  const count = await runDiscovery(db, youtubeApiKey.value());
+  return { found: count };
 });
 
 async function requireAdmin(request) {

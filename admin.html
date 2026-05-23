@@ -125,6 +125,7 @@
     const functions = getFunctions(firebaseApp);
     const lookupChannelFn = httpsCallable(functions, "lookupChannel");
     const fetchVideoMetadataFn = httpsCallable(functions, "fetchVideoMetadata");
+    const runDiscoveryNowFn = httpsCallable(functions, "runDiscoveryNow", { timeout: 310000 });
 
     function safeHtml(str) {
       return String(str ?? "")
@@ -182,7 +183,11 @@
           </div>
 
           <div class="section-card">
-            <div class="section-head"><h2>Channel Candidates</h2><span id="candidates-count"></span></div>
+            <div class="section-head">
+              <h2>Channel Candidates</h2>
+              <span id="candidates-count"></span>
+              <button id="run-discovery-btn" class="btn-secondary" style="margin-left:auto;font-size:13px;padding:6px 14px;">Run Discovery Now</button>
+            </div>
             <div id="candidates-content"><div class="loading-state">Loading candidates…</div></div>
           </div>
 
@@ -197,6 +202,26 @@
       loadFollowedChannels();
       loadCandidateChannels();
       setupAddVideo();
+
+      document.getElementById("run-discovery-btn").addEventListener("click", async () => {
+        const btn = document.getElementById("run-discovery-btn");
+        btn.disabled = true;
+        btn.textContent = "Running…";
+        try {
+          const result = await runDiscoveryNowFn();
+          const found = result.data?.found ?? 0;
+          btn.textContent = found > 0 ? `Found ${found} new` : "None new";
+          await loadCandidateChannels();
+        } catch (err) {
+          console.error(err);
+          btn.textContent = "Error — see console";
+        } finally {
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.textContent = "Run Discovery Now";
+          }, 4000);
+        }
+      });
     }
 
     async function loadUsers() {
@@ -497,7 +522,6 @@
             <td style="font-size:12px;color:var(--muted);">${discovered}</td>
             <td id="ca-${c.id}"></td>`;
           tbody.appendChild(tr);
-          renderCandidateActions(c);
         });
 
         const table = document.createElement("table");
@@ -505,6 +529,8 @@
         table.appendChild(tbody);
         container.innerHTML = "";
         container.appendChild(table);
+        // Render action buttons AFTER table is in the DOM so getElementById resolves
+        candidates.forEach(c => renderCandidateActions(c));
       } catch (err) {
         console.error(err);
         container.innerHTML = `<div class="empty-state">Failed to load candidates.</div>`;
