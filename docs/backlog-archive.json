@@ -1,0 +1,36 @@
+{
+  "archived_tasks": [
+    {
+      "number": 1,
+      "title": "Strip the site down.",
+      "description": "I want to remove everything in the site that references that someone else is going to create content like blogs, create content like workshops, and that we're looking for experts. I'm going to turn this site into nothing but a curated video site featuring the videos I find the most valuable are reference AESOP Academy courses that can further the conversation along the lines of those videos.",
+      "category": "Rebuild",
+      "priority": 100,
+      "status": "production",
+      "created_at": "2026-05-19",
+      "completed_at": "2026-05-23",
+      "dependencies": [],
+      "branch": "task/1-strip-the-site-down",
+      "pr_url": "https://github.com/AesopScott/experts/pull/1",
+      "project_source": "experts",
+      "promoted_via_pr": "2",
+      "promoted_at": "2026-05-23T22:47:00Z"
+    },
+    {
+      "number": 2,
+      "title": "Build the video curation engine.",
+      "description": "Build the engine that will create videos from YouTube to share from 25 experts.",
+      "category": "feature",
+      "priority": 90,
+      "status": "production",
+      "branch": "task/2-build-the-video-curation-engine",
+      "pr_url": "https://github.com/AesopScott/experts/pull/2",
+      "created_at": "2026-05-19",
+      "completed_at": "2026-05-23",
+      "dependencies": [],
+      "project_source": "experts",
+      "promoted_via_pr": "2",
+      "promoted_at": "2026-05-23T22:47:00Z"
+    }
+  ]
+}
