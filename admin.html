@@ -126,6 +126,14 @@
     const lookupChannelFn = httpsCallable(functions, "lookupChannel");
     const fetchVideoMetadataFn = httpsCallable(functions, "fetchVideoMetadata");
 
+    function safeHtml(str) {
+      return String(str ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g,  "&lt;")
+        .replace(/>/g,  "&gt;")
+        .replace(/"/g,  "&quot;");
+    }
+
     const ROLES = ["patron", "contributor", "expert", "founding_expert", "admin"];
 
     document.getElementById("signout-btn").addEventListener("click", async () => {
@@ -402,11 +410,11 @@
           const harvested = ch.lastHarvested ? new Date(ch.lastHarvested.toMillis()).toLocaleDateString() : "never";
           const tr = document.createElement("tr");
           tr.innerHTML = `
-            <td style="font-weight:750;">${ch.channelName || "—"}</td>
-            <td style="font-size:12px;color:var(--muted);font-family:monospace;">${ch.channelId || "—"}</td>
+            <td style="font-weight:700;">${safeHtml(ch.channelName) || "—"}</td>
+            <td style="font-size:12px;color:var(--muted);font-family:monospace;">${safeHtml(ch.channelId) || "—"}</td>
             <td style="font-size:12px;color:var(--muted);">${added}</td>
             <td style="font-size:12px;color:var(--muted);">${harvested}</td>
-            <td><button class="reject-btn" data-id="${ch.id}">Remove</button></td>`;
+            <td><button class="reject-btn" data-id="${safeHtml(ch.id)}">Remove</button></td>`;
           tbody.appendChild(tr);
           tr.querySelector(".reject-btn").addEventListener("click", () => removeChannel(ch.id));
         });
@@ -479,11 +487,12 @@
         const tbody = document.createElement("tbody");
         candidates.forEach(c => {
           const discovered = c.discoveredAt ? new Date(c.discoveredAt.toMillis()).toLocaleDateString() : "—";
-          const desc = (c.description || "").slice(0, 100) + ((c.description || "").length > 100 ? "…" : "");
+          const rawDesc = c.description || "";
+          const desc = safeHtml(rawDesc.slice(0, 100)) + (rawDesc.length > 100 ? "…" : "");
           const tr = document.createElement("tr");
           tr.id = `cr-${c.id}`;
           tr.innerHTML = `
-            <td style="font-weight:750;">${c.channelName || "—"}</td>
+            <td style="font-weight:700;">${safeHtml(c.channelName) || "—"}</td>
             <td style="font-size:12px;color:var(--muted);max-width:280px;">${desc}</td>
             <td style="font-size:12px;color:var(--muted);">${discovered}</td>
             <td id="ca-${c.id}"></td>`;
