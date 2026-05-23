@@ -107,13 +107,29 @@ exports.sendFormSubmissionEmail = onDocumentCreated({
 
 // ─── YouTube curation ─────────────────────────────────────────────────────────
 
-const DISCOVERY_QUERIES = [
-  "artificial intelligence tutorial 2026",
-  "AI agents workflow automation",
-  "machine learning explained 2026",
-  "AI productivity tools workflow",
-  "large language models practical",
-];
+function getDiscoveryQueries() {
+  const year = new Date().getFullYear();
+  return [
+    `artificial intelligence tutorial ${year}`,
+    "AI agents workflow automation",
+    `machine learning explained ${year}`,
+    "AI productivity tools workflow",
+    "large language models practical",
+  ];
+}
+
+// Commits Firestore write operations in chunks to stay under the 500-write batch limit.
+async function commitInBatches(db, operations) {
+  const BATCH_LIMIT = 400;
+  for (let i = 0; i < operations.length; i += BATCH_LIMIT) {
+    const batch = db.batch();
+    for (const op of operations.slice(i, i + BATCH_LIMIT)) {
+      if (op.type === "set") batch.set(op.ref, op.data, op.options || {});
+      else if (op.type === "update") batch.update(op.ref, op.data);
+    }
+    await batch.commit();
+  }
+}
 
 exports.harvestVideos = onSchedule({
   schedule: "0 */8 * * *",
@@ -126,7 +142,7 @@ exports.harvestVideos = onSchedule({
   if (channelsSnap.empty) return;
 
   const apiKey = youtubeApiKey.value();
-  const batch = db.batch();
+  const operations = [];
 
   for (const channelDoc of channelsSnap.docs) {
     const { channelId, channelName } = channelDoc.data();
@@ -147,25 +163,31 @@ exports.harvestVideos = onSchedule({
       const videoId = s.resourceId?.videoId;
       if (!videoId) continue;
 
-      const videoRef = db.collection("curatedVideos").doc(videoId);
-      batch.set(videoRef, {
-        videoId,
-        title: s.title || "",
-        link: `https://www.youtube.com/watch?v=${videoId}`,
-        thumbnail: s.thumbnails?.high?.url || s.thumbnails?.default?.url || "",
-        channelName: channelName || s.channelTitle || "",
-        channelId,
-        publishedAt: s.publishedAt || "",
-        addedAt: admin.firestore.FieldValue.serverTimestamp(),
-      }, { merge: true });
+      operations.push({
+        type: "set",
+        ref: db.collection("curatedVideos").doc(videoId),
+        data: {
+          videoId,
+          title: s.title || "",
+          link: `https://www.youtube.com/watch?v=${videoId}`,
+          thumbnail: s.thumbnails?.high?.url || s.thumbnails?.default?.url || "",
+          channelName: channelName || s.channelTitle || "",
+          channelId,
+          publishedAt: s.publishedAt || "",
+          addedAt: admin.firestore.FieldValue.serverTimestamp(),
+        },
+        options: { merge: true },
+      });
     }
 
-    batch.update(channelDoc.ref, {
-      lastHarvested: admin.firestore.FieldValue.serverTimestamp(),
+    operations.push({
+      type: "update",
+      ref: channelDoc.ref,
+      data: { lastHarvested: admin.firestore.FieldValue.serverTimestamp() },
     });
   }
 
-  await batch.commit();
+  await commitInBatches(db, operations);
 });
 
 exports.discoverChannels = onSchedule({
@@ -189,7 +211,7 @@ exports.discoverChannels = onSchedule({
 
   const candidates = [];
 
-  for (const q of DISCOVERY_QUERIES) {
+  for (const q of getDiscoveryQueries()) {
     const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&q=${encodeURIComponent(q)}&maxResults=5&key=${apiKey}`;
     let data;
     try {
