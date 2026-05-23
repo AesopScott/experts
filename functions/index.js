@@ -247,10 +247,18 @@ exports.discoverChannels = onSchedule({
   await commitInBatches(db, operations);
 });
 
+async function requireAdmin(request) {
+  if (!request.auth) throw new HttpsError("unauthenticated", "Must be signed in");
+  const userDoc = await admin.firestore().doc(`users/${request.auth.uid}`).get();
+  if (!userDoc.exists || userDoc.data().role !== "admin") {
+    throw new HttpsError("permission-denied", "Admin access required");
+  }
+}
+
 exports.lookupChannel = onCall({
   secrets: [youtubeApiKey],
 }, async request => {
-  if (!request.auth) throw new HttpsError("unauthenticated", "Must be signed in");
+  await requireAdmin(request);
 
   const { channelUrl } = request.data || {};
   if (!channelUrl) throw new HttpsError("invalid-argument", "channelUrl is required");
@@ -287,7 +295,7 @@ exports.lookupChannel = onCall({
 exports.fetchVideoMetadata = onCall({
   secrets: [youtubeApiKey],
 }, async request => {
-  if (!request.auth) throw new HttpsError("unauthenticated", "Must be signed in");
+  await requireAdmin(request);
 
   const { videoUrl } = request.data || {};
   if (!videoUrl) throw new HttpsError("invalid-argument", "videoUrl is required");
