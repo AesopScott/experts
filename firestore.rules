@@ -38,5 +38,18 @@ service cloud.firestore {
       allow create: if true;
       allow update, delete: if isAdmin();
     }
+
+    match /followedChannels/{id} {
+      allow read, write, delete: if isAdmin();
+    }
+
+    match /curatedVideos/{id} {
+      allow read: if true;
+      allow write, delete: if isAdmin();
+    }
+
+    match /candidateChannels/{id} {
+      allow read, write, delete: if isAdmin();
+    }
   }
 }

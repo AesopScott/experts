@@ -8,8 +8,8 @@
   <meta http-equiv="Expires" content="0">
   <title>Curated AI Videos | 25experts</title>
   <meta name="description" content="Browse curated AI videos selected for practical value, with direct source links and Aesop Academy course pathways.">
-  <meta name="page-version" content="v2026.05.19.5">
-  <meta name="page-updated" content="2026-05-19">
+  <meta name="page-version" content="v2026.05.23.1">
+  <meta name="page-updated" content="2026-05-23">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/videos.html">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -281,12 +281,8 @@
       display: flex; align-items: center; justify-content: center;
       overflow: hidden;
     }
-    .thumb-bg { position: absolute; inset: 0; }
-    .thumb-bg.ai         { background: linear-gradient(135deg,#0d3d2e 0%,#1e7a56 100%); }
-    .thumb-bg.finance    { background: linear-gradient(135deg,#5c3d0c 0%,#c48a30 100%); }
-    .thumb-bg.marketing  { background: linear-gradient(135deg,#0f2f4a 0%,#2d6fa8 100%); }
-    .thumb-bg.leadership { background: linear-gradient(135deg,#3e1f54 0%,#9260b8 100%); }
-    .thumb-bg.design     { background: linear-gradient(135deg,#5c1f14 0%,#d4654e 100%); }
+    .thumb-bg { position: absolute; inset: 0; background: #1a2e24; }
+    .thumb-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
     .play-btn {
       position: relative; z-index: 1;
@@ -390,399 +386,146 @@
         <a class="watchlist-btn" href="watchlist.html">Creator Watchlist</a>
         <span class="watchlist-note">Profiles for the public creators and channels behind the videos we reference, with source context and related Aesop Academy course paths.</span>
       </div>
-      <div class="domain-pills" id="domain-pills"></div>
     </div>
   </section>
 
   <main id="video-root">
-    <section class="filter-panel" aria-label="Video filters">
+    <section class="filter-panel" aria-label="Video filters" style="grid-template-columns:1fr auto;">
       <div class="field">
-        <label for="domain-filter">Filter by domain</label>
-        <select id="domain-filter">
-          <option value="all">All domains</option>
+        <label for="channel-filter">Filter by channel</label>
+        <select id="channel-filter">
+          <option value="all">All channels</option>
         </select>
       </div>
-      <div class="field">
-        <label for="expert-filter">Select source</label>
-        <select id="expert-filter">
-          <option value="all">All sources</option>
-        </select>
-      </div>
-      <button class="primary" id="clear-filters" type="button">Clear filters</button>
+      <button class="primary" id="clear-filters" type="button" style="align-self:end;">Clear filter</button>
     </section>
-    <section class="empty-state" id="empty-state">No videos match this filter combination.</section>
+    <section class="empty-state" id="empty-state">No videos match this filter.</section>
     <section class="stats" aria-label="Library summary">
-      <article class="stat"><strong id="stat-total">300</strong><span>videos in the library</span></article>
-      <article class="stat"><strong>25</strong><span>sources represented</span></article>
-      <article class="stat"><strong>5</strong><span>AI learning themes</span></article>
+      <article class="stat"><strong id="stat-total">—</strong><span>videos in the library</span></article>
+      <article class="stat"><strong id="stat-sources">—</strong><span>channels followed</span></article>
+      <article class="stat"><strong>3×</strong><span>daily updates</span></article>
       <article class="stat"><strong>Aesop</strong><span>course pathways for deeper study</span></article>
     </section>
+    <div id="video-sections"></div>
   </main>
 
-  <script>
-    const DOMAINS = {
-      ai:         { name: "AI & Automation",          bg: "#e0f0e8", color: "#145f47" },
-      finance:    { name: "Finance & Investing",       bg: "#f5ecd6", color: "#b87a22" },
-      marketing:  { name: "Marketing, Sales & Growth", bg: "#ddeaf5", color: "#245a7d" },
-      leadership: { name: "Leadership & Management",   bg: "#ede5f5", color: "#7b4b92" },
-      design:     { name: "Design, Creative & Gaming", bg: "#f5e5e0", color: "#bf563f" },
-    };
+  <script type="module">
+    import { db } from "./assets/firebase-init.js";
+    import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    const EXPERTS = [
-      { name: "Dr. Maya Chen",  domain: "ai", videos: [
-        ["Build an AI Workflow You Can Actually Trust",   "8:34"],
-        ["The Prompt Library Your Team Will Really Use",  "11:07"],
-        ["Five Agentic Workflows That Save a Real Hour",  "14:22"],
-        ["Debugging Your Automation When It Breaks",      "9:18"],
-        ["How to Evaluate Any AI Tool Before You Buy",    "12:45"],
-      ]},
-      { name: "Owen Patel",     domain: "ai", videos: [
-        ["Prompting for Consistency, Not Just Quality",   "10:03"],
-        ["Building a Shared Prompt Library for Your Team","13:29"],
-        ["AI-Assisted Research: A Live Walkthrough",      "16:11"],
-        ["The Prompt Patterns That Always Work",          "8:52"],
-      ]},
-      { name: "Lena Brooks",    domain: "ai", videos: [
-        ["Five Agentic Workflows That Save a Real Hour",  "14:14"],
-        ["Automating Your Weekly Report in 20 Minutes",   "19:38"],
-        ["How I Use AI for Daily Ops Without App Sprawl", "11:55"],
-        ["Agent Patterns for Research and Writing",       "15:02"],
-        ["When Agents Fail: What to Do Next",             "9:40"],
-      ]},
-      { name: "Theo Ramirez",   domain: "ai", videos: [
-        ["When Not to Automate: A Manager's Framework",   "17:21"],
-        ["AI Risk Assessment for Small Teams",            "13:07"],
-        ["The Handoff Problem: AI and Human Judgment",    "10:48"],
-        ["Building Trust in AI-Assisted Decisions",       "14:33"],
-      ]},
-      { name: "Priya Shah",     domain: "ai", videos: [
-        ["The Lean AI Stack for 2026",                    "20:28"],
-        ["Tool Teardown: What's Actually Worth It",       "18:14"],
-        ["AI on a Budget: Free Tiers That Deliver",       "12:39"],
-        ["Stack Review: Three Months of Real Use",        "15:51"],
-        ["How to Audit Your AI Tools Every Quarter",      "9:22"],
-      ]},
-      { name: "Marcus Bell",    domain: "finance", videos: [
-        ["Reading an AI-Generated Portfolio Summary",     "10:11"],
-        ["What AI Gets Wrong About Financial Analysis",   "14:05"],
-        ["Portfolio Review: A Live Walkthrough",          "22:17"],
-        ["How to Verify AI-Generated Financial Data",     "11:43"],
-      ]},
-      { name: "Anika Rao",      domain: "finance", videos: [
-        ["A Calm Framework for Volatile Markets",         "13:18"],
-        ["How to Separate Signal from Narrative",         "9:54"],
-        ["Emotional Investing: Patterns to Avoid",        "16:02"],
-        ["Market Volatility: What the Data Actually Says","18:30"],
-        ["Building a Steady Investment Mindset",          "11:16"],
-      ]},
-      { name: "Jonah Price",    domain: "finance", videos: [
-        ["Cash Flow Forecasting with AI Assistance",      "16:25"],
-        ["The Founder's Finance Dashboard",               "20:44"],
-        ["Modeling Revenue Scenarios in a Spreadsheet",   "24:08"],
-        ["Burn Rate and Runway: A Plain-English Guide",   "13:37"],
-      ]},
-      { name: "Elena Foster",   domain: "finance", videos: [
-        ["Risk Terms Every New Investor Should Know",     "19:32"],
-        ["Understanding Portfolio Risk in Plain English", "15:19"],
-        ["How to Read a Fund Prospectus",                 "17:48"],
-        ["Diversification: What It Actually Means",       "12:06"],
-        ["The Questions to Ask Before Any Investment",    "10:33"],
-      ]},
-      { name: "Samir Haddad",   domain: "finance", videos: [
-        ["The Finance Dashboard That Gets Opened",        "22:39"],
-        ["Financial Visibility for Non-Finance Teams",    "17:02"],
-        ["Designing Reports People Actually Read",        "14:28"],
-        ["KPIs That Actually Drive Decisions",            "19:14"],
-      ]},
-      { name: "Nora Kim",       domain: "marketing", videos: [
-        ["AI Content That Still Sounds Like You",         "15:29"],
-        ["The Brand Voice Checklist for AI Content",      "11:44"],
-        ["Editing AI Copy Without Losing Your Voice",     "13:57"],
-        ["Content Strategy With AI in the Loop",          "18:23"],
-        ["How to Build a Content System That Scales",     "20:11"],
-      ]},
-      { name: "Caleb Stone",    domain: "marketing", videos: [
-        ["The Weekly Lead Research Sprint",               "12:08"],
-        ["Account Research in 15 Minutes with AI",        "14:36"],
-        ["Outreach That Doesn't Feel Like a Template",    "10:52"],
-        ["Building a Prospecting Workflow That Works",    "17:19"],
-      ]},
-      { name: "Mei Tan",        domain: "marketing", videos: [
-        ["Follow-Up Emails That Don't Feel Automated",    "18:36"],
-        ["Sequencing Outreach: Timing and Context",       "13:22"],
-        ["AI-Assisted Sales Writing: A Live Demo",        "16:48"],
-        ["The Follow-Up Framework for Warm Leads",        "11:35"],
-        ["Writing for Conversion Without Sounding Salesy","14:04"],
-      ]},
-      { name: "Victor Hale",    domain: "marketing", videos: [
-        ["Customer Interviews at AI Speed",               "21:43"],
-        ["Turning Call Notes into Useful Insight",        "15:07"],
-        ["Jobs-to-Be-Done Research with AI Tools",        "19:55"],
-        ["How to Synthesize 50 Interviews in an Afternoon","23:30"],
-      ]},
-      { name: "Isabel Cruz",    domain: "marketing", videos: [
-        ["One Webinar, Twenty Useful Assets",             "17:58"],
-        ["Repurposing Without the Content Sludge",        "12:41"],
-        ["Building a Content Calendar from One Source",   "15:26"],
-        ["The Asset Map: Planning Content at Scale",      "20:03"],
-        ["Repurposing for Each Platform Without Rewriting","13:49"],
-      ]},
-      { name: "Dana Wright",    domain: "leadership", videos: [
-        ["Talking to Your Team About AI Anxiety",         "23:54"],
-        ["A Leadership Script for AI Conversations",      "18:12"],
-        ["Building Psychological Safety Around New Tools","15:39"],
-        ["How to Run an AI Town Hall",                    "20:27"],
-      ]},
-      { name: "Hugo Bennett",   domain: "leadership", videos: [
-        ["AI Policy Without the Legal Fog",               "17:40"],
-        ["Writing an AI Use Policy Your Team Will Read",  "14:55"],
-        ["Risk and Responsibility: The Manager's View",   "19:08"],
-        ["How to Update Policy as AI Evolves",            "12:33"],
-        ["AI Governance for Small Organizations",         "16:21"],
-      ]},
-      { name: "Farah Nasser",   domain: "leadership", videos: [
-        ["The Decision Brief Template for AI Work",       "20:47"],
-        ["Using AI to Clarify Tradeoffs, Not Replace Them","16:03"],
-        ["Structured Thinking with AI Assistance",        "13:44"],
-        ["The One-Page Decision Framework",               "11:18"],
-      ]},
-      { name: "Miles Ortega",   domain: "leadership", videos: [
-        ["What an AI-Ready Team Culture Looks Like",      "25:05"],
-        ["Habits That Make AI Adoption Stick",            "19:33"],
-        ["The Rituals High-Performing Teams Use",         "16:47"],
-        ["Managing the Gap Between Early and Late Adopters","14:09"],
-        ["Building Norms Around AI Use at Work",          "22:14"],
-      ]},
-      { name: "Rachel Moore",   domain: "leadership", videos: [
-        ["Delegation Maps for Human and AI Teams",        "18:22"],
-        ["What Belongs to People, Tools, and Review",     "15:56"],
-        ["Redesigning Workflows for a Mixed Team",        "21:11"],
-        ["Accountability in AI-Assisted Work",            "13:28"],
-      ]},
-      { name: "Ari Fox",        domain: "design", videos: [
-        ["Generative Design Without Losing Taste",        "19:51"],
-        ["How to Direct AI Options Instead of Accept Them","14:37"],
-        ["Taste as a Creative Skill in the AI Era",       "17:02"],
-        ["Design Critique When the First Draft Is AI",    "12:19"],
-        ["Maintaining a Creative Point of View with AI",  "15:44"],
-      ]},
-      { name: "Jules Rivera",   domain: "design", videos: [
-        ["Rapid Prototyping with AI Image Tools",         "22:58"],
-        ["From Mood to Concept in One Session",           "18:15"],
-        ["The Prototype Workflow I Use Every Week",       "20:33"],
-        ["Testing Visual Concepts Before You Build",      "13:51"],
-      ]},
-      { name: "Mina Park",      domain: "design", videos: [
-        ["Game Concepts from Constraints, Not Prompts",   "25:12"],
-        ["Why Better Constraints Make Better Games",      "19:44"],
-        ["AI-Assisted Level Design: A Live Demo",         "28:07"],
-        ["The Constraints Toolkit for Game Creators",     "16:30"],
-        ["Playtesting Ideas Before You Build Them",       "14:03"],
-      ]},
-      { name: "Elliot Gray",    domain: "design", videos: [
-        ["Creative Direction for AI-Assisted Teams",      "24:19"],
-        ["How to Review Work When AI Made the Draft",     "17:38"],
-        ["Setting Creative Standards Across a Mixed Team","20:54"],
-        ["The Creative Brief That Works for AI Projects", "13:07"],
-      ]},
-      { name: "Sofia Lane",     domain: "design", videos: [
-        ["Building Brand Systems with AI",                "21:36"],
-        ["Consistency Across Copy, Visuals, and UX",      "16:12"],
-        ["The Brand Audit: Finding What Needs Fixing",    "18:49"],
-        ["AI for Brand Governance at Scale",              "14:25"],
-        ["How to Build a Living Brand Guide",             "19:03"],
-      ]},
-    ];
+    const sectionsRoot  = document.getElementById("video-sections");
+    const emptyState    = document.getElementById("empty-state");
+    const channelFilter = document.getElementById("channel-filter");
+    const statTotal     = document.getElementById("stat-total");
+    const statSources   = document.getElementById("stat-sources");
 
-    const MONTHS = [
-      { name: "May 2026",   desc: "The latest curated set: current shifts, useful workflows, and practical operating videos.", open: true },
-      { name: "April 2026", desc: "Foundational tutorials and topic-specific walkthroughs worth keeping close.", open: false },
-      { name: "March 2026", desc: "Earlier videos and deep dives that still hold reference value.", open: false },
-    ];
+    let allVideos = [];
 
-    function seededPick(arr, monthIndex, expertIndex) {
-      const seed = (monthIndex * 7 + expertIndex * 3) % arr.length;
-      const count = 4 + (seed % 2);
-      const start = (monthIndex + expertIndex) % arr.length;
-      const result = [];
-      for (let i = 0; i < count && i < arr.length; i++) {
-        result.push(arr[(start + i) % arr.length]);
-      }
-      return result;
+    function safeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g,  "&lt;")
+        .replace(/>/g,  "&gt;")
+        .replace(/"/g,  "&quot;");
     }
 
-    function dayStr(monthIndex, expertIndex, videoIndex) {
-      const days = ["May","Apr","Mar"];
-      const day = 1 + ((expertIndex * 4 + videoIndex * 3) % 28);
-      return `${days[monthIndex]} ${day}`;
-    }
-
-    function renderCard(expert, video, monthIndex, expertIndex, videoIndex) {
-      const [title, dur] = video;
-      const domain = expert.domain;
-      const domainName = DOMAINS[domain].name.split(",")[0].split(" & ")[0];
-      const ytQuery = encodeURIComponent(title + " " + expert.name);
-      const ytUrl = "https://www.youtube.com/results?search_query=" + ytQuery;
+    function renderCard(v) {
       return `
-        <a class="video-card" href="${ytUrl}" target="_blank" rel="noopener noreferrer" data-domain="${domain}" data-expert="${expert.name}" aria-label="${title} by ${expert.name} — opens on YouTube">
+        <a class="video-card" href="${safeHtml(v.link)}" target="_blank" rel="noopener noreferrer"
+           data-channel="${safeHtml(v.channelName)}"
+           aria-label="${safeHtml(v.title)} by ${safeHtml(v.channelName)} — opens on YouTube">
           <div class="thumb">
-            <div class="thumb-bg ${domain}"></div>
+            <div class="thumb-bg"></div>
+            <img class="thumb-img" src="${safeHtml(v.thumbnail)}" alt="" loading="lazy">
             <div class="play-btn">▶</div>
-            <span class="duration">${dur}</span>
             <span class="yt-badge" aria-hidden="true">YouTube ↗</span>
           </div>
           <div class="card-info">
-            <h3 class="card-title">${title}</h3>
+            <h3 class="card-title">${safeHtml(v.title)}</h3>
             <div class="card-meta">
-              <span class="card-expert">${expert.name}</span>
-              <span class="domain-tag ${domain}">${domainName}</span>
+              <span class="card-expert">${safeHtml(v.channelName)}</span>
             </div>
           </div>
         </a>`;
     }
 
-    function buildMonth(month, monthIndex) {
+    function groupByMonth(videos) {
+      const groups = new Map();
+      for (const v of videos) {
+        const d   = v.publishedAt ? new Date(v.publishedAt) : new Date();
+        const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+        const label = d.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+        if (!groups.has(key)) groups.set(key, { label, videos: [] });
+        groups.get(key).videos.push(v);
+      }
+      return [...groups.entries()].sort((a, b) => b[0].localeCompare(a[0]));
+    }
+
+    function buildSection(label, videos, isFirst) {
       const section = document.createElement("section");
-      section.className = "month-section";
-      section.dataset.open = month.open ? "true" : "false";
-      section.dataset.month = monthIndex;
-
-      let allCards = [];
-      EXPERTS.forEach((expert, expertIndex) => {
-        const videos = seededPick(expert.videos, monthIndex, expertIndex);
-        videos.forEach((video, videoIndex) => {
-          allCards.push(renderCard(expert, video, monthIndex, expertIndex, videoIndex));
-        });
-      });
-
-      const totalCount = allCards.length;
-
+      section.className  = "month-section";
+      section.dataset.open = isFirst ? "true" : "false";
+      const cards = videos.map(v => renderCard(v)).join("");
       section.innerHTML = `
-        <div class="month-toggle" role="button" aria-expanded="${month.open}">
+        <div class="month-toggle" role="button" aria-expanded="${isFirst}">
           <div class="month-toggle-left">
-            <h2>${month.name}</h2>
-            <p>${month.desc}</p>
+            <h2>${safeHtml(label)}</h2>
           </div>
           <div class="month-toggle-right">
-            <span class="month-count" data-total="${totalCount}">${totalCount} videos</span>
+            <span class="month-count" data-total="${videos.length}">${videos.length} video${videos.length !== 1 ? "s" : ""}</span>
             <span class="chevron">▼</span>
           </div>
         </div>
         <div class="month-body">
-          <div class="video-grid">${allCards.join("")}</div>
+          <div class="video-grid">${cards}</div>
         </div>`;
-
       section.querySelector(".month-toggle").addEventListener("click", () => {
-        const isOpen = section.dataset.open === "true";
-        section.dataset.open = isOpen ? "false" : "true";
+        section.dataset.open = section.dataset.open === "true" ? "false" : "true";
       });
-
       return section;
     }
 
-    // Build DOM
-    const root = document.getElementById("video-root");
-    const emptyState = document.getElementById("empty-state");
-    MONTHS.forEach((month, i) => root.appendChild(buildMonth(month, i)));
+    function render(videos) {
+      sectionsRoot.innerHTML = "";
+      const groups = groupByMonth(videos);
+      groups.forEach(([, g], i) => sectionsRoot.appendChild(buildSection(g.label, g.videos, i === 0)));
+      statTotal.textContent = videos.length;
+      emptyState.classList.toggle("is-visible", videos.length === 0);
+    }
 
-    // Domain filter pills in hero
-    const pillContainer = document.getElementById("domain-pills");
-    Object.entries(DOMAINS).forEach(([key, d]) => {
-      const pill = document.createElement("span");
-      pill.className = "pill";
-      pill.style.setProperty("--domain-color", d.color);
-      pill.style.setProperty("--domain-bg", d.bg);
-      pill.innerHTML = `<span class="dot"></span>${d.name}`;
-      pill.addEventListener("click", () => {
-        const domainSelect = document.getElementById("domain-filter");
-        if (domainSelect.value === key) {
-          domainSelect.value = "all";
-        } else {
-          domainSelect.value = key;
-        }
-        domainSelect.dispatchEvent(new Event("change"));
-        document.getElementById("video-root").scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-      pillContainer.appendChild(pill);
-    });
+    function applyFilter() {
+      const sel = channelFilter.value;
+      render(sel === "all" ? allVideos : allVideos.filter(v => v.channelName === sel));
+    }
 
-    // Populate selects
-    const domainFilter = document.getElementById("domain-filter");
-    const expertFilter = document.getElementById("expert-filter");
+    async function load() {
+      try {
+        const snap = await getDocs(query(collection(db, "curatedVideos"), orderBy("publishedAt", "desc")));
+        allVideos  = snap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-    Object.entries(DOMAINS).forEach(([key, d]) => {
-      const opt = document.createElement("option");
-      opt.value = key; opt.textContent = d.name;
-      domainFilter.appendChild(opt);
-    });
-
-    function populateExperts() {
-      const sel = domainFilter.value;
-      expertFilter.innerHTML = '<option value="all">All sources</option>';
-      EXPERTS
-        .filter(e => sel === "all" || e.domain === sel)
-        .forEach(e => {
+        const channels = [...new Set(allVideos.map(v => v.channelName))].sort();
+        channels.forEach(ch => {
           const opt = document.createElement("option");
-          opt.value = e.name; opt.textContent = e.name;
-          expertFilter.appendChild(opt);
-        });
-    }
-
-    function syncPills() {
-      const sel = domainFilter.value;
-      pillContainer.querySelectorAll(".pill").forEach((pill, i) => {
-        const key = Object.keys(DOMAINS)[i];
-        pill.classList.toggle("active", key === sel);
-      });
-    }
-
-    function applyFilters() {
-      const selDomain = domainFilter.value;
-      const selExpert = expertFilter.value;
-      let visibleTotal = 0;
-
-      document.querySelectorAll(".month-section").forEach(section => {
-        let sectionVisible = 0;
-        section.querySelectorAll(".video-card").forEach(card => {
-          const domainMatch = selDomain === "all" || card.dataset.domain === selDomain;
-          const expertMatch = selExpert === "all" || card.dataset.expert === selExpert;
-          const show = domainMatch && expertMatch;
-          card.classList.toggle("is-hidden", !show);
-          if (show) { sectionVisible++; visibleTotal++; }
+          opt.value = ch; opt.textContent = ch;
+          channelFilter.appendChild(opt);
         });
 
-        const countEl = section.querySelector(".month-count");
-        const total = parseInt(countEl.dataset.total);
-        const isFiltered = selDomain !== "all" || selExpert !== "all";
-        countEl.textContent = isFiltered ? `${sectionVisible} of ${total} videos` : `${total} videos`;
-        countEl.classList.toggle("is-filtered", isFiltered && sectionVisible < total);
-
-        // Auto-open sections that have results when filtering
-        if (isFiltered && sectionVisible > 0 && section.dataset.open === "false") {
-          section.dataset.open = "true";
-        }
-      });
-
-      document.getElementById("stat-total").textContent =
-        (selDomain !== "all" || selExpert !== "all")
-          ? visibleTotal
-          : document.querySelectorAll(".video-card").length;
-
-      emptyState.classList.toggle("is-visible", visibleTotal === 0);
-      syncPills();
+        statSources.textContent = channels.length;
+        render(allVideos);
+      } catch (err) {
+        console.error("Failed to load videos:", err);
+        sectionsRoot.innerHTML = `<div style="padding:40px;text-align:center;color:var(--muted);">Failed to load videos. Please refresh.</div>`;
+      }
     }
 
-    domainFilter.addEventListener("change", () => { populateExperts(); applyFilters(); });
-    expertFilter.addEventListener("change", applyFilters);
+    channelFilter.addEventListener("change", applyFilter);
     document.getElementById("clear-filters").addEventListener("click", () => {
-      domainFilter.value = "all";
-      populateExperts();
-      expertFilter.value = "all";
-      applyFilters();
+      channelFilter.value = "all";
+      applyFilter();
     });
 
-    populateExperts();
-    applyFilters();
+    load();
+
   </script>
 
   <footer>
