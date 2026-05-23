@@ -82,10 +82,83 @@
       "description": "Build the engine that will create videos from YouTube to share from 25 experts.",
       "category": "feature",
       "priority": 90,
-      "status": "backlog",
+      "status": "ready",
       "created_at": "2026-05-19",
       "completed_at": null,
-      "dependencies": []
+      "dependencies": [],
+      "plan": "## Overview\n\nBuild a YouTube video curation pipeline for 25experts.com. The platform follows a curated list of YouTube channels and checks for new content 3× daily via YouTube Data API v3. New video metadata (title, link, thumbnail, channelName, publishedAt) is stored in Firestore and rendered dynamically on videos.html. A discovery job runs once daily to surface new candidate channels based on AI content engagement. Scott approves all new channels manually via admin.html. Scott can also manually add any video by pasting a YouTube URL.\n\n## Phases\n\n1. Infrastructure Setup — Secure admin SDK key, store YouTube API key in Firebase Secret Manager, define Firestore collections and rules.\n2. Harvest Engine — Build harvestVideos Cloud Function (3× daily) that polls followed channels and writes to curatedVideos.\n3. Discovery Engine — Build discoverChannels Cloud Function (1× daily) that surfaces new channel candidates.\n4. Admin UI — Three panels in admin.html: Followed Channels, Channel Candidates, Add Video Manually.\n5. Site Integration — Update videos.html to read from Firestore curatedVideos collection.\n\n## First Proof Unit\n\nThe Firebase admin SDK JSON key is removed from git tracking (git ls-files returns empty), and the YouTube API key is stored in Firebase Secret Manager (firebase functions:secrets:access YOUTUBE_API_KEY returns the key value).",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Admin SDK key removed from git tracking",
+          "expectedBehavior": "experts-d7c3d-firebase-adminsdk-fbsvc-82ace7cc5c.json is listed in .gitignore and not tracked by git.",
+          "proofType": "smoke-command",
+          "exactCommand": "git ls-files experts-d7c3d-firebase-adminsdk-fbsvc-82ace7cc5c.json",
+          "expectedInitialFailure": "Command returns the filename (file is tracked in git).",
+          "expectedPassingEvidence": "Command returns empty output (file is not tracked).",
+          "waiverGuidance": "N/A."
+        },
+        {
+          "number": 2,
+          "title": "YouTube API key in Firebase Secret Manager",
+          "expectedBehavior": "YOUTUBE_API_KEY secret exists in Firebase Secret Manager and Cloud Functions reference it via defineSecret.",
+          "proofType": "smoke-command",
+          "exactCommand": "firebase functions:secrets:access YOUTUBE_API_KEY",
+          "expectedInitialFailure": "Command returns Secret not found or 404.",
+          "expectedPassingEvidence": "Command returns the API key value.",
+          "waiverGuidance": "N/A."
+        },
+        {
+          "number": 3,
+          "title": "Firestore collections and rules deployed",
+          "expectedBehavior": "followedChannels, curatedVideos, and candidateChannels are accessible per deployed Firestore rules; curatedVideos has a publishedAt descending index.",
+          "proofType": "smoke-command",
+          "exactCommand": "firebase deploy --only firestore:rules,firestore:indexes",
+          "expectedInitialFailure": "Deploy fails or rules missing new collection patterns.",
+          "expectedPassingEvidence": "Deploy exits 0 with Deploy complete!",
+          "waiverGuidance": "N/A."
+        },
+        {
+          "number": 4,
+          "title": "harvestVideos function deploys and harvests",
+          "expectedBehavior": "harvestVideos Cloud Function deploys and when triggered manually writes at least one video doc to curatedVideos.",
+          "proofType": "manual-script",
+          "exactCommand": "1. firebase deploy --only functions:harvestVideos. 2. Add one channel doc to followedChannels in Firestore console. 3. firebase functions:shell → harvestVideos(). 4. Open Firestore → curatedVideos → confirm at least 1 doc with videoId, title, link, channelName, publishedAt.",
+          "expectedInitialFailure": "Function does not exist or curatedVideos is empty after trigger.",
+          "expectedPassingEvidence": "At least 1 video doc in curatedVideos with all required fields populated.",
+          "waiverGuidance": "N/A."
+        },
+        {
+          "number": 5,
+          "title": "discoverChannels function deploys and queues candidates",
+          "expectedBehavior": "discoverChannels Cloud Function deploys and when triggered manually writes at least one doc to candidateChannels with status pending.",
+          "proofType": "manual-script",
+          "exactCommand": "1. firebase deploy --only functions:discoverChannels. 2. firebase functions:shell → discoverChannels(). 3. Open Firestore → candidateChannels → confirm at least 1 doc with channelId, channelName, sampleVideoTitle, discoveredAt, status: pending.",
+          "expectedInitialFailure": "candidateChannels is empty after trigger.",
+          "expectedPassingEvidence": "At least 1 pending candidate doc in candidateChannels.",
+          "waiverGuidance": "N/A."
+        },
+        {
+          "number": 6,
+          "title": "Admin UI — all three panels functional",
+          "expectedBehavior": "admin.html renders three working panels: Followed Channels, Channel Candidates, and Add Video Manually.",
+          "proofType": "ui-check",
+          "exactCommand": "1. Open admin.html in browser. 2. Add a YouTube channel URL — confirm it appears in list and Firestore followedChannels. 3. Open Channel Candidates panel — approve one — confirm it moves to followedChannels. 4. Open Add Video Manually — paste a YouTube URL — confirm metadata populates — save writes to curatedVideos.",
+          "expectedInitialFailure": "Panels do not render or Firestore writes fail.",
+          "expectedPassingEvidence": "All three operations complete without console errors and Firestore reflects changes in real time.",
+          "waiverGuidance": "N/A."
+        },
+        {
+          "number": 7,
+          "title": "videos.html renders from Firestore",
+          "expectedBehavior": "videos.html displays curated video cards from curatedVideos with title, thumbnail, channel name, and YouTube link.",
+          "proofType": "ui-check",
+          "exactCommand": "1. Ensure at least 3 docs exist in curatedVideos. 2. Open videos.html in browser. 3. Confirm video cards render with correct fields and clicking a card opens the YouTube link.",
+          "expectedInitialFailure": "Page shows no videos or static placeholder content.",
+          "expectedPassingEvidence": "At least 3 video cards visible, all fields populated from Firestore, links functional.",
+          "waiverGuidance": "N/A."
+        }
+      ]
     },
     {
       "number": 3,
