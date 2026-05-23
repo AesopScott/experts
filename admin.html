@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin | 25experts</title>
-  <meta name="page-version" content="v2026.05.12.8">
-  <meta name="page-updated" content="2026-05-13">
+  <meta name="page-version" content="v2026.05.23.1">
+  <meta name="page-updated" content="2026-05-23">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -83,6 +83,17 @@
     .notice { border: 1px solid rgba(184,122,34,.24); background: var(--gold2); border-radius: 8px; padding: 14px 16px; color: #67450f; font-size: 13px; line-height: 1.55; }
     .notice code { background: rgba(0,0,0,.08); padding: 1px 5px; border-radius: 4px; font-family: monospace; }
 
+    .text-input { min-height: 38px; padding: 0 12px; border: 1px solid var(--line); border-radius: 6px; background: #fff; color: var(--ink); font: inherit; font-size: 13px; width: 100%; }
+    .add-row { display: flex; gap: 8px; padding: 16px 24px; border-bottom: 1px solid var(--line); }
+    .add-row .text-input { flex: 1; width: auto; }
+    .channel-thumb { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+    .video-preview { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+    .video-preview-inner { display: flex; gap: 16px; padding: 16px; align-items: flex-start; }
+    .video-preview-thumb { width: 160px; border-radius: 6px; flex-shrink: 0; }
+    .video-preview-actions { padding: 0 16px 16px; display: flex; align-items: center; gap: 12px; }
+    .save-status { font-size: 13px; color: var(--muted); }
+    .add-video-body { padding: 20px 24px; display: grid; gap: 16px; }
+
     :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 3px; }
     @media (max-width: 760px) { td, th { padding: 9px 10px; } }
   </style>
@@ -106,9 +117,14 @@
   </div>
 
   <script type="module">
-    import { auth, db } from "./assets/firebase-init.js";
+    import { auth, db, firebaseApp } from "./assets/firebase-init.js";
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { collection, getDocs, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { collection, getDocs, doc, getDoc, updateDoc, deleteDoc, setDoc, serverTimestamp, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js";
+
+    const functions = getFunctions(firebaseApp);
+    const lookupChannelFn = httpsCallable(functions, "lookupChannel");
+    const fetchVideoMetadataFn = httpsCallable(functions, "fetchVideoMetadata");
 
     const ROLES = ["patron", "contributor", "expert", "founding_expert", "admin"];
 
@@ -150,10 +166,29 @@
             <div class="section-head"><h2>Job Postings</h2><span id="jobs-count"></span></div>
             <div id="jobs-content"><div class="loading-state">Loading jobs…</div></div>
           </div>
+
+          <div class="section-card">
+            <div class="section-head"><h2>Followed Channels</h2><span id="followed-count"></span></div>
+            <div id="add-channel-form"></div>
+            <div id="followed-channels-content"><div class="loading-state">Loading channels…</div></div>
+          </div>
+
+          <div class="section-card">
+            <div class="section-head"><h2>Channel Candidates</h2><span id="candidates-count"></span></div>
+            <div id="candidates-content"><div class="loading-state">Loading candidates…</div></div>
+          </div>
+
+          <div class="section-card">
+            <div class="section-head"><h2>Add Video Manually</h2></div>
+            <div id="add-video-content"></div>
+          </div>
         </div>`;
 
       loadUsers();
       loadJobs();
+      loadFollowedChannels();
+      loadCandidateChannels();
+      setupAddVideo();
     }
 
     async function loadUsers() {
@@ -332,6 +367,251 @@
       j.status = status;
       document.getElementById(`sc-${j.id}`).innerHTML = `<span class="status-badge ${status}">${status}</span>`;
       renderJobActions(j);
+    }
+
+    // ── Followed Channels ──────────────────────────────────────────────────────
+
+    async function loadFollowedChannels() {
+      const formSlot = document.getElementById("add-channel-form");
+      const container = document.getElementById("followed-channels-content");
+
+      formSlot.innerHTML = `
+        <div class="add-row">
+          <input type="url" id="channel-url-input" class="text-input" placeholder="https://youtube.com/@channelhandle or /channel/UC…">
+          <button class="approve-btn" id="add-channel-btn">Add Channel</button>
+        </div>`;
+      document.getElementById("add-channel-btn").addEventListener("click", handleAddChannel);
+
+      try {
+        const snap = await getDocs(collection(db, "followedChannels"));
+        const channels = snap.docs
+          .map(d => ({ id: d.id, ...d.data() }))
+          .sort((a, b) => (b.addedAt?.toMillis() || 0) - (a.addedAt?.toMillis() || 0));
+
+        document.getElementById("followed-count").textContent =
+          channels.length + " channel" + (channels.length !== 1 ? "s" : "");
+
+        if (channels.length === 0) {
+          container.innerHTML = `<div class="empty-state">No followed channels yet. Add one above.</div>`;
+          return;
+        }
+
+        const tbody = document.createElement("tbody");
+        channels.forEach(ch => {
+          const added     = ch.addedAt       ? new Date(ch.addedAt.toMillis()).toLocaleDateString()       : "—";
+          const harvested = ch.lastHarvested ? new Date(ch.lastHarvested.toMillis()).toLocaleDateString() : "never";
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td style="font-weight:750;">${ch.channelName || "—"}</td>
+            <td style="font-size:12px;color:var(--muted);font-family:monospace;">${ch.channelId || "—"}</td>
+            <td style="font-size:12px;color:var(--muted);">${added}</td>
+            <td style="font-size:12px;color:var(--muted);">${harvested}</td>
+            <td><button class="reject-btn" data-id="${ch.id}">Remove</button></td>`;
+          tbody.appendChild(tr);
+          tr.querySelector(".reject-btn").addEventListener("click", () => removeChannel(ch.id));
+        });
+
+        const table = document.createElement("table");
+        table.innerHTML = `<thead><tr><th>Channel</th><th>Channel ID</th><th>Added</th><th>Last Harvested</th><th>Action</th></tr></thead>`;
+        table.appendChild(tbody);
+        container.innerHTML = "";
+        container.appendChild(table);
+      } catch (err) {
+        console.error(err);
+        container.innerHTML = `<div class="empty-state">Failed to load channels.</div>`;
+      }
+    }
+
+    async function handleAddChannel() {
+      const input = document.getElementById("channel-url-input");
+      const btn   = document.getElementById("add-channel-btn");
+      const url   = input.value.trim();
+      if (!url) return;
+      btn.disabled    = true;
+      btn.textContent = "Looking up…";
+      try {
+        const result = await lookupChannelFn({ channelUrl: url });
+        const { channelId, channelName, description, subscriberCount, thumbnailUrl } = result.data;
+        await setDoc(doc(db, "followedChannels", channelId), {
+          channelId, channelName, description, subscriberCount, thumbnailUrl,
+          addedAt: serverTimestamp(), lastHarvested: null,
+        });
+        input.value     = "";
+        btn.textContent = "Added ✓";
+        setTimeout(() => { btn.textContent = "Add Channel"; btn.disabled = false; }, 2000);
+        loadFollowedChannels();
+      } catch (err) {
+        console.error(err);
+        btn.textContent = "Error — " + (err.message || "try again");
+        setTimeout(() => { btn.textContent = "Add Channel"; btn.disabled = false; }, 3000);
+      }
+    }
+
+    async function removeChannel(docId) {
+      try {
+        await deleteDoc(doc(db, "followedChannels", docId));
+        loadFollowedChannels();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // ── Channel Candidates ─────────────────────────────────────────────────────
+
+    async function loadCandidateChannels() {
+      const container = document.getElementById("candidates-content");
+      try {
+        const snap = await getDocs(query(
+          collection(db, "candidateChannels"),
+          where("status", "==", "pending"),
+          orderBy("discoveredAt", "desc")
+        ));
+        const candidates = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+        document.getElementById("candidates-count").textContent =
+          candidates.length + " pending";
+
+        if (candidates.length === 0) {
+          container.innerHTML = `<div class="empty-state">No pending candidates. Discovery runs once daily.</div>`;
+          return;
+        }
+
+        const tbody = document.createElement("tbody");
+        candidates.forEach(c => {
+          const discovered = c.discoveredAt ? new Date(c.discoveredAt.toMillis()).toLocaleDateString() : "—";
+          const desc = (c.description || "").slice(0, 100) + ((c.description || "").length > 100 ? "…" : "");
+          const tr = document.createElement("tr");
+          tr.id = `cr-${c.id}`;
+          tr.innerHTML = `
+            <td style="font-weight:750;">${c.channelName || "—"}</td>
+            <td style="font-size:12px;color:var(--muted);max-width:280px;">${desc}</td>
+            <td style="font-size:12px;color:var(--muted);">${discovered}</td>
+            <td id="ca-${c.id}"></td>`;
+          tbody.appendChild(tr);
+          renderCandidateActions(c);
+        });
+
+        const table = document.createElement("table");
+        table.innerHTML = `<thead><tr><th>Channel</th><th>Description</th><th>Discovered</th><th>Actions</th></tr></thead>`;
+        table.appendChild(tbody);
+        container.innerHTML = "";
+        container.appendChild(table);
+      } catch (err) {
+        console.error(err);
+        container.innerHTML = `<div class="empty-state">Failed to load candidates.</div>`;
+      }
+    }
+
+    function renderCandidateActions(c) {
+      const cell = document.getElementById(`ca-${c.id}`);
+      if (!cell) return;
+      const wrap = document.createElement("div");
+      wrap.className = "action-row";
+
+      const approveBtn = document.createElement("button");
+      approveBtn.className  = "approve-btn";
+      approveBtn.textContent = "Approve";
+      approveBtn.addEventListener("click", async () => {
+        await setDoc(doc(db, "followedChannels", c.channelId), {
+          channelId: c.channelId, channelName: c.channelName,
+          description: c.description, thumbnailUrl: c.thumbnailUrl,
+          addedAt: serverTimestamp(), lastHarvested: null,
+        });
+        await updateDoc(doc(db, "candidateChannels", c.id), { status: "approved" });
+        document.getElementById(`cr-${c.id}`)?.remove();
+        loadFollowedChannels();
+      });
+
+      const rejectBtn = document.createElement("button");
+      rejectBtn.className   = "reject-btn";
+      rejectBtn.textContent = "Reject";
+      rejectBtn.addEventListener("click", async () => {
+        await updateDoc(doc(db, "candidateChannels", c.id), { status: "rejected" });
+        document.getElementById(`cr-${c.id}`)?.remove();
+      });
+
+      wrap.append(approveBtn, rejectBtn);
+      cell.appendChild(wrap);
+    }
+
+    // ── Add Video Manually ─────────────────────────────────────────────────────
+
+    function setupAddVideo() {
+      const panel = document.getElementById("add-video-content");
+      panel.innerHTML = `
+        <div class="add-video-body">
+          <div class="add-row" style="padding:0;">
+            <input type="url" id="video-url-input" class="text-input" placeholder="https://youtube.com/watch?v=… or youtu.be/…">
+            <button class="approve-btn" id="fetch-video-btn">Fetch Metadata</button>
+          </div>
+          <div id="video-preview" class="video-preview" style="display:none;">
+            <div class="video-preview-inner">
+              <img id="video-thumb" class="video-preview-thumb" src="" alt="">
+              <div style="flex:1;">
+                <p id="video-title" style="font-weight:800;margin:0 0 8px;font-size:15px;line-height:1.3;"></p>
+                <p id="video-channel" style="color:var(--muted);font-size:13px;margin:0 0 4px;"></p>
+                <p id="video-published" style="color:var(--muted);font-size:12px;margin:0;"></p>
+              </div>
+            </div>
+            <div class="video-preview-actions">
+              <button class="approve-btn" id="save-video-btn">Save to Library</button>
+              <span id="save-status" class="save-status"></span>
+            </div>
+          </div>
+        </div>`;
+
+      let pendingVideo = null;
+
+      document.getElementById("fetch-video-btn").addEventListener("click", async () => {
+        const url = document.getElementById("video-url-input").value.trim();
+        if (!url) return;
+        const btn = document.getElementById("fetch-video-btn");
+        btn.disabled    = true;
+        btn.textContent = "Fetching…";
+        try {
+          const result  = await fetchVideoMetadataFn({ videoUrl: url });
+          pendingVideo  = result.data;
+          document.getElementById("video-thumb").src             = pendingVideo.thumbnail;
+          document.getElementById("video-title").textContent     = pendingVideo.title;
+          document.getElementById("video-channel").textContent   = pendingVideo.channelName;
+          document.getElementById("video-published").textContent = "Published: " + new Date(pendingVideo.publishedAt).toLocaleDateString();
+          document.getElementById("video-preview").style.display = "block";
+          document.getElementById("save-status").textContent     = "";
+          btn.textContent = "Fetch Metadata";
+          btn.disabled    = false;
+        } catch (err) {
+          console.error(err);
+          btn.textContent = "Error — try again";
+          setTimeout(() => { btn.textContent = "Fetch Metadata"; btn.disabled = false; }, 3000);
+        }
+      });
+
+      document.getElementById("save-video-btn").addEventListener("click", async () => {
+        if (!pendingVideo) return;
+        const saveBtn    = document.getElementById("save-video-btn");
+        const saveStatus = document.getElementById("save-status");
+        saveBtn.disabled    = true;
+        saveStatus.textContent = "Saving…";
+        try {
+          await setDoc(doc(db, "curatedVideos", pendingVideo.videoId), {
+            ...pendingVideo, addedAt: serverTimestamp(), addedManually: true,
+          });
+          saveStatus.textContent = "Saved ✓";
+          saveStatus.style.color = "var(--green)";
+          pendingVideo = null;
+          setTimeout(() => {
+            document.getElementById("video-preview").style.display = "none";
+            document.getElementById("video-url-input").value       = "";
+            saveStatus.textContent = "";
+            saveBtn.disabled = false;
+          }, 2000);
+        } catch (err) {
+          console.error(err);
+          saveStatus.textContent = "Failed to save";
+          saveStatus.style.color = "var(--red)";
+          saveBtn.disabled = false;
+        }
+      });
     }
   </script>
 
