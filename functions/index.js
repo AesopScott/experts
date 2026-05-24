@@ -233,7 +233,7 @@ exports.harvestVideos = onSchedule({
 
       // Check if transcript already exists to avoid redundant fetches
       const existingDoc = await db.collection("curatedVideos").doc(videoId).get();
-      const hasTranscript = existingDoc.exists && existingDoc.data().transcript !== undefined;
+      const hasTranscript = existingDoc.exists && existingDoc.data().transcript;
       const transcript = hasTranscript ? existingDoc.data().transcript : await fetchTranscript(videoId, apiKey);
 
       operations.push({
@@ -873,7 +873,7 @@ exports.scanAllChannels = onCall({
       if (s.publishedAt && new Date(s.publishedAt) < INGEST_CUTOFF) continue;
 
       const existingDoc = await db.collection("curatedVideos").doc(videoId).get();
-      const hasTranscript = existingDoc.exists && existingDoc.data().transcript !== undefined;
+      const hasTranscript = existingDoc.exists && existingDoc.data().transcript;
       const transcript = hasTranscript ? existingDoc.data().transcript : await fetchTranscript(videoId, apiKey);
 
       operations.push({
