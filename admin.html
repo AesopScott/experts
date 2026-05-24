@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin | 25experts</title>
-  <meta name="page-version" content="v2026.05.24.7">
+  <meta name="page-version" content="v2026.05.24.8">
   <meta name="page-updated" content="2026-05-24">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <meta name="robots" content="noindex, nofollow">
@@ -300,15 +300,20 @@
         btn.parentElement?.parentElement?.insertBefore(statusEl, btn.parentElement.nextSibling);
 
         try {
+          console.log("Sync All: starting...");
+
           // Get recent curated videos
+          console.log("Sync All: querying curatedVideos...");
           const videosSnap = await getDocs(query(
             collection(db, "curatedVideos"),
             orderBy("discoveredAt", "desc"),
             limit(20)
           ));
           const allVideoIds = videosSnap.docs.map(d => d.id);
+          console.log("Sync All: found", allVideoIds.length, "curated videos:", allVideoIds);
 
           if (allVideoIds.length === 0) {
+            console.log("Sync All: no videos found");
             statusEl.textContent = "✓ No videos found!";
             btn.textContent = "Sync All";
             btn.disabled = false;
@@ -316,14 +321,17 @@
           }
 
           // Filter out videos that already have mappings
+          console.log("Sync All: checking for existing mappings...");
           const mappingsSnap = await getDocs(query(
             collection(db, "videoCourseMappings"),
             where("__name__", "in", allVideoIds)
           ));
           const mappedVideoIds = new Set(mappingsSnap.docs.map(d => d.id));
           const unmappedIds = allVideoIds.filter(id => !mappedVideoIds.has(id));
+          console.log("Sync All: found", mappedVideoIds.size, "mapped videos, need to sync", unmappedIds.length, "videos:", unmappedIds);
 
           if (unmappedIds.length === 0) {
+            console.log("Sync All: all videos already matched");
             statusEl.textContent = "✓ All videos already matched!";
             btn.textContent = "Sync All";
             btn.disabled = false;
@@ -340,15 +348,19 @@
           let processed = 0;
           let totalMatched = 0;
 
+          console.log("Sync All: starting to process", videos.length, "videos");
           for (let i = 0; i < videos.length; i++) {
             const v = videos[i];
             statusEl.textContent = `Processing ${i + 1}/${videos.length}…`;
+            console.log("Sync All: calling API for video", v.id);
 
             try {
               const result = await syncVideoToCoursesF({ videoId: v.id });
+              console.log("Sync All: API result for", v.id, ":", result.data);
               if (result.data?.success) {
                 totalMatched += result.data.coursesMatched || 0;
                 processed++;
+                console.log("Sync All: video", v.id, "synced successfully");
                 document.getElementById(`uv-${v.id}`)?.remove();
               }
             } catch (e) {
