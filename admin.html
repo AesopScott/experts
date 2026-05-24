@@ -154,6 +154,13 @@
 
     const ROLES = ["patron", "contributor", "expert", "founding_expert", "admin"];
 
+    // Handles Firestore Timestamps, ISO strings, and numbers uniformly.
+    function toMs(val) {
+      if (!val) return 0;
+      if (typeof val.toMillis === "function") return val.toMillis();
+      return new Date(val).getTime() || 0;
+    }
+
     document.getElementById("signout-btn").addEventListener("click", async () => {
       await signOut(auth);
       window.location.href = "join.html";
@@ -247,7 +254,7 @@
         const snap  = await getDocs(collection(db, "users"));
         const users = snap.docs
           .map(d => ({ id: d.id, ...d.data() }))
-          .sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+          .sort((a, b) => toMs(b.createdAt) - toMs(a.createdAt));
 
         document.getElementById("user-count").textContent =
           users.length + " account" + (users.length !== 1 ? "s" : "");
@@ -259,7 +266,7 @@
 
         const tbody = document.createElement("tbody");
         users.forEach(u => {
-          const joined   = u.createdAt ? new Date(u.createdAt.toMillis()).toLocaleDateString() : "—";
+          const joined   = u.createdAt ? new Date(toMs(u.createdAt)).toLocaleDateString() : "—";
           const role     = u.role || "patron";
           const options  = ROLES.map(r => `<option value="${r}"${r === role ? " selected" : ""}>${r}</option>`).join("");
           const tr       = document.createElement("tr");
@@ -321,7 +328,7 @@
             const order = { pending: 0, live: 1, expired: 2 };
             const oa = order[a.status] ?? 3, ob = order[b.status] ?? 3;
             if (oa !== ob) return oa - ob;
-            return (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0);
+            return toMs(b.createdAt) - toMs(a.createdAt);
           });
 
         document.getElementById("jobs-count").textContent =
@@ -334,7 +341,7 @@
 
         const tbody = document.createElement("tbody");
         jobs.forEach(j => {
-          const submitted = j.createdAt ? new Date(j.createdAt.toMillis()).toLocaleDateString() : "—";
+          const submitted = j.createdAt ? new Date(toMs(j.createdAt)).toLocaleDateString() : "—";
           const tr        = document.createElement("tr");
           tr.id           = `jr-${j.id}`;
           tr.innerHTML    = `
