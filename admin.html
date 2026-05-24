@@ -908,6 +908,7 @@
       let processed = 0;
       let matched = 0;
       let failed = 0;
+      let skipped = 0;
 
       for (const video of missingCourseLinkVideos) {
         processed++;
@@ -915,14 +916,17 @@
         try {
           const result = await syncVideoToCoursesF({ videoId: video.id });
           matched += result.data?.coursesMatched || 0;
-          document.getElementById(`uv-${video.id}`)?.remove();
+          skipped += result.data?.videosSkipped || 0;
+          if ((result.data?.videosSkipped || 0) > 0 || (result.data?.videosProcessed || 0) > 0) {
+            document.getElementById(`uv-${video.id}`)?.remove();
+          }
         } catch (err) {
           failed++;
           console.error("Course sync failed:", video.id, err);
         }
       }
 
-      statusEl.textContent = `Synced ${processed} video${processed !== 1 ? "s" : ""}; ${matched} courses matched${failed ? `; ${failed} failed` : ""}.`;
+      statusEl.textContent = `Synced ${processed - skipped} video${processed - skipped !== 1 ? "s" : ""}; ${matched} courses matched${skipped ? `; ${skipped} skipped` : ""}${failed ? `; ${failed} failed` : ""}.`;
       btn.textContent = "Sync All";
       btn.disabled = false;
       await loadUnmatchedVideos();

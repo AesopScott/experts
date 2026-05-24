@@ -86,13 +86,13 @@ Auto-updated by `/cross-boundary-audit`. Every Cloud Function must appear here w
 | **Producer** | None currently wired in public/admin UI |
 | **Consumer** | `curatedVideos` collection (reads: videoId, title, transcript; batch mode orders by `publishedAt`) |
 | **Consumer** | Aesop Academy REST API v1 — `GET https://aesopacademy.org/aesop-api/catalog.php` |
-| **Consumer** | `videoCourseMappings` collection (writes mappings + scores) |
+| **Consumer** | `videoCourseMappings` collection (skips docs with `hasCourses: true`; writes mappings + scores for unmapped/failed docs) |
 | **Consumer** | Email service (Brevo SMTP) — sends alerts on API failure to `ravenshroud@gmail.com` |
 | **Consumer** | No current UI consumer |
 | **Auth** | Required — `request.auth` checked; throws `HttpsError("unauthenticated")` if absent |
 | **Secrets** | `BREVO_SMTP_KEY` (for email alerts on API failure) |
 | **Input** | `{ videoId?: string }` (optional; if omitted, syncs up to 10 unsynced videos) |
-| **Output** | `{ success: boolean, videosProcessed: number, coursesMatched: number, error?: string }` |
+| **Output** | `{ success: boolean, videosProcessed: number, coursesMatched: number, videosSkipped: number, error?: string }` |
 | **Side effects** | Writes `videoCourseMappings/{videoId}` doc; sends email if Aesop Academy API fails; updates admin page status indicator |
 | **Quota cost** | ~50 quota units per video (YouTube transcript lookup + OpenAI analysis + Aesop API call) |
 

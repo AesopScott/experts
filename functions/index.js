@@ -775,14 +775,25 @@ exports.syncVideoToCourses = onCall({
   }
   let processed = 0;
   let matched = 0;
+  let skipped = 0;
   const errors = [];
 
   try {
     // Determine which videos to sync
     let videoIds;
     if (singleVideoId) {
+      const mappingDoc = await db.collection("videoCourseMappings").doc(singleVideoId).get();
+      if (mappingDoc.exists && mappingDoc.data().hasCourses === true) {
+        console.log("syncVideoToCourses: skipping already mapped video:", singleVideoId);
+        return {
+          success: true,
+          videosProcessed: 0,
+          coursesMatched: 0,
+          videosSkipped: 1,
+        };
+      }
       videoIds = [singleVideoId];
-      console.log("syncVideoToCourses: using single video ID:", singleVideoId);
+      console.log("syncVideoToCourses: using single unmapped video ID:", singleVideoId);
     } else {
       console.log("syncVideoToCourses: querying for videos without mappings...");
       // Get recent videos from curatedVideos
@@ -794,17 +805,23 @@ exports.syncVideoToCourses = onCall({
 
       console.log("syncVideoToCourses: found", videosSnap.docs.length, "recent curated videos");
 
-      // Filter out videos that already have mappings
+      // Filter out videos that already have successful course mappings.
+      // Failed/empty mappings stay eligible so Sync All can retry them.
       const allVideoIds = videosSnap.docs.map(d => d.id);
       const mappingsSnap = await db
         .collection("videoCourseMappings")
         .where("__name__", "in", allVideoIds.length > 0 ? allVideoIds : [""])
         .get();
 
-      const mappedVideoIds = new Set(mappingsSnap.docs.map(d => d.id));
+      const mappedVideoIds = new Set(
+        mappingsSnap.docs
+          .filter(d => d.data().hasCourses === true)
+          .map(d => d.id)
+      );
+      skipped = mappedVideoIds.size;
       videoIds = allVideoIds.filter(id => !mappedVideoIds.has(id));
 
-      console.log("syncVideoToCourses: found", videoIds.length, "videos without mappings:", videoIds);
+      console.log("syncVideoToCourses: found", videoIds.length, "videos needing mappings; skipped already mapped:", skipped);
     }
 
     if (videoIds.length === 0) {
@@ -850,6 +867,7 @@ exports.syncVideoToCourses = onCall({
       success: true,
       videosProcessed: processed,
       coursesMatched: matched,
+      videosSkipped: skipped,
     };
 
     if (errors.length > 0) {
