@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin | 25experts</title>
-  <meta name="page-version" content="v2026.05.24.5">
+  <meta name="page-version" content="v2026.05.24.6">
   <meta name="page-updated" content="2026-05-24">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <meta name="robots" content="noindex, nofollow">
@@ -300,14 +300,30 @@
         btn.parentElement?.parentElement?.insertBefore(statusEl, btn.parentElement.nextSibling);
 
         try {
-          const snap = await getDocs(query(
-            collection(db, "videoCourseMappings"),
-            where("hasCourses", "==", false),
-            orderBy("syncedAt", "desc")
+          // Get recent curated videos
+          const videosSnap = await getDocs(query(
+            collection(db, "curatedVideos"),
+            orderBy("discoveredAt", "desc"),
+            limit(20)
           ));
-          const unmatchedIds = snap.docs.map(d => d.id);
+          const allVideoIds = videosSnap.docs.map(d => d.id);
 
-          if (unmatchedIds.length === 0) {
+          if (allVideoIds.length === 0) {
+            statusEl.textContent = "✓ No videos found!";
+            btn.textContent = "Sync All";
+            btn.disabled = false;
+            return;
+          }
+
+          // Filter out videos that already have mappings
+          const mappingsSnap = await getDocs(query(
+            collection(db, "videoCourseMappings"),
+            where("__name__", "in", allVideoIds)
+          ));
+          const mappedVideoIds = new Set(mappingsSnap.docs.map(d => d.id));
+          const unmappedIds = allVideoIds.filter(id => !mappedVideoIds.has(id));
+
+          if (unmappedIds.length === 0) {
             statusEl.textContent = "✓ All videos already matched!";
             btn.textContent = "Sync All";
             btn.disabled = false;
@@ -315,10 +331,10 @@
           }
 
           const videoDocs = await Promise.all(
-            unmatchedIds.map(vid => getDoc(doc(db, "curatedVideos", vid)))
+            unmappedIds.map(vid => getDoc(doc(db, "curatedVideos", vid)))
           );
           const videos = videoDocs
-            .map((d, i) => d.exists() ? { id: unmatchedIds[i], ...d.data() } : null)
+            .map((d, i) => d.exists() ? { id: unmappedIds[i], ...d.data() } : null)
             .filter(Boolean);
 
           let processed = 0;
