@@ -605,16 +605,29 @@ exports.syncVideoToCourses = onCall({
   timeoutSeconds: 540,
   memory: "512MiB",
 }, async request => {
+  console.log("syncVideoToCourses: function started");
+
   await requireAdmin(request);
+  console.log("syncVideoToCourses: admin check passed");
 
   const db = admin.firestore();
   const { videoId: singleVideoId } = request.data || {};
+  console.log("syncVideoToCourses: videoId =", singleVideoId);
 
   if (singleVideoId && typeof singleVideoId !== "string") {
     throw new HttpsError("invalid-argument", "videoId must be a string");
   }
 
-  const openaiClient = new OpenAI({ apiKey: openaiApiKey.value() });
+  let openaiClient;
+  try {
+    const apiKey = openaiApiKey.value();
+    console.log("syncVideoToCourses: OpenAI API key retrieved");
+    openaiClient = new OpenAI({ apiKey });
+    console.log("syncVideoToCourses: OpenAI client created");
+  } catch (err) {
+    console.error("syncVideoToCourses: Failed to create OpenAI client:", err.message);
+    throw new HttpsError("internal", `Failed to initialize OpenAI client: ${err.message}`);
+  }
   let processed = 0;
   let matched = 0;
   const errors = [];
