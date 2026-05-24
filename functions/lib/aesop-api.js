@@ -22,6 +22,7 @@ function hashCatalog(catalog) {
 }
 
 async function getCatalogFromAPI() {
+  console.log("getCatalogFromAPI: fetching from", API_ENDPOINT);
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 10000);
 
@@ -29,6 +30,8 @@ async function getCatalogFromAPI() {
     const response = await fetch(API_ENDPOINT, {
       signal: controller.signal,
     });
+
+    console.log("getCatalogFromAPI: received response with status", response.status);
 
     if (!response.ok) {
       throw new Error(`API returned ${response.status}: ${response.statusText}`);
@@ -40,6 +43,7 @@ async function getCatalogFromAPI() {
       throw new Error("Invalid catalog format: missing courses array");
     }
 
+    console.log("getCatalogFromAPI: successfully fetched catalog with", catalog.courses.length, "courses");
     return catalog;
   } finally {
     clearTimeout(timeout);
@@ -47,6 +51,8 @@ async function getCatalogFromAPI() {
 }
 
 async function getCatalog(db, forceRefresh = false) {
+  console.log("getCatalog: starting, forceRefresh =", forceRefresh);
+
   if (!db) {
     throw new Error("Firestore instance required");
   }
@@ -55,15 +61,21 @@ async function getCatalog(db, forceRefresh = false) {
 
   if (!forceRefresh) {
     try {
+      console.log("getCatalog: checking cache...");
       const snapshot = await cacheDoc.get();
       if (snapshot.exists) {
         const cached = snapshot.data();
         const cacheAge = Date.now() - cached.cachedAt?.toMillis?.() || 0;
         const isExpired = cacheAge > CACHE_TTL_HOURS * 60 * 60 * 1000;
 
+        console.log("getCatalog: cache age =", cacheAge, "ms, expired =", isExpired);
+
         if (!isExpired) {
+          console.log("getCatalog: returning cached catalog with", cached.catalog.courses.length, "courses");
           return cached.catalog;
         }
+      } else {
+        console.log("getCatalog: no cache found");
       }
     } catch (err) {
       console.warn("Cache read failed, fetching fresh:", err.message);
@@ -73,12 +85,14 @@ async function getCatalog(db, forceRefresh = false) {
   // Fetch fresh catalog
   let catalog;
   try {
+    console.log("getCatalog: fetching fresh catalog from API...");
     catalog = await getCatalogFromAPI();
   } catch (error) {
     console.error("Failed to fetch Aesop Academy API:", error.message);
 
     // Fallback to stale cache if available
     try {
+      console.log("getCatalog: trying stale cache fallback...");
       const snapshot = await cacheDoc.get();
       if (snapshot.exists && snapshot.data().catalog) {
         console.warn("Using stale cache due to API failure");
@@ -93,12 +107,14 @@ async function getCatalog(db, forceRefresh = false) {
 
   // Cache the fresh catalog
   try {
+    console.log("getCatalog: caching fresh catalog with", catalog.courses.length, "courses...");
     const hash = hashCatalog(catalog);
     await cacheDoc.set({
       catalog,
       hash,
       cachedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
+    console.log("getCatalog: cache write successful");
   } catch (err) {
     console.warn("Cache write failed:", err.message);
     // Non-fatal; still return the catalog

@@ -491,6 +491,7 @@ Return as a JSON array of strings, e.g. ["machine learning", "ai fundamentals"]`
   const userPrompt = `${content}\n\nExtract key learning concepts as a JSON array.`;
 
   try {
+    console.log("extractConceptsFromTranscript: calling OpenAI API for gpt-4o-mini...");
     const response = await openaiClient.chat.completions.create({
       model: "gpt-4o-mini",
       max_tokens: 500,
@@ -500,22 +501,37 @@ Return as a JSON array of strings, e.g. ["machine learning", "ai fundamentals"]`
       ],
     });
 
-    const content = response.choices[0]?.message?.content || "";
-    const match = content.match(/\[[\s\S]*\]/);
-    if (!match) return [];
+    console.log("extractConceptsFromTranscript: OpenAI API response received");
+    const msgContent = response.choices[0]?.message?.content || "";
+    console.log("extractConceptsFromTranscript: response content length:", msgContent.length);
+    console.log("extractConceptsFromTranscript: response content:", msgContent.slice(0, 200));
 
+    const match = msgContent.match(/\[[\s\S]*\]/);
+    if (!match) {
+      console.log("extractConceptsFromTranscript: no JSON array found in response");
+      return [];
+    }
+
+    console.log("extractConceptsFromTranscript: found JSON array in response");
     const concepts = JSON.parse(match[0]);
-    return Array.isArray(concepts)
+    const filtered = Array.isArray(concepts)
       ? concepts.filter(c => typeof c === "string" && c.length > 0)
       : [];
+    console.log("extractConceptsFromTranscript: extracted", filtered.length, "concepts:", filtered);
+    return filtered;
   } catch (error) {
-    console.error("OpenAI concept extraction failed:", error.message);
+    console.error("OpenAI concept extraction failed:", error.message, error.stack);
     throw new Error(`Concept extraction failed: ${error.message}`);
   }
 }
 
 async function matchCoursesToConcepts(concepts, courseCatalog) {
+  console.log("matchCoursesToConcepts: starting with", concepts?.length || 0, "concepts");
+  console.log("matchCoursesToConcepts: concepts =", concepts);
+  console.log("matchCoursesToConcepts: courseCatalog has", courseCatalog?.courses?.length || 0, "courses");
+
   if (!concepts || concepts.length === 0 || !courseCatalog?.courses) {
+    console.log("matchCoursesToConcepts: early return - missing concepts or catalog");
     return [];
   }
 
@@ -549,37 +565,60 @@ async function matchCoursesToConcepts(concepts, courseCatalog) {
     }
   }
 
-  return matched.sort((a, b) => b.relevanceScore - a.relevanceScore);
+  const sorted = matched.sort((a, b) => b.relevanceScore - a.relevanceScore);
+  console.log("matchCoursesToConcepts: matched", sorted.length, "courses");
+  if (sorted.length > 0) {
+    console.log("matchCoursesToConcepts: top match:", sorted[0]);
+  }
+  return sorted;
 }
 
 
 async function syncVideoWithRetry(videoId, catalog, openaiClient, db, maxRetries = 2) {
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
+      console.log(`syncVideoWithRetry: attempt ${attempt + 1}/${maxRetries + 1} for videoId ${videoId}`);
+
       const videoDoc = await db.collection("curatedVideos").doc(videoId).get();
-      if (!videoDoc.exists) return { success: false, reason: "video_not_found" };
+      if (!videoDoc.exists) {
+        console.log(`syncVideoWithRetry: video ${videoId} not found in curatedVideos`);
+        return { success: false, reason: "video_not_found" };
+      }
 
       const { transcript, title = "" } = videoDoc.data();
-      if (!transcript) return { success: false, reason: "no_transcript" };
+      console.log(`syncVideoWithRetry: video ${videoId} found, has transcript: ${!!transcript}, title: "${title}"`);
 
+      if (!transcript) {
+        console.log(`syncVideoWithRetry: video ${videoId} has no transcript`);
+        return { success: false, reason: "no_transcript" };
+      }
+
+      console.log(`syncVideoWithRetry: extracting concepts from video ${videoId}...`);
       const concepts = await extractConceptsFromTranscript(transcript, openaiClient, title);
-      const courses = await matchCoursesToConcepts(concepts, catalog);
+      console.log(`syncVideoWithRetry: extracted ${concepts.length} concepts:`, concepts);
 
+      console.log(`syncVideoWithRetry: matching concepts to ${catalog.length} courses...`);
+      const courses = await matchCoursesToConcepts(concepts, catalog);
+      console.log(`syncVideoWithRetry: matched ${courses.length} courses for video ${videoId}`);
+
+      console.log(`syncVideoWithRetry: writing mapping to Firestore for video ${videoId}...`);
       await db.collection("videoCourseMappings").doc(videoId).set({
         videoId,
         courses,
         hasCourses: courses.length > 0,
         syncedAt: admin.firestore.FieldValue.serverTimestamp(),
       });
+      console.log(`syncVideoWithRetry: successfully wrote mapping for video ${videoId}`);
 
       return { success: true, matched: courses.length };
     } catch (error) {
       const isLastAttempt = attempt === maxRetries;
-      console.error(`Sync attempt ${attempt + 1}/${maxRetries + 1} for ${videoId}:`, error.message);
+      console.error(`Sync attempt ${attempt + 1}/${maxRetries + 1} for ${videoId}:`, error.message, error.stack);
 
       if (isLastAttempt) {
         // Final attempt failed, save error and return
         try {
+          console.log(`syncVideoWithRetry: writing error record for video ${videoId} after ${maxRetries + 1} attempts`);
           await db.collection("videoCourseMappings").doc(videoId).set({
             videoId,
             courses: [],
@@ -595,7 +634,9 @@ async function syncVideoWithRetry(videoId, catalog, openaiClient, db, maxRetries
       }
 
       // Retry after brief delay
-      await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempt)));
+      const delayMs = 1000 * Math.pow(2, attempt);
+      console.log(`syncVideoWithRetry: attempt ${attempt + 1} failed, retrying in ${delayMs}ms...`);
+      await new Promise(resolve => setTimeout(resolve, delayMs));
     }
   }
 }
@@ -637,38 +678,49 @@ exports.syncVideoToCourses = onCall({
     let videoIds;
     if (singleVideoId) {
       videoIds = [singleVideoId];
+      console.log("syncVideoToCourses: using single video ID:", singleVideoId);
     } else {
+      console.log("syncVideoToCourses: querying for unmapped videos...");
       const snap = await db
         .collection("videoCourseMappings")
         .where("hasCourses", "==", false)
         .limit(10)
         .get();
       videoIds = snap.docs.map(d => d.id);
+      console.log("syncVideoToCourses: found", videoIds.length, "videos to sync:", videoIds);
     }
 
     if (videoIds.length === 0) {
+      console.log("syncVideoToCourses: no videos to sync, returning early");
       return { success: true, videosProcessed: 0, coursesMatched: 0 };
     }
 
     // Get course catalog once (cached for 24 hours, with retry)
     let catalog;
     try {
+      console.log("syncVideoToCourses: fetching course catalog...");
       catalog = await aesopApi.getCourseCatalog(db);
+      console.log("syncVideoToCourses: catalog fetched, contains", catalog.length, "courses");
     } catch (error) {
       console.error("Catalog fetch failed:", error.message);
       throw new HttpsError("unavailable", "Course catalog unavailable, please try again");
     }
 
     // Process each video with retry
+    console.log("syncVideoToCourses: starting to process", videoIds.length, "videos");
     for (const vid of videoIds) {
+      console.log("syncVideoToCourses: processing video:", vid);
       const result = await syncVideoWithRetry(vid, catalog, openaiClient, db);
+      console.log("syncVideoToCourses: result for", vid, ":", JSON.stringify(result));
 
       if (result.success) {
         processed++;
         matched += result.matched;
+        console.log("syncVideoToCourses: video", vid, "synced successfully, matched =", result.matched);
       } else {
         processed++;
         errors.push({ videoId: vid, reason: result.reason, error: result.error });
+        console.log("syncVideoToCourses: video", vid, "failed:", result.reason, result.error);
 
         if (result.error) {
           await sendSyncErrorEmail(vid, new Error(result.error));
@@ -676,6 +728,7 @@ exports.syncVideoToCourses = onCall({
       }
     }
 
+    console.log("syncVideoToCourses: all videos processed. processed =", processed, ", matched =", matched);
     const response = {
       success: true,
       videosProcessed: processed,
@@ -687,6 +740,7 @@ exports.syncVideoToCourses = onCall({
       response.errorsCount = errors.length;
     }
 
+    console.log("syncVideoToCourses: returning response:", JSON.stringify(response));
     return response;
   } catch (error) {
     console.error("syncVideoToCourses failed:", error.message);
