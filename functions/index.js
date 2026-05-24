@@ -4,7 +4,6 @@ const { onCall, HttpsError } = require("firebase-functions/v2/https");
 const { defineSecret } = require("firebase-functions/params");
 const admin = require("firebase-admin");
 const { YoutubeTranscript } = require("youtube-transcript");
-const { OpenAI } = require("openai");
 const aesopApi = require("./lib/aesop-api.js");
 
 admin.initializeApp();
@@ -490,7 +489,7 @@ async function sendSyncErrorEmail(videoId, error) {
   }
 }
 
-async function extractConceptsFromTranscript(transcript, openaiClient, videoTitle = "") {
+async function extractConceptsFromTranscript(transcript, apiKey, videoTitle = "") {
   if (!transcript || transcript.trim().length === 0) {
     return [];
   }
@@ -510,8 +509,8 @@ Return as a JSON array of strings, e.g. ["machine learning", "ai fundamentals"]`
   const userPrompt = `${content}\n\nExtract key learning concepts as a JSON array.`;
 
   try {
-    console.log("extractConceptsFromTranscript: calling OpenAI API for gpt-4o-mini...");
-    const response = await openaiClient.chat.completions.create({
+    console.log("extractConceptsFromTranscript: calling OpenAI API directly for gpt-4o-mini...");
+    const response = await callOpenAIChatCompletion(apiKey, {
       model: "gpt-4o-mini",
       max_tokens: 500,
       messages: [
@@ -544,6 +543,40 @@ Return as a JSON array of strings, e.g. ["machine learning", "ai fundamentals"]`
     console.log("extractConceptsFromTranscript: using local fallback concepts:", fallback);
     return fallback;
   }
+}
+
+async function callOpenAIChatCompletion(apiKey, payload, maxRetries = 2) {
+  let lastError;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000);
+    try {
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        signal: controller.signal,
+        headers: {
+          "Authorization": `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const bodyText = await response.text();
+      if (!response.ok) {
+        throw new Error(`OpenAI HTTP ${response.status}: ${bodyText.slice(0, 300)}`);
+      }
+      return JSON.parse(bodyText);
+    } catch (error) {
+      lastError = error;
+      console.error(`OpenAI fetch attempt ${attempt + 1}/${maxRetries + 1} failed:`, error.name, error.message, error.cause?.code || "");
+      if (attempt < maxRetries) {
+        await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempt)));
+      }
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+  throw lastError;
 }
 
 function extractConceptsLocally(text) {
@@ -614,7 +647,7 @@ async function matchCoursesToConcepts(concepts, courseCatalog) {
   for (const course of courseCatalog.courses) {
     let score = 0;
     const keywords = (course.keywords || []).map(k => k.toLowerCase());
-    const courseText = `${course.name} ${course.description}`.toLowerCase();
+    const courseText = `${course.name || ""} ${course.description || course.desc || ""}`.toLowerCase();
 
     conceptsLower.forEach(concept => {
       if (keywords.some(kw => kw.includes(concept) || concept.includes(kw))) {
@@ -628,11 +661,11 @@ async function matchCoursesToConcepts(concepts, courseCatalog) {
     const normalizedScore = Math.min(1, score);
     if (normalizedScore > 0) {
       matched.push({
-        id: course.id,
-        name: course.name,
-        desc: course.description,
-        url: course.url,
-        live: course.live,
+        id: course.id || course.url || course.name || "",
+        name: course.name || "Untitled course",
+        desc: course.description || course.desc || "",
+        url: course.url || "https://aesopacademy.org/courses.html",
+        live: course.live !== false,
         relevanceScore: parseFloat(normalizedScore.toFixed(2)),
       });
     }
@@ -647,7 +680,7 @@ async function matchCoursesToConcepts(concepts, courseCatalog) {
 }
 
 
-async function syncVideoWithRetry(videoId, catalog, openaiClient, db, maxRetries = 2) {
+async function syncVideoWithRetry(videoId, catalog, apiKey, db, maxRetries = 2) {
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
       console.log(`syncVideoWithRetry: attempt ${attempt + 1}/${maxRetries + 1} for videoId ${videoId}`);
@@ -667,7 +700,7 @@ async function syncVideoWithRetry(videoId, catalog, openaiClient, db, maxRetries
       }
 
       console.log(`syncVideoWithRetry: extracting concepts from video ${videoId}...`);
-      const concepts = await extractConceptsFromTranscript(transcript, openaiClient, title);
+      const concepts = await extractConceptsFromTranscript(transcript, apiKey, title);
       console.log(`syncVideoWithRetry: extracted ${concepts.length} concepts:`, concepts);
 
       console.log(`syncVideoWithRetry: matching concepts to ${catalog.length} courses...`);
@@ -732,15 +765,13 @@ exports.syncVideoToCourses = onCall({
     throw new HttpsError("invalid-argument", "videoId must be a string");
   }
 
-  let openaiClient;
+  let apiKey;
   try {
-    const apiKey = openaiApiKey.value();
+    apiKey = openaiApiKey.value();
     console.log("syncVideoToCourses: OpenAI API key retrieved");
-    openaiClient = new OpenAI({ apiKey });
-    console.log("syncVideoToCourses: OpenAI client created");
   } catch (err) {
-    console.error("syncVideoToCourses: Failed to create OpenAI client:", err.message);
-    throw new HttpsError("internal", `Failed to initialize OpenAI client: ${err.message}`);
+    console.error("syncVideoToCourses: Failed to retrieve OpenAI API key:", err.message);
+    throw new HttpsError("internal", `Failed to initialize OpenAI API key: ${err.message}`);
   }
   let processed = 0;
   let matched = 0;
@@ -796,7 +827,7 @@ exports.syncVideoToCourses = onCall({
     console.log("syncVideoToCourses: starting to process", videoIds.length, "videos");
     for (const vid of videoIds) {
       console.log("syncVideoToCourses: processing video:", vid);
-      const result = await syncVideoWithRetry(vid, catalog, openaiClient, db);
+      const result = await syncVideoWithRetry(vid, catalog, apiKey, db);
       console.log("syncVideoToCourses: result for", vid, ":", JSON.stringify(result));
 
       if (result.success) {
