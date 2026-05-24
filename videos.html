@@ -8,7 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <title>Curated AI Videos | 25experts</title>
   <meta name="description" content="Browse curated AI videos selected for practical value, with direct source links and Aesop Academy course pathways.">
-  <meta name="page-version" content="v2026.05.24.3">
+  <meta name="page-version" content="v2026.05.24.4">
   <meta name="page-updated" content="2026-05-24">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/videos.html">
@@ -834,9 +834,15 @@
     function groupByMonth(videos, order) {
       const groups = new Map();
       for (const v of videos) {
-        const d   = v.publishedAt ? new Date(v.publishedAt) : new Date();
-        const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-        const label = d.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+        const d = v.publishedAt ? new Date(v.publishedAt) : null;
+        // Undated videos sort as oldest (timestamp 0 in sortByDate); use a key that
+        // collates before any real month so grouping and sort order stay consistent.
+        const key = d && !Number.isNaN(d.getTime())
+          ? `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`
+          : "0000-00";
+        const label = key === "0000-00"
+          ? "Unknown date"
+          : d.toLocaleDateString("en-US", { month: "long", year: "numeric" });
         if (!groups.has(key)) groups.set(key, { label, videos: [] });
         groups.get(key).videos.push(v);
       }
@@ -1144,8 +1150,16 @@
       }
     }
 
+    function debounce(fn, wait) {
+      let timer;
+      return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn(...args), wait);
+      };
+    }
+
     [channelFilter, courseFilter, dateFilter, sortFilter].forEach(el => el.addEventListener("change", applyFilter));
-    searchInput.addEventListener("input", applyFilter);
+    searchInput.addEventListener("input", debounce(applyFilter, 150));
     document.getElementById("clear-filters").addEventListener("click", () => {
       searchInput.value = "";
       channelFilter.value = "all";
