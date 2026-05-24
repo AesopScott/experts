@@ -1,0 +1,13 @@
+import { initializeApp, cert } from '../functions/node_modules/firebase-admin/lib/app/index.js';
+import { getAuth } from '../functions/node_modules/firebase-admin/lib/auth/index.js';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const sa = require('../experts-d7c3d-firebase-adminsdk-fbsvc-82ace7cc5c.json');
+const app = initializeApp({ credential: cert(sa) });
+const auth = getAuth(app);
+const user = await auth.getUserByEmail('ravenshroud@gmail.com');
+console.log('UID:', user.uid);
+console.log('Email verified:', user.emailVerified);
+console.log('Providers:', user.providerData.map(p => p.providerId).join(', '));
+console.log('Password set:', user.providerData.some(p => p.providerId === 'password'));
+process.exit(0);

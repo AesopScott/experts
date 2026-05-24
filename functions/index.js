@@ -414,3 +414,222 @@ exports.fetchVideoMetadata = onCall({
     transcript,
   };
 });
+
+// ── Video to Courses Sync ──────────────────────────────────────────────────────
+
+async function sendSyncErrorEmail(videoId, error) {
+  const to = DEFAULT_TO;
+  const from = DEFAULT_FROM;
+  const subject = `Sync Error: Video ${videoId}`;
+  const message = `Failed to sync video ${videoId} to courses:\n\n${error.message}`;
+
+  try {
+    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        "api-key": brevoApiKey.value(),
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        sender: { email: from, name: "25experts" },
+        to: [{ email: to }],
+        subject,
+        textContent: message,
+      }),
+    });
+
+    if (!response.ok) {
+      console.error(`Failed to send error email: ${response.status}`);
+    }
+  } catch (err) {
+    console.error("Error sending sync error email:", err.message);
+  }
+}
+
+async function extractConceptsFromTranscript(transcript, openaiClient) {
+  if (!transcript || transcript.trim().length === 0) {
+    return [];
+  }
+
+  const systemPrompt = `You are an expert instructional designer analyzing video transcripts.
+Extract 5-10 key learning concepts from the transcript. These should be:
+- Specific, actionable topics (not generic like "introduction" or "conclusion")
+- Topics that Aesop Academy courses might cover
+- Sorted by importance/frequency in the transcript
+
+Return as a JSON array of strings, e.g. ["machine learning", "ai fundamentals"]`;
+
+  const userPrompt = `Transcript (first 4000 chars):\n\n${transcript.slice(0, 4000)}\n\nExtract key learning concepts as a JSON array.`;
+
+  try {
+    const message = await openaiClient.messages.create({
+      model: "gpt-4o-mini",
+      max_tokens: 500,
+      system: systemPrompt,
+      messages: [{ role: "user", content: userPrompt }],
+    });
+
+    const content = message.content[0]?.text || "";
+    const match = content.match(/\[[\s\S]*\]/);
+    if (!match) return [];
+
+    const concepts = JSON.parse(match[0]);
+    return Array.isArray(concepts)
+      ? concepts.filter(c => typeof c === "string" && c.length > 0)
+      : [];
+  } catch (error) {
+    console.error("OpenAI concept extraction failed:", error.message);
+    throw new Error(`Concept extraction failed: ${error.message}`);
+  }
+}
+
+async function matchCoursesToConcepts(concepts, courseCatalog) {
+  if (!concepts || concepts.length === 0 || !courseCatalog?.courses) {
+    return [];
+  }
+
+  const conceptsLower = concepts.map(c => c.toLowerCase());
+  const matched = [];
+
+  for (const course of courseCatalog.courses) {
+    let score = 0;
+    const keywords = (course.keywords || []).map(k => k.toLowerCase());
+    const courseText = `${course.name} ${course.description}`.toLowerCase();
+
+    conceptsLower.forEach(concept => {
+      if (keywords.some(kw => kw.includes(concept) || concept.includes(kw))) {
+        score += 0.5;
+      }
+      if (courseText.includes(concept)) {
+        score += 0.3;
+      }
+    });
+
+    const normalizedScore = Math.min(1, score);
+    if (normalizedScore > 0) {
+      matched.push({
+        id: course.id,
+        name: course.name,
+        desc: course.description,
+        url: course.url,
+        live: course.live,
+        relevanceScore: parseFloat(normalizedScore.toFixed(2)),
+      });
+    }
+  }
+
+  return matched.sort((a, b) => b.relevanceScore - a.relevanceScore);
+}
+
+async function getCourseCatalog() {
+  if (process.env.USE_MOCK_AESOP === "true") {
+    const aesopMock = require("./test/mocks/aesop-academy-api.js");
+    return aesopMock.getCatalog();
+  }
+
+  try {
+    const response = await fetch("https://aesopacademy.org/aesop-api/catalog.php", {
+      timeout: 10000,
+    });
+    if (!response.ok) {
+      throw new Error(`API returned ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    throw new Error(`Failed to fetch course catalog: ${error.message}`);
+  }
+}
+
+exports.syncVideoToCourses = onCall({
+  secrets: [brevoApiKey, openaiApiKey],
+  timeoutSeconds: 540,
+  memory: "512MiB",
+}, async request => {
+  await requireAdmin(request);
+
+  const db = admin.firestore();
+  const { videoId: singleVideoId } = request.data || {};
+
+  if (singleVideoId && typeof singleVideoId !== "string") {
+    throw new HttpsError("invalid-argument", "videoId must be a string");
+  }
+
+  const openaiClient = new OpenAI({ apiKey: openaiApiKey.value() });
+  let processed = 0;
+  let matched = 0;
+
+  try {
+    // Determine which videos to sync
+    let videoIds;
+    if (singleVideoId) {
+      videoIds = [singleVideoId];
+    } else {
+      const snap = await db
+        .collection("videoCourseMappings")
+        .where("hasCourses", "==", false)
+        .limit(10)
+        .get();
+      videoIds = snap.docs.map(d => d.id);
+    }
+
+    if (videoIds.length === 0) {
+      return { success: true, coursesMatched: 0, videosProcessed: 0 };
+    }
+
+    // Get course catalog once
+    const catalog = await getCourseCatalog();
+
+    // Process each video
+    for (const vid of videoIds) {
+      try {
+        const videoDoc = await db.collection("curatedVideos").doc(vid).get();
+        if (!videoDoc.exists) continue;
+
+        const { transcript, title } = videoDoc.data();
+        if (!transcript) continue;
+
+        // Extract concepts
+        const concepts = await extractConceptsFromTranscript(transcript, openaiClient);
+
+        // Match to courses
+        const courses = await matchCoursesToConcepts(concepts, catalog);
+
+        // Write mapping
+        await db.collection("videoCourseMappings").doc(vid).set({
+          videoId: vid,
+          courses,
+          hasCourses: courses.length > 0,
+          syncedAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+
+        processed++;
+        matched += courses.length;
+      } catch (error) {
+        console.error(`Failed to sync video ${vid}:`, error.message);
+        await sendSyncErrorEmail(vid, error);
+
+        // Still write a mapping record with error
+        await db.collection("videoCourseMappings").doc(vid).set({
+          videoId: vid,
+          courses: [],
+          hasCourses: false,
+          syncedAt: admin.firestore.FieldValue.serverTimestamp(),
+          error: error.message,
+        });
+
+        processed++;
+      }
+    }
+
+    return {
+      success: true,
+      videosProcessed: processed,
+      coursesMatched: matched,
+    };
+  } catch (error) {
+    console.error("syncVideoToCourses failed:", error.message);
+    await sendSyncErrorEmail("batch", error);
+    throw new HttpsError("internal", `Sync failed: ${error.message}`);
+  }
+});

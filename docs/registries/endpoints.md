@@ -91,8 +91,8 @@ Auto-updated by `/cross-boundary-audit`. Every Cloud Function must appear here w
 | **Consumer** | `admin.html` — receives response with sync status, updates UI alert |
 | **Auth** | Required — `request.auth` checked; throws `HttpsError("unauthenticated")` if absent |
 | **Secrets** | `BREVO_SMTP_KEY` (for email alerts on API failure) |
-| **Input** | `{ videoId: string }` (optional; if omitted, syncs all unsynced videos) |
-| **Output** | `{ success: boolean, videoId, coursesMatched: number, error?: string }` |
+| **Input** | `{ videoId?: string }` (optional; if omitted, syncs up to 10 unsynced videos) |
+| **Output** | `{ success: boolean, videosProcessed: number, coursesMatched: number, error?: string }` |
 | **Side effects** | Writes `videoCourseMappings/{videoId}` doc; sends email if Aesop Academy API fails; updates admin page status indicator |
 | **Quota cost** | ~50 quota units per video (YouTube transcript lookup + OpenAI analysis + Aesop API call) |
 

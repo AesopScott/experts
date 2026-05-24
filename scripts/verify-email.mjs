@@ -1,0 +1,10 @@
+import { initializeApp, cert } from '../functions/node_modules/firebase-admin/lib/app/index.js';
+import { getAuth } from '../functions/node_modules/firebase-admin/lib/auth/index.js';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const sa = require('../experts-d7c3d-firebase-adminsdk-fbsvc-82ace7cc5c.json');
+const app = initializeApp({ credential: cert(sa) });
+const auth = getAuth(app);
+await auth.updateUser('ALQ1gi3VhWfHoCUPNDC33W6OkHJ2', { emailVerified: true });
+console.log('Email marked verified for ravenshroud@gmail.com');
+process.exit(0);
