@@ -680,14 +680,27 @@ exports.syncVideoToCourses = onCall({
       videoIds = [singleVideoId];
       console.log("syncVideoToCourses: using single video ID:", singleVideoId);
     } else {
-      console.log("syncVideoToCourses: querying for unmapped videos...");
-      const snap = await db
-        .collection("videoCourseMappings")
-        .where("hasCourses", "==", false)
-        .limit(10)
+      console.log("syncVideoToCourses: querying for videos without mappings...");
+      // Get recent videos from curatedVideos
+      const videosSnap = await db
+        .collection("curatedVideos")
+        .orderBy("discoveredAt", "desc")
+        .limit(20)
         .get();
-      videoIds = snap.docs.map(d => d.id);
-      console.log("syncVideoToCourses: found", videoIds.length, "videos to sync:", videoIds);
+
+      console.log("syncVideoToCourses: found", videosSnap.docs.length, "recent curated videos");
+
+      // Filter out videos that already have mappings
+      const allVideoIds = videosSnap.docs.map(d => d.id);
+      const mappingsSnap = await db
+        .collection("videoCourseMappings")
+        .where("__name__", "in", allVideoIds.length > 0 ? allVideoIds : [""])
+        .get();
+
+      const mappedVideoIds = new Set(mappingsSnap.docs.map(d => d.id));
+      videoIds = allVideoIds.filter(id => !mappedVideoIds.has(id));
+
+      console.log("syncVideoToCourses: found", videoIds.length, "videos without mappings:", videoIds);
     }
 
     if (videoIds.length === 0) {
