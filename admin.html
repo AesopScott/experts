@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin | 25experts</title>
-  <meta name="page-version" content="v2026.05.24.2">
+  <meta name="page-version" content="v2026.05.24.3">
   <meta name="page-updated" content="2026-05-24">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <meta name="robots" content="noindex, nofollow">
@@ -108,6 +108,7 @@
     <div>
       <h1>Admin Dashboard</h1>
       <span id="admin-user-label">Checking access…</span>
+      <span style="font-size:11px;color:var(--muted);margin-left:16px;border-left:1px solid var(--line);padding-left:16px;" id="page-version"></span>
     </div>
     <button class="signout-btn" id="signout-btn">Sign out</button>
   </div>
@@ -173,6 +174,8 @@
     onAuthStateChanged(auth, async user => {
       if (!user) { window.location.href = "join.html"; return; }
       document.getElementById("admin-user-label").textContent = user.displayName || user.email;
+      const version = document.querySelector('meta[name="page-version"]')?.content || "unknown";
+      document.getElementById("page-version").textContent = version;
 
       const userSnap = await getDoc(doc(db, "users", user.uid));
       if (!userSnap.exists() || userSnap.data().role !== "admin") {
