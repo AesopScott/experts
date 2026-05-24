@@ -127,6 +127,7 @@
     const lookupChannelFn = httpsCallable(functions, "lookupChannel");
     const fetchVideoMetadataFn = httpsCallable(functions, "fetchVideoMetadata");
     const runDiscoveryNowFn = httpsCallable(functions, "runDiscoveryNow", { timeout: 310000 });
+    const syncVideoToCoursesF = httpsCallable(functions, "syncVideoToCourses", { timeout: 600000 });
     const deleteChannelVideosFn = httpsCallable(functions, "deleteChannelVideos");
     const deleteCreatorVideosFn = httpsCallable(functions, "deleteCreatorVideos");
     const scanAllChannelsFn = httpsCallable(functions, "scanAllChannels", { timeout: 600000 });
@@ -138,6 +139,7 @@
       { key: "leadership-management",label: "AI in Leadership & Management",  color: "#bf563f" },
       { key: "design-creative-gaming",label:"AI in Design, Creative & Gaming",color: "#67508f" },
     ];
+    let missingCourseLinkVideos = [];
     const DOMAIN_MAP = Object.fromEntries(DOMAINS.map(d => [d.key, d]));
 
     function domainSelectHtml(selectedKey = "") {
@@ -244,6 +246,7 @@
               <h2>Videos Missing Course Links</h2>
               <span id="unmatched-count"></span>
               <div style="margin-left:auto;display:flex;gap:8px;">
+                <button id="sync-all-btn" class="approve-btn" style="font-size:13px;padding:6px 14px;min-height:auto;">Sync All</button>
                 <button id="refresh-unmatched-btn" class="approve-btn" style="font-size:13px;padding:6px 14px;min-height:auto;">Refresh</button>
               </div>
             </div>
@@ -259,6 +262,7 @@
       loadUnmatchedVideos();
 
       document.getElementById("refresh-unmatched-btn").addEventListener("click", loadUnmatchedVideos);
+      document.getElementById("sync-all-btn").addEventListener("click", syncAllMissingCourseLinks);
 
       document.getElementById("run-discovery-btn").addEventListener("click", async () => {
         const btn = document.getElementById("run-discovery-btn");
@@ -827,6 +831,7 @@
         const videos = videosSnap.docs
           .map(d => ({ id: d.id, ...d.data() }))
           .filter(v => !mappedWithCourses.has(v.id));
+        missingCourseLinkVideos = videos;
 
         document.getElementById("unmatched-count").textContent =
           videos.length + " video" + (videos.length !== 1 ? "s" : "");
@@ -879,6 +884,48 @@
       link.style.justifyContent = "center";
       wrap.appendChild(link);
       cell.appendChild(wrap);
+    }
+
+    async function syncAllMissingCourseLinks() {
+      const btn = document.getElementById("sync-all-btn");
+      const sectionHead = btn.closest(".section-head");
+      let statusEl = document.getElementById("batch-sync-status");
+      if (!statusEl) {
+        statusEl = document.createElement("span");
+        statusEl.id = "batch-sync-status";
+        statusEl.style.cssText = "font-size:13px;color:var(--muted);margin-left:8px;";
+        sectionHead.appendChild(statusEl);
+      }
+
+      if (missingCourseLinkVideos.length === 0) {
+        statusEl.textContent = "No missing course links.";
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = "Syncing...";
+
+      let processed = 0;
+      let matched = 0;
+      let failed = 0;
+
+      for (const video of missingCourseLinkVideos) {
+        processed++;
+        statusEl.textContent = `Processing ${processed}/${missingCourseLinkVideos.length}...`;
+        try {
+          const result = await syncVideoToCoursesF({ videoId: video.id });
+          matched += result.data?.coursesMatched || 0;
+          document.getElementById(`uv-${video.id}`)?.remove();
+        } catch (err) {
+          failed++;
+          console.error("Course sync failed:", video.id, err);
+        }
+      }
+
+      statusEl.textContent = `Synced ${processed} video${processed !== 1 ? "s" : ""}; ${matched} courses matched${failed ? `; ${failed} failed` : ""}.`;
+      btn.textContent = "Sync All";
+      btn.disabled = false;
+      await loadUnmatchedVideos();
     }
   </script>
 
