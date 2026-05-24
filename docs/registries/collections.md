@@ -121,11 +121,12 @@ Auto-updated by `/cross-boundary-audit`. Every collection that any producer writ
 
 | Role | File | Access |
 |------|------|--------|
-| **Producer** | `functions/src/syncVideoToCourses.js` | `db.collection("videoCourseMappings").doc(videoId).set({...})` — writes mappings after sync |
+| **Producer** | `functions/index.js` · `syncVideoToCourses` | `db.collection("videoCourseMappings").doc(videoId).set({...})` — writes mappings after sync |
 | **Consumer** | `admin.html` | `getDocs(query(..., where("hasCourses","==",false)))` — display unmatched videos list |
 | **Consumer** | `admin.html` | Real-time listener on `videoCourseMappings` — updates admin status indicator |
+| **Consumer** | `videos.html` | `getDoc(doc(db, "videoCourseMappings", videoId))` — displays linked course buttons on video cards |
 
-**Rules:** `allow read, write, delete: if isAdmin()`
+**Rules:** `allow read: if true` · `allow write, delete: if isAdmin()`
 **Doc ID:** `videoId` (YouTube video ID, matches `curatedVideos`)
 **Fields:** `videoId` (string), `courses` (array of {id, name, desc, url, live, relevanceScore}), `syncedAt` (Timestamp), `hasCourses` (boolean), `error?` (string, present if sync failed)
 **Indexes:** none (filtering on `hasCourses` only; single-field indexes auto-created by Firestore)
@@ -144,7 +145,7 @@ Auto-updated by `/cross-boundary-audit`. Every collection that any producer writ
 | `followedChannels/{id}` | admin.html | harvestVideos, discoverChannels, admin.html | ✓ |
 | `curatedVideos/{id}` | harvestVideos, admin.html | videos.html, syncVideoToCourses | ✓ |
 | `candidateChannels/{id}` | discoverChannels | admin.html | ✓ |
-| `videoCourseMappings/{id}` | syncVideoToCourses | admin.html | ✓ |
+| `videoCourseMappings/{id}` | syncVideoToCourses | admin.html, videos.html | ✓ |
 
 ---
 

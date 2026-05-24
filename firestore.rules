@@ -53,7 +53,8 @@ service cloud.firestore {
     }
 
     match /videoCourseMappings/{id} {
-      allow read, write, delete: if isAdmin();
+      allow read: if true;
+      allow write, delete: if isAdmin();
     }
   }
 }

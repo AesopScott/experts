@@ -265,7 +265,6 @@
       border: 1px solid var(--line);
       background: var(--panel);
       transition: box-shadow 0.15s, transform 0.15s;
-      cursor: pointer;
       text-decoration: none; color: inherit;
     }
     .video-card:hover {
@@ -273,6 +272,10 @@
       transform: translateY(-2px);
     }
     .video-card.is-hidden { display: none; }
+    .video-main-link {
+      display: flex; flex-direction: column; flex: 1;
+      text-decoration: none; color: inherit;
+    }
 
     /* Thumbnail */
     .thumb {
@@ -384,6 +387,28 @@
     .link-courses-btn:hover {
       background: #e0f0e8;
     }
+    .course-links {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .course-link {
+      display: block;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 750;
+      line-height: 1.25;
+      text-decoration: none;
+    }
+    .course-link:hover { text-decoration: underline; }
+    .course-link-meta {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 650;
+    }
   </style>
   <link rel="stylesheet" href="assets/site-nav.css?v=20260519-nav3">
 </head>
@@ -433,12 +458,15 @@
     import { db, auth } from "./assets/firebase-init.js";
     import { collection, getDocs, query, orderBy, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js";
 
     const sectionsRoot  = document.getElementById("video-sections");
     const emptyState    = document.getElementById("empty-state");
     const channelFilter = document.getElementById("channel-filter");
     const statTotal     = document.getElementById("stat-total");
     const statSources   = document.getElementById("stat-sources");
+    const functions     = getFunctions();
+    const syncVideoToCourses = httpsCallable(functions, "syncVideoToCourses", { timeout: 600000 });
 
     let allVideos = [];
     let currentUser = null;
@@ -481,29 +509,43 @@
         .replace(/"/g,  "&quot;");
     }
 
-    function renderCard(v) {
-      const isAdmin = currentUser && currentUser.role === "admin";
-      const adminButton = isAdmin ? `<button class="link-courses-btn" data-video-id="${safeHtml(v.id)}">Link Courses</button>` : "";
-      return `
-        <a class="video-card" href="${safeHtml(v.link)}" target="_blank" rel="noopener noreferrer"
-           data-channel="${safeHtml(v.channelName)}"
-           aria-label="${safeHtml(v.title)} by ${safeHtml(v.channelName)} — opens on YouTube">
-          <div class="thumb">
-            <div class="thumb-bg"></div>
-            <img class="thumb-img" src="${safeHtml(v.thumbnail)}" alt="" loading="lazy">
-            <div class="play-btn">▶</div>
-            <span class="yt-badge" aria-hidden="true">YouTube ↗</span>
-          </div>
-          <div class="card-info">
-            <h3 class="card-title">${safeHtml(v.title)}</h3>
-            <div class="card-meta">
-              <span class="card-expert">${safeHtml(v.channelName)}</span>
-            </div>
-            ${adminButton}
-          </div>
-        </a>`;
+    function renderCourseLinks(v) {
+      const courses = Array.isArray(v.courseMapping?.courses) ? v.courseMapping.courses : [];
+      if (courses.length === 0) return "";
+      const links = courses.slice(0, 3).map(course => `
+        <a class="course-link" href="${safeHtml(course.url)}" target="_blank" rel="noopener noreferrer">
+          ${safeHtml(course.name)}
+          <span class="course-link-meta">${course.live === false ? "Planned" : "Course"}</span>
+        </a>`).join("");
+      return `<div class="course-links" aria-label="Related Aesop Academy courses">${links}</div>`;
     }
 
+    function renderCard(v) {
+      const isAdmin = currentUser && currentUser.role === "admin";
+      const adminButton = isAdmin ? `<button type="button" class="link-courses-btn" data-video-id="${safeHtml(v.id)}">Link Courses</button>` : "";
+      return `
+        <article class="video-card" data-channel="${safeHtml(v.channelName)}">
+          <a class="video-main-link" href="${safeHtml(v.link)}" target="_blank" rel="noopener noreferrer"
+             aria-label="${safeHtml(v.title)} by ${safeHtml(v.channelName)} opens on YouTube">
+            <div class="thumb">
+              <div class="thumb-bg"></div>
+              <img class="thumb-img" src="${safeHtml(v.thumbnail)}" alt="" loading="lazy">
+              <div class="play-btn">&#9654;</div>
+              <span class="yt-badge" aria-hidden="true">YouTube -></span>
+            </div>
+          </a>
+          <div class="card-info">
+            <a class="video-main-link" href="${safeHtml(v.link)}" target="_blank" rel="noopener noreferrer">
+              <h3 class="card-title">${safeHtml(v.title)}</h3>
+              <div class="card-meta">
+                <span class="card-expert">${safeHtml(v.channelName)}</span>
+              </div>
+            </a>
+            ${renderCourseLinks(v)}
+            ${adminButton}
+          </div>
+        </article>`;
+    }
     function groupByMonth(videos) {
       const groups = new Map();
       for (const v of videos) {
@@ -556,7 +598,11 @@
     async function load() {
       try {
         const snap = await getDocs(query(collection(db, "curatedVideos"), orderBy("publishedAt", "desc")));
-        allVideos  = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        const videos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        allVideos = await Promise.all(videos.map(async video => ({
+          ...video,
+          courseMapping: await loadCourseMapping(video.id),
+        })));
 
         const channels = [...new Set(allVideos.map(v => v.channelName))].sort();
         channels.forEach(ch => {
@@ -573,6 +619,16 @@
       }
     }
 
+    async function loadCourseMapping(videoId) {
+      try {
+        const mappingDoc = await getDoc(doc(db, "videoCourseMappings", videoId));
+        return mappingDoc.exists() ? mappingDoc.data() : null;
+      } catch (err) {
+        console.warn("Failed to load course mapping:", videoId, err);
+        return null;
+      }
+    }
+
     channelFilter.addEventListener("change", applyFilter);
     document.getElementById("clear-filters").addEventListener("click", () => {
       channelFilter.value = "all";
@@ -580,13 +636,29 @@
     });
 
     // Handle Link Courses button clicks
-    document.addEventListener("click", (e) => {
-      if (e.target.classList.contains("link-courses-btn")) {
-        e.preventDefault();
-        e.stopPropagation();
-        const videoId = e.target.dataset.videoId;
-        console.log("Link Courses clicked for video:", videoId);
-        alert("Course linking feature coming soon!");
+    sectionsRoot.addEventListener("click", async (e) => {
+      const btn = e.target.closest(".link-courses-btn");
+      if (!btn) return;
+      e.preventDefault();
+      e.stopPropagation();
+
+      const videoId = btn.dataset.videoId;
+      btn.disabled = true;
+      btn.textContent = "Linking...";
+
+      try {
+        const result = await syncVideoToCourses({ videoId });
+        const matched = result.data?.coursesMatched || 0;
+        const mapping = await loadCourseMapping(videoId);
+        allVideos = allVideos.map(video =>
+          video.id === videoId ? { ...video, courseMapping: mapping } : video
+        );
+        btn.textContent = matched > 0 ? `Linked ${matched}` : "No matches";
+        applyFilter();
+      } catch (err) {
+        console.error("Course linking failed:", err);
+        btn.textContent = "Link failed";
+        btn.disabled = false;
       }
     });
 

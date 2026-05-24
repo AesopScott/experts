@@ -703,7 +703,7 @@ exports.syncVideoToCourses = onCall({
       // Get recent videos from curatedVideos
       const videosSnap = await db
         .collection("curatedVideos")
-        .orderBy("discoveredAt", "desc")
+        .orderBy("publishedAt", "desc")
         .limit(20)
         .get();
 
