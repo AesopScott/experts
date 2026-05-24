@@ -8,8 +8,8 @@
   <meta http-equiv="Expires" content="0">
   <title>Curated AI Videos | 25experts</title>
   <meta name="description" content="Browse curated AI videos selected for practical value, with direct source links and Aesop Academy course pathways.">
-  <meta name="page-version" content="v2026.05.23.1">
-  <meta name="page-updated" content="2026-05-23">
+  <meta name="page-version" content="v2026.05.24.2">
+  <meta name="page-updated" content="2026-05-24">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/videos.html">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -365,6 +365,25 @@
     @media (max-width: 480px) {
       .video-grid { grid-template-columns: 1fr; }
     }
+
+    .link-courses-btn {
+      display: block;
+      width: 100%;
+      margin-top: 8px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #f5f8f2;
+      color: var(--green);
+      font: inherit;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .link-courses-btn:hover {
+      background: #e0f0e8;
+    }
   </style>
   <link rel="stylesheet" href="assets/site-nav.css?v=20260519-nav3">
 </head>
@@ -410,8 +429,9 @@
   </main>
 
   <script type="module">
-    import { db } from "./assets/firebase-init.js";
-    import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { db, auth } from "./assets/firebase-init.js";
+    import { collection, getDocs, query, orderBy, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
     const sectionsRoot  = document.getElementById("video-sections");
     const emptyState    = document.getElementById("empty-state");
@@ -420,6 +440,24 @@
     const statSources   = document.getElementById("stat-sources");
 
     let allVideos = [];
+    let currentUser = null;
+
+    // Track auth state
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          const userDoc = await getDoc(doc(db, "users", user.uid));
+          currentUser = userDoc.exists() ? { uid: user.uid, ...userDoc.data() } : { uid: user.uid };
+          console.log("User logged in:", currentUser);
+        } catch (err) {
+          console.error("Failed to load user data:", err);
+          currentUser = { uid: user.uid };
+        }
+      } else {
+        currentUser = null;
+        console.log("User logged out");
+      }
+    });
 
     function safeHtml(str) {
       return String(str || "")
@@ -430,6 +468,8 @@
     }
 
     function renderCard(v) {
+      const isAdmin = currentUser && currentUser.role === "admin";
+      const adminButton = isAdmin ? `<button class="link-courses-btn" data-video-id="${safeHtml(v.id)}">Link Courses</button>` : "";
       return `
         <a class="video-card" href="${safeHtml(v.link)}" target="_blank" rel="noopener noreferrer"
            data-channel="${safeHtml(v.channelName)}"
@@ -445,6 +485,7 @@
             <div class="card-meta">
               <span class="card-expert">${safeHtml(v.channelName)}</span>
             </div>
+            ${adminButton}
           </div>
         </a>`;
     }
