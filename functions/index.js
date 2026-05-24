@@ -540,8 +540,62 @@ Return as a JSON array of strings, e.g. ["machine learning", "ai fundamentals"]`
     return filtered;
   } catch (error) {
     console.error("OpenAI concept extraction failed:", error.message, error.stack);
-    throw new Error(`Concept extraction failed: ${error.message}`);
+    const fallback = extractConceptsLocally(`${videoTitle}\n${transcript}`);
+    console.log("extractConceptsFromTranscript: using local fallback concepts:", fallback);
+    return fallback;
   }
+}
+
+function extractConceptsLocally(text) {
+  const normalized = String(text || "").toLowerCase();
+  const knownConcepts = [
+    "ai agents",
+    "workflow automation",
+    "machine learning",
+    "large language models",
+    "prompt engineering",
+    "chatgpt",
+    "claude",
+    "openai",
+    "llm",
+    "automation",
+    "python",
+    "data analysis",
+    "visualization",
+    "marketing",
+    "content creation",
+    "business strategy",
+    "ethics",
+    "responsible ai",
+    "governance",
+    "creativity",
+    "design",
+    "coding",
+    "software development",
+    "kubernetes",
+    "agents",
+  ];
+
+  const found = knownConcepts.filter(concept => normalized.includes(concept));
+  if (found.length >= 5) return found.slice(0, 10);
+
+  const words = normalized
+    .replace(/[^a-z0-9\s-]/g, " ")
+    .split(/\s+/)
+    .filter(word => word.length > 4 && ![
+      "about", "after", "again", "because", "before", "could", "every", "first",
+      "going", "great", "their", "there", "these", "thing", "those", "video",
+      "where", "which", "would", "your", "using", "should", "really",
+    ].includes(word));
+
+  const counts = new Map();
+  for (const word of words) counts.set(word, (counts.get(word) || 0) + 1);
+  const frequent = [...counts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10)
+    .map(([word]) => word);
+
+  return [...new Set([...found, ...frequent])].slice(0, 10);
 }
 
 async function matchCoursesToConcepts(concepts, courseCatalog) {
