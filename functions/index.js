@@ -190,6 +190,44 @@ exports.harvestVideos = onSchedule({
   await commitInBatches(db, operations);
 });
 
+const DOMAIN_KEYWORDS = {
+  "ai-automation": [
+    "automation","workflow","agent","agents","prompt","prompting","llm","gpt","copilot",
+    "n8n","zapier","make.com","automate","no-code","nocode","api","developer","build",
+    "tutorial","tools","productivity","efficiency","claude","openai","chatgpt",
+  ],
+  "finance-investing": [
+    "finance","investing","investment","stock","trading","portfolio","financial","money",
+    "wealth","crypto","bitcoin","market","returns","fund","hedge","analyst","economics",
+    "budget","tax","fintech","banking","accounting","revenue","profit",
+  ],
+  "marketing-growth": [
+    "marketing","sales","growth","leads","social media","content","brand","seo",
+    "advertising","copywriting","email","funnel","conversion","ecommerce","shopify",
+    "influencer","youtube growth","tiktok","instagram","b2b","demand generation",
+  ],
+  "leadership-management": [
+    "leadership","management","business","strategy","team","executive","ceo","founder",
+    "entrepreneur","startup","operations","hr","culture","decision","governance",
+    "corporate","organization","talent","hiring","coaching",
+  ],
+  "design-creative-gaming": [
+    "design","creative","art","game","gaming","visual","video editing","music",
+    "generative","midjourney","stable diffusion","dall-e","graphic","illustration",
+    "animation","3d","unity","unreal","prototype","ux","ui","branding",
+  ],
+};
+
+function suggestDomain(channelName, description) {
+  const text = (channelName + " " + description).toLowerCase();
+  const scores = Object.fromEntries(Object.keys(DOMAIN_KEYWORDS).map(k => [k, 0]));
+  Object.entries(DOMAIN_KEYWORDS).forEach(([domain, keywords]) => {
+    keywords.forEach(kw => { if (text.includes(kw)) scores[domain]++; });
+  });
+  const best = Object.entries(scores).sort((a, b) => b[1] - a[1])[0];
+  return best[1] > 0 ? best[0] : null;
+}
+
 async function runDiscovery(db, apiKey) {
   const [followedSnap, candidateSnap] = await Promise.all([
     db.collection("followedChannels").get(),
@@ -218,11 +256,14 @@ async function runDiscovery(db, apiKey) {
       const channelId = item.id?.channelId;
       if (!channelId || existingIds.has(channelId)) continue;
       existingIds.add(channelId);
+      const channelName = item.snippet?.channelTitle || "";
+      const description = item.snippet?.description || "";
       candidates.push({
         channelId,
-        channelName: item.snippet?.channelTitle || "",
-        description: item.snippet?.description || "",
+        channelName,
+        description,
         thumbnailUrl: item.snippet?.thumbnails?.default?.url || "",
+        suggestedDomain: suggestDomain(channelName, description),
         discoveredAt: admin.firestore.FieldValue.serverTimestamp(),
         status: "pending",
       });
