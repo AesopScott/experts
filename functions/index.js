@@ -524,6 +524,53 @@ async function matchCoursesToConcepts(concepts, courseCatalog) {
 }
 
 
+async function syncVideoWithRetry(videoId, catalog, openaiClient, db, maxRetries = 2) {
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      const videoDoc = await db.collection("curatedVideos").doc(videoId).get();
+      if (!videoDoc.exists) return { success: false, reason: "video_not_found" };
+
+      const { transcript } = videoDoc.data();
+      if (!transcript) return { success: false, reason: "no_transcript" };
+
+      const concepts = await extractConceptsFromTranscript(transcript, openaiClient);
+      const courses = await matchCoursesToConcepts(concepts, catalog);
+
+      await db.collection("videoCourseMappings").doc(videoId).set({
+        videoId,
+        courses,
+        hasCourses: courses.length > 0,
+        syncedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      return { success: true, matched: courses.length };
+    } catch (error) {
+      const isLastAttempt = attempt === maxRetries;
+      console.error(`Sync attempt ${attempt + 1}/${maxRetries + 1} for ${videoId}:`, error.message);
+
+      if (isLastAttempt) {
+        // Final attempt failed, save error and return
+        try {
+          await db.collection("videoCourseMappings").doc(videoId).set({
+            videoId,
+            courses: [],
+            hasCourses: false,
+            syncedAt: admin.firestore.FieldValue.serverTimestamp(),
+            error: error.message,
+            attempts: maxRetries + 1,
+          });
+        } catch (writeErr) {
+          console.error("Failed to write error record:", writeErr.message);
+        }
+        return { success: false, reason: "max_retries_exceeded", error: error.message };
+      }
+
+      // Retry after brief delay
+      await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempt)));
+    }
+  }
+}
+
 exports.syncVideoToCourses = onCall({
   secrets: [brevoApiKey, openaiApiKey],
   timeoutSeconds: 540,
@@ -541,6 +588,7 @@ exports.syncVideoToCourses = onCall({
   const openaiClient = new OpenAI({ apiKey: openaiApiKey.value() });
   let processed = 0;
   let matched = 0;
+  const errors = [];
 
   try {
     // Determine which videos to sync
@@ -557,59 +605,47 @@ exports.syncVideoToCourses = onCall({
     }
 
     if (videoIds.length === 0) {
-      return { success: true, coursesMatched: 0, videosProcessed: 0 };
+      return { success: true, videosProcessed: 0, coursesMatched: 0 };
     }
 
-    // Get course catalog once (cached for 24 hours)
-    const catalog = await aesopApi.getCourseCatalog(db);
+    // Get course catalog once (cached for 24 hours, with retry)
+    let catalog;
+    try {
+      catalog = await aesopApi.getCourseCatalog(db);
+    } catch (error) {
+      console.error("Catalog fetch failed:", error.message);
+      throw new HttpsError("unavailable", "Course catalog unavailable, please try again");
+    }
 
-    // Process each video
+    // Process each video with retry
     for (const vid of videoIds) {
-      try {
-        const videoDoc = await db.collection("curatedVideos").doc(vid).get();
-        if (!videoDoc.exists) continue;
+      const result = await syncVideoWithRetry(vid, catalog, openaiClient, db);
 
-        const { transcript, title } = videoDoc.data();
-        if (!transcript) continue;
-
-        // Extract concepts
-        const concepts = await extractConceptsFromTranscript(transcript, openaiClient);
-
-        // Match to courses
-        const courses = await matchCoursesToConcepts(concepts, catalog);
-
-        // Write mapping
-        await db.collection("videoCourseMappings").doc(vid).set({
-          videoId: vid,
-          courses,
-          hasCourses: courses.length > 0,
-          syncedAt: admin.firestore.FieldValue.serverTimestamp(),
-        });
-
+      if (result.success) {
         processed++;
-        matched += courses.length;
-      } catch (error) {
-        console.error(`Failed to sync video ${vid}:`, error.message);
-        await sendSyncErrorEmail(vid, error);
-
-        // Still write a mapping record with error
-        await db.collection("videoCourseMappings").doc(vid).set({
-          videoId: vid,
-          courses: [],
-          hasCourses: false,
-          syncedAt: admin.firestore.FieldValue.serverTimestamp(),
-          error: error.message,
-        });
-
+        matched += result.matched;
+      } else {
         processed++;
+        errors.push({ videoId: vid, reason: result.reason, error: result.error });
+
+        if (result.error) {
+          await sendSyncErrorEmail(vid, new Error(result.error));
+        }
       }
     }
 
-    return {
+    const response = {
       success: true,
       videosProcessed: processed,
       coursesMatched: matched,
     };
+
+    if (errors.length > 0) {
+      response.errors = errors;
+      response.errorsCount = errors.length;
+    }
+
+    return response;
   } catch (error) {
     console.error("syncVideoToCourses failed:", error.message);
     await sendSyncErrorEmail("batch", error);
