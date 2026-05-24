@@ -806,8 +806,7 @@
       try {
         const snap = await getDocs(query(
           collection(db, "videoCourseMappings"),
-          where("hasCourses", "==", false),
-          orderBy("syncedAt", "desc")
+          where("hasCourses", "==", false)
         ));
         const unmatchedIds = snap.docs.map(d => d.id);
 
