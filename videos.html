@@ -8,7 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <title>Curated AI Videos | 25experts</title>
   <meta name="description" content="Browse curated AI videos selected for practical value, with direct source links and Aesop Academy course pathways.">
-  <meta name="page-version" content="v2026.05.24.2">
+  <meta name="page-version" content="v2026.05.24.3">
   <meta name="page-updated" content="2026-05-24">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/videos.html">
@@ -167,26 +167,49 @@
     /* ── FILTER PANEL ── */
     .filter-panel {
       display: grid;
-      grid-template-columns: minmax(200px,1fr) minmax(200px,1fr) auto;
+      grid-template-columns: repeat(4, minmax(150px,1fr)) auto;
       gap: 12px; align-items: end;
       width: min(1320px,calc(100% - 36px));
-      margin: 0 auto 20px;
+      margin: 0 auto 12px;
       padding: 16px 18px;
       border: 1px solid var(--line); border-radius: 10px;
       background: var(--panel); box-shadow: var(--shadow);
     }
+    .filter-panel .search-field { grid-column: 1 / -1; }
     .field { display: grid; gap: 6px; }
     .field label {
       color: var(--muted); font-size: 11px; font-weight: 850;
       letter-spacing: 0.06em; text-transform: uppercase;
     }
-    select, button {
+    select, button, .filter-panel input {
       min-height: 40px; border: 1px solid var(--line); border-radius: 8px;
       background: #fff; color: var(--ink); font: inherit; font-weight: 750;
     }
     select { padding: 0 12px; }
+    .filter-panel input { padding: 0 12px; font-weight: 600; }
     button { padding: 0 16px; cursor: pointer; }
     button.primary { border-color: var(--green); background: var(--green); color: #fff; }
+
+    /* ── FILTER META (result count + active chips) ── */
+    .filter-meta {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+      width: min(1320px,calc(100% - 36px));
+      margin: 0 auto 20px;
+      min-height: 22px;
+    }
+    .result-count { color: var(--muted); font-size: 13px; font-weight: 750; }
+    .filter-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 10px; border-radius: 999px;
+      background: #e5f2e8; color: var(--green);
+      font-size: 12px; font-weight: 800;
+      border: 1px solid var(--line);
+    }
+    .chip button {
+      min-height: 0; padding: 0; border: 0; background: transparent;
+      color: inherit; font-weight: 900; cursor: pointer; line-height: 1; font-size: 13px;
+    }
 
     /* ── MAIN ── */
     main {
@@ -619,16 +642,49 @@
   </section>
 
   <main id="video-root">
-    <section class="filter-panel" aria-label="Video filters" style="grid-template-columns:1fr auto;">
+    <section class="filter-panel" aria-label="Video filters">
+      <div class="field search-field">
+        <label for="search-input">Search</label>
+        <input id="search-input" type="search" placeholder="Search by video title or creator" autocomplete="off">
+      </div>
       <div class="field">
-        <label for="channel-filter">Filter by channel</label>
+        <label for="channel-filter">Channel</label>
         <select id="channel-filter">
           <option value="all">All channels</option>
         </select>
       </div>
-      <button class="primary" id="clear-filters" type="button" style="align-self:end;">Clear filter</button>
+      <div class="field">
+        <label for="course-filter">Aesop courses</label>
+        <select id="course-filter">
+          <option value="all">All videos</option>
+          <option value="with">With related courses</option>
+          <option value="without">Without courses</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="date-filter">Published</label>
+        <select id="date-filter">
+          <option value="all">Any time</option>
+          <option value="30">Last 30 days</option>
+          <option value="90">Last 90 days</option>
+          <option value="180">Last 6 months</option>
+          <option value="365">Last year</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="sort-filter">Sort</label>
+        <select id="sort-filter">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+        </select>
+      </div>
+      <button class="primary" id="clear-filters" type="button" style="align-self:end;">Clear filters</button>
     </section>
-    <section class="empty-state" id="empty-state">No videos match this filter.</section>
+    <div class="filter-meta" aria-live="polite">
+      <span class="result-count" id="result-count"></span>
+      <div class="filter-chips" id="filter-chips"></div>
+    </div>
+    <section class="empty-state" id="empty-state">No videos match these filters.</section>
     <section class="stats" aria-label="Library summary">
       <article class="stat"><strong id="stat-total">—</strong><span>videos in the library</span></article>
       <article class="stat"><strong id="stat-sources">—</strong><span>channels followed</span></article>
@@ -673,7 +729,13 @@
 
     const sectionsRoot  = document.getElementById("video-sections");
     const emptyState    = document.getElementById("empty-state");
+    const searchInput   = document.getElementById("search-input");
     const channelFilter = document.getElementById("channel-filter");
+    const courseFilter  = document.getElementById("course-filter");
+    const dateFilter    = document.getElementById("date-filter");
+    const sortFilter    = document.getElementById("sort-filter");
+    const resultCount   = document.getElementById("result-count");
+    const filterChips   = document.getElementById("filter-chips");
     const statTotal     = document.getElementById("stat-total");
     const statSources   = document.getElementById("stat-sources");
     const courseModal   = document.getElementById("course-modal");
@@ -769,7 +831,7 @@
           </div>
         </article>`;
     }
-    function groupByMonth(videos) {
+    function groupByMonth(videos, order) {
       const groups = new Map();
       for (const v of videos) {
         const d   = v.publishedAt ? new Date(v.publishedAt) : new Date();
@@ -778,7 +840,8 @@
         if (!groups.has(key)) groups.set(key, { label, videos: [] });
         groups.get(key).videos.push(v);
       }
-      return [...groups.entries()].sort((a, b) => b[0].localeCompare(a[0]));
+      const dir = order === "oldest" ? 1 : -1;
+      return [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]) * dir);
     }
 
     function buildSection(label, videos, isFirst) {
@@ -807,15 +870,96 @@
 
     function render(videos) {
       sectionsRoot.innerHTML = "";
-      const groups = groupByMonth(videos);
+      const groups = groupByMonth(videos, sortFilter.value);
       groups.forEach(([, g], i) => sectionsRoot.appendChild(buildSection(g.label, g.videos, i === 0)));
-      statTotal.textContent = videos.length;
       emptyState.classList.toggle("is-visible", videos.length === 0);
     }
 
+    const DAY_MS = 24 * 60 * 60 * 1000;
+
+    function matchesSearch(v, term) {
+      if (!term) return true;
+      return `${v.title || ""} ${v.channelName || ""}`.toLowerCase().includes(term);
+    }
+
+    function matchesCourses(v, mode) {
+      if (mode === "all") return true;
+      const courseCount = Array.isArray(v.courseMapping?.courses) ? v.courseMapping.courses.length : 0;
+      const hasCourses = Boolean(v.courseMapping?.hasCourses) || courseCount > 0;
+      return mode === "with" ? hasCourses : !hasCourses;
+    }
+
+    function matchesDate(v, days) {
+      if (days === "all") return true;
+      if (!v.publishedAt) return false;
+      const published = new Date(v.publishedAt).getTime();
+      if (Number.isNaN(published)) return false;
+      return published >= Date.now() - Number(days) * DAY_MS;
+    }
+
+    function sortByDate(videos, order) {
+      const dir = order === "oldest" ? 1 : -1;
+      return [...videos].sort((a, b) => {
+        const ta = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+        const tb = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+        return (ta - tb) * dir;
+      });
+    }
+
+    function getFilteredVideos() {
+      const term = searchInput.value.trim().toLowerCase();
+      const channel = channelFilter.value;
+      const courseMode = courseFilter.value;
+      const dateMode = dateFilter.value;
+      const filtered = allVideos.filter(v =>
+        (channel === "all" || v.channelName === channel) &&
+        matchesSearch(v, term) &&
+        matchesCourses(v, courseMode) &&
+        matchesDate(v, dateMode)
+      );
+      return sortByDate(filtered, sortFilter.value);
+    }
+
+    function updateResultCount(count) {
+      const total = allVideos.length;
+      resultCount.textContent = count === total
+        ? `${total} video${total !== 1 ? "s" : ""}`
+        : `Showing ${count} of ${total} videos`;
+    }
+
+    const DATE_LABELS = { "30": "Last 30 days", "90": "Last 90 days", "180": "Last 6 months", "365": "Last year" };
+
+    function renderFilterChips() {
+      const chips = [];
+      const term = searchInput.value.trim();
+      if (term) chips.push({ key: "search", label: `Search: "${term}"` });
+      if (channelFilter.value !== "all") chips.push({ key: "channel", label: `Channel: ${channelFilter.value}` });
+      if (courseFilter.value !== "all") {
+        chips.push({ key: "course", label: courseFilter.value === "with" ? "With Aesop courses" : "Without courses" });
+      }
+      if (dateFilter.value !== "all") chips.push({ key: "date", label: DATE_LABELS[dateFilter.value] });
+      if (sortFilter.value !== "newest") chips.push({ key: "sort", label: "Oldest first" });
+
+      filterChips.innerHTML = chips.map(c => `
+        <span class="chip">${safeHtml(c.label)}
+          <button type="button" data-clear-chip="${c.key}" aria-label="Remove this filter">x</button>
+        </span>`).join("");
+    }
+
+    function clearChip(key) {
+      if (key === "search")  searchInput.value = "";
+      if (key === "channel") channelFilter.value = "all";
+      if (key === "course")  courseFilter.value = "all";
+      if (key === "date")    dateFilter.value = "all";
+      if (key === "sort")    sortFilter.value = "newest";
+      applyFilter();
+    }
+
     function applyFilter() {
-      const sel = channelFilter.value;
-      render(sel === "all" ? allVideos : allVideos.filter(v => v.channelName === sel));
+      const filtered = getFilteredVideos();
+      render(filtered);
+      updateResultCount(filtered.length);
+      renderFilterChips();
     }
 
     async function load() {
@@ -835,7 +979,8 @@
         });
 
         statSources.textContent = channels.length;
-        render(allVideos);
+        statTotal.textContent = allVideos.length;
+        applyFilter();
         maybeOpenRequestedCoursePicker();
       } catch (err) {
         console.error("Failed to load videos:", err);
@@ -999,10 +1144,19 @@
       }
     }
 
-    channelFilter.addEventListener("change", applyFilter);
+    [channelFilter, courseFilter, dateFilter, sortFilter].forEach(el => el.addEventListener("change", applyFilter));
+    searchInput.addEventListener("input", applyFilter);
     document.getElementById("clear-filters").addEventListener("click", () => {
+      searchInput.value = "";
       channelFilter.value = "all";
+      courseFilter.value = "all";
+      dateFilter.value = "all";
+      sortFilter.value = "newest";
       applyFilter();
+    });
+    filterChips.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-clear-chip]");
+      if (btn) clearChip(btn.dataset.clearChip);
     });
 
     // Handle Link Courses button clicks
