@@ -542,12 +542,11 @@
   </div>
 
   <script type="module">
-    import { db, app } from "./assets/firebase-init.js";
+    import { db, app, auth } from "./assets/firebase-init.js";
     import { collection, getDocs, query, orderBy, doc, getDoc, setDoc, serverTimestamp, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { httpsCallable, getFunctions } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js";
 
-    const auth = getAuth(app);
     const functions = getFunctions(app, "us-central1");
 
     const sectionsRoot  = document.getElementById("video-sections");
