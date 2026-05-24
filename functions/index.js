@@ -467,20 +467,24 @@ async function sendSyncErrorEmail(videoId, error) {
   }
 }
 
-async function extractConceptsFromTranscript(transcript, openaiClient) {
+async function extractConceptsFromTranscript(transcript, openaiClient, videoTitle = "") {
   if (!transcript || transcript.trim().length === 0) {
     return [];
   }
 
-  const systemPrompt = `You are an expert instructional designer analyzing video transcripts.
-Extract 5-10 key learning concepts from the transcript. These should be:
+  const systemPrompt = `You are an expert instructional designer analyzing video content.
+Extract 5-10 key learning concepts from the video title and transcript. These should be:
 - Specific, actionable topics (not generic like "introduction" or "conclusion")
 - Topics that Aesop Academy courses might cover
-- Sorted by importance/frequency in the transcript
+- Sorted by importance/frequency in the content
 
 Return as a JSON array of strings, e.g. ["machine learning", "ai fundamentals"]`;
 
-  const userPrompt = `Transcript (first 4000 chars):\n\n${transcript.slice(0, 4000)}\n\nExtract key learning concepts as a JSON array.`;
+  let content = "";
+  if (videoTitle) content += `Title: ${videoTitle}\n\n`;
+  content += `Transcript (first 4000 chars):\n\n${transcript.slice(0, 4000)}`;
+
+  const userPrompt = `${content}\n\nExtract key learning concepts as a JSON array.`;
 
   try {
     const response = await openaiClient.chat.completions.create({
@@ -551,10 +555,10 @@ async function syncVideoWithRetry(videoId, catalog, openaiClient, db, maxRetries
       const videoDoc = await db.collection("curatedVideos").doc(videoId).get();
       if (!videoDoc.exists) return { success: false, reason: "video_not_found" };
 
-      const { transcript } = videoDoc.data();
+      const { transcript, title = "" } = videoDoc.data();
       if (!transcript) return { success: false, reason: "no_transcript" };
 
-      const concepts = await extractConceptsFromTranscript(transcript, openaiClient);
+      const concepts = await extractConceptsFromTranscript(transcript, openaiClient, title);
       const courses = await matchCoursesToConcepts(concepts, catalog);
 
       await db.collection("videoCourseMappings").doc(videoId).set({
