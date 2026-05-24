@@ -150,18 +150,17 @@ Auto-updated by `/cross-boundary-audit`. Every collection that any producer writ
 
 ## Audit Trail
 
-**Last audit:** 2026-05-23T20:30:00Z (by /cross-boundary-audit, Task #3 start)
+**Last audit:** 2026-05-23T22:00:00Z (by /cross-boundary-audit, Task #3 complete)
 
-**Boundaries checked:** Firestore collections
+**Boundaries checked:** Firestore collections (9 active + 1 orphan)
 
 **Evidence recorded:**
 - 9 entries with complete producer/consumer pairs ✓
-- 1 entry with gap (orphan producer) ⚠
+- 1 entry with gap (orphan producer) ⚠ — `expert_applications` (intentional, form not yet wired)
 - 0 entries with shape mismatches
-- New identifiers introduced on Task #3: `videoCourseMappings` collection
-- Registries match current code diff: yes (Task #3 boundaries anticipated)
+- New identifiers from Task #3: `videoCourseMappings` (added, complete producer/consumer pair)
+- Registries match current code: yes ✓
 
-**Gaps identified:**
-- ⚠ orphan producer — `expert_applications` collection — produced by form (not yet wired to any page), never consumed
+**Summary:** All Task #3 boundaries wired correctly. `videoCourseMappings` fully integrated into syncVideoToCourses function and admin.html UI. No new gaps introduced.
 
 **Status:** Audit complete

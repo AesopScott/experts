@@ -54,17 +54,17 @@ Auto-updated by `/cross-boundary-audit`. Every secret accessed via `defineSecret
 
 ## Audit Trail
 
-**Last audit:** 2026-05-23T20:30:00Z (by /cross-boundary-audit, Task #3 start)
+**Last audit:** 2026-05-23T22:00:00Z (by /cross-boundary-audit, Task #3 complete)
 
 **Boundaries checked:** Firebase Secret Manager keys
 
 **Evidence recorded:**
-- 2 entries with complete producer/consumer pairs ✓
+- 3 entries with complete producer/consumer pairs ✓
 - 0 entries with gaps
 - 0 entries with rotation mismatches
-- New identifiers introduced on Task #3: none (reuses existing BREVO_SMTP_KEY)
-- Registries match current code diff: yes (Task #3 uses existing secrets)
+- New identifiers from Task #3: `OPENAI_API_KEY` (added for syncVideoToCourses concept extraction)
+- Registries match current code: yes ✓
 
-**Gaps identified:** none
+**Summary:** All Task #3 secrets defined and documented. OPENAI_API_KEY pending deployment (manual setup required before production). No new gaps introduced.
 
 **Status:** Audit complete
