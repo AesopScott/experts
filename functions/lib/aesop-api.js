@@ -12,7 +12,7 @@
 const crypto = require("crypto");
 
 const CACHE_DOC = "aesop-catalog-cache";
-const CACHE_COLLECTION = "__system__";
+const CACHE_COLLECTION = "_cache";
 const CACHE_TTL_HOURS = 24;
 const API_ENDPOINT = "https://aesopacademy.org/aesop-api/catalog.php";
 
@@ -29,6 +29,10 @@ async function getCatalogFromAPI() {
   try {
     const response = await fetch(API_ENDPOINT, {
       signal: controller.signal,
+      headers: {
+        "User-Agent": "25experts/1.0",
+        "Accept": "application/json",
+      },
     });
 
     console.log("getCatalogFromAPI: received response with status", response.status);
