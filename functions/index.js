@@ -5,6 +5,7 @@ const { defineSecret } = require("firebase-functions/params");
 const admin = require("firebase-admin");
 const { YoutubeTranscript } = require("youtube-transcript");
 const { OpenAI } = require("openai");
+const aesopApi = require("./lib/aesop-api.js");
 
 admin.initializeApp();
 
@@ -522,24 +523,6 @@ async function matchCoursesToConcepts(concepts, courseCatalog) {
   return matched.sort((a, b) => b.relevanceScore - a.relevanceScore);
 }
 
-async function getCourseCatalog() {
-  if (process.env.USE_MOCK_AESOP === "true") {
-    const aesopMock = require("./test/mocks/aesop-academy-api.js");
-    return aesopMock.getCatalog();
-  }
-
-  try {
-    const response = await fetch("https://aesopacademy.org/aesop-api/catalog.php", {
-      timeout: 10000,
-    });
-    if (!response.ok) {
-      throw new Error(`API returned ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    throw new Error(`Failed to fetch course catalog: ${error.message}`);
-  }
-}
 
 exports.syncVideoToCourses = onCall({
   secrets: [brevoApiKey, openaiApiKey],
@@ -577,8 +560,8 @@ exports.syncVideoToCourses = onCall({
       return { success: true, coursesMatched: 0, videosProcessed: 0 };
     }
 
-    // Get course catalog once
-    const catalog = await getCourseCatalog();
+    // Get course catalog once (cached for 24 hours)
+    const catalog = await aesopApi.getCourseCatalog(db);
 
     // Process each video
     for (const vid of videoIds) {
