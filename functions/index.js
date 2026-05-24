@@ -146,6 +146,9 @@ async function fetchTranscript(videoId) {
   }
 }
 
+// Only ingest videos published on or after this date.
+const INGEST_CUTOFF = new Date("2026-01-01T00:00:00Z");
+
 exports.harvestVideos = onSchedule({
   schedule: "0 */8 * * *",
   secrets: [youtubeApiKey],
@@ -177,6 +180,9 @@ exports.harvestVideos = onSchedule({
       const s = item.snippet;
       const videoId = s.resourceId?.videoId;
       if (!videoId) continue;
+
+      // Skip videos published before 2026.
+      if (s.publishedAt && new Date(s.publishedAt) < INGEST_CUTOFF) continue;
 
       // Check if transcript already exists to avoid redundant fetches
       const existingDoc = await db.collection("curatedVideos").doc(videoId).get();
