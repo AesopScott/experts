@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin | 25experts</title>
-  <meta name="page-version" content="v2026.05.24.6">
+  <meta name="page-version" content="v2026.05.24.7">
   <meta name="page-updated" content="2026-05-24">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <meta name="robots" content="noindex, nofollow">
@@ -120,7 +120,7 @@
   <script type="module">
     import { auth, db, firebaseApp } from "./assets/firebase-init.js";
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { collection, getDocs, doc, getDoc, updateDoc, deleteDoc, setDoc, serverTimestamp, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { collection, getDocs, doc, getDoc, updateDoc, deleteDoc, setDoc, serverTimestamp, query, orderBy, where, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js";
 
     const functions = getFunctions(firebaseApp);
