@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin | 25experts</title>
-  <meta name="page-version" content="v2026.05.23.3">
-  <meta name="page-updated" content="2026-05-23">
+  <meta name="page-version" content="v2026.05.24.1">
+  <meta name="page-updated" content="2026-05-24">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -241,7 +241,10 @@
             <div class="section-head">
               <h2>Unmatched Videos</h2>
               <span id="unmatched-count"></span>
-              <button id="sync-all-btn" class="approve-btn" style="margin-left:auto;font-size:13px;padding:6px 14px;min-height:auto;">Sync All</button>
+              <div style="margin-left:auto;display:flex;gap:8px;">
+                <button id="test-sync-btn" class="approve-btn" style="font-size:13px;padding:6px 14px;min-height:auto;background:var(--gold);color:var(--ink);" title="Sync first available video">Test Sync</button>
+                <button id="sync-all-btn" class="approve-btn" style="font-size:13px;padding:6px 14px;min-height:auto;">Sync All</button>
+              </div>
             </div>
             <div id="unmatched-content"><div class="loading-state">Loading unmatched videos…</div></div>
           </div>
@@ -253,6 +256,35 @@
       loadCandidateChannels();
       setupAddVideo();
       loadUnmatchedVideos();
+
+      document.getElementById("test-sync-btn").addEventListener("click", async () => {
+        const btn = document.getElementById("test-sync-btn");
+        btn.disabled = true;
+        btn.textContent = "⧖ Testing…";
+
+        try {
+          const result = await syncVideoToCoursesF({});
+
+          if (result.data?.success) {
+            const processed = result.data.videosProcessed || 0;
+            const matched = result.data.coursesMatched || 0;
+            btn.textContent = `✓ Synced ${processed} video${processed !== 1 ? 's' : ''} (${matched} courses)`;
+            btn.style.background = "var(--green)";
+            btn.style.color = "#fff";
+            setTimeout(() => loadUnmatchedVideos(), 2000);
+          } else {
+            btn.textContent = "✗ Sync failed";
+            btn.style.background = "var(--red2)";
+            btn.style.color = "var(--red)";
+          }
+        } catch (err) {
+          console.error("Test sync failed:", err);
+          btn.textContent = "✗ Error";
+          btn.style.background = "var(--red2)";
+          btn.style.color = "var(--red)";
+        }
+        btn.disabled = false;
+      });
 
       document.getElementById("run-discovery-btn").addEventListener("click", async () => {
         const btn = document.getElementById("run-discovery-btn");
