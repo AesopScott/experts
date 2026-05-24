@@ -139,15 +139,33 @@ async function commitInBatches(db, operations) {
 }
 
 // Fetch plain-text transcript for a videoId. Returns null if unavailable.
+// Falls back to video title + description if captions aren't available.
 // Caps at 100 000 chars to stay well under Firestore's 1 MB document limit.
 async function fetchTranscript(videoId) {
   try {
     const segments = await YoutubeTranscript.fetchTranscript(videoId, { lang: "en" });
-    if (!segments || segments.length === 0) return null;
-    const text = segments.map(s => s.text).join(" ").replace(/\s+/g, " ").trim();
-    return text.slice(0, 100000) || null;
+    if (segments && segments.length > 0) {
+      const text = segments.map(s => s.text).join(" ").replace(/\s+/g, " ").trim();
+      return text.slice(0, 100000) || null;
+    }
   } catch {
-    // Transcript unavailable, disabled, or not in English — not an error.
+    // Transcript unavailable — try fallback
+  }
+
+  // Fallback: use YouTube API to fetch title + description
+  try {
+    const apiKey = youtubeApiKey.value();
+    const url = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=snippet&key=${apiKey}`;
+    const res = await fetch(url);
+    if (!res.ok) return null;
+
+    const data = await res.json();
+    const video = data.items?.[0]?.snippet;
+    if (!video) return null;
+
+    const fallback = `${video.title}. ${video.description}`.replace(/\s+/g, " ").trim();
+    return fallback.slice(0, 100000) || null;
+  } catch {
     return null;
   }
 }
