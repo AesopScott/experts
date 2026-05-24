@@ -141,7 +141,7 @@ async function commitInBatches(db, operations) {
 // Fetch plain-text transcript for a videoId. Returns null if unavailable.
 // Falls back to video title + description if captions aren't available.
 // Caps at 100 000 chars to stay well under Firestore's 1 MB document limit.
-async function fetchTranscript(videoId) {
+async function fetchTranscript(videoId, apiKey = "") {
   try {
     const segments = await YoutubeTranscript.fetchTranscript(videoId, { lang: "en" });
     if (segments && segments.length > 0) {
@@ -152,9 +152,10 @@ async function fetchTranscript(videoId) {
     // Transcript unavailable — try fallback
   }
 
-  // Fallback: use YouTube API to fetch title + description
+  // Fallback: use YouTube API to fetch title + description (only if API key available)
+  if (!apiKey) return null;
+
   try {
-    const apiKey = youtubeApiKey.value();
     const url = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=snippet&key=${apiKey}`;
     const res = await fetch(url);
     if (!res.ok) return null;
@@ -211,7 +212,7 @@ exports.harvestVideos = onSchedule({
       // Check if transcript already exists to avoid redundant fetches
       const existingDoc = await db.collection("curatedVideos").doc(videoId).get();
       const hasTranscript = existingDoc.exists && existingDoc.data().transcript !== undefined;
-      const transcript = hasTranscript ? existingDoc.data().transcript : await fetchTranscript(videoId);
+      const transcript = hasTranscript ? existingDoc.data().transcript : await fetchTranscript(videoId, apiKey);
 
       operations.push({
         type: "set",
@@ -421,7 +422,7 @@ exports.fetchVideoMetadata = onCall({
   if (!video) throw new HttpsError("not-found", "Video not found");
   const s = video.snippet;
 
-  const transcript = await fetchTranscript(videoId);
+  const transcript = await fetchTranscript(videoId, apiKey);
 
   return {
     videoId,
@@ -771,7 +772,7 @@ exports.scanAllChannels = onCall({
 
       const existingDoc = await db.collection("curatedVideos").doc(videoId).get();
       const hasTranscript = existingDoc.exists && existingDoc.data().transcript !== undefined;
-      const transcript = hasTranscript ? existingDoc.data().transcript : await fetchTranscript(videoId);
+      const transcript = hasTranscript ? existingDoc.data().transcript : await fetchTranscript(videoId, apiKey);
 
       operations.push({
         type: "set",
