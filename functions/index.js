@@ -3,6 +3,7 @@ const { onSchedule } = require("firebase-functions/v2/scheduler");
 const { onCall, HttpsError } = require("firebase-functions/v2/https");
 const { defineSecret } = require("firebase-functions/params");
 const admin = require("firebase-admin");
+const { YoutubeTranscript } = require("youtube-transcript");
 
 admin.initializeApp();
 
@@ -131,11 +132,25 @@ async function commitInBatches(db, operations) {
   }
 }
 
+// Fetch plain-text transcript for a videoId. Returns null if unavailable.
+// Caps at 100 000 chars to stay well under Firestore's 1 MB document limit.
+async function fetchTranscript(videoId) {
+  try {
+    const segments = await YoutubeTranscript.fetchTranscript(videoId, { lang: "en" });
+    if (!segments || segments.length === 0) return null;
+    const text = segments.map(s => s.text).join(" ").replace(/\s+/g, " ").trim();
+    return text.slice(0, 100000) || null;
+  } catch {
+    // Transcript unavailable, disabled, or not in English — not an error.
+    return null;
+  }
+}
+
 exports.harvestVideos = onSchedule({
   schedule: "0 */8 * * *",
   secrets: [youtubeApiKey],
-  timeoutSeconds: 300,
-  memory: "256MiB",
+  timeoutSeconds: 540,
+  memory: "512MiB",
 }, async () => {
   const db = admin.firestore();
   const channelsSnap = await db.collection("followedChannels").get();
@@ -163,6 +178,11 @@ exports.harvestVideos = onSchedule({
       const videoId = s.resourceId?.videoId;
       if (!videoId) continue;
 
+      // Check if transcript already exists to avoid redundant fetches
+      const existingDoc = await db.collection("curatedVideos").doc(videoId).get();
+      const hasTranscript = existingDoc.exists && existingDoc.data().transcript !== undefined;
+      const transcript = hasTranscript ? existingDoc.data().transcript : await fetchTranscript(videoId);
+
       operations.push({
         type: "set",
         ref: db.collection("curatedVideos").doc(videoId),
@@ -174,6 +194,7 @@ exports.harvestVideos = onSchedule({
           channelName: channelName || s.channelTitle || "",
           channelId,
           publishedAt: s.publishedAt || "",
+          transcript,
           addedAt: admin.firestore.FieldValue.serverTimestamp(),
         },
         options: { merge: true },
@@ -370,6 +391,8 @@ exports.fetchVideoMetadata = onCall({
   if (!video) throw new HttpsError("not-found", "Video not found");
   const s = video.snippet;
 
+  const transcript = await fetchTranscript(videoId);
+
   return {
     videoId,
     title: s.title || "",
@@ -378,5 +401,6 @@ exports.fetchVideoMetadata = onCall({
     publishedAt: s.publishedAt || new Date().toISOString(),
     thumbnail: s.thumbnails?.high?.url || s.thumbnails?.default?.url || "",
     link: `https://www.youtube.com/watch?v=${videoId}`,
+    transcript,
   };
 });
