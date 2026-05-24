@@ -69,7 +69,10 @@ async function getCatalog(db, forceRefresh = false) {
       const snapshot = await cacheDoc.get();
       if (snapshot.exists) {
         const cached = snapshot.data();
-        const cacheAge = Date.now() - cached.cachedAt?.toMillis?.() || 0;
+        const cachedAt = cached.cachedAt instanceof Object && typeof cached.cachedAt.toMillis === 'function'
+          ? cached.cachedAt.toMillis()
+          : cached.cachedAt || 0;
+        const cacheAge = Date.now() - cachedAt;
         const isExpired = cacheAge > CACHE_TTL_HOURS * 60 * 60 * 1000;
 
         console.log("getCatalog: cache age =", cacheAge, "ms, expired =", isExpired);
@@ -116,7 +119,7 @@ async function getCatalog(db, forceRefresh = false) {
     await cacheDoc.set({
       catalog,
       hash,
-      cachedAt: admin.firestore.FieldValue.serverTimestamp(),
+      cachedAt: Date.now(),
     });
     console.log("getCatalog: cache write successful");
   } catch (err) {
