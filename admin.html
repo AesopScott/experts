@@ -290,6 +290,7 @@
         btn.disabled = true;
         status.textContent = "Scanning…";
         status.style.color = "var(--muted)";
+
         try {
           const result = await scanAllChannelsFn();
           const { scanned = 0, videosAdded = 0 } = result.data || {};
@@ -301,8 +302,9 @@
           status.textContent = "✗ Error — see console";
           status.style.color = "var(--red)";
         } finally {
+          btn.disabled = false;
+          // Clear status message after 5 seconds
           setTimeout(() => {
-            btn.disabled = false;
             status.textContent = "";
           }, 5000);
         }
