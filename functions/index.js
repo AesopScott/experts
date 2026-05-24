@@ -148,27 +148,30 @@ async function fetchTranscript(videoId, apiKey = "") {
       const text = segments.map(s => s.text).join(" ").replace(/\s+/g, " ").trim();
       return text.slice(0, 100000) || null;
     }
-  } catch {
-    // Transcript unavailable — try fallback
+  } catch (err) {
+    console.warn(`Transcript fetch failed for ${videoId}: ${err.message}`);
   }
 
   // Fallback: use YouTube API to fetch title + description (only if API key available)
-  if (!apiKey) return null;
-
-  try {
-    const url = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=snippet&key=${apiKey}`;
-    const res = await fetch(url);
-    if (!res.ok) return null;
-
-    const data = await res.json();
-    const video = data.items?.[0]?.snippet;
-    if (!video) return null;
-
-    const fallback = `${video.title}. ${video.description}`.replace(/\s+/g, " ").trim();
-    return fallback.slice(0, 100000) || null;
-  } catch {
-    return null;
+  if (apiKey) {
+    try {
+      const url = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=snippet&key=${apiKey}`;
+      const res = await fetch(url);
+      if (res.ok) {
+        const data = await res.json();
+        const video = data.items?.[0]?.snippet;
+        if (video?.title || video?.description) {
+          const fallback = `${video.title || ""}. ${video.description || ""}`.replace(/\s+/g, " ").trim();
+          if (fallback.length > 0) return fallback.slice(0, 100000);
+        }
+      }
+    } catch (err) {
+      console.warn(`YouTube API fallback failed for ${videoId}: ${err.message}`);
+    }
   }
+
+  // No transcript found
+  return null;
 }
 
 // Only ingest videos published on or after this date.
