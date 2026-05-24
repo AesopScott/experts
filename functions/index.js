@@ -465,14 +465,16 @@ Return as a JSON array of strings, e.g. ["machine learning", "ai fundamentals"]`
   const userPrompt = `Transcript (first 4000 chars):\n\n${transcript.slice(0, 4000)}\n\nExtract key learning concepts as a JSON array.`;
 
   try {
-    const message = await openaiClient.messages.create({
+    const response = await openaiClient.chat.completions.create({
       model: "gpt-4o-mini",
       max_tokens: 500,
-      system: systemPrompt,
-      messages: [{ role: "user", content: userPrompt }],
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
     });
 
-    const content = message.content[0]?.text || "";
+    const content = response.choices[0]?.message?.content || "";
     const match = content.match(/\[[\s\S]*\]/);
     if (!match) return [];
 
