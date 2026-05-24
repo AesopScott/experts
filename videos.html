@@ -8,8 +8,8 @@
   <meta http-equiv="Expires" content="0">
   <title>Curated AI Videos | 25experts</title>
   <meta name="description" content="Browse curated AI videos selected for practical value, with direct source links and Aesop Academy course pathways.">
-  <meta name="page-version" content="v2026.05.24.1">
-  <meta name="page-updated" content="2026-05-24">
+  <meta name="page-version" content="v2026.05.23.1">
+  <meta name="page-updated" content="2026-05-23">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/videos.html">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -365,117 +365,6 @@
     @media (max-width: 480px) {
       .video-grid { grid-template-columns: 1fr; }
     }
-
-    /* ── MODAL ── */
-    .modal-overlay {
-      display: none;
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 100;
-      align-items: center; justify-content: center;
-    }
-    .modal-overlay.is-open { display: flex; }
-    .modal {
-      background: var(--panel);
-      border-radius: 12px;
-      max-width: 600px; width: 90%;
-      max-height: 80vh; overflow-y: auto;
-      padding: 28px;
-      box-shadow: 0 20px 60px rgba(17,31,25,0.25);
-    }
-    .modal h2 {
-      margin: 0 0 20px;
-      font-size: 24px; font-weight: 900;
-    }
-    .modal-search {
-      margin-bottom: 20px;
-      display: flex; gap: 8px;
-    }
-    .modal-search input {
-      flex: 1; padding: 10px 14px;
-      border: 1px solid var(--line); border-radius: 8px;
-      font: inherit; font-size: 14px;
-    }
-    .course-list {
-      margin-bottom: 20px;
-      max-height: 400px; overflow-y: auto;
-      border: 1px solid var(--line); border-radius: 8px;
-      padding: 8px;
-    }
-    .course-item {
-      display: flex; align-items: flex-start; gap: 10px;
-      padding: 10px;
-      border-radius: 6px;
-      transition: background 0.15s;
-    }
-    .course-item:hover { background: #f5f8f2; }
-    .course-item input[type="checkbox"] {
-      margin-top: 3px; flex-shrink: 0;
-      cursor: pointer;
-    }
-    .course-item label {
-      flex: 1; cursor: pointer;
-      font-size: 14px; line-height: 1.4;
-    }
-    .course-name {
-      display: block; font-weight: 700; color: var(--ink);
-    }
-    .course-code {
-      display: block; font-size: 12px; color: var(--muted);
-      margin-top: 2px;
-    }
-    .modal-actions {
-      display: flex; gap: 10px; justify-content: flex-end;
-    }
-    .modal-actions button {
-      min-height: 40px; padding: 0 20px;
-      border-radius: 8px; border: 1px solid var(--line);
-      background: #fff; color: var(--ink);
-      font: inherit; font-weight: 700; cursor: pointer;
-    }
-    .modal-actions button.save {
-      border-color: var(--green); background: var(--green);
-      color: #fff;
-    }
-    .modal-actions button:hover { opacity: 0.9; }
-    .modal-status {
-      padding: 10px 14px;
-      border-radius: 6px;
-      margin-top: 16px;
-      font-size: 13px;
-      display: none;
-    }
-    .modal-status.info {
-      display: block;
-      background: #e0f0e8; color: var(--green);
-    }
-    .modal-status.loading {
-      display: block;
-      background: #ddeaf5; color: var(--marketing);
-    }
-    .modal-status.error {
-      display: block;
-      background: #fce8e8; color: #c53030;
-    }
-
-    /* Admin-only button */
-    .card-actions {
-      display: flex; gap: 6px;
-      padding: 0 13px 8px;
-      margin-top: auto;
-    }
-    .link-courses-btn {
-      flex: 1;
-      min-height: 32px; padding: 0 10px;
-      border-radius: 6px; border: 1px solid var(--line);
-      background: #f5f8f2; color: var(--green);
-      font: inherit; font-weight: 700; font-size: 12px;
-      cursor: pointer;
-      transition: background 0.15s, border-color 0.15s;
-    }
-    .link-courses-btn:hover {
-      background: #e0f0e8; border-color: var(--green);
-    }
   </style>
   <link rel="stylesheet" href="assets/site-nav.css?v=20260519-nav3">
 </head>
@@ -520,34 +409,9 @@
     <div id="video-sections"></div>
   </main>
 
-  <div class="modal-overlay" id="course-modal-overlay">
-    <div class="modal">
-      <h2>Link Courses to Video</h2>
-      <div class="modal-search">
-        <input
-          type="text"
-          id="course-search-input"
-          placeholder="Search courses..."
-          aria-label="Search courses">
-      </div>
-      <div class="course-list" id="course-list"></div>
-      <div class="modal-status loading" id="modal-loading">Loading courses...</div>
-      <div class="modal-status error" id="modal-error" style="display:none;"></div>
-      <div class="modal-status info" id="modal-info" style="display:none;"></div>
-      <div class="modal-actions">
-        <button type="button" id="modal-cancel">Cancel</button>
-        <button type="button" class="save" id="modal-save">Save</button>
-      </div>
-    </div>
-  </div>
-
   <script type="module">
-    import { db, app, auth } from "./assets/firebase-init.js";
-    import { collection, getDocs, query, orderBy, doc, getDoc, setDoc, serverTimestamp, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { httpsCallable, getFunctions } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js";
-
-    const functions = getFunctions(app, "us-central1");
+    import { db } from "./assets/firebase-init.js";
+    import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const sectionsRoot  = document.getElementById("video-sections");
     const emptyState    = document.getElementById("empty-state");
@@ -555,20 +419,7 @@
     const statTotal     = document.getElementById("stat-total");
     const statSources   = document.getElementById("stat-sources");
 
-    const courseModalOverlay = document.getElementById("course-modal-overlay");
-    const courseList        = document.getElementById("course-list");
-    const courseSearchInput  = document.getElementById("course-search-input");
-    const modalCancel       = document.getElementById("modal-cancel");
-    const modalSave         = document.getElementById("modal-save");
-    const modalLoading      = document.getElementById("modal-loading");
-    const modalError        = document.getElementById("modal-error");
-    const modalInfo         = document.getElementById("modal-info");
-
     let allVideos = [];
-    let allCourses = [];
-    let currentUser = null;
-    let currentVideoId = null;
-    let selectedCourseIds = new Set();
 
     function safeHtml(str) {
       return String(str || "")
@@ -578,141 +429,7 @@
         .replace(/"/g,  "&quot;");
     }
 
-    async function loadCourseCatalog() {
-      try {
-        const getCourseCatalog = httpsCallable(functions, "getCourseCatalog");
-        const result = await getCourseCatalog();
-        return result.data.courses || [];
-      } catch (err) {
-        console.error("Failed to load course catalog:", err);
-        return [];
-      }
-    }
-
-    async function openCourseModal(videoId, videoTitle) {
-      currentVideoId = videoId;
-      selectedCourseIds.clear();
-
-      modalLoading.style.display = "block";
-      modalError.style.display = "none";
-      modalInfo.style.display = "none";
-      courseList.innerHTML = "";
-
-      if (!allCourses.length) {
-        allCourses = await loadCourseCatalog();
-        if (!allCourses.length) {
-          modalLoading.style.display = "none";
-          modalError.textContent = "Failed to load courses. Please try again.";
-          modalError.style.display = "block";
-          return;
-        }
-      }
-
-      try {
-        const mappingRef = doc(db, "videoCourseMappings", videoId);
-        const mappingSnap = await getDoc(mappingRef);
-        if (mappingSnap.exists()) {
-          const mapping = mappingSnap.data();
-          if (mapping.courseIds && Array.isArray(mapping.courseIds)) {
-            mapping.courseIds.forEach(id => selectedCourseIds.add(id));
-          }
-        }
-      } catch (err) {
-        console.error("Failed to load existing mappings:", err);
-      }
-
-      renderCourseList(allCourses);
-      modalLoading.style.display = "none";
-      courseModalOverlay.classList.add("is-open");
-    }
-
-    function renderCourseList(courses) {
-      courseList.innerHTML = courses.map(course => `
-        <div class="course-item">
-          <input
-            type="checkbox"
-            id="course-${safeHtml(course.id || course.code)}"
-            value="${safeHtml(course.id || course.code)}"
-            ${selectedCourseIds.has(course.id || course.code) ? "checked" : ""}
-            aria-label="Select ${safeHtml(course.name)}">
-          <label for="course-${safeHtml(course.id || course.code)}">
-            <span class="course-name">${safeHtml(course.name || course.title)}</span>
-            <span class="course-code">${safeHtml(course.code || "")}</span>
-          </label>
-        </div>
-      `).join("");
-
-      courseList.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
-        checkbox.addEventListener("change", (e) => {
-          const courseId = e.target.value;
-          if (e.target.checked) {
-            selectedCourseIds.add(courseId);
-          } else {
-            selectedCourseIds.delete(courseId);
-          }
-        });
-      });
-    }
-
-    function filterCourses() {
-      const query = courseSearchInput.value.toLowerCase();
-      const filtered = allCourses.filter(course => {
-        const name = (course.name || course.title || "").toLowerCase();
-        const code = (course.code || "").toLowerCase();
-        return name.includes(query) || code.includes(query);
-      });
-      renderCourseList(filtered);
-    }
-
-    async function saveCourseMapping() {
-      if (!currentVideoId) return;
-
-      modalSave.disabled = true;
-      modalLoading.style.display = "block";
-
-      try {
-        const mappingRef = doc(db, "videoCourseMappings", currentVideoId);
-        if (selectedCourseIds.size > 0) {
-          await setDoc(mappingRef, {
-            videoId: currentVideoId,
-            courseIds: Array.from(selectedCourseIds),
-            manual: true,
-            syncedAt: serverTimestamp(),
-          });
-          modalInfo.textContent = `Saved ${selectedCourseIds.size} course${selectedCourseIds.size !== 1 ? "s" : ""} to this video.`;
-          modalInfo.style.display = "block";
-        } else {
-          await deleteDoc(mappingRef);
-          modalInfo.textContent = "Course mapping removed.";
-          modalInfo.style.display = "block";
-        }
-        setTimeout(() => {
-          courseModalOverlay.classList.remove("is-open");
-          location.reload();
-        }, 1000);
-      } catch (err) {
-        console.error("Failed to save mapping:", err);
-        modalError.textContent = "Failed to save. Please try again.";
-        modalError.style.display = "block";
-      } finally {
-        modalSave.disabled = false;
-        modalLoading.style.display = "none";
-      }
-    }
-
-    function closeCourseModal() {
-      courseModalOverlay.classList.remove("is-open");
-      selectedCourseIds.clear();
-      currentVideoId = null;
-    }
-
     function renderCard(v) {
-      const adminButton = currentUser && currentUser.role === "admin"
-        ? `<div class="card-actions">
-             <button type="button" class="link-courses-btn" data-video-id="${safeHtml(v.id)}" data-video-title="${safeHtml(v.title)}">Link Courses</button>
-           </div>`
-        : "";
-
       return `
         <a class="video-card" href="${safeHtml(v.link)}" target="_blank" rel="noopener noreferrer"
            data-channel="${safeHtml(v.channelName)}"
@@ -728,7 +445,6 @@
             <div class="card-meta">
               <span class="card-expert">${safeHtml(v.channelName)}</span>
             </div>
-            ${adminButton}
           </div>
         </a>`;
     }
@@ -766,17 +482,6 @@
       section.querySelector(".month-toggle").addEventListener("click", () => {
         section.dataset.open = section.dataset.open === "true" ? "false" : "true";
       });
-
-      section.querySelectorAll(".link-courses-btn").forEach(btn => {
-        btn.addEventListener("click", (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          const videoId = btn.dataset.videoId;
-          const videoTitle = btn.dataset.videoTitle;
-          openCourseModal(videoId, videoTitle);
-        });
-      });
-
       return section;
     }
 
@@ -812,33 +517,6 @@
         sectionsRoot.innerHTML = `<div style="padding:40px;text-align:center;color:var(--muted);">Failed to load videos. Please refresh.</div>`;
       }
     }
-
-    // Auth state listener
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        try {
-          const userDoc = await getDoc(doc(db, "users", user.uid));
-          currentUser = userDoc.exists() ? { uid: user.uid, ...userDoc.data() } : { uid: user.uid };
-        } catch (err) {
-          console.error("Failed to load user data:", err);
-          currentUser = { uid: user.uid };
-        }
-      } else {
-        currentUser = null;
-      }
-      render(allVideos);
-    });
-
-    // Modal event listeners
-    courseSearchInput.addEventListener("input", filterCourses);
-    modalCancel.addEventListener("click", closeCourseModal);
-    modalSave.addEventListener("click", saveCourseMapping);
-
-    courseModalOverlay.addEventListener("click", (e) => {
-      if (e.target === courseModalOverlay) {
-        closeCourseModal();
-      }
-    });
 
     channelFilter.addEventListener("change", applyFilter);
     document.getElementById("clear-filters").addEventListener("click", () => {
