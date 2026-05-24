@@ -139,9 +139,10 @@ async function commitInBatches(db, operations) {
 }
 
 // Fetch plain-text transcript for a videoId. Returns null if unavailable.
-// Falls back to video title + description if captions aren't available.
+// Tries: user captions (en), auto-generated captions, then falls back to title+description.
 // Caps at 100 000 chars to stay well under Firestore's 1 MB document limit.
 async function fetchTranscript(videoId, apiKey = "") {
+  // Try user-created English captions first
   try {
     const segments = await YoutubeTranscript.fetchTranscript(videoId, { lang: "en" });
     if (segments && segments.length > 0) {
@@ -149,12 +150,26 @@ async function fetchTranscript(videoId, apiKey = "") {
       return text.slice(0, 100000) || null;
     }
   } catch (err) {
-    console.warn(`Transcript fetch failed for ${videoId}: ${err.message}`);
+    console.warn(`User captions fetch failed for ${videoId}: ${err.message}`);
+  }
+
+  // Try auto-generated captions (no lang specified gets all available)
+  try {
+    console.log(`Trying auto-generated captions for ${videoId}...`);
+    const segments = await YoutubeTranscript.fetchTranscript(videoId);
+    if (segments && segments.length > 0) {
+      const text = segments.map(s => s.text).join(" ").replace(/\s+/g, " ").trim();
+      console.log(`Got auto-generated captions for ${videoId}, ${text.length} chars`);
+      return text.slice(0, 100000) || null;
+    }
+  } catch (err) {
+    console.warn(`Auto-generated captions fetch failed for ${videoId}: ${err.message}`);
   }
 
   // Fallback: use YouTube API to fetch title + description (only if API key available)
   if (apiKey) {
     try {
+      console.log(`Using title+description fallback for ${videoId}...`);
       const url = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=snippet&key=${apiKey}`;
       const res = await fetch(url);
       if (res.ok) {
@@ -162,7 +177,10 @@ async function fetchTranscript(videoId, apiKey = "") {
         const video = data.items?.[0]?.snippet;
         if (video?.title || video?.description) {
           const fallback = `${video.title || ""}. ${video.description || ""}`.replace(/\s+/g, " ").trim();
-          if (fallback.length > 0) return fallback.slice(0, 100000);
+          if (fallback.length > 0) {
+            console.log(`Using title+description for ${videoId}, ${fallback.length} chars`);
+            return fallback.slice(0, 100000);
+          }
         }
       }
     } catch (err) {
@@ -171,6 +189,7 @@ async function fetchTranscript(videoId, apiKey = "") {
   }
 
   // No transcript found
+  console.warn(`No transcript available for ${videoId}`);
   return null;
 }
 
