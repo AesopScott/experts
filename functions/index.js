@@ -4,11 +4,13 @@ const { onCall, HttpsError } = require("firebase-functions/v2/https");
 const { defineSecret } = require("firebase-functions/params");
 const admin = require("firebase-admin");
 const { YoutubeTranscript } = require("youtube-transcript");
+const { OpenAI } = require("openai");
 
 admin.initializeApp();
 
 const brevoApiKey = defineSecret("BREVO_SMTP_KEY");
 const youtubeApiKey = defineSecret("YOUTUBE_API_KEY");
+const openaiApiKey = defineSecret("OPENAI_API_KEY");
 
 const DEFAULT_TO = "scott@aesopacademy.org";
 const DEFAULT_FROM = "noreply@aesopacademy.org";
@@ -63,8 +65,10 @@ exports.sendFormSubmissionEmail = onDocumentCreated({
   if (!snapshot) return;
 
   const submission = snapshot.data();
-  const to = submission.to || DEFAULT_TO;
-  const from = submission.from || DEFAULT_FROM;
+  // Always use hardcoded addresses — never trust client-supplied `to`/`from`
+  // fields, which would turn this function into an arbitrary email relay.
+  const to = DEFAULT_TO;
+  const from = DEFAULT_FROM;
 
   try {
     const response = await fetch("https://api.brevo.com/v3/smtp/email", {

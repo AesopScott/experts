@@ -29,12 +29,26 @@ Auto-updated by `/cross-boundary-audit`. Every secret accessed via `defineSecret
 
 ---
 
+## `OPENAI_API_KEY` ✨ NEW — Task #3
+
+| Property | Value |
+|----------|-------|
+| **Set by** | Manual — `firebase functions:secrets:set OPENAI_API_KEY` (pending) |
+| **Consumer(s)** | `functions/index.js` · `syncVideoToCourses` — extracts learning concepts from video transcripts |
+| **Authenticates against** | OpenAI API (`api.openai.com`) via Node.js SDK v4.104.0 |
+| **Model** | `gpt-4o-mini` (cost-optimized for transcript concept extraction) |
+| **Rotation** | Manual — rotate in OpenAI Dashboard, update Secret Manager, redeploy functions |
+| **Security note** | Key must never be committed to git or hardcoded in any file — Secret Manager only |
+
+---
+
 ## Summary
 
 | Secret | Set by | Consumer(s) | Status |
 |--------|--------|-------------|--------|
 | `BREVO_SMTP_KEY` | Manual | sendFormSubmissionEmail, syncVideoToCourses | ✓ |
 | `YOUTUBE_API_KEY` | Manual | harvestVideos, discoverChannels, lookupChannel, fetchVideoMetadata | ✓ |
+| `OPENAI_API_KEY` | Manual | syncVideoToCourses | ⧖ pending |
 
 ---
 
