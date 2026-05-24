@@ -132,6 +132,7 @@ async function commitInBatches(db, operations) {
     for (const op of operations.slice(i, i + BATCH_LIMIT)) {
       if (op.type === "set") batch.set(op.ref, op.data, op.options || {});
       else if (op.type === "update") batch.update(op.ref, op.data);
+      else if (op.type === "delete") batch.delete(op.ref);
     }
     await batch.commit();
   }
@@ -651,4 +652,132 @@ exports.syncVideoToCourses = onCall({
     await sendSyncErrorEmail("batch", error);
     throw new HttpsError("internal", `Sync failed: ${error.message}`);
   }
+});
+
+// ── Channel Management ────────────────────────────────────────────────────────
+
+exports.deleteChannelVideos = onCall({
+}, async request => {
+  await requireAdmin(request);
+
+  const { channelId } = request.data || {};
+  if (!channelId) throw new HttpsError("invalid-argument", "channelId is required");
+
+  const db = admin.firestore();
+  const videosSnap = await db
+    .collection("curatedVideos")
+    .where("channelId", "==", channelId)
+    .get();
+
+  const batch = db.batch();
+  let count = 0;
+  for (const doc of videosSnap.docs) {
+    batch.delete(doc.ref);
+    count++;
+  }
+
+  if (count > 0) await batch.commit();
+  return { deleted: count };
+});
+
+exports.deleteCreatorVideos = onCall({
+}, async request => {
+  await requireAdmin(request);
+
+  const { channelName } = request.data || {};
+  if (!channelName) throw new HttpsError("invalid-argument", "channelName is required");
+
+  const db = admin.firestore();
+  const videosSnap = await db
+    .collection("curatedVideos")
+    .where("channelName", "==", channelName)
+    .get();
+
+  const operations = [];
+  for (const doc of videosSnap.docs) {
+    operations.push({ type: "delete", ref: doc.ref });
+  }
+
+  await commitInBatches(db, operations.map(op => ({
+    type: op.type,
+    ref: op.ref,
+  })));
+
+  return { deleted: operations.length };
+});
+
+exports.scanAllChannels = onCall({
+  secrets: [youtubeApiKey],
+  timeoutSeconds: 540,
+  memory: "512MiB",
+}, async request => {
+  await requireAdmin(request);
+
+  const db = admin.firestore();
+  const apiKey = youtubeApiKey.value();
+  const channelsSnap = await db.collection("followedChannels").get();
+
+  if (channelsSnap.empty) {
+    return { scanned: 0, videosAdded: 0 };
+  }
+
+  const operations = [];
+  let videosAdded = 0;
+
+  for (const channelDoc of channelsSnap.docs) {
+    const { channelId, channelName } = channelDoc.data();
+    const uploadsPlaylistId = channelId.replace(/^UC/, "UU");
+
+    const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=10&key=${apiKey}`;
+    let data;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      data = await res.json();
+    } catch {
+      continue;
+    }
+
+    for (const item of (data.items || [])) {
+      const s = item.snippet;
+      const videoId = s.resourceId?.videoId;
+      if (!videoId) continue;
+
+      if (s.publishedAt && new Date(s.publishedAt) < INGEST_CUTOFF) continue;
+
+      const existingDoc = await db.collection("curatedVideos").doc(videoId).get();
+      const hasTranscript = existingDoc.exists && existingDoc.data().transcript !== undefined;
+      const transcript = hasTranscript ? existingDoc.data().transcript : await fetchTranscript(videoId);
+
+      operations.push({
+        type: "set",
+        ref: db.collection("curatedVideos").doc(videoId),
+        data: {
+          videoId,
+          title: s.title || "",
+          link: `https://www.youtube.com/watch?v=${videoId}`,
+          thumbnail: s.thumbnails?.high?.url || s.thumbnails?.default?.url || "",
+          channelName: channelName || s.channelTitle || "",
+          channelId,
+          publishedAt: s.publishedAt || "",
+          transcript,
+          addedAt: admin.firestore.FieldValue.serverTimestamp(),
+        },
+        options: { merge: true },
+      });
+      videosAdded++;
+    }
+
+    operations.push({
+      type: "update",
+      ref: channelDoc.ref,
+      data: { lastHarvested: admin.firestore.FieldValue.serverTimestamp() },
+    });
+  }
+
+  if (operations.length > 0) {
+    await commitInBatches(db, operations);
+  }
+
+  return { scanned: channelsSnap.size, videosAdded };
 });

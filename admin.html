@@ -127,6 +127,9 @@
     const fetchVideoMetadataFn = httpsCallable(functions, "fetchVideoMetadata");
     const runDiscoveryNowFn = httpsCallable(functions, "runDiscoveryNow", { timeout: 310000 });
     const syncVideoToCoursesF = httpsCallable(functions, "syncVideoToCourses", { timeout: 600000 });
+    const deleteChannelVideosFn = httpsCallable(functions, "deleteChannelVideos");
+    const deleteCreatorVideosFn = httpsCallable(functions, "deleteCreatorVideos");
+    const scanAllChannelsFn = httpsCallable(functions, "scanAllChannels", { timeout: 600000 });
 
     const DOMAINS = [
       { key: "ai-automation",        label: "AI & Automation",                color: "#145f47" },
@@ -192,6 +195,19 @@
           </div>
 
           <div class="section-card">
+            <div class="section-head"><h2>Admin Actions</h2></div>
+            <div id="admin-actions" style="padding: 16px 24px; display: flex; flex-direction: column; gap: 12px;">
+              <div>
+                <label style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 700;">Delete Creator Content</label>
+                <div style="display: flex; gap: 8px;">
+                  <input type="text" id="creator-name-input" class="text-input" placeholder="Creator name (e.g., Andrej Karpathy)" style="flex: 1;">
+                  <button id="delete-creator-btn" class="approve-btn">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-card">
             <div class="section-head"><h2>Users</h2><span id="user-count"></span></div>
             <div id="users-content"><div class="loading-state">Loading users…</div></div>
           </div>
@@ -202,7 +218,7 @@
           </div>
 
           <div class="section-card">
-            <div class="section-head"><h2>Followed Channels</h2><span id="followed-count"></span></div>
+            <div class="section-head"><h2>Followed Channels</h2><span id="followed-count"></span><button id="scan-all-btn" class="btn-secondary" style="margin-left:auto;font-size:13px;padding:6px 14px;">Scan All</button></div>
             <div id="add-channel-form"></div>
             <div id="followed-channels-content"><div class="loading-state">Loading channels…</div></div>
           </div>
@@ -254,6 +270,56 @@
           setTimeout(() => {
             btn.disabled = false;
             btn.textContent = "Run Discovery Now";
+          }, 4000);
+        }
+      });
+
+      document.getElementById("scan-all-btn").addEventListener("click", async () => {
+        const btn = document.getElementById("scan-all-btn");
+        btn.disabled = true;
+        btn.textContent = "Scanning…";
+        try {
+          const result = await scanAllChannelsFn();
+          const { scanned = 0, videosAdded = 0 } = result.data || {};
+          btn.textContent = `Scanned ${scanned}, added ${videosAdded}`;
+          await loadFollowedChannels();
+        } catch (err) {
+          console.error(err);
+          btn.textContent = "Error — see console";
+        } finally {
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.textContent = "Scan All";
+          }, 4000);
+        }
+      });
+
+      document.getElementById("delete-creator-btn").addEventListener("click", async () => {
+        const input = document.getElementById("creator-name-input");
+        const creatorName = input.value.trim();
+        if (!creatorName) {
+          alert("Please enter a creator name");
+          return;
+        }
+        if (!confirm(`Delete ALL videos by "${creatorName}"? This cannot be undone.`)) {
+          return;
+        }
+        const btn = document.getElementById("delete-creator-btn");
+        btn.disabled = true;
+        btn.textContent = "Deleting…";
+        try {
+          const result = await deleteCreatorVideosFn({ channelName: creatorName });
+          const deleted = result.data?.deleted ?? 0;
+          btn.textContent = `Deleted ${deleted} video${deleted !== 1 ? "s" : ""}`;
+          input.value = "";
+          await loadUnmatchedVideos();
+        } catch (err) {
+          console.error(err);
+          btn.textContent = "Error — see console";
+        } finally {
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.textContent = "Delete";
           }, 4000);
         }
       });
@@ -551,9 +617,10 @@
       }
     }
 
-    async function removeChannel(docId) {
+    async function removeChannel(channelId) {
       try {
-        await deleteDoc(doc(db, "followedChannels", docId));
+        await deleteChannelVideosFn({ channelId });
+        await deleteDoc(doc(db, "followedChannels", channelId));
         loadFollowedChannels();
       } catch (err) {
         console.error(err);
