@@ -908,3 +908,20 @@ exports.scanAllChannels = onCall({
 
   return { scanned: channelsSnap.size, videosAdded };
 });
+
+exports.getCourseCatalog = onCall({
+  timeoutSeconds: 10,
+  memory: "256MiB",
+}, async request => {
+  const db = admin.firestore();
+  try {
+    const catalog = await aesopApi.getCatalog(db);
+    return {
+      success: true,
+      courses: catalog.courses || [],
+    };
+  } catch (error) {
+    console.error("Failed to get course catalog:", error);
+    throw new HttpsError("internal", "Failed to load course catalog");
+  }
+});
