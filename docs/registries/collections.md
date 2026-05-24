@@ -114,3 +114,54 @@ Auto-updated by `/cross-boundary-audit`. Every collection that any producer writ
 **Fields:** `channelId`, `channelName`, `description`, `thumbnailUrl`, `discoveredAt` (Timestamp), `status` ("pending" | "approved" | "rejected")
 **Indexes:**
 - `status ASC + discoveredAt DESC` (composite — used by admin.html pending query)
+
+---
+
+## `videoCourseMappings/{id}` ✨ NEW — Task #3
+
+| Role | File | Access |
+|------|------|--------|
+| **Producer** | `functions/src/syncVideoToCourses.js` | `db.collection("videoCourseMappings").doc(videoId).set({...})` — writes mappings after sync |
+| **Consumer** | `admin.html` | `getDocs(query(..., where("hasCourses","==",false)))` — display unmatched videos list |
+| **Consumer** | `admin.html` | Real-time listener on `videoCourseMappings` — updates admin status indicator |
+
+**Rules:** `allow read, write, delete: if isAdmin()`
+**Doc ID:** `videoId` (YouTube video ID, matches `curatedVideos`)
+**Fields:** `videoId` (string), `courses` (array of {id, name, desc, url, live, relevanceScore}), `syncedAt` (Timestamp), `hasCourses` (boolean), `error?` (string, present if sync failed)
+**Indexes:** none (filtering on `hasCourses` only; single-field indexes auto-created by Firestore)
+
+---
+
+## Summary
+
+| Collection | Producers | Consumers | Status |
+|-----------|-----------|-----------|--------|
+| `users/{uid}` | Firebase Auth | admin.html (auth gate) | ✓ |
+| `creator_calls/{id}` | experts.html | admin (console) | ✓ |
+| `expert_applications/{id}` | form (not wired) | admin | ⚠ orphan producer |
+| `form_submissions/{id}` | form-email.js | sendFormSubmissionEmail CF | ✓ |
+| `jobs/{id}` | postajob.html | jobs.html, admin.html | ✓ |
+| `followedChannels/{id}` | admin.html | harvestVideos, discoverChannels, admin.html | ✓ |
+| `curatedVideos/{id}` | harvestVideos, admin.html | videos.html, syncVideoToCourses | ✓ |
+| `candidateChannels/{id}` | discoverChannels | admin.html | ✓ |
+| `videoCourseMappings/{id}` | syncVideoToCourses | admin.html | ✓ |
+
+---
+
+## Audit Trail
+
+**Last audit:** 2026-05-23T20:30:00Z (by /cross-boundary-audit, Task #3 start)
+
+**Boundaries checked:** Firestore collections
+
+**Evidence recorded:**
+- 9 entries with complete producer/consumer pairs ✓
+- 1 entry with gap (orphan producer) ⚠
+- 0 entries with shape mismatches
+- New identifiers introduced on Task #3: `videoCourseMappings` collection
+- Registries match current code diff: yes (Task #3 boundaries anticipated)
+
+**Gaps identified:**
+- ⚠ orphan producer — `expert_applications` collection — produced by form (not yet wired to any page), never consumed
+
+**Status:** Audit complete

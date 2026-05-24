@@ -75,3 +75,55 @@ Auto-updated by `/cross-boundary-audit`. Every Cloud Function must appear here w
 | **Input** | `{ videoUrl: string }` — `youtube.com/watch?v=…` or `youtu.be/…` |
 | **Output** | `{ videoId, title, channelName, channelId, publishedAt, thumbnail, link }` |
 | **Quota cost** | 1 unit per call |
+
+---
+
+## `syncVideoToCourses` ✨ NEW — Task #3
+
+| Property | Value |
+|----------|-------|
+| **Type** | HTTPS callable — `onCall` (manually triggered from admin page or scheduled via Cloud Tasks) |
+| **Producer** | `admin.html` — manual trigger button on Unmatched Videos section |
+| **Consumer** | `curatedVideos` collection (reads: videoId, title, transcript) |
+| **Consumer** | Aesop Academy REST API v1 — `GET https://aesopacademy.org/aesop-api/catalog.php` |
+| **Consumer** | `videoCourseMappings` collection (writes mappings + scores) |
+| **Consumer** | Email service (Brevo SMTP) — sends alerts on API failure to `ravenshroud@gmail.com` |
+| **Consumer** | `admin.html` — receives response with sync status, updates UI alert |
+| **Auth** | Required — `request.auth` checked; throws `HttpsError("unauthenticated")` if absent |
+| **Secrets** | `BREVO_SMTP_KEY` (for email alerts on API failure) |
+| **Input** | `{ videoId: string }` (optional; if omitted, syncs all unsynced videos) |
+| **Output** | `{ success: boolean, videoId, coursesMatched: number, error?: string }` |
+| **Side effects** | Writes `videoCourseMappings/{videoId}` doc; sends email if Aesop Academy API fails; updates admin page status indicator |
+| **Quota cost** | ~50 quota units per video (YouTube transcript lookup + OpenAI analysis + Aesop API call) |
+
+---
+
+## Summary
+
+| Function | Type | Trigger | Producers | Consumers | Status |
+|----------|------|---------|-----------|-----------|--------|
+| `sendFormSubmissionEmail` | Firestore trigger | `form_submissions` create | form-email.js | Brevo SMTP API | ✓ |
+| `harvestVideos` | Scheduled | every 8 hours | YouTube Data API | followedChannels, curatedVideos | ✓ |
+| `discoverChannels` | Scheduled | daily (midnight UTC) | YouTube Data API | followedChannels, candidateChannels | ✓ |
+| `lookupChannel` | HTTPS callable | admin.html | admin.html | YouTube Data API | ✓ |
+| `fetchVideoMetadata` | HTTPS callable | admin.html | admin.html | YouTube Data API | ✓ |
+| `syncVideoToCourses` | HTTPS callable | admin.html (manual trigger) | curatedVideos, Aesop Academy API | videoCourseMappings, email service, admin.html | ✓ |
+
+---
+
+## Audit Trail
+
+**Last audit:** 2026-05-23T20:30:00Z (by /cross-boundary-audit, Task #3 start)
+
+**Boundaries checked:** Cloud Functions (triggers, producers, consumers, secrets)
+
+**Evidence recorded:**
+- 6 entries with complete producer/consumer pairs ✓
+- 0 entries with gaps
+- 0 entries with shape mismatches
+- New identifiers introduced on Task #3: `syncVideoToCourses` function
+- Registries match current code diff: yes (Task #3 boundaries anticipated)
+
+**Gaps identified:** none
+
+**Status:** Audit complete
