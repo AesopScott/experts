@@ -84,13 +84,13 @@ Auto-updated by `/cross-boundary-audit`. Every Cloud Function must appear here w
 |----------|-------|
 | **Type** | HTTPS callable — `onCall` (manually triggered from admin page or scheduled via Cloud Tasks) |
 | **Producer** | `admin.html` — manual trigger button on Unmatched Videos section |
-| **Producer** | `videos.html` — admin-only Link Courses button on each video card |
+| **Producer** | `videos.html` — admin-only manual picker can open the course catalog for each video card |
 | **Consumer** | `curatedVideos` collection (reads: videoId, title, transcript; batch mode orders by `publishedAt`) |
 | **Consumer** | Aesop Academy REST API v1 — `GET https://aesopacademy.org/aesop-api/catalog.php` |
 | **Consumer** | `videoCourseMappings` collection (writes mappings + scores) |
 | **Consumer** | Email service (Brevo SMTP) — sends alerts on API failure to `ravenshroud@gmail.com` |
 | **Consumer** | `admin.html` — receives response with sync status, updates UI alert |
-| **Consumer** | `videos.html` — reloads `videoCourseMappings/{videoId}` after a single-video sync |
+| **Consumer** | `videos.html` — reads catalog for manual course search/selection |
 | **Auth** | Required — `request.auth` checked; throws `HttpsError("unauthenticated")` if absent |
 | **Secrets** | `BREVO_SMTP_KEY` (for email alerts on API failure) |
 | **Input** | `{ videoId?: string }` (optional; if omitted, syncs up to 10 unsynced videos) |

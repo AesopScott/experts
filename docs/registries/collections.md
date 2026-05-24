@@ -124,11 +124,12 @@ Auto-updated by `/cross-boundary-audit`. Every collection that any producer writ
 | **Producer** | `functions/index.js` · `syncVideoToCourses` | `db.collection("videoCourseMappings").doc(videoId).set({...})` — writes mappings after sync |
 | **Consumer** | `admin.html` | `getDocs(query(..., where("hasCourses","==",false)))` — display unmatched videos list |
 | **Consumer** | `admin.html` | Real-time listener on `videoCourseMappings` — updates admin status indicator |
+| **Producer** | `videos.html` | `setDoc(doc(db, "videoCourseMappings", videoId), {...})` — admin manually links selected Aesop courses |
 | **Consumer** | `videos.html` | `getDoc(doc(db, "videoCourseMappings", videoId))` — displays linked course buttons on video cards |
 
 **Rules:** `allow read: if true` · `allow write, delete: if isAdmin()`
 **Doc ID:** `videoId` (YouTube video ID, matches `curatedVideos`)
-**Fields:** `videoId` (string), `courses` (array of {id, name, desc, url, live, relevanceScore}), `syncedAt` (Timestamp), `hasCourses` (boolean), `error?` (string, present if sync failed)
+**Fields:** `videoId` (string), `courses` (array of {id, name, desc, url, live, relevanceScore}), `syncedAt` (Timestamp), `hasCourses` (boolean), `linkedManually?` (boolean), `error?` (string, present if sync failed)
 **Indexes:** none (filtering on `hasCourses` only; single-field indexes auto-created by Firestore)
 
 ---
@@ -145,7 +146,7 @@ Auto-updated by `/cross-boundary-audit`. Every collection that any producer writ
 | `followedChannels/{id}` | admin.html | harvestVideos, discoverChannels, admin.html | ✓ |
 | `curatedVideos/{id}` | harvestVideos, admin.html | videos.html, syncVideoToCourses | ✓ |
 | `candidateChannels/{id}` | discoverChannels | admin.html | ✓ |
-| `videoCourseMappings/{id}` | syncVideoToCourses | admin.html, videos.html | ✓ |
+| `videoCourseMappings/{id}` | syncVideoToCourses, videos.html | admin.html, videos.html | ✓ |
 
 ---
 
