@@ -82,21 +82,34 @@ Auto-updated by `/cross-boundary-audit`. Every Cloud Function must appear here w
 
 | Property | Value |
 |----------|-------|
-| **Type** | HTTPS callable — `onCall` (manually triggered from admin page or scheduled via Cloud Tasks) |
-| **Producer** | `admin.html` — manual trigger button on Unmatched Videos section |
-| **Producer** | `videos.html` — admin-only manual picker can open the course catalog for each video card |
+| **Type** | HTTPS callable — `onCall` (legacy automatic matcher; no current UI trigger) |
+| **Producer** | None currently wired in public/admin UI |
 | **Consumer** | `curatedVideos` collection (reads: videoId, title, transcript; batch mode orders by `publishedAt`) |
 | **Consumer** | Aesop Academy REST API v1 — `GET https://aesopacademy.org/aesop-api/catalog.php` |
 | **Consumer** | `videoCourseMappings` collection (writes mappings + scores) |
 | **Consumer** | Email service (Brevo SMTP) — sends alerts on API failure to `ravenshroud@gmail.com` |
-| **Consumer** | `admin.html` — receives response with sync status, updates UI alert |
-| **Consumer** | `videos.html` — reads catalog for manual course search/selection |
+| **Consumer** | No current UI consumer |
 | **Auth** | Required — `request.auth` checked; throws `HttpsError("unauthenticated")` if absent |
 | **Secrets** | `BREVO_SMTP_KEY` (for email alerts on API failure) |
 | **Input** | `{ videoId?: string }` (optional; if omitted, syncs up to 10 unsynced videos) |
 | **Output** | `{ success: boolean, videosProcessed: number, coursesMatched: number, error?: string }` |
 | **Side effects** | Writes `videoCourseMappings/{videoId}` doc; sends email if Aesop Academy API fails; updates admin page status indicator |
 | **Quota cost** | ~50 quota units per video (YouTube transcript lookup + OpenAI analysis + Aesop API call) |
+
+---
+
+## `getCourseCatalog` ✨ NEW — Task #3
+
+| Property | Value |
+|----------|-------|
+| **Type** | HTTPS callable — `onCall` |
+| **Producer** | `videos.html` — admin-only manual course picker |
+| **Consumer** | Aesop Academy REST API v1 — `GET https://aesopacademy.org/aesop-api/catalog.php` |
+| **Consumer** | Firestore `_cache/aesop-catalog-cache` for 24-hour catalog caching |
+| **Auth** | Public callable; write access is still controlled by `videoCourseMappings` Firestore rules |
+| **Input** | `{}` |
+| **Output** | `{ success: boolean, courses: array }` |
+| **Side effects** | May refresh cached course catalog; falls back to bundled baseline courses if API/cache are unavailable |
 
 ---
 
@@ -109,7 +122,8 @@ Auto-updated by `/cross-boundary-audit`. Every Cloud Function must appear here w
 | `discoverChannels` | Scheduled | daily (midnight UTC) | YouTube Data API | followedChannels, candidateChannels | ✓ |
 | `lookupChannel` | HTTPS callable | admin.html | admin.html | YouTube Data API | ✓ |
 | `fetchVideoMetadata` | HTTPS callable | admin.html | admin.html | YouTube Data API | ✓ |
-| `syncVideoToCourses` | HTTPS callable | admin.html (manual trigger) | curatedVideos, Aesop Academy API | videoCourseMappings, email service, admin.html | ✓ |
+| `syncVideoToCourses` | HTTPS callable | none currently wired | curatedVideos, Aesop Academy API | videoCourseMappings, email service | ✓ |
+| `getCourseCatalog` | HTTPS callable | videos.html | Aesop Academy API | videos.html, `_cache` | ✓ |
 
 ---
 

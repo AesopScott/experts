@@ -120,14 +120,13 @@
   <script type="module">
     import { auth, db, firebaseApp } from "./assets/firebase-init.js";
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { collection, getDocs, doc, getDoc, updateDoc, deleteDoc, setDoc, serverTimestamp, query, orderBy, where, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { collection, getDocs, doc, getDoc, updateDoc, deleteDoc, setDoc, serverTimestamp, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js";
 
     const functions = getFunctions(firebaseApp);
     const lookupChannelFn = httpsCallable(functions, "lookupChannel");
     const fetchVideoMetadataFn = httpsCallable(functions, "fetchVideoMetadata");
     const runDiscoveryNowFn = httpsCallable(functions, "runDiscoveryNow", { timeout: 310000 });
-    const syncVideoToCoursesF = httpsCallable(functions, "syncVideoToCourses", { timeout: 600000 });
     const deleteChannelVideosFn = httpsCallable(functions, "deleteChannelVideos");
     const deleteCreatorVideosFn = httpsCallable(functions, "deleteCreatorVideos");
     const scanAllChannelsFn = httpsCallable(functions, "scanAllChannels", { timeout: 600000 });
@@ -242,14 +241,13 @@
 
           <div class="section-card">
             <div class="section-head">
-              <h2>Unmatched Videos</h2>
+              <h2>Videos Missing Course Links</h2>
               <span id="unmatched-count"></span>
               <div style="margin-left:auto;display:flex;gap:8px;">
-                <button id="test-sync-btn" class="approve-btn" style="font-size:13px;padding:6px 14px;min-height:auto;background:var(--gold);color:var(--ink);" title="Sync first available video">Test Sync</button>
-                <button id="sync-all-btn" class="approve-btn" style="font-size:13px;padding:6px 14px;min-height:auto;">Sync All</button>
+                <button id="refresh-unmatched-btn" class="approve-btn" style="font-size:13px;padding:6px 14px;min-height:auto;">Refresh</button>
               </div>
             </div>
-            <div id="unmatched-content"><div class="loading-state">Loading unmatched videos…</div></div>
+            <div id="unmatched-content"><div class="loading-state">Loading videos missing course links…</div></div>
           </div>
         </div>`;
 
@@ -260,125 +258,7 @@
       setupAddVideo();
       loadUnmatchedVideos();
 
-      document.getElementById("test-sync-btn").addEventListener("click", async () => {
-        const btn = document.getElementById("test-sync-btn");
-        btn.disabled = true;
-        btn.textContent = "⧖ Testing…";
-
-        try {
-          const result = await syncVideoToCoursesF({});
-
-          if (result.data?.success) {
-            const processed = result.data.videosProcessed || 0;
-            const matched = result.data.coursesMatched || 0;
-            btn.textContent = `✓ Synced ${processed} video${processed !== 1 ? 's' : ''} (${matched} courses)`;
-            btn.style.background = "var(--green)";
-            btn.style.color = "#fff";
-            setTimeout(() => loadUnmatchedVideos(), 2000);
-          } else {
-            btn.textContent = "✗ Sync failed";
-            btn.style.background = "var(--red2)";
-            btn.style.color = "var(--red)";
-          }
-        } catch (err) {
-          console.error("Test sync failed:", err);
-          btn.textContent = "✗ Error";
-          btn.style.background = "var(--red2)";
-          btn.style.color = "var(--red)";
-        }
-        btn.disabled = false;
-      });
-
-      document.getElementById("sync-all-btn").addEventListener("click", async () => {
-        const btn = document.getElementById("sync-all-btn");
-        btn.disabled = true;
-        btn.textContent = "⧖ Syncing all…";
-
-        const statusEl = document.createElement("div");
-        statusEl.id = "batch-sync-status";
-        statusEl.style.cssText = "padding:12px;border-radius:6px;background:#f0f0f0;color:#666;font-size:13px;margin-bottom:12px;";
-        btn.parentElement?.parentElement?.insertBefore(statusEl, btn.parentElement.nextSibling);
-
-        try {
-          console.log("Sync All: starting...");
-
-          // Get recent curated videos
-          console.log("Sync All: querying curatedVideos...");
-          const videosSnap = await getDocs(query(
-            collection(db, "curatedVideos"),
-            limit(20)
-          ));
-          const allVideoIds = videosSnap.docs.map(d => d.id);
-          console.log("Sync All: found", allVideoIds.length, "curated videos:", allVideoIds);
-
-          if (allVideoIds.length === 0) {
-            console.log("Sync All: no videos found");
-            statusEl.textContent = "✓ No videos found!";
-            btn.textContent = "Sync All";
-            btn.disabled = false;
-            return;
-          }
-
-          // Filter out videos that already have mappings
-          console.log("Sync All: checking for existing mappings...");
-          const mappingsSnap = await getDocs(query(
-            collection(db, "videoCourseMappings"),
-            where("__name__", "in", allVideoIds)
-          ));
-          const mappedVideoIds = new Set(mappingsSnap.docs.map(d => d.id));
-          const unmappedIds = allVideoIds.filter(id => !mappedVideoIds.has(id));
-          console.log("Sync All: found", mappedVideoIds.size, "mapped videos, need to sync", unmappedIds.length, "videos:", unmappedIds);
-
-          if (unmappedIds.length === 0) {
-            console.log("Sync All: all videos already matched");
-            statusEl.textContent = "✓ All videos already matched!";
-            btn.textContent = "Sync All";
-            btn.disabled = false;
-            return;
-          }
-
-          const videoDocs = await Promise.all(
-            unmappedIds.map(vid => getDoc(doc(db, "curatedVideos", vid)))
-          );
-          const videos = videoDocs
-            .map((d, i) => d.exists() ? { id: unmappedIds[i], ...d.data() } : null)
-            .filter(Boolean);
-
-          let processed = 0;
-          let totalMatched = 0;
-
-          console.log("Sync All: starting to process", videos.length, "videos");
-          for (let i = 0; i < videos.length; i++) {
-            const v = videos[i];
-            statusEl.textContent = `Processing ${i + 1}/${videos.length}…`;
-            console.log("Sync All: calling API for video", v.id);
-
-            try {
-              const result = await syncVideoToCoursesF({ videoId: v.id });
-              console.log("Sync All: API result for", v.id, ":", result.data);
-              if (result.data?.success) {
-                totalMatched += result.data.coursesMatched || 0;
-                processed++;
-                console.log("Sync All: video", v.id, "synced successfully");
-                document.getElementById(`uv-${v.id}`)?.remove();
-              }
-            } catch (e) {
-              console.error("Failed to sync " + v.id + ":", e);
-              processed++;
-            }
-          }
-
-          statusEl.textContent = `✓ Synced ${processed} video${processed !== 1 ? 's' : ''} (${totalMatched} courses matched)`;
-          btn.textContent = "Sync All";
-          btn.disabled = false;
-          setTimeout(() => loadUnmatchedVideos(), 2000);
-        } catch (err) {
-          console.error("Sync all failed:", err);
-          statusEl.textContent = "✗ Error loading unmatched videos";
-          btn.textContent = "Sync All";
-          btn.disabled = false;
-        }
-      });
+      document.getElementById("refresh-unmatched-btn").addEventListener("click", loadUnmatchedVideos);
 
       document.getElementById("run-discovery-btn").addEventListener("click", async () => {
         const btn = document.getElementById("run-discovery-btn");
@@ -929,47 +809,42 @@
       });
     }
 
-    // ── Unmatched Videos ───────────────────────────────────────────────────────
+    // -- Videos Missing Course Links ------------------------------------------------
 
     async function loadUnmatchedVideos() {
       const container = document.getElementById("unmatched-content");
       try {
-        const snap = await getDocs(query(
-          collection(db, "videoCourseMappings"),
-          where("hasCourses", "==", false)
-        ));
-        const unmatchedIds = snap.docs.map(d => d.id);
+        const [videosSnap, mappingsSnap] = await Promise.all([
+          getDocs(query(collection(db, "curatedVideos"), orderBy("publishedAt", "desc"))),
+          getDocs(collection(db, "videoCourseMappings")),
+        ]);
+
+        const mappedWithCourses = new Set(
+          mappingsSnap.docs
+            .filter(d => d.data().hasCourses === true)
+            .map(d => d.id)
+        );
+        const videos = videosSnap.docs
+          .map(d => ({ id: d.id, ...d.data() }))
+          .filter(v => !mappedWithCourses.has(v.id));
 
         document.getElementById("unmatched-count").textContent =
-          unmatchedIds.length + " video" + (unmatchedIds.length !== 1 ? "s" : "");
-
-        if (unmatchedIds.length === 0) {
-          container.innerHTML = `<div class="empty-state">All videos have been matched to courses!</div>`;
-          return;
-        }
-
-        const videoDocs = await Promise.all(
-          unmatchedIds.map(vid => getDoc(doc(db, "curatedVideos", vid)))
-        );
-        const videos = videoDocs
-          .map((d, i) => d.exists() ? { id: unmatchedIds[i], ...d.data() } : null)
-          .filter(Boolean)
-          .sort((a, b) => (b.addedAt?.toMillis?.() || 0) - (a.addedAt?.toMillis?.() || 0));
+          videos.length + " video" + (videos.length !== 1 ? "s" : "");
 
         if (videos.length === 0) {
-          container.innerHTML = `<div class="empty-state">No unmatched videos found.</div>`;
+          container.innerHTML = `<div class="empty-state">All videos have course links.</div>`;
           return;
         }
 
         const tbody = document.createElement("tbody");
         videos.forEach(v => {
-          const added = v.addedAt ? new Date(toMs(v.addedAt)).toLocaleDateString() : "—";
+          const added = v.addedAt ? new Date(toMs(v.addedAt)).toLocaleDateString() : "-";
           const tr = document.createElement("tr");
           tr.id = `uv-${v.id}`;
           const videoUrl = `https://www.youtube.com/watch?v=${encodeURIComponent(v.id)}`;
           tr.innerHTML = `
-            <td style="font-weight:700;max-width:300px;"><a href="${videoUrl}" target="_blank" rel="noopener" style="color:inherit;">${safeHtml(v.title) || "—"} ↗</a></td>
-            <td style="font-size:13px;color:var(--muted);">${safeHtml(v.channelName) || "—"}</td>
+            <td style="font-weight:700;max-width:300px;"><a href="${videoUrl}" target="_blank" rel="noopener" style="color:inherit;">${safeHtml(v.title) || "-"} -></a></td>
+            <td style="font-size:13px;color:var(--muted);">${safeHtml(v.channelName) || "-"}</td>
             <td style="font-size:12px;color:var(--muted);">${added}</td>
             <td id="us-${v.id}"></td>`;
           tbody.appendChild(tr);
@@ -983,7 +858,7 @@
         videos.forEach(v => renderUnmatchedActions(v));
       } catch (err) {
         console.error(err);
-        container.innerHTML = `<div class="empty-state">Failed to load unmatched videos.</div>`;
+        container.innerHTML = `<div class="empty-state">Failed to load videos missing course links.</div>`;
       }
     }
 
@@ -992,114 +867,18 @@
       if (!cell) return;
       const wrap = document.createElement("div");
       wrap.className = "action-row";
-      const syncBtn = document.createElement("button");
-      syncBtn.className = "approve-btn";
-      syncBtn.textContent = "Sync";
-      syncBtn.addEventListener("click", () => syncSingleVideo(v.id, syncBtn));
-      wrap.appendChild(syncBtn);
+      const link = document.createElement("a");
+      link.className = "approve-btn";
+      link.href = `videos.html?linkVideo=${encodeURIComponent(v.id)}`;
+      link.target = "_blank";
+      link.rel = "noopener";
+      link.textContent = "Link courses";
+      link.style.textDecoration = "none";
+      link.style.display = "inline-flex";
+      link.style.alignItems = "center";
+      link.style.justifyContent = "center";
+      wrap.appendChild(link);
       cell.appendChild(wrap);
-    }
-
-    async function syncSingleVideo(videoId, btn) {
-      const row = document.getElementById(`uv-${videoId}`);
-      btn.disabled = true;
-      btn.textContent = "⧖ Syncing…";
-
-      try {
-        const result = await syncVideoToCoursesF({ videoId });
-
-        if (result.data?.success) {
-          const coursesMatched = result.data.coursesMatched || 0;
-          btn.textContent = `✓ ${coursesMatched} course${coursesMatched !== 1 ? 's' : ''}`;
-          btn.style.background = "var(--green)";
-          btn.style.color = "#fff";
-
-          // Update count and remove row after showing success
-          setTimeout(() => {
-            row?.remove();
-            const countEl = document.getElementById("unmatched-count");
-            if (countEl) {
-              const current = parseInt(countEl.textContent) || 0;
-              const newCount = Math.max(0, current - 1);
-              countEl.textContent = newCount + " video" + (newCount !== 1 ? "s" : "");
-            }
-            loadUnmatchedVideos();
-          }, 2000);
-        } else {
-          btn.textContent = "✗ Error — retry";
-          btn.style.background = "var(--red2)";
-          btn.style.color = "var(--red)";
-          btn.disabled = false;
-        }
-      } catch (err) {
-        console.error("Sync failed:", err);
-        const errorMsg = err.code === "cancelled" ? "Timed out" :
-                        err.message?.includes("unauthenticated") ? "Not authorized" :
-                        "Error";
-        btn.textContent = `✗ ${errorMsg}`;
-        btn.style.background = "var(--red2)";
-        btn.style.color = "var(--red)";
-        btn.disabled = false;
-      }
-    }
-
-    async function syncAllVideos(videos) {
-      const btn = document.getElementById("sync-all-btn");
-      btn.disabled = true;
-      btn.textContent = "⧖ Syncing all…";
-
-      let processed = 0;
-      let totalMatched = 0;
-      const statusEl = document.createElement("div");
-      statusEl.id = "batch-sync-status";
-      statusEl.style.cssText = "padding:12px;border-radius:6px;background:#f0f0f0;color:#666;font-size:13px;margin-bottom:12px;";
-      btn.parentElement?.parentElement?.insertBefore(statusEl, btn.parentElement.nextSibling);
-
-      try {
-        for (let i = 0; i < videos.length; i++) {
-          const v = videos[i];
-          statusEl.textContent = `Processing ${i + 1}/${videos.length}…`;
-
-          try {
-            const result = await syncVideoToCoursesF({ videoId: v.id });
-
-            if (result.data?.success) {
-              totalMatched += result.data.coursesMatched || 0;
-              processed++;
-              document.getElementById(`uv-${v.id}`)?.remove();
-            }
-          } catch (e) {
-            console.error("Failed to sync " + v.id + ":", e);
-            processed++;
-            // Continue with next video even if one fails
-          }
-        }
-
-        btn.textContent = `✓ Synced ${processed}/${videos.length} (${totalMatched} courses)`;
-        btn.style.background = "var(--green)";
-        btn.style.color = "#fff";
-        statusEl.textContent = `Completed: ${processed}/${videos.length} videos, ${totalMatched} courses matched`;
-        statusEl.style.background = "var(--mint)";
-        statusEl.style.color = "var(--green)";
-
-        setTimeout(() => {
-          btn.textContent = "Sync All";
-          btn.style.background = "";
-          btn.style.color = "";
-          btn.disabled = false;
-          statusEl.remove();
-          loadUnmatchedVideos();
-        }, 3000);
-      } catch (err) {
-        console.error("Batch sync error:", err);
-        btn.textContent = "✗ Sync failed";
-        btn.style.background = "var(--red2)";
-        btn.style.color = "var(--red)";
-        statusEl.textContent = `Error: ${err.message}`;
-        statusEl.style.background = "var(--red2)";
-        statusEl.style.color = "var(--red)";
-        btn.disabled = false;
-      }
     }
   </script>
 

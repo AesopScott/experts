@@ -15,6 +15,74 @@ const CACHE_DOC = "aesop-catalog-cache";
 const CACHE_COLLECTION = "_cache";
 const CACHE_TTL_HOURS = 24;
 const API_ENDPOINT = "https://aesopacademy.org/aesop-api/catalog.php";
+const FALLBACK_CATALOG = {
+  courses: [
+    {
+      id: "ai-and-creativity",
+      name: "AI & Creativity",
+      description: "Explore how artificial intelligence augments creative processes in design, writing, music production, and visual arts.",
+      url: "https://aesopacademy.org/courses/ai-and-creativity/",
+      live: true,
+      keywords: ["ai", "creativity", "design", "art", "generative"],
+    },
+    {
+      id: "ai-fundamentals",
+      name: "AI Fundamentals",
+      description: "Master the core concepts of artificial intelligence, machine learning, neural networks, and large language models.",
+      url: "https://aesopacademy.org/courses/ai-fundamentals/",
+      live: true,
+      keywords: ["ai", "machine learning", "neural networks", "llm", "fundamentals"],
+    },
+    {
+      id: "prompt-engineering",
+      name: "Prompt Engineering",
+      description: "Learn to craft effective prompts that unlock the full potential of large language models like ChatGPT and Claude.",
+      url: "https://aesopacademy.org/courses/prompt-engineering/",
+      live: true,
+      keywords: ["prompting", "prompt engineering", "chatgpt", "claude", "gpt", "llm"],
+    },
+    {
+      id: "business-strategy-ai",
+      name: "Business Strategy with AI",
+      description: "Develop strategic approaches to integrating AI into business operations, from automation to decision-making.",
+      url: "https://aesopacademy.org/courses/business-strategy-ai/",
+      live: true,
+      keywords: ["business", "strategy", "ai", "automation", "operations"],
+    },
+    {
+      id: "python-for-ai",
+      name: "Python for AI Development",
+      description: "Build AI applications using Python, TensorFlow, PyTorch, and popular ML libraries.",
+      url: "https://aesopacademy.org/courses/python-for-ai/",
+      live: false,
+      keywords: ["python", "programming", "tensorflow", "pytorch", "ml"],
+    },
+    {
+      id: "data-analysis",
+      name: "Data Analysis & Visualization",
+      description: "Transform raw data into actionable insights using analytics tools and visualization techniques.",
+      url: "https://aesopacademy.org/courses/data-analysis/",
+      live: true,
+      keywords: ["data", "analysis", "visualization", "analytics"],
+    },
+    {
+      id: "marketing-ai",
+      name: "Marketing with AI",
+      description: "Leverage AI-powered tools for audience insights, content creation, and campaign optimization.",
+      url: "https://aesopacademy.org/courses/marketing-ai/",
+      live: true,
+      keywords: ["marketing", "ai", "content", "growth", "copywriting"],
+    },
+    {
+      id: "ethical-ai",
+      name: "Ethical AI & Responsible Innovation",
+      description: "Explore the ethical implications, biases, and best practices for responsible AI deployment.",
+      url: "https://aesopacademy.org/courses/ethical-ai/",
+      live: true,
+      keywords: ["ethics", "responsible", "bias", "governance"],
+    },
+  ],
+};
 
 function hashCatalog(catalog) {
   const json = JSON.stringify(catalog);
@@ -136,7 +204,12 @@ async function getCourseCatalog(db, useMock = false) {
     return aesopMock.getCatalog();
   }
 
-  return getCatalog(db);
+  try {
+    return await getCatalog(db);
+  } catch (error) {
+    console.warn("Using fallback course catalog due to API/cache failure:", error.message);
+    return FALLBACK_CATALOG;
+  }
 }
 
 module.exports = {

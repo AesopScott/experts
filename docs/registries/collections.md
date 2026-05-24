@@ -122,7 +122,7 @@ Auto-updated by `/cross-boundary-audit`. Every collection that any producer writ
 | Role | File | Access |
 |------|------|--------|
 | **Producer** | `functions/index.js` · `syncVideoToCourses` | `db.collection("videoCourseMappings").doc(videoId).set({...})` — writes mappings after sync |
-| **Consumer** | `admin.html` | `getDocs(query(..., where("hasCourses","==",false)))` — display unmatched videos list |
+| **Consumer** | `admin.html` | reads all `curatedVideos` and all mappings, then displays videos without `hasCourses: true` |
 | **Consumer** | `admin.html` | Real-time listener on `videoCourseMappings` — updates admin status indicator |
 | **Producer** | `videos.html` | `setDoc(doc(db, "videoCourseMappings", videoId), {...})` — admin manually links selected Aesop courses |
 | **Consumer** | `videos.html` | `getDoc(doc(db, "videoCourseMappings", videoId))` — displays linked course buttons on video cards |

@@ -915,7 +915,7 @@ exports.getCourseCatalog = onCall({
 }, async request => {
   const db = admin.firestore();
   try {
-    const catalog = await aesopApi.getCatalog(db);
+    const catalog = await aesopApi.getCourseCatalog(db);
     return {
       success: true,
       courses: catalog.courses || [],

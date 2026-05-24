@@ -690,6 +690,8 @@
     let courseCatalog = [];
     let activeCourseVideoId = null;
     let selectedCourseIds = new Set();
+    const requestedCourseVideoId = new URLSearchParams(window.location.search).get("linkVideo");
+    let requestedCoursePickerOpened = false;
 
     // Display version
     function updateVersion() {
@@ -719,6 +721,7 @@
       if (allVideos.length > 0) {
         applyFilter();
       }
+      maybeOpenRequestedCoursePicker();
     });
 
     function safeHtml(str) {
@@ -833,6 +836,7 @@
 
         statSources.textContent = channels.length;
         render(allVideos);
+        maybeOpenRequestedCoursePicker();
       } catch (err) {
         console.error("Failed to load videos:", err);
         sectionsRoot.innerHTML = `<div style="padding:40px;text-align:center;color:var(--muted);">Failed to load videos. Please refresh.</div>`;
@@ -942,6 +946,14 @@
         modalStatus.textContent = "Failed to load course catalog.";
         courseResults.innerHTML = `<div class="empty-state is-visible">Could not load courses. Try again in a moment.</div>`;
       }
+    }
+
+    function maybeOpenRequestedCoursePicker() {
+      if (requestedCoursePickerOpened || !requestedCourseVideoId) return;
+      if (!currentUser || currentUser.role !== "admin") return;
+      if (!allVideos.some(video => video.id === requestedCourseVideoId)) return;
+      requestedCoursePickerOpened = true;
+      openCoursePicker(requestedCourseVideoId);
     }
 
     function closeCoursePicker() {
