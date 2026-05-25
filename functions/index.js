@@ -32,7 +32,7 @@ function formatPlain(submission) {
   ];
 
   for (const item of submission.readable || []) {
-    lines.push(`${item.label || item.name}: ${item.value}`);
+    lines.push(`${item.label || item.name}: ${String(item.value ?? "")}`);
   }
 
   return lines.join("\n");
@@ -821,15 +821,18 @@ exports.syncVideoToCourses = onCall({
 
       // Filter out videos that already have successful course mappings.
       // Failed/empty mappings stay eligible so Sync All can retry them.
+      // Use individual reads instead of `where('__name__','in',...)` to avoid
+      // Firestore's `in` operand-count limit (currently 30) as the list grows.
       const allVideoIds = videosSnap.docs.map(d => d.id);
-      const mappingsSnap = await db
-        .collection("videoCourseMappings")
-        .where("__name__", "in", allVideoIds.length > 0 ? allVideoIds : [""])
-        .get();
+      const mappingDocs = allVideoIds.length > 0
+        ? await Promise.all(
+            allVideoIds.map(id => db.collection("videoCourseMappings").doc(id).get())
+          )
+        : [];
 
       const mappedVideoIds = new Set(
-        mappingsSnap.docs
-          .filter(d => d.data().hasCourses === true)
+        mappingDocs
+          .filter(d => d.exists && d.data().hasCourses === true)
           .map(d => d.id)
       );
       skipped = mappedVideoIds.size;
@@ -913,15 +916,10 @@ exports.deleteChannelVideos = onCall({
     .where("channelId", "==", channelId)
     .get();
 
-  const batch = db.batch();
-  let count = 0;
-  for (const doc of videosSnap.docs) {
-    batch.delete(doc.ref);
-    count++;
-  }
-
-  if (count > 0) await batch.commit();
-  return { deleted: count };
+  // Use commitInBatches to stay under Firestore's 500-write batch limit.
+  const operations = videosSnap.docs.map(doc => ({ type: "delete", ref: doc.ref }));
+  await commitInBatches(db, operations);
+  return { deleted: operations.length };
 });
 
 exports.deleteCreatorVideos = onCall({

@@ -32,5 +32,148 @@
       "promoted_via_pr": "2",
       "promoted_at": "2026-05-23T22:47:00Z"
     }
+  ],
+  "tasks": [
+    {
+      "number": 3,
+      "title": "Build the Aesop Academy synchronization engine.",
+      "description": "Build the engine that will review curated YouTube videos and research Aesop Academy Courses with material related to those videos and link them on 25experts.com",
+      "category": "feature",
+      "priority": 80,
+      "status": "production",
+      "created_at": "2026-05-19",
+      "completed_at": "2026-05-25",
+      "dependencies": [],
+      "branch": "task/3-build-aesop-sync-engine",
+      "plan": "## Overview\n\nBuild a Cloud Function-based synchronization engine that connects curated YouTube videos on 25experts.com to relevant Aesop Academy courses. For each video in the curatedVideos collection, the engine extracts learning concepts, queries the Aesop Academy course catalog, ranks matches by relevance, and stores the mappings in Firestore. Visitors see course links and descriptions right under each video, enabling seamless discovery of structured learning paths.\n\n## Architecture\n\nVideos and transcripts come from curatedVideos collection (pre-fetched by harvestVideos Cloud Function). Course catalog comes from Aesop Academy REST API (GET https://aesopacademy.org/aesop-api/catalog.php) with hash-based change detection. The sync engine orchestrates: transcript read → concept extraction (OpenAI CLI) → course matching (local semantic search) → ranking → Firestore write. Admin page displays unmatched videos and API status alerts.\n\n## Phases\n\n1. Setup & Foundation (Firestore schema, admin page structure, OpenAI CLI verification)\n2. Video Analysis Pipeline (transcript reading, LLM concept extraction, title/description fallback)\n3. Course Integration & Matching (API client with caching, semantic matching, ranking algorithm)\n4. Sync Engine & Firestore (Cloud Function orchestration, videoId tracking)\n5. Admin Interface & Error Handling (unmatched videos UI, API failure alerting)\n6. Testing & Iteration (real video testing, algorithm refinement)\n\n## Key Design Decisions\n\n- Transcripts are pre-stored in curatedVideos collection (no YouTube API calls needed)\n- Hash-based API caching: only re-fetch course catalog when hash changes\n- Local course matching: rank algorithm runs in Cloud Function, not API\n- videoId tracking prevents re-processing of already-synced videos\n- Admin page surfaces unmapped videos as curriculum development opportunities\n- Email alerts on API failures (to ravenshroud@gmail.com)\n\n## Success Criteria\n\nFirestore schema initialized; course catalog fetched and cached; YouTube transcripts extracted; concepts extracted via OpenAI; courses matched and ranked by relevance; Cloud Function syncs videos; admin page shows unmatched videos and API status; email alerts work; real video testing confirms ranking quality; all edge cases documented.",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Firestore Schema Initialized",
+          "expectedBehavior": "videoCourseMappings collection exists in Firestore with defined fields and can accept new documents",
+          "proofType": "manual-script",
+          "exactCommand": "Firebase Console → Firestore → Collections: verify videoCourseMappings exists; create test document with videoId, courses, syncedAt, hasCourses fields",
+          "expectedInitialFailure": "Collection does not exist or write fails",
+          "expectedPassingEvidence": "Test document successfully created and queryable",
+          "waiverGuidance": "N/A"
+        },
+        {
+          "number": 2,
+          "title": "Transcript Reader Fetches from Firestore",
+          "expectedBehavior": "transcript-reader.js queries curatedVideos by videoId and returns transcript field",
+          "proofType": "failing-test",
+          "exactCommand": "cd functions && npm test -- utils/transcript-reader.test.js",
+          "expectedInitialFailure": "Function not found or cannot read transcript field",
+          "expectedPassingEvidence": "All tests pass: valid videoId returns transcript, null/missing returns empty string, invalid videoId handled gracefully",
+          "waiverGuidance": "N/A"
+        },
+        {
+          "number": 3,
+          "title": "LLM Concept Extraction Returns Concepts",
+          "expectedBehavior": "concept-extractor.js takes transcript and returns comma-separated learning concepts via OpenAI CLI",
+          "proofType": "failing-test",
+          "exactCommand": "cd functions && npm test -- utils/concept-extractor.test.js",
+          "expectedInitialFailure": "Function not found or OpenAI CLI not configured",
+          "expectedPassingEvidence": "All tests pass: sample transcript returns 3+ concepts, fallback analysis works, empty input handled",
+          "waiverGuidance": "N/A"
+        },
+        {
+          "number": 4,
+          "title": "Aesop Academy API Client Fetches and Caches",
+          "expectedBehavior": "API client calls GET https://aesopacademy.org/aesop-api/catalog.php, compares catalog_hash, re-fetches only if hash changed",
+          "proofType": "failing-test",
+          "exactCommand": "cd functions && npm test -- utils/aesop-api-client.test.js",
+          "expectedInitialFailure": "Function not found or endpoint not reachable",
+          "expectedPassingEvidence": "All tests pass: fetches catalog, extracts hash, caches on same hash, re-fetches on hash change, handles API failures",
+          "waiverGuidance": "Requires Aesop Academy API live"
+        },
+        {
+          "number": 5,
+          "title": "Course Matching & Ranking Works",
+          "expectedBehavior": "course-matcher.js and relevance-ranker.js compare concepts against courses and return ranked list (0-1 scores, descending)",
+          "proofType": "failing-test",
+          "exactCommand": "cd functions && npm test -- utils/course-matcher.test.js utils/relevance-ranker.test.js",
+          "expectedInitialFailure": "Functions not found or matching algorithm undefined",
+          "expectedPassingEvidence": "All tests pass: matching courses ranked correctly, no matches return empty array, scores are 0-1 range",
+          "waiverGuidance": "N/A"
+        },
+        {
+          "number": 6,
+          "title": "Cloud Function Orchestrates Full Pipeline",
+          "expectedBehavior": "syncVideoToCourses Cloud Function processes video through extraction → matching → ranking → Firestore write",
+          "proofType": "smoke-command",
+          "exactCommand": "cd functions && npm run build && firebase deploy --only functions:syncVideoToCourses; manually trigger with test video in Firebase Console; check logs and Firestore",
+          "expectedInitialFailure": "Deployment fails or execution errors in logs or no Firestore document written",
+          "expectedPassingEvidence": "Function deploys, executes without error, logs show extraction and ranking steps, document in videoCourseMappings with videoId and courses array",
+          "waiverGuidance": "N/A"
+        },
+        {
+          "number": 7,
+          "title": "videoId Tracking Prevents Re-Processing",
+          "expectedBehavior": "Sync skips videos already processed; admin re-sync button can force re-processing",
+          "proofType": "smoke-command",
+          "exactCommand": "npm test -- src/syncVideoToCourses.test.js --grep 'videoId tracking'; manually trigger sync twice for same video; verify skip on second run",
+          "expectedInitialFailure": "videoId check not implemented; every video processed every time",
+          "expectedPassingEvidence": "Unit test passes, second run logs 'Skipping: video already synced', re-sync button forces new processing",
+          "waiverGuidance": "N/A"
+        },
+        {
+          "number": 8,
+          "title": "Admin Page Displays Unmatched Videos",
+          "expectedBehavior": "Admin page shows list of videos with no matched courses, with filters and sort options",
+          "proofType": "ui-check",
+          "exactCommand": "Open /admin page in browser; navigate to Unmatched Videos section; verify list populated, filters work, sort works",
+          "expectedInitialFailure": "Section missing, list empty when unmatched videos exist, data doesn't populate",
+          "expectedPassingEvidence": "Section visible, list shows videos where hasCourses=false, filters and pagination work, re-sync button available",
+          "waiverGuidance": "N/A"
+        },
+        {
+          "number": 9,
+          "title": "API Status Indicator Shows on Admin Page",
+          "expectedBehavior": "Green/red indicator shows Aesop API status; updates based on sync outcomes",
+          "proofType": "ui-check",
+          "exactCommand": "Open admin page; locate status indicator; trigger sync; observe indicator change (green for OK, red for error)",
+          "expectedInitialFailure": "Indicator not visible or doesn't update",
+          "expectedPassingEvidence": "Indicator present, shows current status (green/red), updates in real-time based on sync",
+          "waiverGuidance": "N/A"
+        },
+        {
+          "number": 10,
+          "title": "Email Alert Sent on API Failure",
+          "expectedBehavior": "When API is down, sync processor sends email to ravenshroud@gmail.com with error details",
+          "proofType": "manual-script",
+          "exactCommand": "Trigger sync with invalid API endpoint; check email inbox within 1-2 min; or check Cloud Function logs for 'Email alert sent'",
+          "expectedInitialFailure": "Email not sent or error handler not triggered",
+          "expectedPassingEvidence": "Email received with timestamp and error message, or log shows email sent successfully",
+          "waiverGuidance": "Accept log evidence if email testing not feasible"
+        },
+        {
+          "number": 11,
+          "title": "End-to-End Sync Against Real Videos",
+          "expectedBehavior": "Sync processor runs against 5-10 real curated videos; all are processed with relevant courses matched and ranked correctly",
+          "proofType": "manual-script",
+          "exactCommand": "Query curatedVideos collection for 5 test videos; manually trigger syncVideoToCourses for each; verify videoCourseMappings documents: videoId matches, courses array populated, scores descending, titles semantically relevant",
+          "expectedInitialFailure": "Videos not processed, empty courses array, irrelevant courses, scores unordered",
+          "expectedPassingEvidence": "All 5 videos processed, 4+ had matching courses, rankings appear correct, zero errors",
+          "waiverGuidance": "Manual spot-check sufficient; Scott approves ranking quality"
+        }
+      ],
+      "project_source": "experts",
+      "promoted_via_pr": null
+    },
+    {
+      "number": 5,
+      "title": "Create advanced filtering for videos.",
+      "description": "How can videos only be searched for by Creator? We need advanced filtering. Please make recommendations.",
+      "category": "feature",
+      "priority": 75,
+      "impact": "minor",
+      "status": "production",
+      "created_at": "2026-05-24",
+      "completed_at": "2026-05-25",
+      "dependencies": [],
+      "project_source": "experts",
+      "promoted_via_pr": null
+    }
   ]
 }
