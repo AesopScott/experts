@@ -115,11 +115,59 @@ exports.sendFormSubmissionEmail = onDocumentCreated({
 function getDiscoveryQueries() {
   const year = new Date().getFullYear();
   return [
+    // General AI education
     `artificial intelligence tutorial ${year}`,
-    "AI agents workflow automation",
-    `machine learning explained ${year}`,
-    "AI productivity tools workflow",
+    `AI explained ${year}`,
+    "artificial intelligence for beginners",
+    "AI news and updates",
+    "future of artificial intelligence",
+
+    // ChatGPT & LLMs
+    "ChatGPT tutorial tips tricks",
+    "ChatGPT productivity workflow",
+    "GPT-4 how to use",
+    "Claude AI tutorial",
+    "large language models explained",
     "large language models practical",
+
+    // Prompt engineering
+    "prompt engineering guide",
+    "prompt engineering tips",
+
+    // AI agents & automation
+    "AI agents workflow automation",
+    "AI automation workflow",
+    "autonomous AI agents",
+    "n8n AI automation tutorial",
+    "Make Zapier AI workflow",
+
+    // AI tools & productivity
+    "AI tools productivity",
+    "best AI tools review",
+    "AI tools for business",
+    "AI software review",
+
+    // Machine learning & data science
+    `machine learning explained ${year}`,
+    "deep learning tutorial",
+    "data science machine learning",
+    "neural networks explained",
+
+    // Generative AI
+    "generative AI tutorial",
+    "Midjourney tutorial tips",
+    "Stable Diffusion tutorial",
+    "AI image generation guide",
+    "AI video generation tools",
+
+    // AI coding
+    "AI coding assistant tutorial",
+    "GitHub Copilot tips",
+    "Cursor AI coding",
+
+    // AI for business verticals
+    "AI for marketing strategy",
+    "AI business tools",
   ];
 }
 
@@ -315,6 +363,8 @@ function suggestDomain(channelName, description) {
   return best[1] > 0 ? best[0] : null;
 }
 
+const MIN_SUBSCRIBER_COUNT = 25_000;
+
 async function runDiscovery(db, apiKey) {
   const [followedSnap, candidateSnap] = await Promise.all([
     db.collection("followedChannels").get(),
@@ -326,10 +376,11 @@ async function runDiscovery(db, apiKey) {
     ...candidateSnap.docs.map(d => d.data().channelId),
   ]);
 
-  const candidates = [];
+  // Phase 1: collect raw search results across all queries (maxResults=50 per query)
+  const rawMap = new Map(); // channelId → snippet data
 
   for (const q of getDiscoveryQueries()) {
-    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&q=${encodeURIComponent(q)}&maxResults=5&key=${apiKey}`;
+    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&q=${encodeURIComponent(q)}&maxResults=50&key=${apiKey}`;
     let data;
     try {
       const res = await fetch(url);
@@ -341,31 +392,58 @@ async function runDiscovery(db, apiKey) {
 
     for (const item of (data.items || [])) {
       const channelId = item.id?.channelId;
-      if (!channelId || existingIds.has(channelId)) continue;
-      existingIds.add(channelId);
-      const channelName = item.snippet?.channelTitle || "";
-      const description = item.snippet?.description || "";
-      candidates.push({
+      if (!channelId || existingIds.has(channelId) || rawMap.has(channelId)) continue;
+      rawMap.set(channelId, {
         channelId,
-        channelName,
-        description,
+        channelName: item.snippet?.channelTitle || "",
+        description: item.snippet?.description || "",
         thumbnailUrl: item.snippet?.thumbnails?.default?.url || "",
-        suggestedDomain: suggestDomain(channelName, description),
+      });
+    }
+  }
+
+  if (rawMap.size === 0) return 0;
+
+  // Phase 2: fetch subscriber counts in batches of 50 and filter to >= 25,000
+  const channelIds = [...rawMap.keys()];
+  const qualified = [];
+
+  for (let i = 0; i < channelIds.length; i += 50) {
+    const batch = channelIds.slice(i, i + 50);
+    const url = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${batch.join(",")}&key=${apiKey}`;
+    let data;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      data = await res.json();
+    } catch {
+      continue;
+    }
+
+    for (const item of (data.items || [])) {
+      const subs = parseInt(item.statistics?.subscriberCount || "0", 10);
+      if (subs < MIN_SUBSCRIBER_COUNT) continue;
+      const raw = rawMap.get(item.id);
+      if (!raw) continue;
+      qualified.push({
+        ...raw,
+        subscriberCount: subs,
+        suggestedDomain: suggestDomain(raw.channelName, raw.description),
         discoveredAt: admin.firestore.FieldValue.serverTimestamp(),
         status: "pending",
       });
     }
   }
 
-  if (candidates.length === 0) return 0;
+  if (qualified.length === 0) return 0;
 
-  const operations = candidates.map(c => ({
+  const operations = qualified.map(c => ({
     type: "set",
     ref: db.collection("candidateChannels").doc(c.channelId),
     data: c,
   }));
   await commitInBatches(db, operations);
-  return candidates.length;
+  return qualified.length;
 }
 
 exports.discoverChannels = onSchedule({
