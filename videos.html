@@ -732,11 +732,21 @@
         .replace(/"/g,  "&quot;");
     }
 
+    // V1 elective course links were stored without the `/modules/` directory.
+    // Repair them at render time so existing mappings resolve correctly.
+    function normalizeCourseUrl(url) {
+      if (typeof url !== "string") return url;
+      return url.replace(
+        /(https?:\/\/[^/]*aesopacademy\.org\/ai-academy\/)(electives-hub\.html)/g,
+        "$1modules/$2"
+      );
+    }
+
     function renderCourseLinks(v) {
       const courses = Array.isArray(v.courseMapping?.courses) ? v.courseMapping.courses : [];
       if (courses.length === 0) return "";
       const links = courses.slice(0, 3).map(course => `
-        <a class="course-link" href="${safeHtml(course.url)}" target="_blank" rel="noopener noreferrer">
+        <a class="course-link" href="${safeHtml(normalizeCourseUrl(course.url))}" target="_blank" rel="noopener noreferrer">
           ${safeHtml(course.name)}
           <span class="course-link-meta">${course.live === false ? "Planned" : "Course"}</span>
         </a>`).join("");
