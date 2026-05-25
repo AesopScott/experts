@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin | 25experts</title>
-  <meta name="page-version" content="v2026.05.25.1">
+  <meta name="page-version" content="v2026.05.25.2">
   <meta name="page-updated" content="2026-05-25">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <meta name="robots" content="noindex, nofollow">
@@ -611,7 +611,11 @@
               </select></td>
               <td><button class="reject-btn" data-id="${safeHtml(ch.id)}">Remove</button></td>`;
             tbody.appendChild(tr);
-            tr.querySelector(".reject-btn").addEventListener("click", () => removeChannel(ch.id));
+            tr.querySelector(".reject-btn").addEventListener("click", () => {
+              const name = ch.channelName || ch.channelId;
+              if (!confirm(`Remove "${name}"?\n\nThis will also delete all their videos from the system. This cannot be undone.`)) return;
+              removeChannel(ch.id);
+            });
             tr.querySelector(".domain-edit-sel").addEventListener("change", async function() {
               const newDomain = this.value;
               await updateDoc(doc(db, "followedChannels", ch.id), { domain: newDomain });
