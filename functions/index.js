@@ -257,6 +257,42 @@ async function fetchTranscript(videoId, apiKey = "") {
 // Only ingest videos published on or after this date.
 const INGEST_CUTOFF = new Date("2026-01-01T00:00:00Z");
 
+// ── AI relevance filter ────────────────────────────────────────────────────────
+// Short tokens checked as whole words (case-insensitive) to avoid false matches
+// e.g. "ai" won't match "email" or "braid".
+const AI_WHOLE_WORDS = ["ai", "llm", "gpt", "rag", "llms", "gpts"];
+
+// Longer, unambiguous substrings checked with simple includes().
+const AI_SUBSTRINGS = [
+  "artificial intelligence", "machine learning", "deep learning",
+  "neural network", "large language model",
+  "chatgpt", "gpt-4", "gpt4", "gpt-4o", "openai", "anthropic",
+  "midjourney", "stable diffusion", "dall-e", "dalle",
+  "prompt engineering", "prompt engineer", "prompting",
+  "ai agent", "ai tool", "ai model", "generative ai", "gen ai",
+  "claude ai", "google gemini", "github copilot", "microsoft copilot",
+  "cursor ai", "n8n", "langchain", "hugging face",
+  "fine-tun", "fine tuning", "finetuning",
+  "retrieval augmented", "vector database", "embedding model",
+  "diffusion model", "text to image", "image generation",
+  "ai automation", "ai workflow", "ai coding", "ai assistant",
+];
+
+/**
+ * Returns true if the video title or description contains AI-related signals.
+ * Filters out non-AI content posted by channels that occasionally go off-topic.
+ */
+function isAiRelevant(title, description) {
+  const text = ((title || "") + " " + (description || "")).toLowerCase();
+  for (const word of AI_WHOLE_WORDS) {
+    if (new RegExp(`\\b${word}\\b`).test(text)) return true;
+  }
+  for (const sub of AI_SUBSTRINGS) {
+    if (text.includes(sub)) return true;
+  }
+  return false;
+}
+
 exports.harvestVideos = onSchedule({
   schedule: "0 */8 * * *",
   secrets: [youtubeApiKey],
@@ -291,6 +327,9 @@ exports.harvestVideos = onSchedule({
 
       // Skip videos published before 2026.
       if (s.publishedAt && new Date(s.publishedAt) < INGEST_CUTOFF) continue;
+
+      // Skip videos with no AI-related signals in title or description.
+      if (!isAiRelevant(s.title, s.description)) continue;
 
       // Check if transcript already exists to avoid redundant fetches
       const existingDoc = await db.collection("curatedVideos").doc(videoId).get();
@@ -1064,6 +1103,9 @@ exports.scanAllChannels = onCall({
       if (!videoId) continue;
 
       if (s.publishedAt && new Date(s.publishedAt) < INGEST_CUTOFF) continue;
+
+      // Skip videos with no AI-related signals in title or description.
+      if (!isAiRelevant(s.title, s.description)) continue;
 
       const existingDoc = await db.collection("curatedVideos").doc(videoId).get();
       const hasTranscript = existingDoc.exists && existingDoc.data().transcript;
