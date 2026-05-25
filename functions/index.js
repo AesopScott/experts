@@ -1144,6 +1144,30 @@ exports.scanAllChannels = onCall({
   return { scanned: channelsSnap.size, videosAdded };
 });
 
+// TEMPORARY — remove after one-time purge is complete
+exports.purgeNonAiVideos = onCall({
+  timeoutSeconds: 540,
+  memory: "512MiB",
+}, async request => {
+  await requireAdmin(request);
+  const db = admin.firestore();
+
+  const snap = await db.collection("curatedVideos").get();
+  const toDelete = snap.docs.filter(d => {
+    const { title, description } = d.data();
+    return !isAiRelevant(title, description);
+  });
+
+  const BATCH_LIMIT = 400;
+  for (let i = 0; i < toDelete.length; i += BATCH_LIMIT) {
+    const batch = db.batch();
+    toDelete.slice(i, i + BATCH_LIMIT).forEach(d => batch.delete(d.ref));
+    await batch.commit();
+  }
+
+  return { scanned: snap.size, deleted: toDelete.length };
+});
+
 exports.getCourseCatalog = onCall({
   timeoutSeconds: 10,
   memory: "256MiB",

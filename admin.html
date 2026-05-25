@@ -131,6 +131,7 @@
     const deleteChannelVideosFn = httpsCallable(functions, "deleteChannelVideos");
     const deleteCreatorVideosFn = httpsCallable(functions, "deleteCreatorVideos");
     const scanAllChannelsFn = httpsCallable(functions, "scanAllChannels", { timeout: 600000 });
+    const purgeNonAiVideosFn = httpsCallable(functions, "purgeNonAiVideos", { timeout: 600000 });
 
     const DOMAINS = [
       { key: "ai-automation",        label: "AI & Automation",                color: "#145f47" },
@@ -228,7 +229,7 @@
           </div>
 
           <div class="section-card">
-            <div class="section-head"><h2>Followed Channels</h2><span id="followed-count"></span><button id="scan-all-btn" class="approve-btn" style="margin-left:auto;font-size:13px;padding:6px 14px;min-height:auto;">Scan All</button><span id="scan-status" style="font-size:13px;color:var(--muted);margin-left:12px;"></span></div>
+            <div class="section-head"><h2>Followed Channels</h2><span id="followed-count"></span><button id="scan-all-btn" class="approve-btn" style="margin-left:auto;font-size:13px;padding:6px 14px;min-height:auto;">Scan All</button><button id="purge-non-ai-btn" class="reject-btn" style="margin-left:8px;font-size:13px;padding:6px 14px;min-height:auto;">Purge Non-AI Videos</button><span id="scan-status" style="font-size:13px;color:var(--muted);margin-left:12px;"></span></div>
             <div id="add-channel-form"></div>
             <div id="followed-channels-content"><div class="loading-state">Loading channels…</div></div>
           </div>
@@ -313,6 +314,28 @@
           setTimeout(() => {
             status.textContent = "";
           }, 5000);
+        }
+      });
+
+      document.getElementById("purge-non-ai-btn").addEventListener("click", async () => {
+        if (!confirm("This will permanently delete all curated videos that don't match the AI relevance filter. Continue?")) return;
+        const btn = document.getElementById("purge-non-ai-btn");
+        const status = document.getElementById("scan-status");
+        btn.disabled = true;
+        status.textContent = "Purging…";
+        status.style.color = "var(--muted)";
+        try {
+          const result = await purgeNonAiVideosFn();
+          const { scanned = 0, deleted = 0 } = result.data || {};
+          status.textContent = `✓ Scanned ${scanned} videos, deleted ${deleted} non-AI`;
+          status.style.color = "var(--green)";
+        } catch (err) {
+          console.error(err);
+          status.textContent = "✗ Error — see console";
+          status.style.color = "var(--red)";
+        } finally {
+          btn.disabled = false;
+          setTimeout(() => { status.textContent = ""; }, 8000);
         }
       });
 
