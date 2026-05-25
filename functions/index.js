@@ -137,13 +137,24 @@ async function commitInBatches(db, operations) {
   }
 }
 
+// Wrap a promise with a timeout. Rejects if the promise doesn't settle within ms.
+function withTimeout(promise, ms) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(() => reject(new Error(`Timeout after ${ms}ms`)), ms))
+  ]);
+}
+
 // Fetch plain-text transcript for a videoId. Returns null if unavailable.
 // Tries: user captions (en), auto-generated captions, then falls back to title+description.
 // Caps at 100 000 chars to stay well under Firestore's 1 MB document limit.
 async function fetchTranscript(videoId, apiKey = "") {
   // Try user-created English captions first
   try {
-    const segments = await YoutubeTranscript.fetchTranscript(videoId, { lang: "en" });
+    const segments = await withTimeout(
+      YoutubeTranscript.fetchTranscript(videoId, { lang: "en" }),
+      8000
+    );
     if (segments && segments.length > 0) {
       const text = segments.map(s => s.text).join(" ").replace(/\s+/g, " ").trim();
       return text.slice(0, 100000) || null;
@@ -155,7 +166,10 @@ async function fetchTranscript(videoId, apiKey = "") {
   // Try auto-generated captions (no lang specified gets all available)
   try {
     console.log(`Trying auto-generated captions for ${videoId}...`);
-    const segments = await YoutubeTranscript.fetchTranscript(videoId);
+    const segments = await withTimeout(
+      YoutubeTranscript.fetchTranscript(videoId),
+      8000
+    );
     if (segments && segments.length > 0) {
       const text = segments.map(s => s.text).join(" ").replace(/\s+/g, " ").trim();
       console.log(`Got auto-generated captions for ${videoId}, ${text.length} chars`);
