@@ -11,18 +11,6 @@
       "created_at": "2026-05-21",
       "completed_at": null,
       "dependencies": []
-    },
-    {
-      "number": 5,
-      "title": "Create advanced filtering for videos.",
-      "description": "How can videos only be searched for by Creator? We need advanced filtering. Please make recommendations.",
-      "category": "feature",
-      "priority": 75,
-      "impact": "minor",
-      "status": "backlog",
-      "created_at": "2026-05-24",
-      "completed_at": null,
-      "dependencies": []
     }
   ]
 }
