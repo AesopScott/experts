@@ -146,6 +146,7 @@
     const CANDIDATES_PAGE_SIZE = 10;
     let allCandidates = [];
     let candidatesPage = 0;
+    let candidatesSort = { field: "subscriberCount", dir: "desc" };
 
     function domainSelectHtml(selectedKey = "") {
       const opts = DOMAINS.map(d =>
@@ -712,8 +713,15 @@
       // Clamp page in case items were removed and page is now out of range
       if (candidatesPage >= totalPages) candidatesPage = totalPages - 1;
 
+      // Sort before slicing
+      const sorted = [...allCandidates].sort((a, b) => {
+        const av = a[candidatesSort.field] ?? 0;
+        const bv = b[candidatesSort.field] ?? 0;
+        return candidatesSort.dir === "desc" ? bv - av : av - bv;
+      });
+
       const start = candidatesPage * CANDIDATES_PAGE_SIZE;
-      const page  = allCandidates.slice(start, start + CANDIDATES_PAGE_SIZE);
+      const page  = sorted.slice(start, start + CANDIDATES_PAGE_SIZE);
 
       const tbody = document.createElement("tbody");
       page.forEach(c => {
@@ -734,7 +742,16 @@
       });
 
       const table = document.createElement("table");
-      table.innerHTML = `<thead><tr><th>Channel</th><th>Description</th><th>Subscribers</th><th>Discovered</th><th>Actions</th></tr></thead>`;
+      const subsArrow = candidatesSort.field === "subscriberCount"
+        ? (candidatesSort.dir === "desc" ? " ▼" : " ▲")
+        : " ⇅";
+      table.innerHTML = `<thead><tr>
+        <th>Channel</th>
+        <th>Description</th>
+        <th><a href="#" id="sort-subs-btn" style="text-decoration:none;color:inherit;cursor:pointer;">Subscribers${subsArrow}</a></th>
+        <th>Discovered</th>
+        <th>Actions</th>
+      </tr></thead>`;
       table.appendChild(tbody);
 
       // Pagination controls
@@ -771,6 +788,18 @@
       container.innerHTML = "";
       container.appendChild(table);
       container.appendChild(pager);
+
+      // Sort toggle — must bind after table is in the DOM
+      document.getElementById("sort-subs-btn")?.addEventListener("click", e => {
+        e.preventDefault();
+        if (candidatesSort.field === "subscriberCount") {
+          candidatesSort = { field: "subscriberCount", dir: candidatesSort.dir === "desc" ? "asc" : "desc" };
+        } else {
+          candidatesSort = { field: "subscriberCount", dir: "desc" };
+        }
+        candidatesPage = 0;
+        renderCandidatesPage();
+      });
 
       // Render action buttons AFTER table is in the DOM so getElementById resolves
       page.forEach(c => renderCandidateActions(c));
