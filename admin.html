@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin | 25experts</title>
-  <meta name="page-version" content="v2026.05.24.9">
-  <meta name="page-updated" content="2026-05-24">
+  <meta name="page-version" content="v2026.05.25.1">
+  <meta name="page-updated" content="2026-05-25">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -534,13 +534,27 @@
       document.getElementById("add-channel-btn").addEventListener("click", handleAddChannel);
 
       try {
-        const snap = await getDocs(collection(db, "followedChannels"));
-        const channels = snap.docs
+        const [channelsSnap, videosSnap] = await Promise.all([
+          getDocs(collection(db, "followedChannels")),
+          getDocs(collection(db, "curatedVideos")),
+        ]);
+
+        // Build a video-count map keyed by channelId
+        const videoCountByChannelId = {};
+        videosSnap.docs.forEach(d => {
+          const { channelId } = d.data();
+          if (channelId) videoCountByChannelId[channelId] = (videoCountByChannelId[channelId] || 0) + 1;
+        });
+
+        const channels = channelsSnap.docs
           .map(d => ({ id: d.id, ...d.data() }))
           .sort((a, b) => (b.addedAt?.toMillis() || 0) - (a.addedAt?.toMillis() || 0));
 
+        const channelsWithVideos = channels.filter(ch => (videoCountByChannelId[ch.channelId] || 0) > 0).length;
+        const channelsNoVideos   = channels.length - channelsWithVideos;
         document.getElementById("followed-count").textContent =
-          channels.length + " channel" + (channels.length !== 1 ? "s" : "");
+          channels.length + " channel" + (channels.length !== 1 ? "s" : "") +
+          (channelsNoVideos > 0 ? ` (${channelsNoVideos} with no videos)` : "");
 
         if (channels.length === 0) {
           container.innerHTML = `<div class="empty-state">No followed channels yet. Add one above.</div>`;
@@ -573,12 +587,24 @@
           list.forEach(ch => {
             const added     = ch.addedAt       ? new Date(ch.addedAt.toMillis()).toLocaleDateString()       : "—";
             const harvested = ch.lastHarvested ? new Date(ch.lastHarvested.toMillis()).toLocaleDateString() : "never";
+            const videoCount = videoCountByChannelId[ch.channelId] || 0;
+
+            let videoCell;
+            if (videoCount > 0) {
+              videoCell = `<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:var(--mint);color:var(--green);font-size:12px;font-weight:700;">${videoCount}</span>`;
+            } else if (!ch.lastHarvested) {
+              videoCell = `<span title="This channel has never been harvested. It will be picked up on the next scheduled harvest." style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:var(--gold2);color:var(--gold);font-size:12px;font-weight:700;cursor:help;">0 — never harvested</span>`;
+            } else {
+              videoCell = `<span title="Harvested on ${harvested} but no videos met the Jan 1 2026 cutoff, or the channel has no recent uploads." style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:var(--red2);color:var(--red);font-size:12px;font-weight:700;cursor:help;">0 — no qualifying videos</span>`;
+            }
+
             const chUrl = `https://www.youtube.com/channel/${encodeURIComponent(ch.channelId)}`;
             const tr = document.createElement("tr");
             tr.innerHTML = `
               <td style="font-weight:700;"><a href="${chUrl}" target="_blank" rel="noopener" style="color:inherit;">${safeHtml(ch.channelName) || "—"} ↗</a></td>
               <td style="font-size:12px;color:var(--muted);">${added}</td>
               <td style="font-size:12px;color:var(--muted);">${harvested}</td>
+              <td>${videoCell}</td>
               <td><select class="domain-edit-sel" style="font-size:12px;padding:3px 6px;border:1px solid #ddd;border-radius:6px;">
                 <option value="">— Unassigned —</option>
                 ${DOMAINS.map(d => `<option value="${d.key}"${d.key === ch.domain ? " selected" : ""}>${d.label}</option>`).join("")}
@@ -593,7 +619,7 @@
             });
           });
           const table = document.createElement("table");
-          table.innerHTML = `<thead><tr><th>Channel</th><th>Added</th><th>Last Harvested</th><th>Domain</th><th>Action</th></tr></thead>`;
+          table.innerHTML = `<thead><tr><th>Channel</th><th>Added</th><th>Last Harvested</th><th>Videos</th><th>Domain</th><th>Action</th></tr></thead>`;
           table.appendChild(tbody);
           section.appendChild(table);
           container.appendChild(section);
