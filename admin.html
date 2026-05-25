@@ -132,6 +132,7 @@
     const deleteCreatorVideosFn = httpsCallable(functions, "deleteCreatorVideos");
     const scanAllChannelsFn = httpsCallable(functions, "scanAllChannels", { timeout: 600000 });
     const purgeNonAiVideosFn = httpsCallable(functions, "purgeNonAiVideos", { timeout: 600000 });
+    const computeTopicsAndDurationsFn = httpsCallable(functions, "computeTopicsAndDurations", { timeout: 600000 });
 
     const DOMAINS = [
       { key: "ai-automation",        label: "AI & Automation",                color: "#145f47" },
@@ -229,7 +230,7 @@
           </div>
 
           <div class="section-card">
-            <div class="section-head"><h2>Followed Channels</h2><span id="followed-count"></span><button id="scan-all-btn" class="approve-btn" style="margin-left:auto;font-size:13px;padding:6px 14px;min-height:auto;">Scan All</button><button id="purge-non-ai-btn" class="reject-btn" style="margin-left:8px;font-size:13px;padding:6px 14px;min-height:auto;">Purge Non-AI Videos</button><span id="scan-status" style="font-size:13px;color:var(--muted);margin-left:12px;"></span></div>
+            <div class="section-head"><h2>Followed Channels</h2><span id="followed-count"></span><button id="scan-all-btn" class="approve-btn" style="margin-left:auto;font-size:13px;padding:6px 14px;min-height:auto;">Scan All</button><button id="purge-non-ai-btn" class="reject-btn" style="margin-left:8px;font-size:13px;padding:6px 14px;min-height:auto;">Purge Non-AI Videos</button><button id="compute-topics-btn" class="approve-btn" style="margin-left:8px;font-size:13px;padding:6px 14px;min-height:auto;">Tag Topics &amp; Durations</button><span id="scan-status" style="font-size:13px;color:var(--muted);margin-left:12px;"></span></div>
             <div id="add-channel-form"></div>
             <div id="followed-channels-content"><div class="loading-state">Loading channels…</div></div>
           </div>
@@ -324,6 +325,26 @@
           const result = await purgeNonAiVideosFn();
           const { scanned = 0, deleted = 0 } = result.data || {};
           status.textContent = `✓ Scanned ${scanned} videos, deleted ${deleted} non-AI`;
+          status.style.color = "var(--green)";
+        } catch (err) {
+          console.error(err);
+          status.textContent = "✗ Error — see console";
+          status.style.color = "var(--red)";
+        } finally {
+          btn.disabled = false;
+        }
+      });
+
+      document.getElementById("compute-topics-btn").addEventListener("click", async () => {
+        const btn = document.getElementById("compute-topics-btn");
+        const status = document.getElementById("scan-status");
+        btn.disabled = true;
+        status.textContent = "Tagging…";
+        status.style.color = "var(--muted)";
+        try {
+          const result = await computeTopicsAndDurationsFn();
+          const { scanned = 0, updated = 0 } = result.data || {};
+          status.textContent = `✓ Scanned ${scanned} videos, updated ${updated} with topics/duration`;
           status.style.color = "var(--green)";
         } catch (err) {
           console.error(err);

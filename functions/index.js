@@ -257,6 +257,142 @@ async function fetchTranscript(videoId, apiKey = "") {
 // Only ingest videos published on or after this date.
 const INGEST_CUTOFF = new Date("2026-01-01T00:00:00Z");
 
+// ── Topic tagging ──────────────────────────────────────────────────────────────
+// keywords: plain substring match (case-insensitive on lowercased text)
+// wordBound: whole-word regex match (e.g. "rag" won't hit "garage")
+const TOPIC_TAGS = [
+  { id: "claude",             keywords: ["claude"] },
+  { id: "chatgpt",            keywords: ["chatgpt", "gpt-4o", "gpt-4", "gpt4", "openai"] },
+  { id: "gemini",             keywords: ["gemini"] },
+  { id: "open-models",        keywords: ["llama", "mistral", "deepseek", "qwen"] },
+  { id: "agents",             keywords: ["ai agent", "ai agents", "agentic", "autonomous agent"] },
+  { id: "orchestration",      keywords: ["orchestration", "langchain", "crewai", "autogen", "multi-agent"] },
+  { id: "rag",                keywords: ["retrieval augmented", "vector database", "vector store"], wordBound: ["rag"] },
+  { id: "prompt-engineering", keywords: ["prompt engineering", "system prompt", "prompt engineer"] },
+  { id: "automation",         keywords: ["n8n", "zapier", "make.com", "workflow automation"] },
+  { id: "ai-coding",          keywords: ["cursor ai", "github copilot", "ai coding", "code generation"] },
+  { id: "image-generation",   keywords: ["midjourney", "stable diffusion", "dall-e", "dalle", "image generation", "flux"] },
+  { id: "video-ai",           keywords: ["video generation", "ai video", "sora", "kling"] },
+  { id: "fine-tuning",        keywords: ["fine-tun", "fine tuning", "finetuning"], wordBound: ["lora"] },
+  { id: "local-ai",           keywords: ["local ai", "local llm", "run locally", "ollama", "on-device ai"] },
+];
+
+function tagTopics(title, description) {
+  const text = ((title || "") + " " + (description || "")).toLowerCase();
+  const matched = [];
+  for (const { id, keywords = [], wordBound = [] } of TOPIC_TAGS) {
+    const hit = keywords.some(kw => text.includes(kw)) ||
+                wordBound.some(kw => new RegExp(`\\b${kw}\\b`).test(text));
+    if (hit) matched.push(id);
+  }
+  return matched;
+}
+
+/** Parses ISO 8601 duration (e.g. "PT4M30S") → total seconds, or null. */
+function parseIso8601Duration(str) {
+  if (!str) return null;
+  const m = str.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+  if (!m) return null;
+  return (parseInt(m[1] || 0, 10) * 3600)
+       + (parseInt(m[2] || 0, 10) * 60)
+       +  parseInt(m[3] || 0, 10);
+}
+
+/** Batch-fetches YouTube video durations (50 per API call). Returns Map<videoId, seconds>. */
+async function fetchDurations(videoIds, apiKey) {
+  const result = new Map();
+  for (let i = 0; i < videoIds.length; i += 50) {
+    const batch = videoIds.slice(i, i + 50);
+    const url = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${batch.join(",")}&key=${apiKey}`;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      const data = await res.json();
+      for (const item of (data.items || [])) {
+        const secs = parseIso8601Duration(item.contentDetails?.duration);
+        if (secs !== null) result.set(item.id, secs);
+      }
+    } catch { continue; }
+  }
+  return result;
+}
+
+/**
+ * Shared harvest pipeline used by both the scheduled job and the manual scan.
+ * Phase 1 — collect eligible new candidates across all channels.
+ * Phase 2 — batch-fetch durations (1 quota unit per 50 videos).
+ * Phase 3 — fetch transcripts, tag topics, write to Firestore.
+ * Returns the number of video docs written.
+ */
+async function harvestForChannels(channelsSnap, db, apiKey) {
+  const candidates = []; // { videoId, s, channelName, channelId }
+  const channelUpdates = channelsSnap.docs.map(d => ({
+    type: "update",
+    ref: d.ref,
+    data: { lastHarvested: admin.firestore.FieldValue.serverTimestamp() },
+  }));
+
+  for (const channelDoc of channelsSnap.docs) {
+    const { channelId, channelName } = channelDoc.data();
+    const uploadsPlaylistId = channelId.replace(/^UC/, "UU");
+    const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=10&key=${apiKey}`;
+    let data;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      data = await res.json();
+    } catch { continue; }
+
+    for (const item of (data.items || [])) {
+      const s = item.snippet;
+      const videoId = s.resourceId?.videoId;
+      if (!videoId) continue;
+      if (s.publishedAt && new Date(s.publishedAt) < INGEST_CUTOFF) continue;
+      if (!isAiRelevant(s.title, s.description)) continue;
+      candidates.push({ videoId, s, channelName, channelId });
+    }
+  }
+
+  if (candidates.length === 0) {
+    await commitInBatches(db, channelUpdates);
+    return 0;
+  }
+
+  // Batch-fetch durations for all candidates in one round of API calls
+  const durations = await fetchDurations(candidates.map(c => c.videoId), apiKey);
+
+  const operations = [];
+  for (const { videoId, s, channelName, channelId } of candidates) {
+    const existingDoc = await db.collection("curatedVideos").doc(videoId).get();
+    const hasTranscript = existingDoc.exists && existingDoc.data().transcript;
+    const transcript = hasTranscript
+      ? existingDoc.data().transcript
+      : await fetchTranscript(videoId, apiKey);
+
+    operations.push({
+      type: "set",
+      ref: db.collection("curatedVideos").doc(videoId),
+      data: {
+        videoId,
+        title: s.title || "",
+        link: `https://www.youtube.com/watch?v=${videoId}`,
+        thumbnail: s.thumbnails?.high?.url || s.thumbnails?.default?.url || "",
+        channelName: channelName || s.channelTitle || "",
+        channelId,
+        publishedAt: s.publishedAt || "",
+        transcript,
+        topics: tagTopics(s.title, s.description),
+        durationSeconds: durations.get(videoId) ?? null,
+        addedAt: admin.firestore.FieldValue.serverTimestamp(),
+      },
+      options: { merge: true },
+    });
+  }
+
+  await commitInBatches(db, [...operations, ...channelUpdates]);
+  return operations.length;
+}
+
 // ── AI relevance filter ────────────────────────────────────────────────────────
 // Short tokens checked as whole words (case-insensitive) to avoid false matches
 // e.g. "ai" won't match "email" or "braid".
@@ -302,66 +438,7 @@ exports.harvestVideos = onSchedule({
   const db = admin.firestore();
   const channelsSnap = await db.collection("followedChannels").get();
   if (channelsSnap.empty) return;
-
-  const apiKey = youtubeApiKey.value();
-  const operations = [];
-
-  for (const channelDoc of channelsSnap.docs) {
-    const { channelId, channelName } = channelDoc.data();
-    const uploadsPlaylistId = channelId.replace(/^UC/, "UU");
-
-    const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=10&key=${apiKey}`;
-    let data;
-    try {
-      const res = await fetch(url);
-      if (!res.ok) continue;
-      data = await res.json();
-    } catch {
-      continue;
-    }
-
-    for (const item of (data.items || [])) {
-      const s = item.snippet;
-      const videoId = s.resourceId?.videoId;
-      if (!videoId) continue;
-
-      // Skip videos published before 2026.
-      if (s.publishedAt && new Date(s.publishedAt) < INGEST_CUTOFF) continue;
-
-      // Skip videos with no AI-related signals in title or description.
-      if (!isAiRelevant(s.title, s.description)) continue;
-
-      // Check if transcript already exists to avoid redundant fetches
-      const existingDoc = await db.collection("curatedVideos").doc(videoId).get();
-      const hasTranscript = existingDoc.exists && existingDoc.data().transcript;
-      const transcript = hasTranscript ? existingDoc.data().transcript : await fetchTranscript(videoId, apiKey);
-
-      operations.push({
-        type: "set",
-        ref: db.collection("curatedVideos").doc(videoId),
-        data: {
-          videoId,
-          title: s.title || "",
-          link: `https://www.youtube.com/watch?v=${videoId}`,
-          thumbnail: s.thumbnails?.high?.url || s.thumbnails?.default?.url || "",
-          channelName: channelName || s.channelTitle || "",
-          channelId,
-          publishedAt: s.publishedAt || "",
-          transcript,
-          addedAt: admin.firestore.FieldValue.serverTimestamp(),
-        },
-        options: { merge: true },
-      });
-    }
-
-    operations.push({
-      type: "update",
-      ref: channelDoc.ref,
-      data: { lastHarvested: admin.firestore.FieldValue.serverTimestamp() },
-    });
-  }
-
-  await commitInBatches(db, operations);
+  await harvestForChannels(channelsSnap, db, youtubeApiKey.value());
 });
 
 const DOMAIN_KEYWORDS = {
@@ -1075,72 +1152,8 @@ exports.scanAllChannels = onCall({
   const db = admin.firestore();
   const apiKey = youtubeApiKey.value();
   const channelsSnap = await db.collection("followedChannels").get();
-
-  if (channelsSnap.empty) {
-    return { scanned: 0, videosAdded: 0 };
-  }
-
-  const operations = [];
-  let videosAdded = 0;
-
-  for (const channelDoc of channelsSnap.docs) {
-    const { channelId, channelName } = channelDoc.data();
-    const uploadsPlaylistId = channelId.replace(/^UC/, "UU");
-
-    const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=10&key=${apiKey}`;
-    let data;
-    try {
-      const res = await fetch(url);
-      if (!res.ok) continue;
-      data = await res.json();
-    } catch {
-      continue;
-    }
-
-    for (const item of (data.items || [])) {
-      const s = item.snippet;
-      const videoId = s.resourceId?.videoId;
-      if (!videoId) continue;
-
-      if (s.publishedAt && new Date(s.publishedAt) < INGEST_CUTOFF) continue;
-
-      // Skip videos with no AI-related signals in title or description.
-      if (!isAiRelevant(s.title, s.description)) continue;
-
-      const existingDoc = await db.collection("curatedVideos").doc(videoId).get();
-      const hasTranscript = existingDoc.exists && existingDoc.data().transcript;
-      const transcript = hasTranscript ? existingDoc.data().transcript : await fetchTranscript(videoId, apiKey);
-
-      operations.push({
-        type: "set",
-        ref: db.collection("curatedVideos").doc(videoId),
-        data: {
-          videoId,
-          title: s.title || "",
-          link: `https://www.youtube.com/watch?v=${videoId}`,
-          thumbnail: s.thumbnails?.high?.url || s.thumbnails?.default?.url || "",
-          channelName: channelName || s.channelTitle || "",
-          channelId,
-          publishedAt: s.publishedAt || "",
-          transcript,
-          addedAt: admin.firestore.FieldValue.serverTimestamp(),
-        },
-        options: { merge: true },
-      });
-      videosAdded++;
-    }
-
-    operations.push({
-      type: "update",
-      ref: channelDoc.ref,
-      data: { lastHarvested: admin.firestore.FieldValue.serverTimestamp() },
-    });
-  }
-
-  if (operations.length > 0) {
-    await commitInBatches(db, operations);
-  }
-
+  if (channelsSnap.empty) return { scanned: 0, videosAdded: 0 };
+  const videosAdded = await harvestForChannels(channelsSnap, db, apiKey);
   return { scanned: channelsSnap.size, videosAdded };
 });
 
@@ -1166,6 +1179,43 @@ exports.purgeNonAiVideos = onCall({
   }
 
   return { scanned: snap.size, deleted: toDelete.length };
+});
+
+// Backfills topics[] and durationSeconds on all existing curatedVideos.
+// Safe to re-run — only updates docs that are missing one or both fields.
+exports.computeTopicsAndDurations = onCall({
+  secrets: [youtubeApiKey],
+  timeoutSeconds: 540,
+  memory: "512MiB",
+}, async request => {
+  await requireAdmin(request);
+  const db = admin.firestore();
+  const apiKey = youtubeApiKey.value();
+  const snap = await db.collection("curatedVideos").get();
+
+  const missingDuration = snap.docs.filter(d => d.data().durationSeconds == null);
+  const durations = await fetchDurations(
+    missingDuration.map(d => d.data().videoId || d.id),
+    apiKey
+  );
+
+  const operations = snap.docs.flatMap(d => {
+    const data = d.data();
+    const updateData = {};
+    if (!Array.isArray(data.topics) || data.topics.length === 0) {
+      updateData.topics = tagTopics(data.title, data.description || "");
+    }
+    if (data.durationSeconds == null) {
+      const secs = durations.get(data.videoId || d.id);
+      if (secs != null) updateData.durationSeconds = secs;
+    }
+    return Object.keys(updateData).length > 0
+      ? [{ type: "update", ref: d.ref, data: updateData }]
+      : [];
+  });
+
+  if (operations.length > 0) await commitInBatches(db, operations);
+  return { scanned: snap.size, updated: operations.length };
 });
 
 exports.getCourseCatalog = onCall({

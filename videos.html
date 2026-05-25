@@ -654,11 +654,9 @@
         </select>
       </div>
       <div class="field">
-        <label for="course-filter">Aesop courses</label>
-        <select id="course-filter">
-          <option value="all">All videos</option>
-          <option value="with">With related courses</option>
-          <option value="without">Without courses</option>
+        <label for="topic-filter">Topic</label>
+        <select id="topic-filter">
+          <option value="all">All topics</option>
         </select>
       </div>
       <div class="field">
@@ -672,10 +670,12 @@
         </select>
       </div>
       <div class="field">
-        <label for="sort-filter">Sort</label>
-        <select id="sort-filter">
-          <option value="newest">Newest first</option>
-          <option value="oldest">Oldest first</option>
+        <label for="duration-filter">Duration</label>
+        <select id="duration-filter">
+          <option value="all">Any length</option>
+          <option value="short">Under 1 min</option>
+          <option value="medium">1 – 5 min</option>
+          <option value="long">Over 5 min</option>
         </select>
       </div>
       <button class="primary" id="clear-filters" type="button" style="align-self:end;">Clear filters</button>
@@ -727,15 +727,32 @@
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js";
 
-    const sectionsRoot  = document.getElementById("video-sections");
-    const emptyState    = document.getElementById("empty-state");
-    const searchInput   = document.getElementById("search-input");
-    const channelFilter = document.getElementById("channel-filter");
-    const courseFilter  = document.getElementById("course-filter");
-    const dateFilter    = document.getElementById("date-filter");
-    const sortFilter    = document.getElementById("sort-filter");
-    const resultCount   = document.getElementById("result-count");
-    const filterChips   = document.getElementById("filter-chips");
+    const sectionsRoot   = document.getElementById("video-sections");
+    const emptyState     = document.getElementById("empty-state");
+    const searchInput    = document.getElementById("search-input");
+    const channelFilter  = document.getElementById("channel-filter");
+    const topicFilter    = document.getElementById("topic-filter");
+    const dateFilter     = document.getElementById("date-filter");
+    const durationFilter = document.getElementById("duration-filter");
+    const resultCount    = document.getElementById("result-count");
+    const filterChips    = document.getElementById("filter-chips");
+
+    const TOPIC_LABELS = {
+      "claude":             "Claude",
+      "chatgpt":            "ChatGPT / GPT-4",
+      "gemini":             "Gemini",
+      "open-models":        "Open Models",
+      "agents":             "AI Agents",
+      "orchestration":      "Orchestration",
+      "rag":                "RAG",
+      "prompt-engineering": "Prompt Engineering",
+      "automation":         "Automation",
+      "ai-coding":          "AI Coding",
+      "image-generation":   "Image Generation",
+      "video-ai":           "Video AI",
+      "fine-tuning":        "Fine-Tuning",
+      "local-ai":           "Local AI",
+    };
     const statTotal     = document.getElementById("stat-total");
     const statSources   = document.getElementById("stat-sources");
     const courseModal   = document.getElementById("course-modal");
@@ -886,7 +903,7 @@
 
     function render(videos) {
       sectionsRoot.innerHTML = "";
-      const groups = groupByMonth(videos, sortFilter.value);
+      const groups = groupByMonth(videos, "newest");
       groups.forEach(([, g], i) => sectionsRoot.appendChild(buildSection(g.label, g.videos, i === 0)));
       emptyState.classList.toggle("is-visible", videos.length === 0);
     }
@@ -898,11 +915,19 @@
       return `${v.title || ""} ${v.channelName || ""}`.toLowerCase().includes(term);
     }
 
-    function matchesCourses(v, mode) {
+    function matchesTopic(v, topic) {
+      if (topic === "all") return true;
+      return Array.isArray(v.topics) && v.topics.includes(topic);
+    }
+
+    function matchesDuration(v, mode) {
       if (mode === "all") return true;
-      const courseCount = Array.isArray(v.courseMapping?.courses) ? v.courseMapping.courses.length : 0;
-      const hasCourses = Boolean(v.courseMapping?.hasCourses) || courseCount > 0;
-      return mode === "with" ? hasCourses : !hasCourses;
+      const secs = v.durationSeconds;
+      if (secs == null) return false;
+      if (mode === "short")  return secs < 60;
+      if (mode === "medium") return secs >= 60 && secs <= 300;
+      if (mode === "long")   return secs > 300;
+      return true;
     }
 
     function matchesDate(v, days) {
@@ -923,17 +948,19 @@
     }
 
     function getFilteredVideos() {
-      const term = searchInput.value.trim().toLowerCase();
-      const channel = channelFilter.value;
-      const courseMode = courseFilter.value;
+      const term     = searchInput.value.trim().toLowerCase();
+      const channel  = channelFilter.value;
+      const topic    = topicFilter.value;
       const dateMode = dateFilter.value;
+      const duration = durationFilter.value;
       const filtered = allVideos.filter(v =>
         (channel === "all" || v.channelName === channel) &&
         matchesSearch(v, term) &&
-        matchesCourses(v, courseMode) &&
+        matchesTopic(v, topic) &&
+        matchesDuration(v, duration) &&
         matchesDate(v, dateMode)
       );
-      return sortByDate(filtered, sortFilter.value);
+      return sortByDate(filtered, "newest");
     }
 
     function updateResultCount(count) {
@@ -943,18 +970,17 @@
         : `Showing ${count} of ${total} videos`;
     }
 
-    const DATE_LABELS = { "30": "Last 30 days", "90": "Last 90 days", "180": "Last 6 months", "365": "Last year" };
+    const DATE_LABELS     = { "30": "Last 30 days", "90": "Last 90 days", "180": "Last 6 months", "365": "Last year" };
+    const DURATION_LABELS = { "short": "Under 1 min", "medium": "1 – 5 min", "long": "Over 5 min" };
 
     function renderFilterChips() {
       const chips = [];
       const term = searchInput.value.trim();
       if (term) chips.push({ key: "search", label: `Search: "${term}"` });
-      if (channelFilter.value !== "all") chips.push({ key: "channel", label: `Channel: ${channelFilter.value}` });
-      if (courseFilter.value !== "all") {
-        chips.push({ key: "course", label: courseFilter.value === "with" ? "With Aesop courses" : "Without courses" });
-      }
-      if (dateFilter.value !== "all") chips.push({ key: "date", label: DATE_LABELS[dateFilter.value] });
-      if (sortFilter.value !== "newest") chips.push({ key: "sort", label: "Oldest first" });
+      if (channelFilter.value !== "all")  chips.push({ key: "channel",  label: `Channel: ${channelFilter.value}` });
+      if (topicFilter.value !== "all")    chips.push({ key: "topic",    label: `Topic: ${TOPIC_LABELS[topicFilter.value] || topicFilter.value}` });
+      if (dateFilter.value !== "all")     chips.push({ key: "date",     label: DATE_LABELS[dateFilter.value] });
+      if (durationFilter.value !== "all") chips.push({ key: "duration", label: DURATION_LABELS[durationFilter.value] });
 
       filterChips.innerHTML = chips.map(c => `
         <span class="chip">${safeHtml(c.label)}
@@ -963,11 +989,11 @@
     }
 
     function clearChip(key) {
-      if (key === "search")  searchInput.value = "";
-      if (key === "channel") channelFilter.value = "all";
-      if (key === "course")  courseFilter.value = "all";
-      if (key === "date")    dateFilter.value = "all";
-      if (key === "sort")    sortFilter.value = "newest";
+      if (key === "search")   searchInput.value = "";
+      if (key === "channel")  channelFilter.value = "all";
+      if (key === "topic")    topicFilter.value = "all";
+      if (key === "date")     dateFilter.value = "all";
+      if (key === "duration") durationFilter.value = "all";
       applyFilter();
     }
 
@@ -993,6 +1019,22 @@
           opt.value = ch; opt.textContent = ch;
           channelFilter.appendChild(opt);
         });
+
+        // Populate topics dropdown from tagged videos, sorted by count desc
+        const topicCounts = new Map();
+        for (const v of allVideos) {
+          for (const t of (v.topics || [])) {
+            topicCounts.set(t, (topicCounts.get(t) || 0) + 1);
+          }
+        }
+        [...topicCounts.entries()]
+          .sort((a, b) => b[1] - a[1])
+          .forEach(([id, count]) => {
+            const opt = document.createElement("option");
+            opt.value = id;
+            opt.textContent = `${TOPIC_LABELS[id] || id} (${count})`;
+            topicFilter.appendChild(opt);
+          });
 
         statSources.textContent = channels.length;
         statTotal.textContent = allVideos.length;
@@ -1168,14 +1210,14 @@
       };
     }
 
-    [channelFilter, courseFilter, dateFilter, sortFilter].forEach(el => el.addEventListener("change", applyFilter));
+    [channelFilter, topicFilter, dateFilter, durationFilter].forEach(el => el.addEventListener("change", applyFilter));
     searchInput.addEventListener("input", debounce(applyFilter, 150));
     document.getElementById("clear-filters").addEventListener("click", () => {
       searchInput.value = "";
       channelFilter.value = "all";
-      courseFilter.value = "all";
+      topicFilter.value = "all";
       dateFilter.value = "all";
-      sortFilter.value = "newest";
+      durationFilter.value = "all";
       applyFilter();
     });
     filterChips.addEventListener("click", (e) => {
