@@ -53,7 +53,8 @@ jobs:
             --v2-root="${GITHUB_WORKSPACE}/Aesop/ai-academy/modules/v2" \
             --embedding-model="${GITHUB_WORKSPACE}/Aesop/models/embeddings/all-MiniLM-L6-v2" \
             --obsidian="${GITHUB_WORKSPACE}/experts/assets/watchlist-items.md" \
-            --videos-per-course=2
+            --videos-per-course=2 \
+            --index-v2
 
       - name: Upload Watchlist output
         uses: actions/upload-artifact@v4
