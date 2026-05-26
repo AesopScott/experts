@@ -8,8 +8,8 @@
   <meta http-equiv="Expires" content="0">
   <title>Curated AI Videos | 25experts</title>
   <meta name="description" content="Browse curated AI videos selected for practical value, with direct source links and Aesop Academy course pathways.">
-  <meta name="page-version" content="v2026.05.24.4">
-  <meta name="page-updated" content="2026-05-24">
+  <meta name="page-version" content="v2026.05.26.1">
+  <meta name="page-updated" content="2026-05-26">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/videos.html">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -410,6 +410,50 @@
     .link-courses-btn:hover {
       background: #e0f0e8;
     }
+
+    /* ── SHARE BUTTON ── */
+    .share-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      width: 100%; margin-top: 8px;
+      padding: 6px 12px; border-radius: 6px;
+      border: 1px solid var(--line); background: transparent;
+      font: inherit; font-size: 12px; font-weight: 700; color: var(--muted);
+      cursor: pointer; transition: background 0.12s, color 0.12s;
+      text-align: left;
+    }
+    .share-btn:hover { background: #f0f4f2; color: var(--green); border-color: #c5d8cb; }
+    .share-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+    /* ── NEON BEACON (social deep-link highlight) ── */
+    @keyframes neon-beacon {
+      0%   { box-shadow: 0 0 0 2px #20c97a, 0 0 10px 3px rgba(32,201,122,0.65), 0 0 30px 8px rgba(32,201,122,0.25), 0 8px 28px rgba(17,31,25,0.18); }
+      40%  { box-shadow: 0 0 0 3px #4de8a0, 0 0 18px 7px rgba(77,232,160,0.5),  0 0 50px 16px rgba(32,201,122,0.18), 0 8px 28px rgba(17,31,25,0.18); }
+      70%  { box-shadow: 0 0 0 2px #20c97a, 0 0 26px 10px rgba(32,201,122,0.4), 0 0 65px 22px rgba(32,201,122,0.1),  0 8px 28px rgba(17,31,25,0.18); }
+      100% { box-shadow: 0 0 0 2px #20c97a, 0 0 10px 3px rgba(32,201,122,0.65), 0 0 30px 8px rgba(32,201,122,0.25), 0 8px 28px rgba(17,31,25,0.18); }
+    }
+    .video-card.neon-highlighted {
+      border-color: #20c97a !important;
+      border-width: 2px !important;
+      transform: translateY(-4px);
+      animation: neon-beacon 2.2s ease-in-out infinite;
+      position: relative; z-index: 2;
+    }
+
+    /* ── SHARE TOAST ── */
+    .share-toast {
+      position: fixed; bottom: 28px; left: 50%;
+      transform: translateX(-50%) translateY(12px);
+      background: #0e1f18; color: #fff;
+      padding: 10px 22px; border-radius: 8px;
+      font-size: 13px; font-weight: 600; letter-spacing: 0.01em;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.22s, transform 0.22s;
+      z-index: 9999; white-space: nowrap;
+    }
+    .share-toast.is-visible {
+      opacity: 1; transform: translateX(-50%) translateY(0);
+    }
     .course-links {
       margin-top: 8px;
       padding-top: 8px;
@@ -771,6 +815,8 @@
     let selectedCourseIds = new Set();
     const requestedCourseVideoId = new URLSearchParams(window.location.search).get("linkVideo");
     let requestedCoursePickerOpened = false;
+    const DEEP_LINK_VIDEO_ID = new URLSearchParams(window.location.search).get("v");
+    let deepLinkHandled = false;
 
     // Display version
     function updateVersion() {
@@ -836,7 +882,7 @@
       const isAdmin = currentUser && currentUser.role === "admin";
       const adminButton = isAdmin ? `<button type="button" class="link-courses-btn" data-video-id="${safeHtml(v.id)}">Link Courses</button>` : "";
       return `
-        <article class="video-card" data-channel="${safeHtml(v.channelName)}">
+        <article class="video-card" data-channel="${safeHtml(v.channelName)}" data-video-id="${safeHtml(v.id)}">
           <a class="video-main-link" href="${safeHtml(v.link)}" target="_blank" rel="noopener noreferrer"
              aria-label="${safeHtml(v.title)} by ${safeHtml(v.channelName)} opens on YouTube">
             <div class="thumb">
@@ -854,6 +900,10 @@
               </div>
             </a>
             ${renderCourseLinks(v)}
+            <button type="button" class="share-btn" data-share-id="${safeHtml(v.id)}" aria-label="Copy link to this video">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              Copy link
+            </button>
             ${adminButton}
           </div>
         </article>`;
@@ -1040,6 +1090,7 @@
         statTotal.textContent = allVideos.length;
         applyFilter();
         maybeOpenRequestedCoursePicker();
+        maybeHighlightDeepLink();
       } catch (err) {
         console.error("Failed to load videos:", err);
         sectionsRoot.innerHTML = `<div style="padding:40px;text-align:center;color:var(--muted);">Failed to load videos. Please refresh.</div>`;
@@ -1225,6 +1276,39 @@
       if (btn) clearChip(btn.dataset.clearChip);
     });
 
+    // ── Social deep-link: highlight card when ?v= param is present ──
+    function maybeHighlightDeepLink() {
+      if (deepLinkHandled || !DEEP_LINK_VIDEO_ID) return;
+      const card = document.querySelector(`[data-video-id="${CSS.escape(DEEP_LINK_VIDEO_ID)}"]`);
+      if (!card) return;
+      deepLinkHandled = true;
+
+      // Expand the month section containing this card if it's collapsed
+      const section = card.closest(".month-section");
+      if (section && section.dataset.open !== "true") {
+        section.dataset.open = "true";
+      }
+
+      // Apply neon beacon
+      card.classList.add("neon-highlighted");
+
+      // Scroll into view after a brief tick so the section has time to expand
+      setTimeout(() => {
+        card.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 120);
+    }
+
+    // ── Share toast helper ──
+    let shareToastTimer = null;
+    function showShareToast(msg) {
+      const toast = document.getElementById("share-toast");
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.add("is-visible");
+      if (shareToastTimer) clearTimeout(shareToastTimer);
+      shareToastTimer = setTimeout(() => toast.classList.remove("is-visible"), 2400);
+    }
+
     // Handle Link Courses button clicks
     sectionsRoot.addEventListener("click", async (e) => {
       const btn = e.target.closest(".link-courses-btn");
@@ -1232,6 +1316,29 @@
       e.preventDefault();
       e.stopPropagation();
       openCoursePicker(btn.dataset.videoId);
+    });
+
+    // Handle Share button clicks
+    sectionsRoot.addEventListener("click", (e) => {
+      const btn = e.target.closest(".share-btn");
+      if (!btn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const videoId = btn.dataset.shareId;
+      if (!videoId) return;
+      const shareUrl = `${location.origin}${location.pathname}?v=${encodeURIComponent(videoId)}`;
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        showShareToast("✓ Link copied — share it anywhere!");
+      }).catch(() => {
+        // Fallback: select from a temporary input
+        const tmp = document.createElement("input");
+        tmp.value = shareUrl;
+        document.body.appendChild(tmp);
+        tmp.select();
+        document.execCommand("copy");
+        document.body.removeChild(tmp);
+        showShareToast("✓ Link copied — share it anywhere!");
+      });
     });
 
     courseSearch.addEventListener("input", renderCourseResults);
@@ -1263,6 +1370,8 @@
     load();
 
   </script>
+
+  <div class="share-toast" id="share-toast" role="status" aria-live="polite"></div>
 
   <footer>
     <span>© 2026 25experts.com · A project of <a href="https://aesopacademy.org/courses.html" style="color:var(--green);font-weight:700;">Aesop Academy</a></span>
