@@ -10,15 +10,15 @@
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
-  <meta name="theme-color" content="#00E6FF">
+  <meta name="theme-color" content="#1666FF">
   <style>
     :root {
       --ink: #0A0F1E;
-      --muted: #00E6FF;
+      --muted: #1666FF;
       --paper: #F7FBFF;
       --panel: #ffffff;
       --line: #F7FBFF;
-      --green: #00E6FF;
+      --green: #1666FF;
       --mint: #EAF7FF;
       --gold: #1666FF;
       --gold2: #EAF7FF;
@@ -135,7 +135,7 @@
     const computeTopicsAndDurationsFn = httpsCallable(functions, "computeTopicsAndDurations", { timeout: 600000 });
 
     const DOMAINS = [
-      { key: "ai-automation",        label: "AI & Automation",                color: "#00E6FF" },
+      { key: "ai-automation",        label: "AI & Automation",                color: "#1666FF" },
       { key: "finance-investing",    label: "AI in Finance & Investing",      color: "#1666FF" },
       { key: "marketing-growth",     label: "AI in Marketing, Sales & Growth",color: "#1666FF" },
       { key: "leadership-management",label: "AI in Leadership & Management",  color: "#1666FF" },
@@ -681,7 +681,7 @@
 
     async function handleAddChannel() {
       const input     = document.getElementById("channel-url-input");
-      const domainSel = document.querySelector("#00E6FF-channel-form select");
+      const domainSel = document.querySelector("#1666FF-channel-form select");
       const btn       = document.getElementById("add-channel-btn");
       const url       = input.value.trim();
       const domain    = domainSel?.value || "";

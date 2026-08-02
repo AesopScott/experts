@@ -58,13 +58,13 @@
   <style>
     :root {
       --ink: #0A0F1E;
-      --muted: #00E6FF;
+      --muted: #1666FF;
       --paper: #0A0F1E;
       --panel: #ffffff;
       --line: #F7FBFF;
-      --green: #00E6FF;
-      --ai: #00E6FF;
-      --finance: #00E6FF;
+      --green: #1666FF;
+      --ai: #1666FF;
+      --finance: #1666FF;
       --marketing: #1666FF;
       --leadership: #1666FF;
       --design: #1666FF;
@@ -143,7 +143,7 @@
       display: inline-flex; align-items: center; justify-content: center;
       min-height: 56px; padding: 0 26px; border-radius: 10px;
       background: var(--green); color: #fff; border: 1px solid var(--green);
-      box-shadow: 0 16px 36px rgba(0, 230, 255, 0.22);
+      box-shadow: 0 16px 36px rgba(22, 102, 255, 0.22);
       font-size: 18px; font-weight: 950;
     }
     .watchlist-btn:hover { background: #1B2333; transform: translateY(-1px); }
@@ -427,13 +427,13 @@
 
     /* ── NEON BEACON (social deep-link highlight) ── */
     @keyframes neon-beacon {
-      0%   { box-shadow: 0 0 0 2px #00E6FF, 0 0 10px 3px rgba(0, 230, 255, 0.65), 0 0 30px 8px rgba(0, 230, 255, 0.25), 0 8px 28px rgba(10, 15, 30, 0.18); }
-      40%  { box-shadow: 0 0 0 3px #1666FF, 0 0 18px 7px rgba(22, 102, 255, 0.5),  0 0 50px 16px rgba(0, 230, 255, 0.18), 0 8px 28px rgba(10, 15, 30, 0.18); }
-      70%  { box-shadow: 0 0 0 2px #00E6FF, 0 0 26px 10px rgba(0, 230, 255, 0.4), 0 0 65px 22px rgba(0, 230, 255, 0.1),  0 8px 28px rgba(10, 15, 30, 0.18); }
-      100% { box-shadow: 0 0 0 2px #00E6FF, 0 0 10px 3px rgba(0, 230, 255, 0.65), 0 0 30px 8px rgba(0, 230, 255, 0.25), 0 8px 28px rgba(10, 15, 30, 0.18); }
+      0%   { box-shadow: 0 0 0 2px #1666FF, 0 0 10px 3px rgba(22, 102, 255, 0.65), 0 0 30px 8px rgba(22, 102, 255, 0.25), 0 8px 28px rgba(10, 15, 30, 0.18); }
+      40%  { box-shadow: 0 0 0 3px #1666FF, 0 0 18px 7px rgba(22, 102, 255, 0.5),  0 0 50px 16px rgba(22, 102, 255, 0.18), 0 8px 28px rgba(10, 15, 30, 0.18); }
+      70%  { box-shadow: 0 0 0 2px #1666FF, 0 0 26px 10px rgba(22, 102, 255, 0.4), 0 0 65px 22px rgba(22, 102, 255, 0.1),  0 8px 28px rgba(10, 15, 30, 0.18); }
+      100% { box-shadow: 0 0 0 2px #1666FF, 0 0 10px 3px rgba(22, 102, 255, 0.65), 0 0 30px 8px rgba(22, 102, 255, 0.25), 0 8px 28px rgba(10, 15, 30, 0.18); }
     }
     .video-card.neon-highlighted {
-      border-color: #00E6FF !important;
+      border-color: #1666FF !important;
       border-width: 2px !important;
       transform: translateY(-4px);
       animation: neon-beacon 2.2s ease-in-out infinite;
