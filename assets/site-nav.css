@@ -412,15 +412,23 @@ body {
 
 .mission-bar,
 .topbar {
-  background: #0a0f1e !important;
-  color: rgba(255, 255, 255, 0.9) !important;
+  background: #00e6ff !important;
+  color: #0a0f1e !important;
   border-bottom: 1px solid rgba(0, 230, 255, 0.35);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .mission-bar strong,
-.topbar strong,
+.topbar strong {
+  color: #0a0f1e !important;
+}
+
+.topbar a,
+.mission-bar a {
+  color: #0a0f1e !important;
+}
+
 .brand-glow,
 .kicker,
 .eyebrow {
