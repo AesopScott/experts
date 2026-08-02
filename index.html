@@ -8,7 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <title>25experts by Mojo AI Studio</title>
   <meta name="description" content="A curated AI video library from 25experts by Mojo AI Studio, with creator context and practical signal.">
-  <meta name="page-version" content="v2026.08.02.1">
+  <meta name="page-version" content="v2026.08.02.2">
   <meta name="page-updated" content="2026-08-02">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/">
@@ -256,7 +256,7 @@
     .hero-strip {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1px;
+      gap: 0;
       width: min(960px, 100%);
       margin-top: 54px;
       overflow: hidden;
@@ -267,16 +267,22 @@
     }
 
     .hero-stat {
+      position: relative;
       min-height: 108px;
-      padding: 18px;
+      padding: 18px 20px;
       background: #F7FBFF !important;
+    }
+
+    .hero-stat + .hero-stat {
+      border-left: 1px solid rgba(22, 102, 255, 0.24);
     }
 
     .hero-stat strong {
       display: block;
       color: #0A0F1E !important;
-      font-size: 28px;
+      font-size: clamp(21px, 1.75vw, 24px);
       line-height: 1.05;
+      white-space: nowrap;
       text-transform: uppercase;
     }
 
@@ -487,6 +493,10 @@
       .split,
       .global-grid {
         grid-template-columns: 1fr;
+      }
+      .hero-stat + .hero-stat {
+        border-top: 1px solid rgba(22, 102, 255, 0.24);
+        border-left: 0;
       }
       .hero { min-height: auto; }
     }
