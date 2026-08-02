@@ -1,8 +1,8 @@
 import { db } from "./firebase-init.js";
 import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const DEFAULT_TO = "scott@aesopacademy.org";
-const DEFAULT_FROM = "noreply@aesopacademy.org";
+const DEFAULT_TO = "hello@mojoaistudio.com";
+const DEFAULT_FROM = "noreply@mojoaistudio.com";
 
 function fieldLabel(field) {
   const label = field.closest("label");

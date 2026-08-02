@@ -1,11 +1,11 @@
 {
-  "name": "25experts by Aesop Academy",
+  "name": "25experts | Mojo AI Studio",
   "short_name": "25experts",
-  "description": "Trusted AI learning, expert access, and a AI literacy focus built for global reach.",
+  "description": "Curated AI signal, creator context, and executive-grade AI insight from Mojo AI Studio.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#fbfaf6",
-  "theme_color": "#145f47",
+  "background_color": "#0A0F1E",
+  "theme_color": "#1666FF",
   "icons": [
     {
       "src": "/assets/favicon.svg",
