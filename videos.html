@@ -419,25 +419,6 @@
       .video-grid { grid-template-columns: 1fr; }
     }
 
-    .link-courses-btn {
-      display: block;
-      width: 100%;
-      margin-top: 8px;
-      padding: 8px 12px;
-      border: 1px solid var(--line);
-      border-radius: 6px;
-      background: #F7FBFF;
-      color: var(--green);
-      font: inherit;
-      font-weight: 700;
-      font-size: 12px;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-    .link-courses-btn:hover {
-      background: #EAF7FF;
-    }
-
     /* ── SHARE BUTTON ── */
     .share-btn {
       display: inline-flex; align-items: center; gap: 5px;
@@ -503,212 +484,6 @@
     }
     .share-toast.is-visible {
       opacity: 1; transform: translateX(-50%) translateY(0);
-    }
-    .course-links {
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px solid var(--line);
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .course-link {
-      display: block;
-      color: var(--green);
-      font-size: 12px;
-      font-weight: 750;
-      line-height: 1.25;
-      text-decoration: none;
-    }
-    .course-link:hover { text-decoration: underline; }
-    .course-link-meta {
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 650;
-    }
-    .course-modal-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 40;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background: rgba(10, 15, 30, 0.42);
-    }
-    .course-modal-backdrop.is-open { display: flex; }
-    .course-modal {
-      width: min(760px, 100%);
-      max-height: min(760px, calc(100vh - 40px));
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: var(--panel);
-      box-shadow: 0 24px 80px rgba(10, 15, 30, 0.28);
-    }
-    .course-modal-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 18px 20px;
-      border-bottom: 1px solid var(--line);
-    }
-    .course-modal-title {
-      margin: 0;
-      font-size: 18px;
-      font-weight: 850;
-      line-height: 1.2;
-    }
-    .course-modal-subtitle {
-      margin: 5px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.35;
-    }
-    .course-modal-close {
-      width: 34px;
-      height: 34px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fff;
-      color: var(--ink);
-      cursor: pointer;
-      font-size: 18px;
-      line-height: 1;
-    }
-    .course-modal-body {
-      display: grid;
-      grid-template-columns: 1fr 220px;
-      min-height: 0;
-    }
-    .course-picker-main {
-      min-width: 0;
-      padding: 16px;
-      border-right: 1px solid var(--line);
-    }
-    .course-search {
-      width: 100%;
-      min-height: 40px;
-      box-sizing: border-box;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 0 12px;
-      font: inherit;
-      font-size: 14px;
-    }
-    .course-results {
-      margin-top: 12px;
-      max-height: 430px;
-      overflow: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .course-option {
-      display: grid;
-      grid-template-columns: 18px 1fr;
-      gap: 10px;
-      padding: 10px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fff;
-      cursor: pointer;
-    }
-    .course-option input { margin-top: 2px; }
-    .course-option-title {
-      margin: 0;
-      font-size: 14px;
-      font-weight: 800;
-      line-height: 1.25;
-    }
-    .course-option-desc {
-      margin: 4px 0 0;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.35;
-    }
-    .course-selection {
-      padding: 16px;
-      background: var(--paper);
-      min-width: 0;
-    }
-    .course-selection h3 {
-      margin: 0 0 10px;
-      font-size: 13px;
-      font-weight: 850;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-    .selected-course-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-    .selected-course-pill {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 7px 8px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fff;
-      color: var(--ink);
-      font-size: 12px;
-      font-weight: 750;
-    }
-    .selected-course-pill button {
-      border: 0;
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-      font-size: 16px;
-      line-height: 1;
-    }
-    .course-modal-foot {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 10px;
-      padding: 14px 16px;
-      border-top: 1px solid var(--line);
-      background: #fff;
-    }
-    .course-modal-status {
-      margin-right: auto;
-      color: var(--muted);
-      font-size: 13px;
-    }
-    .course-secondary-btn,
-    .course-primary-btn {
-      min-height: 36px;
-      padding: 0 14px;
-      border-radius: 8px;
-      font: inherit;
-      font-size: 13px;
-      font-weight: 850;
-      cursor: pointer;
-    }
-    .course-secondary-btn {
-      border: 1px solid var(--line);
-      background: #fff;
-      color: var(--ink);
-    }
-    .course-primary-btn {
-      border: 0;
-      background: var(--green);
-      color: #fff;
-    }
-    .course-primary-btn:disabled { opacity: 0.55; cursor: not-allowed; }
-    @media (max-width: 700px) {
-      .course-modal-body { grid-template-columns: 1fr; }
-      .course-picker-main { border-right: 0; border-bottom: 1px solid var(--line); }
-      .course-results { max-height: 300px; }
     }
   </style>
   <link rel="stylesheet" href="assets/site-nav.css?v=20260802-posted-date">
@@ -787,38 +562,9 @@
     <div id="video-sections"></div>
   </main>
 
-  <div class="course-modal-backdrop" id="course-modal" aria-hidden="true">
-    <div class="course-modal" role="dialog" aria-modal="true" aria-labelledby="course-modal-title">
-      <div class="course-modal-head">
-        <div>
-          <h2 class="course-modal-title" id="course-modal-title">Link Mojo AI Studio briefs</h2>
-          <p class="course-modal-subtitle" id="course-modal-subtitle"></p>
-        </div>
-        <button class="course-modal-close" id="course-modal-close" type="button" aria-label="Close">x</button>
-      </div>
-      <div class="course-modal-body">
-        <div class="course-picker-main">
-          <input class="course-search" id="course-search" type="search" placeholder="Search briefs by title, description, or keyword">
-          <div class="course-results" id="course-results"></div>
-        </div>
-        <aside class="course-selection">
-          <h3>Selected</h3>
-          <div class="selected-course-list" id="selected-course-list">No briefs selected.</div>
-        </aside>
-      </div>
-      <div class="course-modal-foot">
-        <span class="course-modal-status" id="course-modal-status"></span>
-        <button class="course-secondary-btn" id="course-clear-btn" type="button">Clear</button>
-        <button class="course-primary-btn" id="course-save-btn" type="button">Save briefs</button>
-      </div>
-    </div>
-  </div>
-
   <script type="module">
-    import { db, auth } from "./assets/firebase-init.js";
-    import { collection, getDocs, query, orderBy, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js";
+    import { db } from "./assets/firebase-init.js";
+    import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const sectionsRoot   = document.getElementById("video-sections");
     const emptyState     = document.getElementById("empty-state");
@@ -849,24 +595,10 @@
     };
     const statTotal     = document.getElementById("stat-total");
     const statSources   = document.getElementById("stat-sources");
-    const courseModal   = document.getElementById("course-modal");
-    const courseSearch  = document.getElementById("course-search");
-    const courseResults = document.getElementById("course-results");
-    const selectedList  = document.getElementById("selected-course-list");
-    const modalStatus   = document.getElementById("course-modal-status");
-    const saveCoursesBtn = document.getElementById("course-save-btn");
-    const functions     = getFunctions();
-    const getCourseCatalog = httpsCallable(functions, "getCourseCatalog", { timeout: 20000 });
 
     let allVideos = [];
-    let currentUser = null;
-    let courseCatalog = [];
-    let activeCourseVideoId = null;
-    let selectedCourseIds = new Set();
     const LOCAL_PROFILE_KEY = "25experts.localProfile.v1";
     let localProfile = loadLocalProfile();
-    const requestedCourseVideoId = new URLSearchParams(window.location.search).get("linkVideo");
-    let requestedCoursePickerOpened = false;
     const DEEP_LINK_VIDEO_ID = new URLSearchParams(window.location.search).get("v");
     let deepLinkHandled = false;
 
@@ -878,28 +610,6 @@
         versionEl.textContent = meta ? meta.content : "unknown";
       }
     }
-
-    // Track auth state and re-render when it changes
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        try {
-          const userDoc = await getDoc(doc(db, "users", user.uid));
-          currentUser = userDoc.exists() ? { uid: user.uid, ...userDoc.data() } : { uid: user.uid };
-          console.log("User logged in:", currentUser);
-        } catch (err) {
-          console.error("Failed to load user data:", err);
-          currentUser = { uid: user.uid };
-        }
-      } else {
-        currentUser = null;
-        console.log("User logged out");
-      }
-      // Re-render videos with updated auth state
-      if (allVideos.length > 0) {
-        applyFilter();
-      }
-      maybeOpenRequestedCoursePicker();
-    });
 
     function safeHtml(str) {
       return String(str || "")
@@ -997,8 +707,6 @@
     }
 
     function renderCard(v) {
-      const isAdmin = currentUser && currentUser.role === "admin";
-      const adminButton = "";
       const isFavorite = isFavoriteChannel(v.channelName);
       const postedDate = formatPostedDate(v.publishedAt);
       const postedLabel = postedDate ? `Posted ${postedDate}` : "";
@@ -1030,7 +738,6 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
               Copy link
             </button>
-            ${adminButton}
           </div>
         </article>`;
     }
@@ -1187,12 +894,11 @@
 
     async function load() {
       try {
-        const snap = await getDocs(query(collection(db, "curatedVideos"), orderBy("publishedAt", "desc")));
-        const videos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        allVideos = await Promise.all(videos.map(async video => ({
-          ...video,
-          courseMapping: await loadCourseMapping(video.id),
-        })));
+        const [videosSnap, followedSnap] = await Promise.all([
+          getDocs(query(collection(db, "curatedVideos"), orderBy("publishedAt", "desc"))),
+          getDocs(collection(db, "followedChannels")),
+        ]);
+        allVideos = videosSnap.docs.map(d => ({ id: d.id, ...d.data() }));
 
         const channels = [...new Set(allVideos.map(v => v.channelName))].sort();
         channels.forEach(ch => {
@@ -1217,170 +923,13 @@
             topicFilter.appendChild(opt);
           });
 
-        statSources.textContent = channels.length;
+        statSources.textContent = followedSnap.size;
         statTotal.textContent = allVideos.length;
         applyFilter();
-        maybeOpenRequestedCoursePicker();
         maybeHighlightDeepLink();
       } catch (err) {
         console.error("Failed to load videos:", err);
         sectionsRoot.innerHTML = `<div style="padding:40px;text-align:center;color:var(--muted);">Failed to load videos. Please refresh.</div>`;
-      }
-    }
-
-    async function loadCourseMapping(videoId) {
-      try {
-        const mappingDoc = await getDoc(doc(db, "videoCourseMappings", videoId));
-        return mappingDoc.exists() ? mappingDoc.data() : null;
-      } catch (err) {
-        console.warn("Failed to load course mapping:", videoId, err);
-        return null;
-      }
-    }
-
-    async function loadCourseCatalog() {
-      if (courseCatalog.length > 0) return courseCatalog;
-      modalStatus.textContent = "Loading brief catalog...";
-      const result = await getCourseCatalog({});
-      courseCatalog = (result.data?.courses || []).map(course => ({
-        id: String(course.id || course.url || course.name),
-        name: course.name || "Untitled course",
-        desc: course.desc || course.description || "",
-        description: course.description || course.desc || "",
-        url: course.url || "https://mojoaistudio.com",
-        live: course.live !== false,
-        keywords: Array.isArray(course.keywords) ? course.keywords : [],
-      }));
-      modalStatus.textContent = "";
-      return courseCatalog;
-    }
-
-    function getActiveVideo() {
-      return allVideos.find(video => video.id === activeCourseVideoId);
-    }
-
-    function selectedCourses() {
-      return courseCatalog.filter(course => selectedCourseIds.has(course.id));
-    }
-
-    function courseSearchText(course) {
-      return [
-        course.name,
-        course.description,
-        course.desc,
-        course.url,
-        ...(course.keywords || []),
-      ].join(" ").toLowerCase();
-    }
-
-    function renderCourseResults() {
-      const term = courseSearch.value.trim().toLowerCase();
-      const filtered = courseCatalog
-        .filter(course => !term || courseSearchText(course).includes(term))
-        .slice(0, 60);
-
-      if (filtered.length === 0) {
-        courseResults.innerHTML = `<div class="empty-state is-visible">No briefs match that search.</div>`;
-        return;
-      }
-
-      courseResults.innerHTML = filtered.map(course => `
-        <label class="course-option">
-          <input type="checkbox" value="${safeHtml(course.id)}"${selectedCourseIds.has(course.id) ? " checked" : ""}>
-          <span>
-            <strong class="course-option-title">${safeHtml(course.name)}</strong>
-            <span class="course-option-desc">${safeHtml(course.description || course.desc)}</span>
-          </span>
-        </label>`).join("");
-    }
-
-    function renderSelectedCourses() {
-      const selected = selectedCourses();
-      saveCoursesBtn.disabled = selected.length === 0;
-      if (selected.length === 0) {
-        selectedList.textContent = "No briefs selected.";
-        return;
-      }
-
-      selectedList.innerHTML = selected.map(course => `
-        <span class="selected-course-pill">
-          ${safeHtml(course.name)}
-          <button type="button" data-remove-course="${safeHtml(course.id)}" aria-label="Remove ${safeHtml(course.name)}">x</button>
-        </span>`).join("");
-    }
-
-    async function openCoursePicker(videoId) {
-      if (!currentUser || currentUser.role !== "admin") return;
-      activeCourseVideoId = videoId;
-      const video = getActiveVideo();
-      document.getElementById("course-modal-subtitle").textContent = video?.title || videoId;
-      courseSearch.value = "";
-      modalStatus.textContent = "";
-      courseModal.classList.add("is-open");
-      courseModal.setAttribute("aria-hidden", "false");
-
-      try {
-        await loadCourseCatalog();
-        const existing = video?.courseMapping?.courses || [];
-        selectedCourseIds = new Set(existing.map(course => String(course.id || course.url || course.name)));
-        renderCourseResults();
-        renderSelectedCourses();
-        courseSearch.focus();
-      } catch (err) {
-        console.error("Failed to load course catalog:", err);
-        modalStatus.textContent = "Failed to load brief catalog.";
-        courseResults.innerHTML = `<div class="empty-state is-visible">Could not load briefs. Try again in a moment.</div>`;
-      }
-    }
-
-    function maybeOpenRequestedCoursePicker() {
-      if (requestedCoursePickerOpened || !requestedCourseVideoId) return;
-      if (!currentUser || currentUser.role !== "admin") return;
-      if (!allVideos.some(video => video.id === requestedCourseVideoId)) return;
-      requestedCoursePickerOpened = true;
-      openCoursePicker(requestedCourseVideoId);
-    }
-
-    function closeCoursePicker() {
-      courseModal.classList.remove("is-open");
-      courseModal.setAttribute("aria-hidden", "true");
-      activeCourseVideoId = null;
-      selectedCourseIds = new Set();
-    }
-
-    async function saveCourseLinks() {
-      if (!activeCourseVideoId || !currentUser || currentUser.role !== "admin") return;
-      const courses = selectedCourses().map(course => ({
-        id: course.id,
-        name: course.name,
-        desc: course.description || course.desc || "",
-        url: course.url,
-        live: course.live !== false,
-        relevanceScore: 1,
-      }));
-
-      saveCoursesBtn.disabled = true;
-      modalStatus.textContent = "Saving...";
-
-      try {
-        await setDoc(doc(db, "videoCourseMappings", activeCourseVideoId), {
-          videoId: activeCourseVideoId,
-          courses,
-          hasCourses: courses.length > 0,
-          linkedManually: true,
-          syncedAt: serverTimestamp(),
-        });
-
-        const mapping = await loadCourseMapping(activeCourseVideoId);
-        allVideos = allVideos.map(video =>
-          video.id === activeCourseVideoId ? { ...video, courseMapping: mapping } : video
-        );
-        closeCoursePicker();
-        applyFilter();
-      } catch (err) {
-        console.error("Failed to save resource links:", err);
-        modalStatus.textContent = "Save failed.";
-        saveCoursesBtn.disabled = false;
       }
     }
 
@@ -1447,15 +996,6 @@
       shareToastTimer = setTimeout(() => toast.classList.remove("is-visible"), 2400);
     }
 
-    // Handle Link Courses button clicks
-    sectionsRoot.addEventListener("click", async (e) => {
-      const btn = e.target.closest(".link-courses-btn");
-      if (!btn) return;
-      e.preventDefault();
-      e.stopPropagation();
-      openCoursePicker(btn.dataset.videoId);
-    });
-
     // Handle Share button clicks
     sectionsRoot.addEventListener("click", (e) => {
       const btn = e.target.closest(".share-btn");
@@ -1477,31 +1017,6 @@
         document.body.removeChild(tmp);
         showShareToast("✓ Link copied — share it anywhere!");
       });
-    });
-
-    courseSearch.addEventListener("input", renderCourseResults);
-    document.getElementById("course-modal-close").addEventListener("click", closeCoursePicker);
-    document.getElementById("course-clear-btn").addEventListener("click", () => {
-      selectedCourseIds = new Set();
-      renderCourseResults();
-      renderSelectedCourses();
-    });
-    saveCoursesBtn.addEventListener("click", saveCourseLinks);
-    courseModal.addEventListener("click", (e) => {
-      if (e.target === courseModal) closeCoursePicker();
-    });
-    courseResults.addEventListener("change", (e) => {
-      if (e.target.type !== "checkbox") return;
-      if (e.target.checked) selectedCourseIds.add(e.target.value);
-      else selectedCourseIds.delete(e.target.value);
-      renderSelectedCourses();
-    });
-    selectedList.addEventListener("click", (e) => {
-      const removeBtn = e.target.closest("[data-remove-course]");
-      if (!removeBtn) return;
-      selectedCourseIds.delete(removeBtn.dataset.removeCourse);
-      renderCourseResults();
-      renderSelectedCourses();
     });
 
     updateVersion();

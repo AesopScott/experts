@@ -4,13 +4,11 @@ const { onCall, HttpsError } = require("firebase-functions/v2/https");
 const { defineSecret } = require("firebase-functions/params");
 const admin = require("firebase-admin");
 const { YoutubeTranscript } = require("youtube-transcript");
-const aesopApi = require("./lib/aesop-api.js");
 
 admin.initializeApp();
 
 const brevoApiKey = defineSecret("BREVO_SMTP_KEY");
 const youtubeApiKey = defineSecret("YOUTUBE_API_KEY");
-const openaiApiKey = defineSecret("OPENAI_API_KEY");
 
 const DEFAULT_TO = "scott@aesopacademy.org";
 const DEFAULT_FROM = "noreply@aesopacademy.org";
@@ -109,7 +107,6 @@ exports.sendFormSubmissionEmail = onDocumentCreated({
     throw error;
   }
 });
-
 // ─── YouTube curation ─────────────────────────────────────────────────────────
 
 function getDiscoveryQueries() {
@@ -252,6 +249,165 @@ async function fetchTranscript(videoId, apiKey = "") {
   // No transcript found
   console.warn(`No transcript available for ${videoId}`);
   return null;
+}
+
+const TRANSCRIPT_COLLECTION = "videoTranscripts";
+const ENRICHMENT_TRANSCRIPT_FETCH_LIMIT = 50;
+
+function hasText(value) {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+function buildTranscriptSummary(transcript, title = "") {
+  const normalized = String(transcript || "")
+    .replace(/\[[^\]]+\]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!normalized) return "";
+
+  const sentences = normalized
+    .match(/[^.!?]+[.!?]+|[^.!?]+$/g)
+    ?.map(s => s.trim())
+    .filter(s => s.length >= 35) || [];
+  const source = sentences.length > 0 ? sentences : [normalized];
+  let summary = source.slice(0, 5).join(" ");
+
+  if (summary.length > 1200) {
+    summary = summary.slice(0, 1197).replace(/\s+\S*$/, "") + "...";
+  }
+
+  if (!summary && title) return title;
+  return summary;
+}
+
+function transcriptRecordPath(videoId) {
+  return `${TRANSCRIPT_COLLECTION}/${videoId}`;
+}
+
+function buildTranscriptRecord({ videoId, data, transcript, summary }) {
+  const now = admin.firestore.FieldValue.serverTimestamp();
+  return {
+    videoId,
+    title: data.title || "",
+    link: data.link || `https://www.youtube.com/watch?v=${videoId}`,
+    channelName: data.channelName || "",
+    channelId: data.channelId || "",
+    publishedAt: data.publishedAt || "",
+    transcript,
+    summary,
+    summaryMethod: "extractive-v1",
+    updatedAt: now,
+  };
+}
+
+async function enrichCuratedVideos(db, apiKey, options = {}) {
+  const transcriptFetchLimit = options.transcriptFetchLimit ?? ENRICHMENT_TRANSCRIPT_FETCH_LIMIT;
+  const snap = await db.collection("curatedVideos").get();
+  const missingMetadata = snap.docs.filter(d => {
+    const data = d.data();
+    return data.durationSeconds == null || !data.publishedAt;
+  });
+  const metadata = await fetchYouTubeVideoMetadata(
+    missingMetadata.map(d => d.data().videoId || d.id),
+    apiKey
+  );
+
+  let transcriptFetches = 0;
+  let updated = 0;
+  let topicUpdates = 0;
+  let durationUpdates = 0;
+  let publishedAtUpdates = 0;
+  let transcriptUpdates = 0;
+  let transcriptRecords = 0;
+  const operations = [];
+
+  for (const d of snap.docs) {
+    const data = d.data();
+    const videoId = data.videoId || d.id;
+    const updateData = {};
+
+    if (!Array.isArray(data.topics) || data.topics.length === 0) {
+      updateData.topics = tagTopics(data.title, data.description || data.transcript || "");
+      topicUpdates++;
+    }
+
+    if (data.durationSeconds == null) {
+      const secs = metadata.get(videoId)?.durationSeconds;
+      if (secs != null) {
+        updateData.durationSeconds = secs;
+        durationUpdates++;
+      }
+    }
+
+    if (!data.publishedAt) {
+      const publishedAt = metadata.get(videoId)?.publishedAt;
+      if (publishedAt) {
+        updateData.publishedAt = publishedAt;
+        publishedAtUpdates++;
+      }
+    }
+
+    let transcript = hasText(data.transcript) ? data.transcript.trim() : null;
+    const transcriptAlreadyProcessed = Boolean(
+      data.transcriptProcessedAt ||
+      data.transcriptStatus ||
+      data.transcriptRecordPath
+    );
+
+    if (!transcript && !transcriptAlreadyProcessed && transcriptFetches < transcriptFetchLimit) {
+      transcriptFetches++;
+      transcript = await fetchTranscript(videoId, apiKey);
+      updateData.transcript = transcript;
+      updateData.transcriptStatus = transcript ? "available" : "unavailable";
+      updateData.transcriptProcessedAt = admin.firestore.FieldValue.serverTimestamp();
+      transcriptUpdates++;
+    } else if (transcript && !data.transcriptStatus) {
+      updateData.transcriptStatus = "available";
+      updateData.transcriptProcessedAt = admin.firestore.FieldValue.serverTimestamp();
+      transcriptUpdates++;
+    }
+
+    if (transcript && (!hasText(data.transcriptSummary) || !data.transcriptRecordPath)) {
+      const summary = hasText(data.transcriptSummary)
+        ? data.transcriptSummary.trim()
+        : buildTranscriptSummary(transcript, data.title);
+      const recordPath = transcriptRecordPath(videoId);
+      operations.push({
+        type: "set",
+        ref: db.collection(TRANSCRIPT_COLLECTION).doc(videoId),
+        data: buildTranscriptRecord({ videoId, data: { ...data, ...updateData }, transcript, summary }),
+        options: { merge: true },
+      });
+      Object.assign(updateData, {
+        transcriptSummary: summary,
+        transcriptSummaryStatus: "available",
+        transcriptRecordPath: recordPath,
+        transcriptSummaryUpdatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+      transcriptRecords++;
+    } else if (!transcript && updateData.transcriptStatus === "unavailable") {
+      updateData.transcriptSummaryStatus = "unavailable";
+    }
+
+    if (Object.keys(updateData).length > 0) {
+      operations.push({ type: "update", ref: d.ref, data: updateData });
+      updated++;
+    }
+  }
+
+  if (operations.length > 0) await commitInBatches(db, operations);
+
+  return {
+    scanned: snap.size,
+    updated,
+    topicUpdates,
+    durationUpdates,
+    publishedAtUpdates,
+    transcriptUpdates,
+    transcriptRecords,
+    transcriptFetches,
+  };
 }
 
 // Only ingest videos published on or after this date.
@@ -445,9 +601,12 @@ exports.harvestVideos = onSchedule({
   memory: "512MiB",
 }, async () => {
   const db = admin.firestore();
+  const apiKey = youtubeApiKey.value();
   const channelsSnap = await db.collection("followedChannels").get();
-  if (channelsSnap.empty) return;
-  await harvestForChannels(channelsSnap, db, youtubeApiKey.value());
+  if (!channelsSnap.empty) {
+    await harvestForChannels(channelsSnap, db, apiKey);
+  }
+  await enrichCuratedVideos(db, apiKey);
 });
 
 const DOMAIN_KEYWORDS = {
@@ -674,436 +833,6 @@ exports.fetchVideoMetadata = onCall({
   };
 });
 
-// ── Video to Courses Sync ──────────────────────────────────────────────────────
-
-async function sendSyncErrorEmail(videoId, error) {
-  const to = DEFAULT_TO;
-  const from = DEFAULT_FROM;
-  const subject = `Sync Error: Video ${videoId}`;
-  const message = `Failed to sync video ${videoId} to courses:\n\n${error.message}`;
-
-  try {
-    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
-      method: "POST",
-      headers: {
-        accept: "application/json",
-        "api-key": brevoApiKey.value(),
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        sender: { email: from, name: "25experts" },
-        to: [{ email: to }],
-        subject,
-        textContent: message,
-      }),
-    });
-
-    if (!response.ok) {
-      console.error(`Failed to send error email: ${response.status}`);
-    }
-  } catch (err) {
-    console.error("Error sending sync error email:", err.message);
-  }
-}
-
-async function extractConceptsFromTranscript(transcript, apiKey, videoTitle = "") {
-  if (!transcript || transcript.trim().length === 0) {
-    return [];
-  }
-
-  const systemPrompt = `You are an expert instructional designer analyzing video content.
-Extract 5-10 key learning concepts from the video title and transcript. These should be:
-- Specific, actionable topics (not generic like "introduction" or "conclusion")
-- Topics that Aesop Academy courses might cover
-- Sorted by importance/frequency in the content
-
-Return as a JSON array of strings, e.g. ["machine learning", "ai fundamentals"]`;
-
-  let content = "";
-  if (videoTitle) content += `Title: ${videoTitle}\n\n`;
-  content += `Transcript (first 4000 chars):\n\n${transcript.slice(0, 4000)}`;
-
-  const userPrompt = `${content}\n\nExtract key learning concepts as a JSON array.`;
-
-  try {
-    console.log("extractConceptsFromTranscript: calling OpenAI API directly for gpt-4o-mini...");
-    const response = await callOpenAIChatCompletion(apiKey, {
-      model: "gpt-4o-mini",
-      max_tokens: 500,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
-      ],
-    });
-
-    console.log("extractConceptsFromTranscript: OpenAI API response received");
-    const msgContent = response.choices[0]?.message?.content || "";
-    console.log("extractConceptsFromTranscript: response content length:", msgContent.length);
-    console.log("extractConceptsFromTranscript: response content:", msgContent.slice(0, 200));
-
-    const match = msgContent.match(/\[[\s\S]*\]/);
-    if (!match) {
-      console.log("extractConceptsFromTranscript: no JSON array found in response");
-      return [];
-    }
-
-    console.log("extractConceptsFromTranscript: found JSON array in response");
-    const concepts = JSON.parse(match[0]);
-    const filtered = Array.isArray(concepts)
-      ? concepts.filter(c => typeof c === "string" && c.length > 0)
-      : [];
-    console.log("extractConceptsFromTranscript: extracted", filtered.length, "concepts:", filtered);
-    return filtered;
-  } catch (error) {
-    console.error("OpenAI concept extraction failed:", error.message, error.stack);
-    const fallback = extractConceptsLocally(`${videoTitle}\n${transcript}`);
-    console.log("extractConceptsFromTranscript: using local fallback concepts:", fallback);
-    return fallback;
-  }
-}
-
-async function callOpenAIChatCompletion(apiKey, payload, maxRetries = 2) {
-  let lastError;
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 30000);
-    try {
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        signal: controller.signal,
-        headers: {
-          "Authorization": `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const bodyText = await response.text();
-      if (!response.ok) {
-        throw new Error(`OpenAI HTTP ${response.status}: ${bodyText.slice(0, 300)}`);
-      }
-      return JSON.parse(bodyText);
-    } catch (error) {
-      lastError = error;
-      console.error(`OpenAI fetch attempt ${attempt + 1}/${maxRetries + 1} failed:`, error.name, error.message, error.cause?.code || "");
-      if (attempt < maxRetries) {
-        await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempt)));
-      }
-    } finally {
-      clearTimeout(timeout);
-    }
-  }
-  throw lastError;
-}
-
-function extractConceptsLocally(text) {
-  const normalized = String(text || "").toLowerCase();
-  const knownConcepts = [
-    "ai agents",
-    "workflow automation",
-    "machine learning",
-    "large language models",
-    "prompt engineering",
-    "chatgpt",
-    "claude",
-    "openai",
-    "llm",
-    "automation",
-    "python",
-    "data analysis",
-    "visualization",
-    "marketing",
-    "content creation",
-    "business strategy",
-    "ethics",
-    "responsible ai",
-    "governance",
-    "creativity",
-    "design",
-    "coding",
-    "software development",
-    "kubernetes",
-    "agents",
-  ];
-
-  const found = knownConcepts.filter(concept => normalized.includes(concept));
-  if (found.length >= 5) return found.slice(0, 10);
-
-  const words = normalized
-    .replace(/[^a-z0-9\s-]/g, " ")
-    .split(/\s+/)
-    .filter(word => word.length > 4 && ![
-      "about", "after", "again", "because", "before", "could", "every", "first",
-      "going", "great", "their", "there", "these", "thing", "those", "video",
-      "where", "which", "would", "your", "using", "should", "really",
-    ].includes(word));
-
-  const counts = new Map();
-  for (const word of words) counts.set(word, (counts.get(word) || 0) + 1);
-  const frequent = [...counts.entries()]
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 10)
-    .map(([word]) => word);
-
-  return [...new Set([...found, ...frequent])].slice(0, 10);
-}
-
-async function matchCoursesToConcepts(concepts, courseCatalog) {
-  console.log("matchCoursesToConcepts: starting with", concepts?.length || 0, "concepts");
-  console.log("matchCoursesToConcepts: concepts =", concepts);
-  console.log("matchCoursesToConcepts: courseCatalog has", courseCatalog?.courses?.length || 0, "courses");
-
-  if (!concepts || concepts.length === 0 || !courseCatalog?.courses) {
-    console.log("matchCoursesToConcepts: early return - missing concepts or catalog");
-    return [];
-  }
-
-  const conceptsLower = concepts.map(c => c.toLowerCase());
-  const matched = [];
-
-  for (const course of courseCatalog.courses) {
-    let score = 0;
-    const keywords = (course.keywords || []).map(k => k.toLowerCase());
-    const courseText = `${course.name || ""} ${course.description || course.desc || ""}`.toLowerCase();
-
-    conceptsLower.forEach(concept => {
-      if (keywords.some(kw => kw.includes(concept) || concept.includes(kw))) {
-        score += 0.5;
-      }
-      if (courseText.includes(concept)) {
-        score += 0.3;
-      }
-    });
-
-    const normalizedScore = Math.min(1, score);
-    if (normalizedScore > 0) {
-      matched.push({
-        id: course.id || course.url || course.name || "",
-        name: course.name || "Untitled course",
-        desc: course.description || course.desc || "",
-        url: course.url || "https://aesopacademy.org/courses.html",
-        live: course.live !== false,
-        relevanceScore: parseFloat(normalizedScore.toFixed(2)),
-      });
-    }
-  }
-
-  const sorted = matched.sort((a, b) => b.relevanceScore - a.relevanceScore);
-  console.log("matchCoursesToConcepts: matched", sorted.length, "courses");
-  if (sorted.length > 0) {
-    console.log("matchCoursesToConcepts: top match:", sorted[0]);
-  }
-  return sorted;
-}
-
-
-async function syncVideoWithRetry(videoId, catalog, apiKey, db, maxRetries = 2) {
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      console.log(`syncVideoWithRetry: attempt ${attempt + 1}/${maxRetries + 1} for videoId ${videoId}`);
-
-      const videoDoc = await db.collection("curatedVideos").doc(videoId).get();
-      if (!videoDoc.exists) {
-        console.log(`syncVideoWithRetry: video ${videoId} not found in curatedVideos`);
-        return { success: false, reason: "video_not_found" };
-      }
-
-      const { transcript, title = "" } = videoDoc.data();
-      console.log(`syncVideoWithRetry: video ${videoId} found, has transcript: ${!!transcript}, title: "${title}"`);
-
-      if (!transcript) {
-        console.log(`syncVideoWithRetry: video ${videoId} has no transcript`);
-        return { success: false, reason: "no_transcript" };
-      }
-
-      console.log(`syncVideoWithRetry: extracting concepts from video ${videoId}...`);
-      const concepts = await extractConceptsFromTranscript(transcript, apiKey, title);
-      console.log(`syncVideoWithRetry: extracted ${concepts.length} concepts:`, concepts);
-
-      console.log(`syncVideoWithRetry: matching concepts to ${catalog.length} courses...`);
-      const courses = await matchCoursesToConcepts(concepts, catalog);
-      console.log(`syncVideoWithRetry: matched ${courses.length} courses for video ${videoId}`);
-
-      console.log(`syncVideoWithRetry: writing mapping to Firestore for video ${videoId}...`);
-      await db.collection("videoCourseMappings").doc(videoId).set({
-        videoId,
-        courses,
-        hasCourses: courses.length > 0,
-        syncedAt: admin.firestore.FieldValue.serverTimestamp(),
-      });
-      console.log(`syncVideoWithRetry: successfully wrote mapping for video ${videoId}`);
-
-      return { success: true, matched: courses.length };
-    } catch (error) {
-      const isLastAttempt = attempt === maxRetries;
-      console.error(`Sync attempt ${attempt + 1}/${maxRetries + 1} for ${videoId}:`, error.message, error.stack);
-
-      if (isLastAttempt) {
-        // Final attempt failed, save error and return
-        try {
-          console.log(`syncVideoWithRetry: writing error record for video ${videoId} after ${maxRetries + 1} attempts`);
-          await db.collection("videoCourseMappings").doc(videoId).set({
-            videoId,
-            courses: [],
-            hasCourses: false,
-            syncedAt: admin.firestore.FieldValue.serverTimestamp(),
-            error: error.message,
-            attempts: maxRetries + 1,
-          });
-        } catch (writeErr) {
-          console.error("Failed to write error record:", writeErr.message);
-        }
-        return { success: false, reason: "max_retries_exceeded", error: error.message };
-      }
-
-      // Retry after brief delay
-      const delayMs = 1000 * Math.pow(2, attempt);
-      console.log(`syncVideoWithRetry: attempt ${attempt + 1} failed, retrying in ${delayMs}ms...`);
-      await new Promise(resolve => setTimeout(resolve, delayMs));
-    }
-  }
-}
-
-exports.syncVideoToCourses = onCall({
-  secrets: [brevoApiKey, openaiApiKey],
-  timeoutSeconds: 540,
-  memory: "512MiB",
-}, async request => {
-  console.log("syncVideoToCourses: function started");
-
-  await requireAdmin(request);
-  console.log("syncVideoToCourses: admin check passed");
-
-  const db = admin.firestore();
-  const { videoId: singleVideoId } = request.data || {};
-  console.log("syncVideoToCourses: videoId =", singleVideoId);
-
-  if (singleVideoId && typeof singleVideoId !== "string") {
-    throw new HttpsError("invalid-argument", "videoId must be a string");
-  }
-
-  let apiKey;
-  try {
-    apiKey = openaiApiKey.value();
-    console.log("syncVideoToCourses: OpenAI API key retrieved");
-  } catch (err) {
-    console.error("syncVideoToCourses: Failed to retrieve OpenAI API key:", err.message);
-    throw new HttpsError("internal", `Failed to initialize OpenAI API key: ${err.message}`);
-  }
-  let processed = 0;
-  let matched = 0;
-  let skipped = 0;
-  const errors = [];
-
-  try {
-    // Determine which videos to sync
-    let videoIds;
-    if (singleVideoId) {
-      const mappingDoc = await db.collection("videoCourseMappings").doc(singleVideoId).get();
-      if (mappingDoc.exists && mappingDoc.data().hasCourses === true) {
-        console.log("syncVideoToCourses: skipping already mapped video:", singleVideoId);
-        return {
-          success: true,
-          videosProcessed: 0,
-          coursesMatched: 0,
-          videosSkipped: 1,
-        };
-      }
-      videoIds = [singleVideoId];
-      console.log("syncVideoToCourses: using single unmapped video ID:", singleVideoId);
-    } else {
-      console.log("syncVideoToCourses: querying for videos without mappings...");
-      // Get recent videos from curatedVideos
-      const videosSnap = await db
-        .collection("curatedVideos")
-        .orderBy("publishedAt", "desc")
-        .limit(20)
-        .get();
-
-      console.log("syncVideoToCourses: found", videosSnap.docs.length, "recent curated videos");
-
-      // Filter out videos that already have successful course mappings.
-      // Failed/empty mappings stay eligible so Sync All can retry them.
-      // Use individual reads instead of `where('__name__','in',...)` to avoid
-      // Firestore's `in` operand-count limit (currently 30) as the list grows.
-      const allVideoIds = videosSnap.docs.map(d => d.id);
-      const mappingDocs = allVideoIds.length > 0
-        ? await Promise.all(
-            allVideoIds.map(id => db.collection("videoCourseMappings").doc(id).get())
-          )
-        : [];
-
-      const mappedVideoIds = new Set(
-        mappingDocs
-          .filter(d => d.exists && d.data().hasCourses === true)
-          .map(d => d.id)
-      );
-      skipped = mappedVideoIds.size;
-      videoIds = allVideoIds.filter(id => !mappedVideoIds.has(id));
-
-      console.log("syncVideoToCourses: found", videoIds.length, "videos needing mappings; skipped already mapped:", skipped);
-    }
-
-    if (videoIds.length === 0) {
-      console.log("syncVideoToCourses: no videos to sync, returning early");
-      return { success: true, videosProcessed: 0, coursesMatched: 0 };
-    }
-
-    // Get course catalog once (cached for 24 hours, with retry)
-    let catalog;
-    try {
-      console.log("syncVideoToCourses: fetching course catalog...");
-      catalog = await aesopApi.getCourseCatalog(db);
-      console.log("syncVideoToCourses: catalog fetched, contains", catalog.length, "courses");
-    } catch (error) {
-      console.error("Catalog fetch failed:", error.message);
-      throw new HttpsError("unavailable", "Course catalog unavailable, please try again");
-    }
-
-    // Process each video with retry
-    console.log("syncVideoToCourses: starting to process", videoIds.length, "videos");
-    for (const vid of videoIds) {
-      console.log("syncVideoToCourses: processing video:", vid);
-      const result = await syncVideoWithRetry(vid, catalog, apiKey, db);
-      console.log("syncVideoToCourses: result for", vid, ":", JSON.stringify(result));
-
-      if (result.success) {
-        processed++;
-        matched += result.matched;
-        console.log("syncVideoToCourses: video", vid, "synced successfully, matched =", result.matched);
-      } else {
-        processed++;
-        errors.push({ videoId: vid, reason: result.reason, error: result.error });
-        console.log("syncVideoToCourses: video", vid, "failed:", result.reason, result.error);
-
-        if (result.error) {
-          await sendSyncErrorEmail(vid, new Error(result.error));
-        }
-      }
-    }
-
-    console.log("syncVideoToCourses: all videos processed. processed =", processed, ", matched =", matched);
-    const response = {
-      success: true,
-      videosProcessed: processed,
-      coursesMatched: matched,
-      videosSkipped: skipped,
-    };
-
-    if (errors.length > 0) {
-      response.errors = errors;
-      response.errorsCount = errors.length;
-    }
-
-    console.log("syncVideoToCourses: returning response:", JSON.stringify(response));
-    return response;
-  } catch (error) {
-    console.error("syncVideoToCourses failed:", error.message);
-    await sendSyncErrorEmail("batch", error);
-    throw new HttpsError("internal", `Sync failed: ${error.message}`);
-  }
-});
-
 // ── Channel Management ────────────────────────────────────────────────────────
 
 exports.deleteChannelVideos = onCall({
@@ -1163,7 +892,8 @@ exports.scanAllChannels = onCall({
   const channelsSnap = await db.collection("followedChannels").get();
   if (channelsSnap.empty) return { scanned: 0, videosAdded: 0 };
   const videosAdded = await harvestForChannels(channelsSnap, db, apiKey);
-  return { scanned: channelsSnap.size, videosAdded };
+  const enrichment = await enrichCuratedVideos(db, apiKey);
+  return { scanned: channelsSnap.size, videosAdded, videosEnriched: enrichment.updated };
 });
 
 // TEMPORARY — remove after one-time purge is complete
@@ -1188,65 +918,4 @@ exports.purgeNonAiVideos = onCall({
   }
 
   return { scanned: snap.size, deleted: toDelete.length };
-});
-
-// Backfills topics[], durationSeconds, and publishedAt on existing curatedVideos.
-// Safe to re-run — only updates docs that are missing one or more fields.
-exports.computeTopicsAndDurations = onCall({
-  secrets: [youtubeApiKey],
-  timeoutSeconds: 540,
-  memory: "512MiB",
-}, async request => {
-  await requireAdmin(request);
-  const db = admin.firestore();
-  const apiKey = youtubeApiKey.value();
-  const snap = await db.collection("curatedVideos").get();
-
-  const missingMetadata = snap.docs.filter(d => {
-    const data = d.data();
-    return data.durationSeconds == null || !data.publishedAt;
-  });
-  const metadata = await fetchYouTubeVideoMetadata(
-    missingMetadata.map(d => d.data().videoId || d.id),
-    apiKey
-  );
-
-  const operations = snap.docs.flatMap(d => {
-    const data = d.data();
-    const updateData = {};
-    if (!Array.isArray(data.topics) || data.topics.length === 0) {
-      updateData.topics = tagTopics(data.title, data.description || "");
-    }
-    if (data.durationSeconds == null) {
-      const secs = metadata.get(data.videoId || d.id)?.durationSeconds;
-      if (secs != null) updateData.durationSeconds = secs;
-    }
-    if (!data.publishedAt) {
-      const publishedAt = metadata.get(data.videoId || d.id)?.publishedAt;
-      if (publishedAt) updateData.publishedAt = publishedAt;
-    }
-    return Object.keys(updateData).length > 0
-      ? [{ type: "update", ref: d.ref, data: updateData }]
-      : [];
-  });
-
-  if (operations.length > 0) await commitInBatches(db, operations);
-  return { scanned: snap.size, updated: operations.length };
-});
-
-exports.getCourseCatalog = onCall({
-  timeoutSeconds: 10,
-  memory: "256MiB",
-}, async request => {
-  const db = admin.firestore();
-  try {
-    const catalog = await aesopApi.getCourseCatalog(db);
-    return {
-      success: true,
-      courses: catalog.courses || [],
-    };
-  } catch (error) {
-    console.error("Failed to get course catalog:", error);
-    throw new HttpsError("internal", "Failed to load course catalog");
-  }
 });
