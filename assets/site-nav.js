@@ -1,25 +1,8 @@
 (function () {
   const navItems = [
-    {
-      label: "Library",
-      className: "site-nav-growth",
-      links: [
-        ["Videos", "videos.html"],
-        ["Search", "search.html"],
-        ["Watch List", "watchlist.html"]
-      ]
-    },
-    {
-      label: "Actions",
-      className: "site-nav-actions",
-      links: [
-        ["Home", "index.html"],
-        ["Support", "support.html"]
-      ]
-    }
+    ["Videos", "videos.html"],
+    ["Support", "support.html"]
   ];
-
-  const domainItems = [];
 
   const current = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
 
@@ -33,45 +16,17 @@
     return `<a href="${href}"${active}>${text}</a>`;
   }
 
-  function trailMarkup(position) {
-    return `
-      <svg class="site-nav-trail site-nav-trail-${position}" viewBox="0 0 240 18" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-        <path class="trail-glow" d="M6 9 H234"></path>
-        <path class="trail-thread" d="M6 9 H234"></path>
-        <path class="trail-core" d="M6 9 H234"></path>
-        <circle class="trail-spark" cx="120" cy="9" r="2.3"></circle>
-      </svg>
-    `;
-  }
-
   const navMarkup = `
     <div class="site-nav-shell">
-    <header class="nav">
-      <a class="brand" href="index.html">
-        <span class="brand-mark">25</span>
-        <span class="brand-text">25experts<span>Mojo AI Studio Product</span></span>
+    <header class="nav nav-simple">
+      <a class="brand brand-lockup" href="index.html">
+        <span class="brand-title">25 experts</span>
+        <span class="brand-subtitle">Your Personal AI Content Curator</span>
       </a>
-      <nav class="nav-links site-nav" aria-label="Site navigation">
-        ${navItems.map((group) => `
-          <div class="site-nav-group ${group.className}">
-            <div class="site-nav-label">${group.label}</div>
-            <div class="site-nav-items">
-              ${trailMarkup("top")}
-              ${group.links.map(linkMarkup).join("")}
-              ${trailMarkup("bottom")}
-            </div>
-          </div>
-        `).join("")}
+      <nav class="nav-links site-nav site-nav-simple" aria-label="Site navigation">
+        ${navItems.map(linkMarkup).join("")}
       </nav>
     </header>
-    ${domainItems.length ? `
-      <nav class="site-domain-bar" aria-label="AI domains">
-        <span class="site-domain-label">Domains</span>
-        <div class="site-domain-links">
-          ${domainItems.map(linkMarkup).join("")}
-        </div>
-      </nav>
-    ` : ""}
     </div>
   `;
 
