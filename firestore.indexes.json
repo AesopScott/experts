@@ -15,14 +15,6 @@
         { "fieldPath": "channelName", "order": "ASCENDING" },
         { "fieldPath": "publishedAt", "order": "DESCENDING" }
       ]
-    },
-    {
-      "collectionGroup": "videoCourseMappings",
-      "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "hasCourses", "order": "ASCENDING" },
-        { "fieldPath": "syncedAt", "order": "DESCENDING" }
-      ]
     }
   ],
   "fieldOverrides": []

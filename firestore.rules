@@ -48,13 +48,13 @@ service cloud.firestore {
       allow write, delete: if isAdmin();
     }
 
+    match /videoTranscripts/{id} {
+      allow read, write, delete: if isAdmin();
+    }
+
     match /candidateChannels/{id} {
       allow read, write, delete: if isAdmin();
     }
 
-    match /videoCourseMappings/{id} {
-      allow read: if true;
-      allow write, delete: if isAdmin();
-    }
   }
 }
