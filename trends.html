@@ -12,9 +12,9 @@
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="alternate icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-  <link rel="mask-icon" href="/assets/mask-icon.svg" color="#145f47">
+  <link rel="mask-icon" href="/assets/mask-icon.svg" color="#00E6FF">
   <link rel="manifest" href="/site.webmanifest">
-  <meta name="theme-color" content="#145f47">
+  <meta name="theme-color" content="#00E6FF">
   <meta name="robots" content="index, follow">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="25experts by Mojo AI Studio">
@@ -40,20 +40,20 @@
   </script>
   <style>
     :root {
-      --ink: #101615;
-      --muted: #66716e;
-      --paper: #fbfaf6;
+      --ink: #0A0F1E;
+      --muted: #00E6FF;
+      --paper: #F7FBFF;
       --panel: #ffffff;
-      --line: #dfe5df;
-      --green: #145f47;
-      --mint: #e9f5ef;
-      --gold: #b87a22;
-      --gold2: #fff8e8;
-      --blue: #245a7d;
-      --teal: #2a9d8f;
-      --dark: #0f1716;
-      --shadow: 0 18px 46px rgba(17,31,25,.1);
-      --shadow-sm: 0 4px 16px rgba(17,31,25,.08);
+      --line: #F7FBFF;
+      --green: #00E6FF;
+      --mint: #EAF7FF;
+      --gold: #1666FF;
+      --gold2: #EAF7FF;
+      --blue: #1666FF;
+      --teal: #00E6FF;
+      --dark: #0A0F1E;
+      --shadow: 0 18px 46px rgba(10, 15, 30, .1);
+      --shadow-sm: 0 4px 16px rgba(10, 15, 30, .08);
     }
     * { box-sizing: border-box; }
     body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); line-height: 1.45; }
@@ -78,9 +78,9 @@
       flex-shrink: 0;
     }
     .countdown-card .label { font-size: 11px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.55); }
-    .countdown-digits { font-size: 32px; font-weight: 950; line-height: 1; letter-spacing: -.01em; color: #5ddfb0; }
+    .countdown-digits { font-size: 32px; font-weight: 950; line-height: 1; letter-spacing: -.01em; color: #00E6FF; }
     .countdown-sub { font-size: 12px; color: rgba(255,255,255,.5); }
-    .vote-open-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; background: rgba(93,223,176,.18); border: 1px solid rgba(93,223,176,.32); font-size: 12px; font-weight: 850; color: #5ddfb0; }
+    .vote-open-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; background: rgba(0, 230, 255, .18); border: 1px solid rgba(0, 230, 255, .32); font-size: 12px; font-weight: 850; color: #00E6FF; }
     .vote-closed-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); font-size: 12px; font-weight: 850; color: rgba(255,255,255,.55); }
 
     /* ── PAGE LAYOUT ── */
@@ -102,7 +102,7 @@
     .sd-title { font-size: 15px; font-weight: 900; color: #fff; }
     .sd-intro { font-size: 13px; color: rgba(255,255,255,.55); max-width: 600px; line-height: 1.5; }
     .sd-updated { font-size: 12px; color: rgba(255,255,255,.4); white-space: nowrap; }
-    .sd-pulse { width: 8px; height: 8px; border-radius: 50%; background: #5ddfb0; flex-shrink: 0; animation: pulse 2s ease-in-out infinite; }
+    .sd-pulse { width: 8px; height: 8px; border-radius: 50%; background: #00E6FF; flex-shrink: 0; animation: pulse 2s ease-in-out infinite; }
     @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
 
     .sd-stats-bar { display: flex; gap: 0; border-bottom: 1px solid var(--line); }
@@ -144,7 +144,7 @@
       background: #fff; border: 1px solid var(--line); border-radius: 8px;
       padding: 12px 14px; cursor: pointer; transition: border-color .15s, box-shadow .15s;
     }
-    .sd-cluster:hover { border-color: #2a4a7a; box-shadow: var(--shadow-sm); }
+    .sd-cluster:hover { border-color: #1666FF; box-shadow: var(--shadow-sm); }
     .sd-cluster-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
     .sd-cluster-label { font-size: 13px; font-weight: 800; }
     .sd-cluster-composite { font-size: 18px; font-weight: 950; line-height: 1; }
@@ -153,10 +153,10 @@
     .sd-cluster-composite--low  { color: var(--muted); }
     .sd-scores { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 6px; }
     .sd-badge { display: inline-flex; align-items: center; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 850; }
-    .sd-badge--trend      { background: rgba(42,157,143,.12); color: #2a7f74; }
-    .sd-badge--velocity   { background: rgba(233,165,0,.14);  color: #a87700; }
-    .sd-badge--novelty    { background: rgba(86,162,120,.14); color: #2e7d50; }
-    .sd-badge--competition { background: rgba(210,80,80,.12); color: #b03030; }
+    .sd-badge--trend      { background: rgba(0, 230, 255, .12); color: #00E6FF; }
+    .sd-badge--velocity   { background: rgba(22, 102, 255, .14);  color: #1666FF; }
+    .sd-badge--novelty    { background: rgba(22, 102, 255, .14); color: #1666FF; }
+    .sd-badge--competition { background: rgba(22, 102, 255, .12); color: #1666FF; }
     .sd-cluster-count { font-size: 11px; color: var(--muted); font-weight: 750; }
     .sd-cluster-signals { display: none; margin: 8px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
     .sd-cluster.sd-expanded .sd-cluster-signals { display: block; }
@@ -173,7 +173,7 @@
     ══════════════════════════════════════════ */
     .vote-section { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
 
-    .vote-header { background: linear-gradient(115deg, rgba(16,22,21,.96), rgba(20,95,71,.9)); color: #fff; padding: 24px 28px; display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: start; }
+    .vote-header { background: linear-gradient(115deg, rgba(10, 15, 30, .96), rgba(0, 230, 255, .9)); color: #fff; padding: 24px 28px; display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: start; }
     .vote-header h2 { font-size: clamp(20px,2.5vw,28px); margin: 0 0 6px; }
     .vote-header p { color: rgba(255,255,255,.7); font-size: 14px; line-height: 1.55; margin: 0; max-width: 560px; }
     .vote-meta { display: flex; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
@@ -182,11 +182,11 @@
     /* Deadline card */
     .deadline-card { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.14); border-radius: 10px; padding: 16px 18px; min-width: 180px; display: grid; gap: 6px; text-align: center; }
     .deadline-label { font-size: 11px; font-weight: 900; letter-spacing: .07em; text-transform: uppercase; color: rgba(255,255,255,.45); }
-    .deadline-time { font-size: 28px; font-weight: 950; color: #5ddfb0; line-height: 1; letter-spacing: -.01em; }
+    .deadline-time { font-size: 28px; font-weight: 950; color: #00E6FF; line-height: 1; letter-spacing: -.01em; }
     .deadline-sub { font-size: 11px; color: rgba(255,255,255,.45); }
 
     /* Closed banner */
-    .closed-banner { display: none; padding: 12px 20px; background: rgba(255,165,0,.1); border-bottom: 1px solid rgba(255,165,0,.2); color: #8a5e00; font-size: 13px; font-weight: 800; text-align: center; }
+    .closed-banner { display: none; padding: 12px 20px; background: rgba(22, 102, 255, .1); border-bottom: 1px solid rgba(22, 102, 255, .2); color: #1B2333; font-size: 13px; font-weight: 800; text-align: center; }
     .vote-section.is-closed .closed-banner { display: block; }
 
     /* Topic cards */
@@ -197,10 +197,10 @@
       transition: box-shadow .15s, border-color .15s;
     }
     .topic-card:hover { border-color: var(--green); box-shadow: var(--shadow-sm); }
-    .topic-card.has-voted { border-color: var(--green); background: linear-gradient(to bottom right, #fff, #f4fbf7); }
+    .topic-card.has-voted { border-color: var(--green); background: linear-gradient(to bottom right, #fff, #F7FBFF); }
 
     .topic-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
-    .topic-num { font-size: 11px; font-weight: 900; color: var(--muted); background: #f3f5f3; border-radius: 5px; padding: 2px 7px; flex-shrink: 0; margin-top: 1px; }
+    .topic-num { font-size: 11px; font-weight: 900; color: var(--muted); background: #F7FBFF; border-radius: 5px; padding: 2px 7px; flex-shrink: 0; margin-top: 1px; }
     .topic-domain { display: inline-flex; padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 850; letter-spacing: .04em; flex-shrink: 0; }
 
     .topic-title { font-size: 15px; font-weight: 800; line-height: 1.3; margin: 0; }
@@ -228,7 +228,7 @@
 
     /* ── WRITE-IN ── */
     .writein-section { padding: 0 22px 22px; }
-    .writein-card { background: #f8fbf9; border: 1px solid var(--line); border-radius: 10px; padding: 20px; }
+    .writein-card { background: #F7FBFF; border: 1px solid var(--line); border-radius: 10px; padding: 20px; }
     .writein-card h3 { font-size: 17px; margin: 0 0 4px; }
     .writein-card p { color: var(--muted); font-size: 13px; line-height: 1.55; margin: 0 0 14px; }
     .writein-row { display: flex; gap: 10px; align-items: stretch; }
@@ -386,7 +386,7 @@
       </div>
     </section>
 
-    <section style="background:linear-gradient(115deg,rgba(20,95,71,.97),rgba(18,39,50,.94));border-radius:12px;padding:clamp(32px,5vw,56px);color:#fff;display:grid;gap:28px;">
+    <section style="background:linear-gradient(115deg,rgba(0, 230, 255, .97),rgba(10, 15, 30, .94));border-radius:12px;padding:clamp(32px,5vw,56px);color:#fff;display:grid;gap:28px;">
       <div>
         <span style="display:inline-flex;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;">Why this page exists</span>
         <h2 style="margin:0 0 12px;font-size:clamp(26px,3.5vw,40px);line-height:1.05;">Trend awareness is part of AI literacy.</h2>
@@ -622,36 +622,36 @@
 
     /* ── Topic pool (30 topics across all domains) ── */
     var TOPIC_POOL = [
-      { id: 1,  domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "Multi-Agent AI Systems in Practice",           desc: "How autonomous agents coordinate, delegate, and recover from failure in real workflows." },
-      { id: 2,  domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "Prompt Engineering for Business Consistency",   desc: "Systematic prompt design that produces auditable, repeatable outputs at work." },
-      { id: 3,  domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "Building Reliable AI Workflow Systems",         desc: "Error handling, human checkpoints, and audit trails that make automation trustworthy." },
-      { id: 4,  domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "AI Tool Evaluation: A Repeatable Framework",    desc: "How to assess any new AI tool before committing time, budget, or team habits to it." },
-      { id: 5,  domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "RAG in Practice: Retrieval-Augmented Generation", desc: "When and how to build RAG pipelines that actually stay accurate and maintainable." },
-      { id: 6,  domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "Fine-Tuning vs Prompting: When to Use Each",   desc: "The decision framework for customizing AI without wasting engineering resources." },
-      { id: 7,  domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "AI Memory Systems: Building Context That Persists", desc: "How to design AI systems that remember what matters across sessions and interactions." },
-      { id: 8,  domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "Automating Weekly Reports Without Drift",        desc: "Building report automation that stays accurate as your data, tools, and questions change." },
-      { id: 9,  domain: "finance",    color: "#b87a22", bg: "#f5ecd6", title: "AI-Assisted Portfolio Analysis: Where It Fails", desc: "The specific failure modes AI makes with numbers, ratios, and financial summaries." },
-      { id: 10, domain: "finance",    color: "#b87a22", bg: "#f5ecd6", title: "AI for Personal Financial Planning",            desc: "Practical and principled uses of AI in personal finance — where the guardrails matter most." },
-      { id: 11, domain: "finance",    color: "#b87a22", bg: "#f5ecd6", title: "Cash Flow Forecasting with AI Assistance",      desc: "How to augment financial modeling without over-trusting AI-generated projections." },
-      { id: 12, domain: "finance",    color: "#b87a22", bg: "#f5ecd6", title: "Detecting Hallucinations in Financial AI",      desc: "How to catch confident-sounding errors in AI financial analysis before they cost you." },
-      { id: 13, domain: "marketing",  color: "#245a7d", bg: "#ddeaf5", title: "Brand Voice Preservation with AI Content",      desc: "How to build brand voice systems that survive AI-generated drafts without endless editing." },
-      { id: 14, domain: "marketing",  color: "#245a7d", bg: "#ddeaf5", title: "AI-Powered Lead Research at Scale",             desc: "Account research and outreach personalization that doesn't produce robotic messages." },
-      { id: 15, domain: "marketing",  color: "#245a7d", bg: "#ddeaf5", title: "Content Repurposing Without the Sludge",        desc: "Turning one expert piece into platform-native assets without producing filler." },
-      { id: 16, domain: "marketing",  color: "#245a7d", bg: "#ddeaf5", title: "Measuring AI Content ROI Honestly",             desc: "How to distinguish genuine AI content gains from noise in your analytics." },
-      { id: 17, domain: "leadership", color: "#7b4b92", bg: "#ede5f5", title: "Managing AI-Skeptical Teams",                   desc: "Scripts, frameworks, and meeting structures for leaders navigating genuine resistance." },
-      { id: 18, domain: "leadership", color: "#7b4b92", bg: "#ede5f5", title: "AI Policy Writing That Teams Actually Follow",  desc: "How to write an AI use policy your team will read, apply, and help you update." },
-      { id: 19, domain: "leadership", color: "#7b4b92", bg: "#ede5f5", title: "Decision Frameworks for AI-Assisted Work",      desc: "Structured approaches for high-stakes decisions when AI was part of the analysis." },
-      { id: 20, domain: "leadership", color: "#7b4b92", bg: "#ede5f5", title: "Building an AI-Ready Team Culture",             desc: "The habits, rituals, and norms that make AI adoption stick instead of stall." },
-      { id: 21, domain: "leadership", color: "#7b4b92", bg: "#ede5f5", title: "AI Governance for Small Organizations",         desc: "Accountability structures that work when you don't have a dedicated AI ethics team." },
-      { id: 22, domain: "design",     color: "#bf563f", bg: "#f5e5e0", title: "Directing Generative AI Without Losing Taste",  desc: "How to maintain creative judgment when the first draft is always machine-made." },
-      { id: 23, domain: "design",     color: "#bf563f", bg: "#f5e5e0", title: "Rapid Prototyping with AI Image Tools",         desc: "From mood to testable concept in one session — workflow and judgment, not just prompting." },
-      { id: 24, domain: "design",     color: "#bf563f", bg: "#f5e5e0", title: "Brand System Governance with AI Assets",        desc: "How to keep brand consistency when AI is generating assets at volume." },
-      { id: 25, domain: "design",     color: "#bf563f", bg: "#f5e5e0", title: "Creative Direction for Mixed Human-AI Teams",   desc: "Setting standards and review processes when the draft is AI but the judgment is yours." },
-      { id: 26, domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "When NOT to Use AI: The Judgment Layer",        desc: "The mental model for deciding when AI adds risk rather than value — and what to do instead." },
-      { id: 27, domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "Open-Source vs Proprietary AI: Real Trade-offs", desc: "An honest cost-benefit analysis for teams choosing between models and deployment options." },
-      { id: 28, domain: "leadership", color: "#7b4b92", bg: "#ede5f5", title: "AI Literacy for Non-Technical Teams",           desc: "How leaders build shared mental models for AI across teams with no engineering background." },
-      { id: 29, domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "AI Bias Detection and Mitigation",              desc: "Practical approaches to auditing AI outputs for systematic bias before they reach customers." },
-      { id: 30, domain: "ai",         color: "#145f47", bg: "#e9f5ef", title: "The AI Skills Every Professional Needs in 2026", desc: "A clear, domain-agnostic inventory of the AI competencies that are already table stakes." },
+      { id: 1,  domain: "ai",         color: "#00E6FF", bg: "#EAF7FF", title: "Multi-Agent AI Systems in Practice",           desc: "How autonomous agents coordinate, delegate, and recover from failure in real workflows." },
+      { id: 2,  domain: "ai",         color: "#00E6FF", bg: "#EAF7FF", title: "Prompt Engineering for Business Consistency",   desc: "Systematic prompt design that produces auditable, repeatable outputs at work." },
+      { id: 3,  domain: "ai",         color: "#00E6FF", bg: "#EAF7FF", title: "Building Reliable AI Workflow Systems",         desc: "Error handling, human checkpoints, and audit trails that make automation trustworthy." },
+      { id: 4,  domain: "ai",         color: "#00E6FF", bg: "#EAF7FF", title: "AI Tool Evaluation: A Repeatable Framework",    desc: "How to assess any new AI tool before committing time, budget, or team habits to it." },
+      { id: 5,  domain: "ai",         color: "#00E6FF", bg: "#EAF7FF", title: "RAG in Practice: Retrieval-Augmented Generation", desc: "When and how to build RAG pipelines that actually stay accurate and maintainable." },
+      { id: 6,  domain: "ai",         color: "#00E6FF", bg: "#EAF7FF", title: "Fine-Tuning vs Prompting: When to Use Each",   desc: "The decision framework for customizing AI without wasting engineering resources." },
+      { id: 7,  domain: "ai",         color: "#00E6FF", bg: "#EAF7FF", title: "AI Memory Systems: Building Context That Persists", desc: "How to design AI systems that remember what matters across sessions and interactions." },
+      { id: 8,  domain: "ai",         color: "#00E6FF", bg: "#EAF7FF", title: "Automating Weekly Reports Without Drift",        desc: "Building report automation that stays accurate as your data, tools, and questions change." },
+      { id: 9,  domain: "finance",    color: "#1666FF", bg: "#EAF7FF", title: "AI-Assisted Portfolio Analysis: Where It Fails", desc: "The specific failure modes AI makes with numbers, ratios, and financial summaries." },
+      { id: 10, domain: "finance",    color: "#1666FF", bg: "#EAF7FF", title: "AI for Personal Financial Planning",            desc: "Practical and principled uses of AI in personal finance — where the guardrails matter most." },
+      { id: 11, domain: "finance",    color: "#1666FF", bg: "#EAF7FF", title: "Cash Flow Forecasting with AI Assistance",      desc: "How to augment financial modeling without over-trusting AI-generated projections." },
+      { id: 12, domain: "finance",    color: "#1666FF", bg: "#EAF7FF", title: "Detecting Hallucinations in Financial AI",      desc: "How to catch confident-sounding errors in AI financial analysis before they cost you." },
+      { id: 13, domain: "marketing",  color: "#1666FF", bg: "#F7FBFF", title: "Brand Voice Preservation with AI Content",      desc: "How to build brand voice systems that survive AI-generated drafts without endless editing." },
+      { id: 14, domain: "marketing",  color: "#1666FF", bg: "#F7FBFF", title: "AI-Powered Lead Research at Scale",             desc: "Account research and outreach personalization that doesn't produce robotic messages." },
+      { id: 15, domain: "marketing",  color: "#1666FF", bg: "#F7FBFF", title: "Content Repurposing Without the Sludge",        desc: "Turning one expert piece into platform-native assets without producing filler." },
+      { id: 16, domain: "marketing",  color: "#1666FF", bg: "#F7FBFF", title: "Measuring AI Content ROI Honestly",             desc: "How to distinguish genuine AI content gains from noise in your analytics." },
+      { id: 17, domain: "leadership", color: "#1666FF", bg: "#F7FBFF", title: "Managing AI-Skeptical Teams",                   desc: "Scripts, frameworks, and meeting structures for leaders navigating genuine resistance." },
+      { id: 18, domain: "leadership", color: "#1666FF", bg: "#F7FBFF", title: "AI Policy Writing That Teams Actually Follow",  desc: "How to write an AI use policy your team will read, apply, and help you update." },
+      { id: 19, domain: "leadership", color: "#1666FF", bg: "#F7FBFF", title: "Decision Frameworks for AI-Assisted Work",      desc: "Structured approaches for high-stakes decisions when AI was part of the analysis." },
+      { id: 20, domain: "leadership", color: "#1666FF", bg: "#F7FBFF", title: "Building an AI-Ready Team Culture",             desc: "The habits, rituals, and norms that make AI adoption stick instead of stall." },
+      { id: 21, domain: "leadership", color: "#1666FF", bg: "#F7FBFF", title: "AI Governance for Small Organizations",         desc: "Accountability structures that work when you don't have a dedicated AI ethics team." },
+      { id: 22, domain: "design",     color: "#1666FF", bg: "#F7FBFF", title: "Directing Generative AI Without Losing Taste",  desc: "How to maintain creative judgment when the first draft is always machine-made." },
+      { id: 23, domain: "design",     color: "#1666FF", bg: "#F7FBFF", title: "Rapid Prototyping with AI Image Tools",         desc: "From mood to testable concept in one session — workflow and judgment, not just prompting." },
+      { id: 24, domain: "design",     color: "#1666FF", bg: "#F7FBFF", title: "Brand System Governance with AI Assets",        desc: "How to keep brand consistency when AI is generating assets at volume." },
+      { id: 25, domain: "design",     color: "#1666FF", bg: "#F7FBFF", title: "Creative Direction for Mixed Human-AI Teams",   desc: "Setting standards and review processes when the draft is AI but the judgment is yours." },
+      { id: 26, domain: "ai",         color: "#00E6FF", bg: "#EAF7FF", title: "When NOT to Use AI: The Judgment Layer",        desc: "The mental model for deciding when AI adds risk rather than value — and what to do instead." },
+      { id: 27, domain: "ai",         color: "#00E6FF", bg: "#EAF7FF", title: "Open-Source vs Proprietary AI: Real Trade-offs", desc: "An honest cost-benefit analysis for teams choosing between models and deployment options." },
+      { id: 28, domain: "leadership", color: "#1666FF", bg: "#F7FBFF", title: "AI Literacy for Non-Technical Teams",           desc: "How leaders build shared mental models for AI across teams with no engineering background." },
+      { id: 29, domain: "ai",         color: "#00E6FF", bg: "#EAF7FF", title: "AI Bias Detection and Mitigation",              desc: "Practical approaches to auditing AI outputs for systematic bias before they reach customers." },
+      { id: 30, domain: "ai",         color: "#00E6FF", bg: "#EAF7FF", title: "The AI Skills Every Professional Needs in 2026", desc: "A clear, domain-agnostic inventory of the AI competencies that are already table stakes." },
     ];
 
     /* ── State ── */

@@ -9,9 +9,9 @@
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="alternate icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-  <link rel="mask-icon" href="/assets/mask-icon.svg" color="#145f47">
+  <link rel="mask-icon" href="/assets/mask-icon.svg" color="#00E6FF">
   <link rel="manifest" href="/site.webmanifest">
-  <meta name="theme-color" content="#145f47">
+  <meta name="theme-color" content="#00E6FF">
   <meta name="robots" content="noindex, follow">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="25experts by Mojo AI Studio">
@@ -51,18 +51,18 @@
   </script>
   <style>
     :root {
-      --ink:     #141414;
-      --muted:   #5c6370;
-      --line:    #e2e5de;
-      --paper:   #f9f8f4;
+      --ink:     #0A0F1E;
+      --muted:   #1666FF;
+      --line:    #F7FBFF;
+      --paper:   #F7FBFF;
       --panel:   #ffffff;
-      --green:   #0f5e4a;
-      --green2:  #1a8c6e;
-      --mint:    #d6f0e6;
-      --gold:    #c48727;
-      --blue:    #1e4d8c;
-      --coral:   #c94f38;
-      --shadow:  0 20px 52px rgba(20, 40, 30, 0.13);
+      --green:   #1B2333;
+      --green2:  #1666FF;
+      --mint:    #EAF7FF;
+      --gold:    #1666FF;
+      --blue:    #1666FF;
+      --coral:   #1666FF;
+      --shadow:  0 20px 52px rgba(10, 15, 30, 0.13);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -82,7 +82,7 @@
       position: sticky; top: 0; z-index: 50;
       display: flex; align-items: center; justify-content: space-between; gap: 24px;
       padding: 16px clamp(18px, 5vw, 64px);
-      background: rgba(249,248,244,0.92);
+      background: rgba(247, 251, 255, 0.92);
       border-bottom: 1px solid var(--line);
       backdrop-filter: blur(16px);
     }
@@ -116,7 +116,7 @@
       min-height: 88vh;
       display: grid; align-items: end;
       background:
-        linear-gradient(100deg, rgba(8,28,22,0.82) 0%, rgba(8,28,22,0.44) 55%, rgba(8,28,22,0.14) 100%),
+        linear-gradient(100deg, rgba(10, 15, 30, 0.82) 0%, rgba(10, 15, 30, 0.44) 55%, rgba(10, 15, 30, 0.14) 100%),
         url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1800&q=80")
         center / cover no-repeat;
       color: #fff;
@@ -141,7 +141,7 @@
       font-size: clamp(2.4rem, 6.5vw, 5rem);
       line-height: 0.96; letter-spacing: -0.02em;
     }
-    .hero h1 em { font-style: normal; color: #5ddfb0; }
+    .hero h1 em { font-style: normal; color: #00E6FF; }
     .hero-desc {
       max-width: 640px;
       margin-bottom: 28px;
@@ -175,7 +175,7 @@
 
     /* ── SECTIONS ── */
     .section { padding: 80px clamp(18px,5vw,64px); }
-    .section-band { background: #eef4f0; }
+    .section-band { background: #F7FBFF; }
     .section-dark { background: var(--ink); color: #fff; }
     .inner { width: min(1160px, 100%); margin: 0 auto; }
 
@@ -235,14 +235,14 @@
     .ladder-row small { font-size: 0.8rem; font-weight: 700; color: var(--muted); }
     .bar-track {
       height: 12px; border-radius: 999px;
-      background: #e8ede9; overflow: hidden;
+      background: #F7FBFF; overflow: hidden;
     }
     .bar-fill { height: 100%; border-radius: 999px; background: var(--green2); }
     .ladder-row strong { text-align: right; font-size: 0.95rem; }
     .ladder-note {
       margin-top: 18px; padding: 14px 16px;
-      border-radius: 8px; background: #f0f7f3;
-      color: #2a5c45; font-size: 0.85rem;
+      border-radius: 8px; background: #F7FBFF;
+      color: #1B2333; font-size: 0.85rem;
     }
 
     /* ── DOLLAR TABLE ── */
@@ -263,7 +263,7 @@
       border-top: 1px solid var(--line);
     }
     .dollar-table tr.featured td {
-      background: #f0f9f4;
+      background: #F7FBFF;
       font-weight: 600;
     }
     .dollar-table .win { color: var(--green); font-weight: 800; }
@@ -319,7 +319,7 @@
       display: grid; grid-template-columns: 1fr 1fr;
       gap: 0; align-items: stretch;
       background:
-        linear-gradient(100deg, rgba(8,28,22,0.86) 40%, rgba(8,28,22,0.5)),
+        linear-gradient(100deg, rgba(10, 15, 30, 0.86) 40%, rgba(10, 15, 30, 0.5)),
         url("https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1800&q=80")
         center / cover no-repeat;
       color: #fff;
@@ -376,8 +376,8 @@
     .feat-icon.b { background: var(--blue); }
     .feat-icon.d { background: var(--gold); }
     .feat-icon.r { background: var(--coral); }
-    .feat-icon.t { background: #4a3f8c; }
-    .feat-icon.m { background: #1e7a8a; }
+    .feat-icon.t { background: #1666FF; }
+    .feat-icon.m { background: #00E6FF; }
     .feature-card h3 { font-size: 1rem; margin-bottom: 6px; }
     .feature-card p { font-size: 0.86rem; color: var(--muted); }
 
@@ -385,11 +385,11 @@
     .guarantee-box {
       display: flex; gap: 28px; align-items: flex-start;
       padding: 36px; border-radius: 14px;
-      background: #d6f0e6; border: 1px solid rgba(15,94,74,0.2);
+      background: #EAF7FF; border: 1px solid rgba(27, 35, 51, 0.2);
     }
     .guarantee-icon { font-size: 2.8rem; flex-shrink: 0; }
     .guarantee-box h3 { font-size: 1.3rem; color: var(--green); margin-bottom: 8px; }
-    .guarantee-box p { font-size: 0.95rem; color: #2e5e4e; }
+    .guarantee-box p { font-size: 0.95rem; color: #1B2333; }
 
     /* ── FAQ ── */
     .faq-grid { display: grid; gap: 10px; }
@@ -698,7 +698,7 @@
   <!-- PATRON EXPERIENCE -->
   <div class="patron-band" id="patrons">
     <div class="patron-copy">
-      <span class="overline" style="color:#5ddfb0">Patron experience</span>
+      <span class="overline" style="color:#00E6FF">Patron experience</span>
       <h2>This is not another place to dump content.</h2>
       <p>It is a practical AI learning environment where your patrons can ask questions live, find your best work ranked by quality, attend workshops, and discover related experts — without getting lost in a noisy feed.</p>
     </div>
@@ -808,7 +808,7 @@
   <!-- FINAL CTA -->
   <section class="cta-section" id="apply">
     <div class="inner">
-      <span class="overline" style="color:#5ddfb0">Ready?</span>
+      <span class="overline" style="color:#00E6FF">Ready?</span>
       <h2>Founding creators shape the platform.</h2>
       <p>We're inviting 25–30 AI operators to migrate their patrons, run live sessions, and define what a better AI creator economy looks like. Founding spots are limited.</p>
       <div class="cta-group">

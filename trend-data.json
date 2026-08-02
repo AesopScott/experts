@@ -10,7 +10,7 @@
   "top_stories": [
     {
       "rank": 1,
-      "title": "I am starting an AI+Education company",
+      "title": "I am starting an AI+Executive AI company",
       "summary": "Trending signals in the ai education space.",
       "score": 1000,
       "source_count": 20,
@@ -85,7 +85,7 @@
   "clusters": [
     {
       "id": "ai-education",
-      "label": "Ai Education",
+      "label": "Ai Executive AI",
       "signal_count": 20,
       "scores": {
         "trend": 100,
@@ -95,7 +95,7 @@
       },
       "composite": 99,
       "top_signals": [
-        "I am starting an AI+Education company",
+        "I am starting an AI+Executive AI company",
         "No Teachers, No Homework: School Solely Uses AI to Teach Students",
         "Show HN: PickCode – An educational coding environment for students after Scratch"
       ]
@@ -147,7 +147,7 @@
       "composite": 74,
       "top_signals": [
         "Anthropic tries to hide Claude's AI actions. Devs hate it",
-        "From Education to Anthropic: What Impact Will AI Have on Learning? - The 74",
+        "From Executive AI to Anthropic: What Impact Will AI Have on Learning? - The 74",
         "Anthropic partners with Rwandan Government and ALX to bring AI education to hund"
       ]
     },
@@ -218,43 +218,43 @@
   "ideas": [
     {
       "rank": 1,
-      "title": "Understanding Ai Education: What You Need to Know",
-      "rationale": "High signal activity in ai education with limited recent Aesop coverage.",
+      "title": "Understanding Ai Executive AI: What You Need to Know",
+      "rationale": "High signal activity in ai education with limited recent Mojo coverage.",
       "target_cluster": "ai-education",
       "estimated_readtime": "4 min read"
     },
     {
       "rank": 2,
       "title": "Understanding Anthropic Claude: What You Need to Know",
-      "rationale": "High signal activity in anthropic claude with limited recent Aesop coverage.",
+      "rationale": "High signal activity in anthropic claude with limited recent Mojo coverage.",
       "target_cluster": "anthropic-claude",
       "estimated_readtime": "4 min read"
     },
     {
       "rank": 3,
       "title": "Understanding Ai Voice: What You Need to Know",
-      "rationale": "High signal activity in ai voice with limited recent Aesop coverage.",
+      "rationale": "High signal activity in ai voice with limited recent Mojo coverage.",
       "target_cluster": "ai-voice",
       "estimated_readtime": "4 min read"
     },
     {
       "rank": 4,
       "title": "Understanding Google Ai: What You Need to Know",
-      "rationale": "High signal activity in google ai with limited recent Aesop coverage.",
+      "rationale": "High signal activity in google ai with limited recent Mojo coverage.",
       "target_cluster": "google-ai",
       "estimated_readtime": "4 min read"
     },
     {
       "rank": 5,
       "title": "Understanding Ai Image Video: What You Need to Know",
-      "rationale": "High signal activity in ai image video with limited recent Aesop coverage.",
+      "rationale": "High signal activity in ai image video with limited recent Mojo coverage.",
       "target_cluster": "ai-image-video",
       "estimated_readtime": "4 min read"
     },
     {
       "rank": 6,
       "title": "Understanding Openai: What You Need to Know",
-      "rationale": "High signal activity in openai with limited recent Aesop coverage.",
+      "rationale": "High signal activity in openai with limited recent Mojo coverage.",
       "target_cluster": "openai",
       "estimated_readtime": "4 min read"
     }

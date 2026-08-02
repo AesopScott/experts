@@ -10,21 +10,21 @@
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
-  <meta name="theme-color" content="#145f47">
+  <meta name="theme-color" content="#00E6FF">
   <style>
     :root {
-      --ink: #101615;
-      --muted: #66716e;
-      --paper: #fbfaf6;
+      --ink: #0A0F1E;
+      --muted: #00E6FF;
+      --paper: #F7FBFF;
       --panel: #ffffff;
-      --line: #dfe5df;
-      --green: #145f47;
-      --mint: #e9f5ef;
-      --gold: #b87a22;
-      --gold2: #fff1d8;
-      --red: #c0392b;
-      --red2: #fef2f2;
-      --shadow: 0 18px 46px rgba(17,31,25,.1);
+      --line: #F7FBFF;
+      --green: #00E6FF;
+      --mint: #EAF7FF;
+      --gold: #1666FF;
+      --gold2: #EAF7FF;
+      --red: #1666FF;
+      --red2: #F7FBFF;
+      --shadow: 0 18px 46px rgba(10, 15, 30, .1);
     }
     * { box-sizing: border-box; }
     body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif; background: var(--paper); color: var(--ink); line-height: 1.45; }
@@ -50,24 +50,24 @@
     th { text-align: left; padding: 10px 16px; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); border-bottom: 1px solid var(--line); background: var(--paper); white-space: nowrap; }
     td { padding: 12px 16px; font-size: 14px; border-bottom: 1px solid var(--line); vertical-align: middle; }
     tr:last-child td { border-bottom: 0; }
-    tr:hover td { background: #fafbfa; }
+    tr:hover td { background: #F7FBFF; }
 
     .role-badge { display: inline-flex; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .04em; }
-    .role-badge.patron          { background: #e6f0fb; color: #295b8f; }
+    .role-badge.patron          { background: #F7FBFF; color: #1666FF; }
     .role-badge.contributor     { background: var(--mint); color: var(--green); }
     .role-badge.expert          { background: var(--gold2); color: var(--gold); }
-    .role-badge.founding_expert { background: #f0e8ff; color: #6b3fa0; }
+    .role-badge.founding_expert { background: #F7FBFF; color: #1666FF; }
     .role-badge.admin           { background: var(--red2); color: var(--red); }
 
     .role-select { min-height: 34px; padding: 0 10px; border: 1px solid var(--line); border-radius: 6px; background: #fff; color: var(--ink); font: inherit; font-size: 13px; font-weight: 700; }
     .save-btn { min-height: 34px; padding: 0 12px; border: 0; border-radius: 6px; background: var(--green); color: #fff; font: inherit; font-size: 13px; font-weight: 900; cursor: pointer; }
     .save-btn:disabled { opacity: .5; cursor: default; }
-    .save-btn.saved { background: #2a6e50; }
+    .save-btn.saved { background: #1B2333; }
 
     .status-badge { display: inline-flex; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 900; }
     .status-badge.pending { background: var(--gold2); color: var(--gold); }
     .status-badge.live    { background: var(--mint); color: var(--green); }
-    .status-badge.expired { background: #f2f2f2; color: var(--muted); }
+    .status-badge.expired { background: #F7FBFF; color: var(--muted); }
 
     .action-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
     .approve-btn { min-height: 32px; padding: 0 12px; border: 0; border-radius: 6px; background: var(--green); color: #fff; font: inherit; font-size: 13px; font-weight: 900; cursor: pointer; white-space: nowrap; }
@@ -80,7 +80,7 @@
     .access-denied { padding: 80px 24px; text-align: center; }
     .access-denied h2 { font-size: 24px; margin-bottom: 10px; }
     .access-denied p { color: var(--muted); max-width: 520px; margin: 0 auto; }
-    .notice { border: 1px solid rgba(184,122,34,.24); background: var(--gold2); border-radius: 8px; padding: 14px 16px; color: #67450f; font-size: 13px; line-height: 1.55; }
+    .notice { border: 1px solid rgba(22, 102, 255, .24); background: var(--gold2); border-radius: 8px; padding: 14px 16px; color: #0A0F1E; font-size: 13px; line-height: 1.55; }
     .notice code { background: rgba(0,0,0,.08); padding: 1px 5px; border-radius: 4px; font-family: monospace; }
 
     .text-input { min-height: 38px; padding: 0 12px; border: 1px solid var(--line); border-radius: 6px; background: #fff; color: var(--ink); font: inherit; font-size: 13px; width: 100%; }
@@ -135,11 +135,11 @@
     const computeTopicsAndDurationsFn = httpsCallable(functions, "computeTopicsAndDurations", { timeout: 600000 });
 
     const DOMAINS = [
-      { key: "ai-automation",        label: "AI & Automation",                color: "#145f47" },
-      { key: "finance-investing",    label: "AI in Finance & Investing",      color: "#b87a22" },
-      { key: "marketing-growth",     label: "AI in Marketing, Sales & Growth",color: "#245a7d" },
-      { key: "leadership-management",label: "AI in Leadership & Management",  color: "#bf563f" },
-      { key: "design-creative-gaming",label:"AI in Design, Creative & Gaming",color: "#67508f" },
+      { key: "ai-automation",        label: "AI & Automation",                color: "#00E6FF" },
+      { key: "finance-investing",    label: "AI in Finance & Investing",      color: "#1666FF" },
+      { key: "marketing-growth",     label: "AI in Marketing, Sales & Growth",color: "#1666FF" },
+      { key: "leadership-management",label: "AI in Leadership & Management",  color: "#1666FF" },
+      { key: "design-creative-gaming",label:"AI in Design, Creative & Gaming",color: "#1666FF" },
     ];
     let missingCourseLinkVideos = [];
     const DOMAIN_MAP = Object.fromEntries(DOMAINS.map(d => [d.key, d]));
@@ -258,7 +258,7 @@
                 <button id="refresh-unmatched-btn" class="approve-btn" style="font-size:13px;padding:6px 14px;min-height:auto;">Refresh</button>
               </div>
             </div>
-            <div id="unmatched-content"><div class="loading-state">Loading videos missing course links…</div></div>
+            <div id="unmatched-content"><div class="loading-state">Loading videos missing resource links…</div></div>
           </div>
         </div>`;
 
@@ -650,7 +650,7 @@
               <td style="font-size:12px;color:var(--muted);">${added}</td>
               <td style="font-size:12px;color:var(--muted);">${harvested}</td>
               <td>${videoCell}</td>
-              <td><select class="domain-edit-sel" style="font-size:12px;padding:3px 6px;border:1px solid #ddd;border-radius:6px;">
+              <td><select class="domain-edit-sel" style="font-size:12px;padding:3px 6px;border:1px solid #F7FBFF;border-radius:6px;">
                 <option value="">— Unassigned —</option>
                 ${DOMAINS.map(d => `<option value="${d.key}"${d.key === ch.domain ? " selected" : ""}>${d.label}</option>`).join("")}
               </select></td>
@@ -681,7 +681,7 @@
 
     async function handleAddChannel() {
       const input     = document.getElementById("channel-url-input");
-      const domainSel = document.querySelector("#add-channel-form select");
+      const domainSel = document.querySelector("#00E6FF-channel-form select");
       const btn       = document.getElementById("add-channel-btn");
       const url       = input.value.trim();
       const domain    = domainSel?.value || "";
@@ -857,7 +857,7 @@
 
       // Inline domain picker for approval — pre-select engine suggestion if present
       const domainSel = document.createElement("select");
-      domainSel.style.cssText = "font-size:12px;padding:3px 6px;border:1px solid #ddd;border-radius:6px;margin-right:4px;";
+      domainSel.style.cssText = "font-size:12px;padding:3px 6px;border:1px solid #F7FBFF;border-radius:6px;margin-right:4px;";
       domainSel.innerHTML = `<option value="">— Domain —</option>` +
         DOMAINS.map(d => `<option value="${d.key}"${d.key === c.suggestedDomain ? " selected" : ""}>${d.label}${d.key === c.suggestedDomain ? " ✦" : ""}</option>`).join("");
 
@@ -996,7 +996,7 @@
           videos.length + " video" + (videos.length !== 1 ? "s" : "");
 
         if (videos.length === 0) {
-          container.innerHTML = `<div class="empty-state">All videos have course links.</div>`;
+          container.innerHTML = `<div class="empty-state">All videos have resource links.</div>`;
           return;
         }
 
@@ -1022,7 +1022,7 @@
         videos.forEach(v => renderUnmatchedActions(v));
       } catch (err) {
         console.error(err);
-        container.innerHTML = `<div class="empty-state">Failed to load videos missing course links.</div>`;
+        container.innerHTML = `<div class="empty-state">Failed to load videos missing resource links.</div>`;
       }
     }
 
@@ -1057,7 +1057,7 @@
       }
 
       if (missingCourseLinkVideos.length === 0) {
-        statusEl.textContent = "No missing course links.";
+        statusEl.textContent = "No missing resource links.";
         return;
       }
 

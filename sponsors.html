@@ -12,9 +12,9 @@
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="alternate icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-  <link rel="mask-icon" href="/assets/mask-icon.svg" color="#145f47">
+  <link rel="mask-icon" href="/assets/mask-icon.svg" color="#00E6FF">
   <link rel="manifest" href="/site.webmanifest">
-  <meta name="theme-color" content="#145f47">
+  <meta name="theme-color" content="#00E6FF">
   <meta name="robots" content="index, follow">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="25experts by Mojo AI Studio">
@@ -54,29 +54,29 @@
   </script>
   <style>
     :root {
-      --ink:#101615;
-      --muted:#64706c;
-      --paper:#fbfaf6;
+      --ink:#0A0F1E;
+      --muted:#00E6FF;
+      --paper:#F7FBFF;
       --panel:#ffffff;
-      --line:#dfe5df;
-      --green:#145f47;
-      --green2:#1f7a5f;
-      --mint:#e8f5ef;
-      --gold:#b87a22;
-      --gold2:#fff2dc;
-      --blue:#295b8f;
-      --blue2:#e8f1fb;
-      --coral:#bf563f;
-      --coral2:#fff0ec;
-      --dark:#101615;
-      --shadow:0 22px 60px rgba(16,22,21,.12);
+      --line:#F7FBFF;
+      --green:#00E6FF;
+      --green2:#1B2333;
+      --mint:#EAF7FF;
+      --gold:#1666FF;
+      --gold2:#EAF7FF;
+      --blue:#1666FF;
+      --blue2:#F7FBFF;
+      --coral:#1666FF;
+      --coral2:#EAF7FF;
+      --dark:#0A0F1E;
+      --shadow:0 22px 60px rgba(10, 15, 30, .12);
     }
     *{box-sizing:border-box}
     body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.45;letter-spacing:0}
     a{color:inherit;text-decoration:none}
     .topbar{padding:9px clamp(18px,5vw,68px);background:var(--green);color:#fff;font-size:13px;text-align:center}
     .topbar a{text-decoration:underline;font-weight:850}
-    .hero{background:linear-gradient(112deg,rgba(16,22,21,.96),rgba(20,95,71,.92)),radial-gradient(circle at 78% 18%,rgba(255,255,255,.2),transparent 28%);color:#fff;padding:clamp(48px,7vw,92px) clamp(18px,5vw,68px)}
+    .hero{background:linear-gradient(112deg,rgba(10, 15, 30, .96),rgba(0, 230, 255, .92)),radial-gradient(circle at 78% 18%,rgba(255,255,255,.2),transparent 28%);color:#fff;padding:clamp(48px,7vw,92px) clamp(18px,5vw,68px)}
     .hero-inner{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(340px,.92fr);gap:clamp(28px,5vw,64px);align-items:center}
     .eyebrow{display:inline-flex;width:max-content;margin-bottom:18px;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
     h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(42px,7vw,82px);line-height:.95;letter-spacing:0}
@@ -110,17 +110,17 @@
     .panel h2{font-size:32px;margin-bottom:10px}
     .panel p{color:var(--muted);line-height:1.58}
     .list{display:grid;gap:10px;margin-top:18px}
-    .item{display:grid;grid-template-columns:34px 1fr;gap:12px;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fff;color:#33413c}
+    .item{display:grid;grid-template-columns:34px 1fr;gap:12px;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fff;color:#1B2333}
     .check{width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:var(--mint);color:var(--green);font-weight:950}
     .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-    .tier{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:22px;display:grid;gap:12px;box-shadow:0 16px 42px rgba(16,22,21,.06)}
-    .tier.featured{background:linear-gradient(135deg,#fff,#fff7e8);border-color:rgba(184,122,34,.34)}
+    .tier{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:22px;display:grid;gap:12px;box-shadow:0 16px 42px rgba(10, 15, 30, .06)}
+    .tier.featured{background:linear-gradient(135deg,#fff,#EAF7FF);border-color:rgba(22, 102, 255, .34)}
     .tier h3{font-size:24px;margin:0}
     .amount{font-size:32px;font-weight:950;color:var(--green)}
     .tier p{color:var(--muted);font-size:14px;line-height:1.5}
     .tier ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
-    .tier li{display:grid;grid-template-columns:22px 1fr;gap:8px;font-size:14px;color:#33413c}
-    .trust{border:1px solid rgba(184,122,34,.25);background:var(--gold2);border-radius:10px;padding:24px;color:#654611}
+    .tier li{display:grid;grid-template-columns:22px 1fr;gap:8px;font-size:14px;color:#1B2333}
+    .trust{border:1px solid rgba(22, 102, 255, .25);background:var(--gold2);border-radius:10px;padding:24px;color:#0A0F1E}
     .trust h2{font-size:32px;margin-bottom:8px}
     .trust p{margin:0;line-height:1.62}
     .form-card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:24px;box-shadow:var(--shadow)}

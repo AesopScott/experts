@@ -6,22 +6,22 @@
   <title>Leaderboards | 25experts by Mojo AI Studio</title>
   <style>
     :root {
-      --ink:#101615;
-      --muted:#66716e;
-      --paper:#fbfaf6;
+      --ink:#0A0F1E;
+      --muted:#00E6FF;
+      --paper:#F7FBFF;
       --panel:#ffffff;
-      --line:#dfe5df;
-      --green:#145f47;
-      --mint:#e9f5ef;
-      --gold:#b87a22;
-      --gold2:#fff1d8;
-      --blue:#295b8f;
-      --blue2:#e6f0fb;
-      --violet:#6a529c;
-      --violet2:#eee9fa;
-      --rose:#b94d5f;
-      --rose2:#fde9ed;
-      --shadow:0 20px 60px rgba(16,22,21,.12);
+      --line:#F7FBFF;
+      --green:#00E6FF;
+      --mint:#EAF7FF;
+      --gold:#1666FF;
+      --gold2:#EAF7FF;
+      --blue:#1666FF;
+      --blue2:#F7FBFF;
+      --violet:#1666FF;
+      --violet2:#F7FBFF;
+      --rose:#1666FF;
+      --rose2:#F7FBFF;
+      --shadow:0 20px 60px rgba(10, 15, 30, .12);
     }
     *{box-sizing:border-box}
     body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--paper);color:var(--ink);letter-spacing:0}
@@ -29,14 +29,14 @@
     button,select{font:inherit}
     .topbar{padding:9px clamp(18px,5vw,68px);background:var(--green);color:#fff;font-size:13px;text-align:center}
     .topbar a{text-decoration:underline;font-weight:800}
-    .nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:28px;padding:0 clamp(18px,5vw,68px);background:rgba(251,250,246,.94);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;backdrop-filter:blur(16px)}
+    .nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:28px;padding:0 clamp(18px,5vw,68px);background:rgba(247, 251, 255, .94);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;backdrop-filter:blur(16px)}
     .brand{display:flex;align-items:center;gap:11px;font-weight:900}
     .brand-mark{width:38px;height:38px;display:grid;place-items:center;border-radius:8px;background:var(--green);color:#fff;font-size:12px}
     .brand-text{display:grid;line-height:1.08}
     .brand-text span{color:var(--muted);font-size:12px;font-weight:800;margin-top:3px}
     .nav-links{display:flex;align-items:center;gap:16px;color:var(--muted);font-size:14px;font-weight:750}
     .nav-links a:hover{color:var(--ink)}
-    .hero{color:#fff;padding:clamp(42px,7vw,84px) clamp(18px,5vw,68px) 44px;background:linear-gradient(115deg,rgba(20,95,71,.97),rgba(18,39,50,.94)),radial-gradient(circle at 84% 20%,rgba(255,255,255,.2),transparent 28%)}
+    .hero{color:#fff;padding:clamp(42px,7vw,84px) clamp(18px,5vw,68px) 44px;background:linear-gradient(115deg,rgba(0, 230, 255, .97),rgba(10, 15, 30, .94)),radial-gradient(circle at 84% 20%,rgba(255,255,255,.2),transparent 28%)}
     .hero-inner{max-width:1220px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:clamp(28px,5vw,64px);align-items:end}
     .eyebrow{display:inline-flex;margin-bottom:18px;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
     h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(42px,7vw,76px);line-height:.96;letter-spacing:0}
@@ -44,7 +44,7 @@
     .hero-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:8px;padding:22px;display:grid;gap:12px}
     .hero-card strong{font-size:30px}.hero-card span{color:rgba(255,255,255,.78);line-height:1.45;font-size:14px}
     .page{max-width:1420px;margin:0 auto;padding:28px clamp(18px,5vw,68px) 72px;display:grid;gap:22px}
-    .toolbar{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;display:grid;grid-template-columns:1fr auto;gap:14px;box-shadow:0 12px 36px rgba(16,22,21,.05)}
+    .toolbar{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;display:grid;grid-template-columns:1fr auto;gap:14px;box-shadow:0 12px 36px rgba(10, 15, 30, .05)}
     .board-tabs{display:grid;gap:10px}
     .tab-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
     .tab-label{min-width:112px;color:var(--ink);font-size:13px;font-weight:950;text-transform:uppercase;letter-spacing:.06em}
@@ -72,7 +72,7 @@
     .explain-card{border:1px solid var(--line);border-radius:8px;background:#fff;padding:16px}
     .explain-card b{display:inline-flex;margin-bottom:10px;padding:6px 9px;border-radius:999px;background:var(--mint);color:var(--green);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
     .explain-card h3{margin:0 0 8px;font-size:20px}.explain-card p{margin:0;color:var(--muted);line-height:1.48;font-size:14px}
-    .principle{border:1px solid rgba(184,122,34,.24);background:var(--gold2);border-radius:8px;padding:20px;color:#67450f;display:grid;gap:8px}
+    .principle{border:1px solid rgba(22, 102, 255, .24);background:var(--gold2);border-radius:8px;padding:20px;color:#0A0F1E;display:grid;gap:8px}
     .principle h2{margin:0;font-size:24px}.principle p{margin:0;line-height:1.52}
     footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:26px clamp(18px,5vw,68px);color:var(--muted);border-top:1px solid var(--line);font-size:13px}
     @media(max-width:1120px){.hero-inner,.board-layout,.toolbar{grid-template-columns:1fr}}
@@ -142,7 +142,7 @@
           <option>Finance & Investing</option>
           <option>Marketing, Sales & Growth</option>
           <option>Career & Productivity</option>
-          <option>Education & Community</option>
+          <option>Executive AI & Community</option>
         </select>
         <select aria-label="Time period">
           <option>This week</option>
