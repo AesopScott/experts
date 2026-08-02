@@ -766,3 +766,86 @@ textarea::placeholder {
   outline: 2px solid #1666ff !important;
   outline-offset: 3px;
 }
+
+/* Videos page contrast fixes */
+body.video-page {
+  min-height: 100vh;
+  background: #1b2333 !important;
+  isolation: isolate;
+}
+
+body.video-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(90deg, rgba(10, 15, 30, 0.94) 0%, rgba(27, 35, 51, 0.86) 52%, rgba(27, 35, 51, 0.78) 100%),
+    url("hero-ai-option-2.png");
+  background-position: center;
+  background-size: cover;
+  filter: saturate(0.18) contrast(0.92) brightness(0.82);
+  opacity: 0.92;
+}
+
+body.video-page::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    repeating-linear-gradient(115deg, transparent 0 22px, rgba(22, 102, 255, 0.06) 22px 24px, transparent 24px 58px),
+    radial-gradient(circle at 82% 26%, rgba(22, 102, 255, 0.12), transparent 32%);
+  pointer-events: none;
+}
+
+body.video-page .hero {
+  background: transparent !important;
+}
+
+body.video-page .hero::after {
+  background: none !important;
+}
+
+body.video-page .month-toggle {
+  background: #f7fbff !important;
+  border-color: rgba(22, 102, 255, 0.22) !important;
+}
+
+body.video-page .month-toggle:hover {
+  background: #eaf7ff !important;
+}
+
+body.video-page .month-toggle h2 {
+  color: #1666ff !important;
+  text-shadow: none !important;
+}
+
+body.video-page .favorites-filter,
+body.video-page .favorite-channel-btn {
+  background: #f7fbff !important;
+  border-color: rgba(22, 102, 255, 0.24) !important;
+  color: #0a0f1e !important;
+}
+
+body.video-page .favorites-filter span,
+body.video-page .favorite-channel-btn span {
+  color: inherit !important;
+}
+
+body.video-page .favorites-filter:hover,
+body.video-page .favorite-channel-btn:hover {
+  background: #eaf7ff !important;
+  border-color: rgba(22, 102, 255, 0.44) !important;
+}
+
+body.video-page .favorites-filter:has(input:checked),
+body.video-page .favorite-channel-btn.is-favorite {
+  background: #1666ff !important;
+  border-color: #1666ff !important;
+  color: #ffffff !important;
+}
+
+body.video-page .favorites-filter input {
+  background: #ffffff !important;
+}
