@@ -260,29 +260,30 @@
       width: min(960px, 100%);
       margin-top: 54px;
       overflow: hidden;
-      border: 1px solid var(--line);
+      border: 1px solid rgba(22, 102, 255, 0.24);
       border-radius: 8px;
-      background: rgba(255, 255, 255, 0.74);
+      background: #F7FBFF !important;
       box-shadow: var(--shadow);
     }
 
     .hero-stat {
       min-height: 108px;
       padding: 18px;
-      background: rgba(255, 255, 255, 0.52);
-      backdrop-filter: blur(12px);
+      background: #F7FBFF !important;
     }
 
     .hero-stat strong {
       display: block;
+      color: #0A0F1E !important;
       font-size: 28px;
       line-height: 1.05;
+      text-transform: uppercase;
     }
 
     .hero-stat span {
       display: block;
       margin-top: 7px;
-      color: var(--muted);
+      color: #0A0F1E !important;
       font-size: 13px;
     }
 
@@ -503,14 +504,11 @@
     :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 3px; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
   </style>
-  <link rel="stylesheet" href="assets/site-nav.css?v=20260802-nogreen">
+  <link rel="stylesheet" href="assets/site-nav.css?v=20260802-simple-nav">
 </head>
 <body class="home">
-  <div class="mission-bar">
-    <strong>25experts</strong> is a Mojo AI Studio platform.
-  </div>
   <div id="site-nav"></div>
-  <script src="assets/site-nav.js?v=20260802-nogreen"></script>
+  <script src="assets/site-nav.js?v=20260802-simple-nav"></script>
 
   <main>
     <section class="hero">
@@ -523,32 +521,21 @@
         </div>
         <div class="hero-strip">
           <div class="hero-stat">
-            <strong>Curated videos</strong>
+            <strong>CURATED VIDEOS</strong>
             <span>high-signal AI videos selected for practical learning value</span>
           </div>
           <div class="hero-stat">
-            <strong>editorial context</strong>
+            <strong>EDITORIAL CONTEXT</strong>
             <span>short notes, source context, and follow-up angles beyond the video</span>
           </div>
           <div class="hero-stat">
-            <strong>Direct sources</strong>
+            <strong>DIRECT SOURCES</strong>
             <span>clear attribution and links back to the original video source</span>
           </div>
         </div>
       </div>
     </section>
 
-    <section style="background:var(--dark);color:#fff;text-align:center;padding:64px clamp(18px,5vw,68px);">
-      <div style="width:min(860px,100%);margin:0 auto;">
-        <div style="display:inline-block;padding:7px 18px;border-radius:999px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.24);font-size:13px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:28px;">Library refresh</div>
-        <div style="font-size:clamp(56px,10vw,120px);font-weight:900;line-height:0.92;letter-spacing:-0.02em;color:#1666FF;">Coming<br>June 2026</div>
-        <p style="margin:28px auto 0;max-width:580px;color:rgba(255,255,255,0.7);font-size:clamp(16px,2vw,20px);line-height:1.55;">The first curated collection is live in June: useful AI videos, short editorial notes, and Mojo AI Studio source references for deeper study.</p>
-        <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:32px;">
-          <a href="videos.html" style="display:inline-flex;align-items:center;min-height:48px;padding:0 24px;border-radius:8px;background:#1666FF;color:#0A0F1E;font-weight:900;font-size:15px;">Browse videos</a>
-          <a href="search.html" style="display:inline-flex;align-items:center;min-height:48px;padding:0 24px;border-radius:8px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.28);color:#fff;font-weight:800;font-size:15px;">Search library</a>
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer>
