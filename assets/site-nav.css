@@ -47,8 +47,9 @@ body:not(.home) main > :is(.hero, .domain-hero, .page-hero):first-child > * {
 }
 
 .nav .brand {
-  display: grid;
-  gap: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
   width: fit-content;
   color: #fff;
   white-space: nowrap;
@@ -56,6 +57,23 @@ body:not(.home) main > :is(.hero, .domain-hero, .page-hero):first-child > * {
 
 .nav .brand-lockup {
   text-decoration: none;
+}
+
+.nav .brand-logo {
+  width: 88px;
+  height: 58px;
+  display: block;
+  flex: 0 0 auto;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 0 1px rgba(255, 255, 255, 0.95))
+    drop-shadow(0 0 12px rgba(0, 230, 255, 0.62))
+    drop-shadow(0 0 26px rgba(22, 102, 255, 0.42));
+}
+
+.nav .brand-copy {
+  display: grid;
+  gap: 3px;
 }
 
 .nav .brand-title {
@@ -417,6 +435,11 @@ body:not(.home) main > :is(.hero, .domain-hero, .page-hero):first-child > * {
     white-space: normal;
   }
 
+  .nav .brand-logo {
+    width: 72px;
+    height: 48px;
+  }
+
   .nav .nav-links.site-nav {
     justify-content: flex-start;
     width: 100%;
@@ -536,8 +559,28 @@ body {
 }
 
 .nav .brand-lockup {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 14px !important;
   color: #ffffff !important;
   text-decoration: none !important;
+}
+
+.nav .brand-logo {
+  width: 88px !important;
+  height: 58px !important;
+  display: block !important;
+  flex: 0 0 auto !important;
+  object-fit: contain !important;
+  filter:
+    drop-shadow(0 0 1px rgba(255, 255, 255, 0.95))
+    drop-shadow(0 0 12px rgba(0, 230, 255, 0.62))
+    drop-shadow(0 0 26px rgba(22, 102, 255, 0.42)) !important;
+}
+
+.nav .brand-copy {
+  display: grid !important;
+  gap: 3px !important;
 }
 
 .nav .brand-title {
@@ -613,6 +656,11 @@ body {
   .nav .site-nav-simple {
     justify-content: stretch !important;
     width: 100% !important;
+  }
+
+  .nav .brand-logo {
+    width: 72px !important;
+    height: 48px !important;
   }
 }
 
