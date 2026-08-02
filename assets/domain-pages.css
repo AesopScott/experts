@@ -1,10 +1,10 @@
 :root {
   --ink: #0A0F1E;
-  --muted: #00E6FF;
+  --muted: #1666FF;
   --paper: #F7FBFF;
   --panel: #fff;
   --line: #F7FBFF;
-  --green: #00E6FF;
+  --green: #1666FF;
   --cyan: #EAF7FF;
   --dark: #0A0F1E;
   --blue: #1666FF;
@@ -117,7 +117,7 @@ h1 {
   font-weight: 900;
 }
 .domain-tabs a.active {
-  border-color: rgba(0, 230, 255, .32);
+  border-color: rgba(22, 102, 255, .32);
   background: var(--cyan);
   color: var(--green);
 }
@@ -311,7 +311,7 @@ h1 {
   border-radius: 8px;
   object-fit: cover;
   object-position: center 22%;
-  border: 1px solid rgba(0, 230, 255, .2);
+  border: 1px solid rgba(22, 102, 255, .2);
 }
 .person strong {
   display: block;

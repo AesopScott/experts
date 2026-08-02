@@ -2,7 +2,7 @@
   const domains = {
     "ai-automation": {
       title: "AI & Automation",
-      color: "#00E6FF",
+      color: "#1666FF",
       summary: "Practical AI workflows, prompt systems, agent patterns, tool audits, and automation judgment for working professionals.",
       represents: "This domain represents the day-to-day work of making AI useful: mapping workflows, choosing tools, designing agents, automating safely, and helping teams turn experiments into reliable practice.",
       expertCriteria: "The experts here are selected for practical implementation judgment: they can teach non-technical professionals, explain tradeoffs clearly, and show repeatable AI workflows that hold up outside a demo.",
