@@ -20,8 +20,11 @@
     <div class="site-nav-shell">
     <header class="nav nav-simple">
       <a class="brand brand-lockup" href="index.html">
-        <span class="brand-title">25 experts</span>
-        <span class="brand-subtitle">Your Personal AI Content Curator</span>
+        <img class="brand-logo" src="assets/mojo-ai-studio-logo.png" alt="" aria-hidden="true">
+        <span class="brand-copy">
+          <span class="brand-title">25 experts</span>
+          <span class="brand-subtitle">Your Personal AI Content Curator</span>
+        </span>
       </a>
       <nav class="nav-links site-nav site-nav-simple" aria-label="Site navigation">
         ${navItems.map(linkMarkup).join("")}
