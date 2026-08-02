@@ -8,7 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <title>Curated AI Videos | 25experts</title>
   <meta name="description" content="Browse curated AI videos selected for practical value, with direct source links and Mojo AI Studio editorial context.">
-  <meta name="page-version" content="v2026.08.02.1">
+  <meta name="page-version" content="v2026.08.02.4">
   <meta name="page-updated" content="2026-08-02">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/videos.html">
@@ -139,16 +139,6 @@
     }
     .hero p { max-width: 700px; margin: 0; color: rgba(255,255,255,0.82); font-size: 17px; }
     .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
-    .watchlist-btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      min-height: 56px; padding: 0 26px; border-radius: 10px;
-      background: var(--green); color: #fff; border: 1px solid var(--green);
-      box-shadow: 0 16px 36px rgba(22, 102, 255, 0.22);
-      font-size: 18px; font-weight: 950;
-    }
-    .watchlist-btn:hover { background: #1B2333; transform: translateY(-1px); }
-    .watchlist-note { align-self: center; max-width: 560px; color: var(--muted); font-size: 14px; font-weight: 650; }
-
     .domain-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
     .pill {
       display: inline-flex; align-items: center; gap: 7px;
@@ -168,7 +158,7 @@
     /* ── FILTER PANEL ── */
     .filter-panel {
       display: grid;
-      grid-template-columns: repeat(4, minmax(150px,1fr)) auto;
+      grid-template-columns: repeat(5, minmax(130px,1fr)) auto;
       gap: 12px; align-items: end;
       width: min(1320px,calc(100% - 36px));
       margin: 0 auto 12px;
@@ -190,6 +180,32 @@
     .filter-panel input { padding: 0 12px; font-weight: 600; }
     button { padding: 0 16px; cursor: pointer; }
     button.primary { border-color: var(--green); background: var(--green); color: #fff; }
+
+    .favorites-filter {
+      min-height: 40px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 0 14px;
+      border: 1px solid rgba(22, 102, 255, 0.22);
+      border-radius: 8px;
+      background: #F7FBFF;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 850;
+      cursor: pointer;
+      user-select: none;
+    }
+    .favorites-filter input {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: #1666FF;
+      cursor: pointer;
+    }
+    .favorites-filter:has(input:checked) {
+      background: #1666FF;
+      border-color: #1666FF;
+      color: #ffffff;
+    }
 
     /* ── FILTER META (result count + active chips) ── */
     .filter-meta {
@@ -250,7 +266,7 @@
     .month-toggle:hover { background: #F7FBFF; }
 
     .month-toggle-left { display: flex; flex-direction: column; gap: 3px; }
-    .month-toggle h2 { margin: 0; font-size: clamp(22px,2.8vw,32px); line-height: 1; }
+    .month-toggle h2 { margin: 0; color: var(--ink) !important; font-size: clamp(22px,2.8vw,32px); line-height: 1; }
     .month-toggle p  { margin: 0; color: var(--muted); font-size: 13px; }
 
     .month-toggle-right { display: flex; align-items: center; gap: 12px; }
@@ -424,6 +440,29 @@
     }
     .share-btn:hover { background: #F7FBFF; color: var(--green); border-color: #A9DFFF; }
     .share-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+    .favorite-channel-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+      width: 100%; margin-top: 8px;
+      padding: 8px 12px; border-radius: 6px;
+      border: 1px solid rgba(22, 102, 255, 0.22); background: #F7FBFF;
+      color: var(--ink);
+      font: inherit; font-size: 12px; font-weight: 850;
+      cursor: pointer; transition: background 0.12s, border-color 0.12s, color 0.12s;
+    }
+    .favorite-channel-btn:hover {
+      background: #EAF7FF;
+      border-color: rgba(22, 102, 255, 0.42);
+    }
+    .favorite-channel-btn.is-favorite {
+      background: #1666FF;
+      border-color: #1666FF;
+      color: #ffffff;
+    }
+    .favorite-heart {
+      font-size: 16px;
+      line-height: 1;
+    }
 
     /* ── NEON BEACON (social deep-link highlight) ── */
     @keyframes neon-beacon {
@@ -675,10 +714,6 @@
       <span class="eyebrow">Curated video library</span>
       <h1>Useful AI videos, organized for follow-up learning.</h1>
       <p>Selected videos are grouped by practical AI topic. Each card opens at the original source, with short context for why the signal matters.</p>
-      <div class="hero-actions">
-        <a class="watchlist-btn" href="watchlist.html">Creator Watchlist</a>
-        <span class="watchlist-note">Profiles for the public creators and channels behind the videos we reference, with source context and related Mojo AI Studio editorial themes.</span>
-      </div>
     </div>
   </section>
 
@@ -718,6 +753,13 @@
           <option value="medium">1 – 5 min</option>
           <option value="long">Over 5 min</option>
         </select>
+      </div>
+      <div class="field">
+        <label for="favorites-filter">Favorites</label>
+        <label class="favorites-filter">
+          <input id="favorites-filter" type="checkbox">
+          <span>Favorite channels</span>
+        </label>
       </div>
       <button class="primary" id="clear-filters" type="button" style="align-self:end;">Clear filters</button>
     </section>
@@ -775,6 +817,7 @@
     const topicFilter    = document.getElementById("topic-filter");
     const dateFilter     = document.getElementById("date-filter");
     const durationFilter = document.getElementById("duration-filter");
+    const favoritesFilter = document.getElementById("favorites-filter");
     const resultCount    = document.getElementById("result-count");
     const filterChips    = document.getElementById("filter-chips");
 
@@ -810,6 +853,8 @@
     let courseCatalog = [];
     let activeCourseVideoId = null;
     let selectedCourseIds = new Set();
+    const LOCAL_PROFILE_KEY = "25experts.localProfile.v1";
+    let localProfile = loadLocalProfile();
     const requestedCourseVideoId = new URLSearchParams(window.location.search).get("linkVideo");
     let requestedCoursePickerOpened = false;
     const DEEP_LINK_VIDEO_ID = new URLSearchParams(window.location.search).get("v");
@@ -854,6 +899,61 @@
         .replace(/"/g,  "&quot;");
     }
 
+    function loadLocalProfile() {
+      try {
+        const stored = JSON.parse(localStorage.getItem(LOCAL_PROFILE_KEY) || "{}");
+        return {
+          favoriteChannels: Array.isArray(stored.favoriteChannels) ? stored.favoriteChannels : [],
+        };
+      } catch (err) {
+        return { favoriteChannels: [] };
+      }
+    }
+
+    function saveLocalProfile() {
+      localProfile.updatedAt = new Date().toISOString();
+      try {
+        localStorage.setItem(LOCAL_PROFILE_KEY, JSON.stringify(localProfile));
+      } catch (err) {
+        console.warn("Could not save local profile:", err);
+      }
+    }
+
+    function normalizeChannelName(channelName) {
+      return String(channelName || "").trim();
+    }
+
+    function isFavoriteChannel(channelName) {
+      const channel = normalizeChannelName(channelName);
+      return localProfile.favoriteChannels.includes(channel);
+    }
+
+    function toggleFavoriteChannel(channelName) {
+      const channel = normalizeChannelName(channelName);
+      if (!channel) return;
+      const favorites = new Set(localProfile.favoriteChannels);
+      if (favorites.has(channel)) favorites.delete(channel);
+      else favorites.add(channel);
+      localProfile.favoriteChannels = [...favorites].sort((a, b) => a.localeCompare(b));
+      saveLocalProfile();
+      updateFavoriteButtons(channel);
+      if (favoritesFilter.checked) applyFilter();
+    }
+
+    function updateFavoriteButtons(channelName) {
+      const targetChannel = normalizeChannelName(channelName);
+      document.querySelectorAll("[data-favorite-channel]").forEach(button => {
+        const buttonChannel = normalizeChannelName(button.dataset.favoriteChannel);
+        if (targetChannel && buttonChannel !== targetChannel) return;
+        const isFavorite = isFavoriteChannel(buttonChannel);
+        button.classList.toggle("is-favorite", isFavorite);
+        button.setAttribute("aria-pressed", isFavorite ? "true" : "false");
+        button.setAttribute("aria-label", `${isFavorite ? "Remove" : "Save"} ${buttonChannel} as a favorite channel`);
+        button.querySelector(".favorite-heart").innerHTML = isFavorite ? "&#9829;" : "&#9825;";
+        button.querySelector(".favorite-label").textContent = isFavorite ? "Favorited channel" : "Favorite channel";
+      });
+    }
+
     // V1 elective resource links were stored without the `/modules/` directory.
     // Repair them at render time so existing mappings resolve correctly.
     function normalizeCourseUrl(url) {
@@ -871,6 +971,7 @@
     function renderCard(v) {
       const isAdmin = currentUser && currentUser.role === "admin";
       const adminButton = "";
+      const isFavorite = isFavoriteChannel(v.channelName);
       return `
         <article class="video-card" data-channel="${safeHtml(v.channelName)}" data-video-id="${safeHtml(v.id)}">
           <a class="video-main-link" href="${safeHtml(v.link)}" target="_blank" rel="noopener noreferrer"
@@ -890,6 +991,10 @@
               </div>
             </a>
             ${renderCourseLinks(v)}
+            <button type="button" class="favorite-channel-btn${isFavorite ? " is-favorite" : ""}" data-favorite-channel="${safeHtml(v.channelName)}" aria-pressed="${isFavorite ? "true" : "false"}" aria-label="${isFavorite ? "Remove" : "Save"} ${safeHtml(v.channelName)} as a favorite channel">
+              <span class="favorite-heart" aria-hidden="true">${isFavorite ? "&#9829;" : "&#9825;"}</span>
+              <span class="favorite-label">${isFavorite ? "Favorited channel" : "Favorite channel"}</span>
+            </button>
             <button type="button" class="share-btn" data-share-id="${safeHtml(v.id)}" aria-label="Copy link to this video">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
               Copy link
@@ -946,6 +1051,7 @@
       const groups = groupByMonth(videos, "newest");
       groups.forEach(([, g], i) => sectionsRoot.appendChild(buildSection(g.label, g.videos, i === 0)));
       emptyState.classList.toggle("is-visible", videos.length === 0);
+      updateFavoriteButtons();
     }
 
     const DAY_MS = 24 * 60 * 60 * 1000;
@@ -993,8 +1099,10 @@
       const topic    = topicFilter.value;
       const dateMode = dateFilter.value;
       const duration = durationFilter.value;
+      const favoritesOnly = favoritesFilter.checked;
       const filtered = allVideos.filter(v =>
         (channel === "all" || v.channelName === channel) &&
+        (!favoritesOnly || isFavoriteChannel(v.channelName)) &&
         matchesSearch(v, term) &&
         matchesTopic(v, topic) &&
         matchesDuration(v, duration) &&
@@ -1021,6 +1129,7 @@
       if (topicFilter.value !== "all")    chips.push({ key: "topic",    label: `Topic: ${TOPIC_LABELS[topicFilter.value] || topicFilter.value}` });
       if (dateFilter.value !== "all")     chips.push({ key: "date",     label: DATE_LABELS[dateFilter.value] });
       if (durationFilter.value !== "all") chips.push({ key: "duration", label: DURATION_LABELS[durationFilter.value] });
+      if (favoritesFilter.checked)         chips.push({ key: "favorites", label: "Favorite channels" });
 
       filterChips.innerHTML = chips.map(c => `
         <span class="chip">${safeHtml(c.label)}
@@ -1034,6 +1143,7 @@
       if (key === "topic")    topicFilter.value = "all";
       if (key === "date")     dateFilter.value = "all";
       if (key === "duration") durationFilter.value = "all";
+      if (key === "favorites") favoritesFilter.checked = false;
       applyFilter();
     }
 
@@ -1252,6 +1362,7 @@
     }
 
     [channelFilter, topicFilter, dateFilter, durationFilter].forEach(el => el.addEventListener("change", applyFilter));
+    favoritesFilter.addEventListener("change", applyFilter);
     searchInput.addEventListener("input", debounce(applyFilter, 150));
     document.getElementById("clear-filters").addEventListener("click", () => {
       searchInput.value = "";
@@ -1259,11 +1370,17 @@
       topicFilter.value = "all";
       dateFilter.value = "all";
       durationFilter.value = "all";
+      favoritesFilter.checked = false;
       applyFilter();
     });
     filterChips.addEventListener("click", (e) => {
       const btn = e.target.closest("[data-clear-chip]");
       if (btn) clearChip(btn.dataset.clearChip);
+    });
+    sectionsRoot.addEventListener("click", (e) => {
+      const favoriteBtn = e.target.closest("[data-favorite-channel]");
+      if (!favoriteBtn) return;
+      toggleFavoriteChannel(favoriteBtn.dataset.favoriteChannel);
     });
 
     // ── Social deep-link: highlight card when ?v= param is present ──
