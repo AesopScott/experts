@@ -65,6 +65,11 @@ body:not(.home) main > :is(.hero, .domain-hero, .page-hero):first-child > * {
   display: block;
   flex: 0 0 auto;
   object-fit: contain;
+  max-width: none;
+  opacity: 1;
+  visibility: visible;
+  position: relative;
+  z-index: 1;
   filter:
     drop-shadow(0 0 1px rgba(255, 255, 255, 0.95))
     drop-shadow(0 0 12px rgba(0, 230, 255, 0.62))
@@ -572,6 +577,11 @@ body {
   display: block !important;
   flex: 0 0 auto !important;
   object-fit: contain !important;
+  max-width: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  position: relative !important;
+  z-index: 1 !important;
   filter:
     drop-shadow(0 0 1px rgba(255, 255, 255, 0.95))
     drop-shadow(0 0 12px rgba(0, 230, 255, 0.62))
@@ -819,6 +829,17 @@ body.video-page .month-toggle:hover {
 body.video-page .month-toggle h2 {
   color: #1666ff !important;
   text-shadow: none !important;
+}
+
+body.video-page .chevron {
+  background: #1666ff !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  box-shadow: 0 10px 22px rgba(22, 102, 255, 0.24);
+}
+
+body.video-page .month-toggle:hover .chevron {
+  background: #0052d8 !important;
 }
 
 body.video-page .favorites-filter,

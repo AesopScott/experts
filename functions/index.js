@@ -300,17 +300,26 @@ function parseIso8601Duration(str) {
 
 /** Batch-fetches YouTube video durations (50 per API call). Returns Map<videoId, seconds>. */
 async function fetchDurations(videoIds, apiKey) {
+  const metadata = await fetchYouTubeVideoMetadata(videoIds, apiKey);
+  return new Map([...metadata].map(([id, data]) => [id, data.durationSeconds]));
+}
+
+/** Batch-fetches YouTube metadata used by curatedVideos. Returns Map<videoId, data>. */
+async function fetchYouTubeVideoMetadata(videoIds, apiKey) {
   const result = new Map();
   for (let i = 0; i < videoIds.length; i += 50) {
     const batch = videoIds.slice(i, i + 50);
-    const url = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${batch.join(",")}&key=${apiKey}`;
+    const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=${batch.join(",")}&key=${apiKey}`;
     try {
       const res = await fetch(url);
       if (!res.ok) continue;
       const data = await res.json();
       for (const item of (data.items || [])) {
         const secs = parseIso8601Duration(item.contentDetails?.duration);
-        if (secs !== null) result.set(item.id, secs);
+        result.set(item.id, {
+          durationSeconds: secs,
+          publishedAt: item.snippet?.publishedAt || "",
+        });
       }
     } catch { continue; }
   }
@@ -1181,8 +1190,8 @@ exports.purgeNonAiVideos = onCall({
   return { scanned: snap.size, deleted: toDelete.length };
 });
 
-// Backfills topics[] and durationSeconds on all existing curatedVideos.
-// Safe to re-run — only updates docs that are missing one or both fields.
+// Backfills topics[], durationSeconds, and publishedAt on existing curatedVideos.
+// Safe to re-run — only updates docs that are missing one or more fields.
 exports.computeTopicsAndDurations = onCall({
   secrets: [youtubeApiKey],
   timeoutSeconds: 540,
@@ -1193,9 +1202,12 @@ exports.computeTopicsAndDurations = onCall({
   const apiKey = youtubeApiKey.value();
   const snap = await db.collection("curatedVideos").get();
 
-  const missingDuration = snap.docs.filter(d => d.data().durationSeconds == null);
-  const durations = await fetchDurations(
-    missingDuration.map(d => d.data().videoId || d.id),
+  const missingMetadata = snap.docs.filter(d => {
+    const data = d.data();
+    return data.durationSeconds == null || !data.publishedAt;
+  });
+  const metadata = await fetchYouTubeVideoMetadata(
+    missingMetadata.map(d => d.data().videoId || d.id),
     apiKey
   );
 
@@ -1206,8 +1218,12 @@ exports.computeTopicsAndDurations = onCall({
       updateData.topics = tagTopics(data.title, data.description || "");
     }
     if (data.durationSeconds == null) {
-      const secs = durations.get(data.videoId || d.id);
+      const secs = metadata.get(data.videoId || d.id)?.durationSeconds;
       if (secs != null) updateData.durationSeconds = secs;
+    }
+    if (!data.publishedAt) {
+      const publishedAt = metadata.get(data.videoId || d.id)?.publishedAt;
+      if (publishedAt) updateData.publishedAt = publishedAt;
     }
     return Object.keys(updateData).length > 0
       ? [{ type: "update", ref: d.ref, data: updateData }]

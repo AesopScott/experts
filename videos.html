@@ -8,7 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <title>Curated AI Videos | 25experts</title>
   <meta name="description" content="Browse curated AI videos selected for practical value, with direct source links and Mojo AI Studio editorial context.">
-  <meta name="page-version" content="v2026.08.02.5">
+  <meta name="page-version" content="v2026.08.02.6">
   <meta name="page-updated" content="2026-08-02">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/videos.html">
@@ -342,6 +342,16 @@
       padding: 3px 7px; border-radius: 4px;
       background: rgba(0,0,0,0.75); color: #fff;
       font-size: 11px; font-weight: 850; letter-spacing: 0.03em;
+    }
+
+    .posted-date {
+      position: absolute; z-index: 1; top: 7px; left: 8px;
+      max-width: calc(100% - 106px);
+      padding: 4px 8px; border-radius: 999px;
+      background: rgba(10,15,30,0.78); color: #fff;
+      font-size: 11px; font-weight: 850; letter-spacing: 0.02em;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.22);
     }
 
     .yt-badge {
@@ -701,12 +711,12 @@
       .course-results { max-height: 300px; }
     }
   </style>
-  <link rel="stylesheet" href="assets/site-nav.css?v=20260802-video-contrast">
+  <link rel="stylesheet" href="assets/site-nav.css?v=20260802-posted-date">
 </head>
 <body class="video-page">
 
   <div id="site-nav"></div>
-  <script src="assets/site-nav.js?v=20260802-logo-lockup"></script>
+  <script src="assets/site-nav.js?v=20260802-posted-date"></script>
 
 
   <section class="hero">
@@ -968,17 +978,38 @@
       return "";
     }
 
+    function coercePublishedDate(value) {
+      if (!value) return null;
+      if (typeof value.toDate === "function") return value.toDate();
+      if (typeof value === "object" && Number.isFinite(value.seconds)) return new Date(value.seconds * 1000);
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? null : date;
+    }
+
+    function formatPostedDate(value) {
+      const date = coercePublishedDate(value);
+      if (!date) return "";
+      return new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }).format(date);
+    }
+
     function renderCard(v) {
       const isAdmin = currentUser && currentUser.role === "admin";
       const adminButton = "";
       const isFavorite = isFavoriteChannel(v.channelName);
+      const postedDate = formatPostedDate(v.publishedAt);
+      const postedLabel = postedDate ? `Posted ${postedDate}` : "";
       return `
         <article class="video-card" data-channel="${safeHtml(v.channelName)}" data-video-id="${safeHtml(v.id)}">
           <a class="video-main-link" href="${safeHtml(v.link)}" target="_blank" rel="noopener noreferrer"
-             aria-label="${safeHtml(v.title)} by ${safeHtml(v.channelName)} opens on YouTube">
+             aria-label="${safeHtml(v.title)} by ${safeHtml(v.channelName)}${postedLabel ? `, ${safeHtml(postedLabel)}` : ""} opens on YouTube">
             <div class="thumb">
               <div class="thumb-bg"></div>
               <img class="thumb-img" src="${safeHtml(v.thumbnail)}" alt="" loading="lazy">
+              ${postedLabel ? `<span class="posted-date">${safeHtml(postedLabel)}</span>` : ""}
               <div class="play-btn">&#9654;</div>
               <span class="yt-badge" aria-hidden="true">YouTube -></span>
             </div>
@@ -1006,7 +1037,7 @@
     function groupByMonth(videos, order) {
       const groups = new Map();
       for (const v of videos) {
-        const d = v.publishedAt ? new Date(v.publishedAt) : null;
+        const d = coercePublishedDate(v.publishedAt);
         // Undated videos sort as oldest (timestamp 0 in sortByDate); use a key that
         // collates before any real month so grouping and sort order stay consistent.
         const key = d && !Number.isNaN(d.getTime())
@@ -1078,17 +1109,17 @@
 
     function matchesDate(v, days) {
       if (days === "all") return true;
-      if (!v.publishedAt) return false;
-      const published = new Date(v.publishedAt).getTime();
-      if (Number.isNaN(published)) return false;
+      const publishedDate = coercePublishedDate(v.publishedAt);
+      if (!publishedDate) return false;
+      const published = publishedDate.getTime();
       return published >= Date.now() - Number(days) * DAY_MS;
     }
 
     function sortByDate(videos, order) {
       const dir = order === "oldest" ? 1 : -1;
       return [...videos].sort((a, b) => {
-        const ta = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
-        const tb = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+        const ta = coercePublishedDate(a.publishedAt)?.getTime() || 0;
+        const tb = coercePublishedDate(b.publishedAt)?.getTime() || 0;
         return (ta - tb) * dir;
       });
     }
