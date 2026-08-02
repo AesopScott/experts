@@ -1,14 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="25experts by Aesop Academy">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#10221c"/>
-      <stop offset="100%" stop-color="#173d42"/>
-    </linearGradient>
-  </defs>
-  <rect width="1200" height="630" fill="url(#bg)"/>
-  <rect x="856" y="70" width="244" height="46" rx="23" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.26)"/>
-  <text x="978" y="100" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#ffffff">by Aesop Academy</text>
-  <text x="72" y="302" font-family="Georgia, 'Times New Roman', serif" font-size="88" font-weight="700" fill="#ffffff">Are You an AI Expert?</text>
-  <text x="76" y="404" font-family="Georgia, 'Times New Roman', serif" font-size="82" font-weight="700" fill="#ffffff">Do You Want to Be?</text>
-  <text x="78" y="494" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700" fill="#5ddfb0">25experts · Trusted AI learning by Aesop Academy</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="25experts by Mojo AI Studio">
+  <rect width="1200" height="630" fill="#0A0F1E"/>
+  <path d="M0 92h356l24-24h198" fill="none" stroke="#00E6FF" stroke-width="2" opacity=".62"/>
+  <path d="M1200 538H844l-24 24H622" fill="none" stroke="#1666FF" stroke-width="2" opacity=".72"/>
+  <rect x="70" y="72" width="1060" height="486" rx="18" fill="none" stroke="#00E6FF" stroke-width="2" opacity=".72"/>
+  <rect x="820" y="92" width="250" height="48" rx="24" fill="#111A2D" stroke="#00E6FF"/>
+  <text x="945" y="123" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="18" font-weight="800" fill="#ffffff">MOJO AI STUDIO</text>
+  <text x="92" y="278" font-family="Montserrat, Arial, sans-serif" font-size="96" font-weight="900" fill="#ffffff">25experts</text>
+  <text x="98" y="356" font-family="Montserrat, Arial, sans-serif" font-size="46" font-weight="800" fill="#00E6FF">Curated AI signal for operators.</text>
+  <text x="100" y="446" font-family="Montserrat, Arial, sans-serif" font-size="30" font-weight="600" fill="#C9D5E7">Public AI videos, creator context, and practical insight.</text>
 </svg>

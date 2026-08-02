@@ -1,11 +1,10 @@
 (function () {
   const navItems = [
     {
-      label: "Learn",
+      label: "Library",
       className: "site-nav-growth",
       links: [
         ["Videos", "videos.html"],
-        ["Courses", "https://aesopacademy.org/courses.html"],
         ["Search", "search.html"],
         ["Watch List", "watchlist.html"]
       ]
@@ -50,7 +49,7 @@
     <header class="nav">
       <a class="brand" href="index.html">
         <span class="brand-mark">25</span>
-        <span class="brand-text">25experts<span>Curated AI Video Library</span></span>
+        <span class="brand-text">25experts<span>Mojo AI Studio Product</span></span>
       </a>
       <nav class="nav-links site-nav" aria-label="Site navigation">
         ${navItems.map((group) => `
