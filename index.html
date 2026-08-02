@@ -57,18 +57,18 @@
   </script>
   <style>
     :root {
-      --ink: #111615;
-      --muted: #65706d;
+      --ink: #0A0F1E;
+      --muted: #00E6FF;
       --paper: #0A0F1E;
       --panel: #ffffff;
-      --line: #dde5df;
+      --line: #F7FBFF;
       --green: #00E6FF;
-      --mint: #dff3e5;
+      --mint: #EAF7FF;
       --blue: #1666FF;
       --gold: #00E6FF;
       --coral: #1666FF;
       --dark: #0A0F1E;
-      --shadow: 0 22px 60px rgba(17, 31, 25, 0.16);
+      --shadow: 0 22px 60px rgba(10, 15, 30, 0.16);
     }
 
     * { box-sizing: border-box; }
@@ -105,8 +105,8 @@
       justify-content: space-between;
       gap: 20px;
       padding: 15px clamp(18px, 5vw, 68px);
-      border-bottom: 1px solid rgba(221, 229, 223, 0.86);
-      background: rgba(251, 250, 246, 0.93);
+      border-bottom: 1px solid rgba(234, 247, 255, 0.86);
+      background: rgba(247, 251, 255, 0.93);
       backdrop-filter: blur(16px);
     }
 
@@ -199,9 +199,9 @@
       inset: 0;
       z-index: -1;
       background:
-        repeating-linear-gradient(115deg, transparent 0 22px, rgba(20, 95, 71, 0.08) 22px 24px, transparent 24px 58px),
-        radial-gradient(circle at 82% 26%, rgba(93, 223, 176, 0.2), transparent 32%),
-        linear-gradient(180deg, rgba(250, 250, 247, 0.1), #fff 96%);
+        repeating-linear-gradient(115deg, transparent 0 22px, rgba(0, 230, 255, 0.08) 22px 24px, transparent 24px 58px),
+        radial-gradient(circle at 82% 26%, rgba(0, 230, 255, 0.2), transparent 32%),
+        linear-gradient(180deg, rgba(247, 251, 255, 0.1), #fff 96%);
       pointer-events: none;
     }
 
@@ -216,7 +216,7 @@
       align-items: center;
       gap: 8px;
       padding: 7px 11px;
-      border: 1px solid rgba(20, 95, 71, 0.18);
+      border: 1px solid rgba(0, 230, 255, 0.18);
       border-radius: 999px;
       background: var(--green3);
       color: var(--green);
@@ -228,7 +228,7 @@
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: #70e1ad;
+      background: #00E6FF;
     }
 
     h1 {
@@ -365,7 +365,7 @@
     }
 
     .band {
-      background: #eef4ef;
+      background: #F7FBFF;
     }
 
     .split {
@@ -405,13 +405,13 @@
     .global {
       color: #fff;
       background:
-        linear-gradient(90deg, rgba(15, 23, 22, 0.9), rgba(15, 23, 22, 0.62)),
+        linear-gradient(90deg, rgba(10, 15, 30, 0.9), rgba(10, 15, 30, 0.62)),
         url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1800&q=80");
       background-position: center;
       background-size: cover;
     }
 
-    .global .kicker { color: #bfead1; }
+    .global .kicker { color: #EAF7FF; }
     .global .section-head p { color: rgba(255, 255, 255, 0.78); }
 
     .global-grid {

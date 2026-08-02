@@ -9,9 +9,9 @@
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="alternate icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-  <link rel="mask-icon" href="/assets/mask-icon.svg" color="#145f47">
+  <link rel="mask-icon" href="/assets/mask-icon.svg" color="#00E6FF">
   <link rel="manifest" href="/site.webmanifest">
-  <meta name="theme-color" content="#145f47">
+  <meta name="theme-color" content="#00E6FF">
   <meta name="robots" content="noindex, follow">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="25experts by Mojo AI Studio">
@@ -51,20 +51,20 @@
   </script>
   <style>
     :root {
-      --ink:#101615;
-      --muted:#66716e;
-      --paper:#fbfaf6;
+      --ink:#0A0F1E;
+      --muted:#00E6FF;
+      --paper:#F7FBFF;
       --panel:#fff;
-      --line:#dfe5df;
-      --green:#145f47;
-      --mint:#e9f5ef;
-      --gold:#b87a22;
-      --blue:#295b8f;
-      --shadow:0 18px 48px rgba(16,22,21,.1);
+      --line:#F7FBFF;
+      --green:#00E6FF;
+      --mint:#EAF7FF;
+      --gold:#1666FF;
+      --blue:#1666FF;
+      --shadow:0 18px 48px rgba(10, 15, 30, .1);
     }
     *{box-sizing:border-box}
     body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-    header{padding:34px clamp(18px,5vw,64px);background:linear-gradient(115deg,var(--green),#142a36);color:#fff}
+    header{padding:34px clamp(18px,5vw,64px);background:linear-gradient(115deg,var(--green),#0A0F1E);color:#fff}
     header h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(34px,5vw,58px);line-height:1}
     header p{max-width:880px;margin:14px 0 0;color:rgba(255,255,255,.82);font-size:17px;line-height:1.5}
     main{max-width:1320px;margin:0 auto;padding:28px clamp(18px,4vw,48px) 72px;display:grid;gap:22px}
@@ -74,7 +74,7 @@
     .option-head span{color:var(--muted);font-size:14px;font-weight:850}
     .preview{padding:22px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:24px;align-items:start}
     .favicon-panel{display:grid;gap:12px;justify-items:center}
-    .favicon{width:96px;height:96px;border-radius:22px;display:grid;place-items:center;background:var(--green);color:#fff;font-weight:950;font-size:30px;box-shadow:0 10px 24px rgba(16,22,21,.15);overflow:hidden}
+    .favicon{width:96px;height:96px;border-radius:22px;display:grid;place-items:center;background:var(--green);color:#fff;font-weight:950;font-size:30px;box-shadow:0 10px 24px rgba(10, 15, 30, .15);overflow:hidden}
     .favicon.circle{border-radius:50%}
     .favicon.shield{clip-path:polygon(50% 0,88% 14%,82% 72%,50% 100%,18% 72%,12% 14%)}
     .favicon-label{color:var(--muted);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
@@ -85,13 +85,13 @@
     .og p{margin:12px 0 0;color:var(--muted);font-size:19px;line-height:1.38;max-width:720px}
     .brand{position:absolute;top:26px;left:32px;display:flex;align-items:center;gap:11px;font-weight:950;color:var(--green);font-size:18px}
     .brand-mark{width:42px;height:42px;border-radius:9px;background:var(--green);color:#fff;display:grid;place-items:center;font-size:14px;font-weight:950}
-    .stamp{position:absolute;right:28px;top:30px;border:1px solid rgba(20,95,71,.18);background:var(--mint);color:var(--green);border-radius:999px;padding:8px 12px;font-size:13px;font-weight:900}
+    .stamp{position:absolute;right:28px;top:30px;border:1px solid rgba(0, 230, 255, .18);background:var(--mint);color:var(--green);border-radius:999px;padding:8px 12px;font-size:13px;font-weight:900}
     .dots{position:absolute;right:34px;bottom:34px;display:grid;grid-template-columns:repeat(5,10px);gap:8px}
     .dots i{width:10px;height:10px;border-radius:50%;background:var(--green);opacity:.35}
-    .og.green{background:linear-gradient(135deg,#fff,#e9f5ef)}
-    .og.blue{background:linear-gradient(135deg,#fff,#eaf3f8)}
-    .og.gold{background:linear-gradient(135deg,#fff,#fff1d8)}
-    .og.dark{background:linear-gradient(135deg,#10221c,#173d42);color:#fff}
+    .og.green{background:linear-gradient(135deg,#fff,#EAF7FF)}
+    .og.blue{background:linear-gradient(135deg,#fff,#F7FBFF)}
+    .og.gold{background:linear-gradient(135deg,#fff,#EAF7FF)}
+    .og.dark{background:linear-gradient(135deg,#0A0F1E,#1B2333);color:#fff}
     .og.dark p{color:rgba(255,255,255,.78)}
     .og.dark .brand{color:#fff}
     .og.dark .stamp{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:#fff}
@@ -141,10 +141,10 @@
     </section>
 
     <section class="option">
-      <div class="option-head"><h2>4. Open Book + AI</h2><span>Education emphasis</span></div>
+      <div class="option-head"><h2>4. Open Book + AI</h2><span>Executive AI emphasis</span></div>
       <div class="preview">
         <div class="favicon-panel"><div class="favicon"><span class="glyph">AI</span></div><div><div class="favicon-label">Favicon</div><div class="notes">More education than brand; less unique.</div></div></div>
-        <div class="og-shell"><div class="og-label">OG / Social Card</div><div class="og gold"><div class="brand"><span class="brand-mark">AI</span>Mojo AI Studio</div><span class="stamp">Education</span><h3>Trusted AI learning from verified experts.</h3><p>Videos, workshops, blogs, and community support for practical AI literacy.</p></div></div>
+        <div class="og-shell"><div class="og-label">OG / Social Card</div><div class="og gold"><div class="brand"><span class="brand-mark">AI</span>Mojo AI Studio</div><span class="stamp">Executive AI</span><h3>Trusted AI learning from verified experts.</h3><p>Videos, workshops, blogs, and community support for practical AI literacy.</p></div></div>
       </div>
     </section>
 

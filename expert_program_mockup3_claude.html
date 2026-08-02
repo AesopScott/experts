@@ -9,9 +9,9 @@
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="alternate icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-  <link rel="mask-icon" href="/assets/mask-icon.svg" color="#145f47">
+  <link rel="mask-icon" href="/assets/mask-icon.svg" color="#00E6FF">
   <link rel="manifest" href="/site.webmanifest">
-  <meta name="theme-color" content="#145f47">
+  <meta name="theme-color" content="#00E6FF">
   <meta name="robots" content="noindex, follow">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="25experts by Mojo AI Studio">
@@ -51,21 +51,21 @@
   </script>
   <style>
     :root {
-      --ink:       #111714;
-      --muted:     #5a6360;
-      --line:      #dfe4de;
-      --paper:     #f8f7f3;
+      --ink:       #0A0F1E;
+      --muted:     #00E6FF;
+      --line:      #F7FBFF;
+      --paper:     #F7FBFF;
       --panel:     #ffffff;
-      --green:     #0d5c45;
-      --green2:    #178a68;
-      --green3:    #e8f4ef;
-      --mint:      #d2ede3;
-      --gold:      #b87d1a;
-      --blue:      #1c4b85;
-      --coral:     #c24736;
-      --teal:      #0e6b78;
-      --shadow:    0 22px 56px rgba(14, 38, 28, 0.12);
-      --shadow-sm: 0 4px 16px rgba(14, 38, 28, 0.08);
+      --green:     #00E6FF;
+      --green2:    #00E6FF;
+      --green3:    #EAF7FF;
+      --cyan:      #EAF7FF;
+      --gold:      #1666FF;
+      --blue:      #1666FF;
+      --coral:     #1666FF;
+      --teal:      #1B2333;
+      --shadow:    0 22px 56px rgba(10, 15, 30, 0.12);
+      --shadow-sm: 0 4px 16px rgba(10, 15, 30, 0.08);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -84,7 +84,7 @@
       position: sticky; top: 0; z-index: 50;
       display: flex; align-items: center; justify-content: space-between; gap: 24px;
       padding: 14px clamp(18px, 5vw, 64px);
-      background: rgba(248,247,243,0.94);
+      background: rgba(247, 251, 255, 0.94);
       border-bottom: 1px solid var(--line);
       backdrop-filter: blur(16px);
     }
@@ -135,7 +135,7 @@
       min-height: 90vh;
       display: grid; align-items: end;
       background:
-        linear-gradient(108deg, rgba(6,22,16,0.85) 0%, rgba(6,22,16,0.52) 52%, rgba(6,22,16,0.18) 100%),
+        linear-gradient(108deg, rgba(10, 15, 30, 0.85) 0%, rgba(10, 15, 30, 0.52) 52%, rgba(10, 15, 30, 0.18) 100%),
         url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1800&q=80")
         center / cover no-repeat;
       color: #fff;
@@ -156,7 +156,7 @@
     }
     .eyebrow .dot {
       width: 7px; height: 7px; border-radius: 50%;
-      background: #5ddfb0; flex-shrink: 0;
+      background: #00E6FF; flex-shrink: 0;
     }
     .hero h1 {
       max-width: 820px;
@@ -164,7 +164,7 @@
       line-height: 0.95; letter-spacing: -0.025em;
       margin-bottom: 20px;
     }
-    .hero h1 em { font-style: normal; color: #5ddfb0; }
+    .hero h1 em { font-style: normal; color: #00E6FF; }
     .hero-desc {
       max-width: 640px; margin-bottom: 12px;
       font-size: clamp(1rem, 1.8vw, 1.2rem);
@@ -246,7 +246,7 @@
     .chk {
       width: 36px; height: 36px;
       display: grid; place-items: center;
-      background: var(--mint); color: var(--green);
+      background: var(--cyan); color: var(--green);
       border-radius: 8px; font-weight: 900; font-size: 1rem;
     }
     .check-list strong { display: block; margin-bottom: 3px; font-size: 0.95rem; }
@@ -262,7 +262,7 @@
     .ladder { display: grid; gap: 13px; }
     .ladder-row { display: grid; grid-template-columns: 90px 1fr 58px; gap: 12px; align-items: center; }
     .ladder-row small { font-size: 0.78rem; font-weight: 700; color: var(--muted); }
-    .bar-track { height: 11px; border-radius: 999px; background: #e4ece7; overflow: hidden; }
+    .bar-track { height: 11px; border-radius: 999px; background: #F7FBFF; overflow: hidden; }
     .bar-fill { height: 100%; border-radius: 999px; background: var(--green2); }
     .ladder-row strong { text-align: right; font-size: 0.9rem; }
     .ladder-max { border-top: 2px solid var(--line); padding-top: 12px; margin-top: 4px; }
@@ -271,7 +271,7 @@
     .ladder-note {
       margin-top: 18px; padding: 14px 16px;
       border-radius: 8px; background: var(--green3);
-      color: #1f5c42; font-size: 0.83rem;
+      color: #1B2333; font-size: 0.83rem;
     }
 
     /* ── DOLLAR TABLE ── */
@@ -287,7 +287,7 @@
       letter-spacing: 0.07em; text-transform: uppercase;
     }
     .dollar-table td { padding: 14px 18px; background: var(--panel); border-top: 1px solid var(--line); }
-    .dollar-table tr.featured td { background: #f0f9f4; font-weight: 600; }
+    .dollar-table tr.featured td { background: #F7FBFF; font-weight: 600; }
     .dollar-table .win { color: var(--green); font-weight: 800; }
     .dollar-table tfoot td {
       font-size: 0.79rem; color: var(--muted);
@@ -319,7 +319,7 @@
     .compare-card .tag {
       display: inline-block; margin-bottom: 10px;
       padding: 3px 10px; border-radius: 999px;
-      background: var(--mint); color: var(--green);
+      background: var(--cyan); color: var(--green);
       font-size: 0.73rem; font-weight: 700;
     }
     .compare-card h3 { font-size: 1.1rem; margin-bottom: 10px; }
@@ -329,7 +329,7 @@
     .patron-band {
       display: grid; grid-template-columns: 1fr 1fr;
       background:
-        linear-gradient(108deg, rgba(6,22,16,0.88) 38%, rgba(6,22,16,0.54)),
+        linear-gradient(108deg, rgba(10, 15, 30, 0.88) 38%, rgba(10, 15, 30, 0.54)),
         url("https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1800&q=80")
         center / cover no-repeat;
       color: #fff;
@@ -349,7 +349,7 @@
     .patron-list .dot {
       width: 22px; height: 22px; flex-shrink: 0; margin-top: 1px;
       display: grid; place-items: center;
-      background: var(--mint); color: var(--green);
+      background: var(--cyan); color: var(--green);
       border-radius: 6px; font-size: 0.72rem; font-weight: 900;
     }
 
@@ -375,7 +375,7 @@
       display: inline-block; margin-top: 10px;
       padding: 3px 10px; border-radius: 999px;
       font-size: 0.72rem; font-weight: 700;
-      background: var(--mint); color: var(--green);
+      background: var(--cyan); color: var(--green);
     }
 
     /* ── FEATURES ── */
@@ -396,7 +396,7 @@
     .feat-icon.d { background: var(--gold); }
     .feat-icon.r { background: var(--coral); }
     .feat-icon.t { background: var(--teal); }
-    .feat-icon.m { background: #5a3e8a; }
+    .feat-icon.m { background: #1666FF; }
     .feature-card h3 { font-size: 0.95rem; margin-bottom: 5px; }
     .feature-card p { font-size: 0.84rem; color: var(--muted); }
 
@@ -404,11 +404,11 @@
     .guarantee-box {
       display: flex; gap: 28px; align-items: flex-start;
       padding: 36px; border-radius: 14px;
-      background: var(--mint); border: 1px solid rgba(13,92,69,0.18);
+      background: var(--cyan); border: 1px solid rgba(0, 230, 255, 0.18);
     }
     .guarantee-icon { font-size: 2.8rem; flex-shrink: 0; }
     .guarantee-box h3 { font-size: 1.3rem; color: var(--green); margin-bottom: 8px; }
-    .guarantee-box p { font-size: 0.93rem; color: #2a5c46; line-height: 1.65; }
+    .guarantee-box p { font-size: 0.93rem; color: #1B2333; line-height: 1.65; }
 
     /* ── FAQ ── */
     .faq-grid { display: grid; gap: 10px; }
@@ -425,7 +425,7 @@
       padding: 100px clamp(18px,5vw,64px);
       background: var(--ink); color: #fff;
     }
-    .cta-section .overline { color: #5ddfb0; }
+    .cta-section .overline { color: #00E6FF; }
     .cta-section h2 { color: #fff; max-width: 760px; margin: 0 auto 16px; }
     .cta-section p { color: rgba(255,255,255,0.72); font-size: 1.05rem; max-width: 640px; margin: 0 auto 32px; line-height: 1.7; }
     .cta-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
@@ -484,11 +484,11 @@
     .model-badge {
       display: inline-flex; align-items: center; gap: 8px;
       padding: 5px 12px; border-radius: 999px;
-      background: var(--mint); color: var(--green);
+      background: var(--cyan); color: var(--green);
       font-size: 0.78rem; font-weight: 800; margin-bottom: 14px;
     }
-    .model-badge.founding { background: #fdf3e3; color: var(--gold); }
-    .model-badge.contrib  { background: #e8eef6; color: var(--blue); }
+    .model-badge.founding { background: #EAF7FF; color: var(--gold); }
+    .model-badge.contrib  { background: #F7FBFF; color: var(--blue); }
     .model-card h3 { font-size: 1.15rem; margin-bottom: 10px; }
     .model-card p { font-size: 0.875rem; color: var(--muted); margin-bottom: 16px; line-height: 1.65; }
     .model-list { list-style: none; display: grid; gap: 8px; padding: 0; margin: 0; }
@@ -503,7 +503,7 @@
       background: var(--ink); color: rgba(255,255,255,0.88);
       font-size: 0.9rem; line-height: 1.65;
     }
-    .model-insight strong { color: #5ddfb0; }
+    .model-insight strong { color: #00E6FF; }
     @media (max-width: 1100px) { .model-grid { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 700px)  { .model-grid { grid-template-columns: 1fr; } }
 
@@ -524,7 +524,7 @@
       border-radius: 999px; font-size: 0.7rem; font-weight: 700;
       background: var(--line); color: var(--muted);
     }
-    .beyond-tag.live { background: var(--mint); color: var(--green); }
+    .beyond-tag.live { background: var(--cyan); color: var(--green); }
     @media (max-width: 900px) { .beyond-grid { grid-template-columns: repeat(3,1fr); } }
   </style>
   <link rel="stylesheet" href="assets/site-nav.css?v=20260514-engage1">
@@ -880,7 +880,7 @@
   <!-- PATRON EXPERIENCE -->
   <div class="patron-band" id="patrons">
     <div class="patron-copy">
-      <span class="overline" style="color:#5ddfb0">Patron experience</span>
+      <span class="overline" style="color:#00E6FF">Patron experience</span>
       <h2>Not another place to dump content.</h2>
       <p>A practical AI learning environment where your patrons ask questions live, find your best work ranked by quality, attend workshops, earn credentials, and discover other trusted AI operators — without getting lost in a noisy feed.</p>
     </div>

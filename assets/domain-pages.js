@@ -2,7 +2,7 @@
   const domains = {
     "ai-automation": {
       title: "AI & Automation",
-      color: "#145f47",
+      color: "#00E6FF",
       summary: "Practical AI workflows, prompt systems, agent patterns, tool audits, and automation judgment for working professionals.",
       represents: "This domain represents the day-to-day work of making AI useful: mapping workflows, choosing tools, designing agents, automating safely, and helping teams turn experiments into reliable practice.",
       expertCriteria: "The experts here are selected for practical implementation judgment: they can teach non-technical professionals, explain tradeoffs clearly, and show repeatable AI workflows that hold up outside a demo.",
@@ -13,7 +13,7 @@
     },
     "finance-investing": {
       title: "AI in Finance & Investing",
-      color: "#b87a22",
+      color: "#1666FF",
       summary: "AI-assisted financial review, portfolio literacy, cash flow, risk, FP&A, and dashboards people can trust.",
       represents: "This domain represents AI applied to financial decisions: research, reporting, forecasting, portfolio review, budgeting, business finance, risk awareness, and clearer financial communication.",
       expertCriteria: "The experts here are considered credible because they connect financial literacy with AI-assisted analysis without treating AI output as investment advice or a replacement for judgment.",
@@ -24,7 +24,7 @@
     },
     "marketing-growth": {
       title: "AI in Marketing, Sales & Growth",
-      color: "#245a7d",
+      color: "#1666FF",
       summary: "AI content systems, sales research, customer interviews, webinar reuse, brand voice, and growth operations.",
       represents: "This domain represents AI applied to finding, understanding, reaching, and retaining customers through better research, sharper messaging, sales enablement, and growth systems.",
       expertCriteria: "The experts here are selected for their ability to turn AI into measurable market work: better campaigns, better conversations, stronger customer insight, and repeatable revenue workflows.",
@@ -35,7 +35,7 @@
     },
     "leadership-management": {
       title: "AI in Leadership & Management",
-      color: "#bf563f",
+      color: "#1666FF",
       summary: "AI adoption, governance, team anxiety, decision briefs, operating rhythm, culture, and delegation maps.",
       represents: "This domain represents AI as a leadership and operating problem: how managers set direction, govern adoption, redesign work, communicate change, and help teams use AI responsibly.",
       expertCriteria: "The experts here are considered credible because they understand people, operations, risk, and decision-making, not just tools. They can help leaders adopt AI without losing trust.",
@@ -46,7 +46,7 @@
     },
     "design-creative-gaming": {
       title: "AI in Design, Creative & Gaming",
-      color: "#67508f",
+      color: "#1666FF",
       summary: "Generative design, creative direction, rapid prototypes, game concepts, brand systems, and visual workflows.",
       represents: "This domain represents AI in creative production: design, storytelling, media, prototyping, visual systems, gaming concepts, and the new collaboration between human taste and generative tools.",
       expertCriteria: "The experts here are selected for creative judgment, portfolio credibility, and the ability to teach AI workflows without flattening originality, craft, or audience experience.",
@@ -60,7 +60,7 @@
   const roles = [
     "Applied AI Strategy",
     "Workflow Systems",
-    "Practical AI Education",
+    "Practical AI Executive AI",
     "Live Workshop Lead",
     "AI Community Practice"
   ];

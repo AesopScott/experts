@@ -15,9 +15,9 @@
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="alternate icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-  <link rel="mask-icon" href="/assets/mask-icon.svg" color="#145f47">
+  <link rel="mask-icon" href="/assets/mask-icon.svg" color="#00E6FF">
   <link rel="manifest" href="/site.webmanifest">
-  <meta name="theme-color" content="#145f47">
+  <meta name="theme-color" content="#00E6FF">
   <meta name="robots" content="index, follow">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="25experts by Mojo AI Studio">
@@ -57,20 +57,20 @@
   </script>
   <style>
     :root {
-      --ink:    #101615;
-      --muted:  #66716e;
-      --paper:  #fbfaf6;
+      --ink:    #0A0F1E;
+      --muted:  #00E6FF;
+      --paper:  #F7FBFF;
       --panel:  #ffffff;
-      --line:   #dfe5df;
-      --green:  #145f47;
-      --green2: #1a7a5e;
-      --green3: #e5f2e8;
-      --gold:   #b87a22;
-      --gold3:  #fdf3e3;
-      --error:  #c0392b;
-      --dark:   #0f1716;
-      --shadow: 0 18px 46px rgba(17,31,25,0.12);
-      --shadow-sm: 0 4px 16px rgba(17,31,25,0.08);
+      --line:   #F7FBFF;
+      --green:  #00E6FF;
+      --green2: #00E6FF;
+      --green3: #EAF7FF;
+      --gold:   #1666FF;
+      --gold3:  #EAF7FF;
+      --error:  #1666FF;
+      --dark:   #0A0F1E;
+      --shadow: 0 18px 46px rgba(10, 15, 30, 0.12);
+      --shadow-sm: 0 4px 16px rgba(10, 15, 30, 0.08);
     }
 
     * { box-sizing: border-box; }
@@ -100,8 +100,8 @@
       position: sticky; top: 0; z-index: 20;
       display: flex; align-items: center; justify-content: space-between; gap: 18px;
       padding: 15px clamp(18px,5vw,68px);
-      border-bottom: 1px solid rgba(221,229,223,0.86);
-      background: rgba(251,250,246,0.94);
+      border-bottom: 1px solid rgba(234, 247, 255, 0.86);
+      background: rgba(247, 251, 255, 0.94);
       backdrop-filter: blur(16px);
     }
     .brand { display: flex; align-items: center; gap: 11px; font-weight: 900; }
@@ -275,11 +275,11 @@
     .domain-dot {
       width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
     }
-    .domain-dot.ai         { background: #145f47; }
-    .domain-dot.finance    { background: #b87a22; }
-    .domain-dot.marketing  { background: #245a7d; }
-    .domain-dot.leadership { background: #7b4b92; }
-    .domain-dot.design     { background: #bf563f; }
+    .domain-dot.ai         { background: #00E6FF; }
+    .domain-dot.finance    { background: #1666FF; }
+    .domain-dot.marketing  { background: #1666FF; }
+    .domain-dot.leadership { background: #1666FF; }
+    .domain-dot.design     { background: #1666FF; }
 
     /* ── TIER PICKER ── */
     .tier-grid {
@@ -622,7 +622,7 @@
           valid = false;
           el.setAttribute('aria-invalid', 'true');
           const item = el.closest('.agree-item');
-          item.style.outline = '2px solid #c0392b';
+          item.style.outline = '2px solid #1666FF';
           item.style.borderRadius = '4px';
         } else if (el.type === 'radio') {
           const group = form.querySelectorAll(`[name="${el.name}"]`);
@@ -631,7 +631,7 @@
         } else if (!el.value.trim()) {
           valid = false;
           el.setAttribute('aria-invalid', 'true');
-          el.style.borderColor = '#c0392b';
+          el.style.borderColor = '#1666FF';
           const err = el.parentElement.querySelector('.field-error');
           if (err) err.classList.add('visible');
         } else {

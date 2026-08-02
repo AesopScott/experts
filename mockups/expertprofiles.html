@@ -6,16 +6,16 @@
   <title>Expert Profiles | 25experts by Mojo AI Studio</title>
   <style>
     :root {
-      --ink: #101615;
-      --muted: #66716e;
-      --paper: #fbfaf6;
+      --ink: #0A0F1E;
+      --muted: #00E6FF;
+      --paper: #F7FBFF;
       --panel: #ffffff;
-      --line: #dfe5df;
-      --green: #145f47;
-      --mint: #e9f5ef;
-      --gold: #b87a22;
-      --gold2: #fff1d8;
-      --shadow: 0 20px 60px rgba(16, 22, 21, 0.12);
+      --line: #F7FBFF;
+      --green: #00E6FF;
+      --mint: #EAF7FF;
+      --gold: #1666FF;
+      --gold2: #EAF7FF;
+      --shadow: 0 20px 60px rgba(10, 15, 30, 0.12);
     }
 
     * { box-sizing: border-box; }
@@ -45,7 +45,7 @@
       justify-content: space-between;
       gap: 28px;
       padding: 0 clamp(18px, 5vw, 68px);
-      background: rgba(251, 250, 246, 0.94);
+      background: rgba(247, 251, 255, 0.94);
       border-bottom: 1px solid var(--line);
       position: sticky;
       top: 0;
@@ -87,7 +87,7 @@
 
     .hero {
       background:
-        linear-gradient(115deg, rgba(20,95,71,0.96), rgba(19,42,54,0.92)),
+        linear-gradient(115deg, rgba(0, 230, 255, 0.96), rgba(10, 15, 30, 0.92)),
         radial-gradient(circle at 82% 18%, rgba(255,255,255,0.18), transparent 28%);
       color: #fff;
       padding: clamp(42px, 7vw, 82px) clamp(18px, 5vw, 68px) 48px;
@@ -162,7 +162,7 @@
       background: var(--panel);
       border: 1px solid var(--line);
       border-radius: 8px;
-      box-shadow: 0 14px 40px rgba(16, 22, 21, 0.06);
+      box-shadow: 0 14px 40px rgba(10, 15, 30, 0.06);
       overflow: hidden;
     }
     .roster-head {
@@ -204,9 +204,9 @@
       cursor: pointer;
       color: var(--ink);
     }
-    .expert-button:hover { background: #f2f6f1; }
+    .expert-button:hover { background: #F7FBFF; }
     .expert-button.active {
-      border-color: rgba(20,95,71,0.35);
+      border-color: rgba(0, 230, 255, 0.35);
       background: var(--mint);
     }
     .avatar {
@@ -255,7 +255,7 @@
       grid-template-columns: 1fr minmax(240px, 330px);
       gap: 24px;
       padding: clamp(22px, 4vw, 38px);
-      background: linear-gradient(135deg, #fff, #f1f6f1);
+      background: linear-gradient(135deg, #fff, #F7FBFF);
     }
     .identity {
       display: grid;
@@ -272,7 +272,7 @@
       color: #fff;
       font-size: 24px;
       font-weight: 950;
-      box-shadow: 0 18px 38px rgba(16,22,21,0.18);
+      box-shadow: 0 18px 38px rgba(10, 15, 30, 0.18);
     }
     .identity h2 {
       margin: 0;
@@ -317,7 +317,7 @@
       grid-column: 2;
       margin: 0;
       max-width: 720px;
-      color: #394340;
+      color: #1B2333;
       font-size: 16px;
       line-height: 1.62;
     }
@@ -354,7 +354,7 @@
     .button.secondary {
       color: var(--green);
       background: var(--mint);
-      border: 1px solid rgba(20,95,71,0.18);
+      border: 1px solid rgba(0, 230, 255, 0.18);
     }
     .profile-stats {
       display: grid;
@@ -554,7 +554,7 @@
       font-size: 14px;
     }
     .companion {
-      background: linear-gradient(145deg, #ffffff, #eef6f2);
+      background: linear-gradient(145deg, #ffffff, #F7FBFF);
       display: grid;
       gap: 14px;
       align-content: start;
@@ -564,7 +564,7 @@
       border-radius: 8px;
       background: #fff;
       border: 1px solid var(--line);
-      color: #2f3b37;
+      color: #1B2333;
       line-height: 1.45;
       font-size: 14px;
     }
@@ -719,35 +719,35 @@
 
   <script>
     const domains = [
-      { name: "AI & Automation", color: "#145f47", experts: [
+      { name: "AI & Automation", color: "#00E6FF", experts: [
         ["Maya Lin", "Applied AI Strategy for Operators", "Turns messy business workflows into practical AI systems teams can actually maintain."],
         ["Ethan Brooks", "Automation Architect", "Builds no-code and low-code AI workflows for service businesses and operations teams."],
         ["Priya Shah", "Prompt Systems Coach", "Teaches reusable prompt systems, team standards, and quality checks for everyday AI work."],
         ["Noah Kim", "AI Product Builder", "Helps founders and product teams prototype useful AI features without overbuilding."],
         ["Ava Martinez", "AI Adoption Lead", "Guides managers through training, rollout, change management, and human-centered adoption."]
       ]},
-      { name: "Finance & Investing", color: "#b87a22", experts: [
+      { name: "Finance & Investing", color: "#1666FF", experts: [
         ["Julian Park", "AI Finance Analyst", "Uses AI to improve research workflows, portfolio review, and financial decision hygiene."],
         ["Nadia Ellis", "Personal Finance Systems", "Teaches practical money systems for families, freelancers, and early-career professionals."],
         ["Marcus Reed", "Market Research Mentor", "Shows learners how to compare signals, narratives, and risk before making investing decisions."],
         ["Sofia Grant", "Small Business Finance", "Helps owners understand cash flow, pricing, forecasts, and AI-assisted bookkeeping."],
         ["Caleb Stone", "Retirement Planning Guide", "Makes long-term planning clearer with simple models and grounded AI research methods."]
       ]},
-      { name: "Marketing, Sales & Growth", color: "#295b8f", experts: [
+      { name: "Marketing, Sales & Growth", color: "#1666FF", experts: [
         ["Leah Morgan", "AI Growth Strategist", "Builds campaigns, content engines, and customer research loops with AI-assisted teams."],
         ["Theo James", "Sales Enablement Coach", "Turns sales conversations into repeatable playbooks, scripts, and training libraries."],
         ["Iris Chen", "Creator Marketing Lead", "Helps experts and brands create audience trust without becoming content machines."],
         ["Dante Moore", "Lifecycle Marketing Builder", "Designs email, retention, and customer education systems that feel useful instead of noisy."],
         ["Elena Price", "Brand Positioning Advisor", "Clarifies offers, audience language, and market categories for AI-era companies."]
       ]},
-      { name: "Career & Productivity", color: "#6a529c", experts: [
+      { name: "Career & Productivity", color: "#1666FF", experts: [
         ["Amara Wilson", "AI Career Coach", "Helps workers upgrade their role, portfolio, and daily productivity with practical AI habits."],
         ["Owen Patel", "Executive Workflow Designer", "Designs executive operating systems for decisions, meetings, delegation, and follow-through."],
         ["Mina Torres", "Learning Systems Mentor", "Turns AI learning into weekly practice plans, projects, and measurable progress."],
         ["Graham Lee", "Job Search Strategist", "Uses AI to sharpen resumes, interviews, networking, and career transition plans."],
         ["Rachel Adams", "Team Productivity Lead", "Helps teams reduce busywork, document better, and collaborate around AI-enabled workflows."]
       ]},
-      { name: "Education & Community", color: "#b94d5f", experts: [
+      { name: "Executive AI & Community", color: "#1666FF", experts: [
         ["Samira Khan", "AI Literacy operator", "Builds accessible AI lessons for students, parents, teachers, and community programs."],
         ["Ben Carter", "Workshop Facilitator", "Designs live learning sessions that move people from passive watching to active practice."],
         ["Talia Rivera", "Community Learning Architect", "Creates peer circles, accountability rhythms, and social learning experiences."],
@@ -885,7 +885,7 @@
       document.querySelectorAll(".tab").forEach(tab => tab.classList.toggle("active", tab.dataset.tab === activeTab));
       document.getElementById("contentGrid").innerHTML = items.map((item, index) => `
         <article class="content-card">
-          <div class="thumb" style="background:linear-gradient(135deg, ${expert.color}, #10221c)">
+          <div class="thumb" style="background:linear-gradient(135deg, ${expert.color}, #0A0F1E)">
             <span>${item.type}</span>
             <strong>${index + 1}</strong>
           </div>
