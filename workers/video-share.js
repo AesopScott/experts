@@ -16,7 +16,7 @@ export default {
     const description = `Watch ${title}${channel}, curated by 25experts for follow-up learning.`;
     const thumbnail = video?.thumbnail || `https://i.ytimg.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg`;
     const shareUrl = `https://25experts.com/share/${encodeURIComponent(videoId)}`;
-    const watchUrl = `https://25experts.com/watch.html?v=${encodeURIComponent(videoId)}`;
+    const watchUrl = `https://25experts.com/watch#v=${encodeURIComponent(videoId)}`;
 
     return new Response(renderHtml({
       title,

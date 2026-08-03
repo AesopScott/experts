@@ -522,9 +522,14 @@
     import { collection, doc, getDoc, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const root = document.getElementById("watch-root");
-    const params = new URLSearchParams(window.location.search);
-    const videoId = params.get("v") || params.get("videoId") || "";
+    const videoId = getVideoIdFromLocation();
     const LOCAL_PROFILE_KEY = "25experts.localProfile.v1";
+
+    function getVideoIdFromLocation() {
+      const params = new URLSearchParams(window.location.search);
+      const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+      return params.get("v") || params.get("videoId") || hashParams.get("v") || hashParams.get("videoId") || "";
+    }
 
     function safeHtml(str) {
       return String(str || "")
@@ -647,7 +652,7 @@
     function renderRelated(items) {
       if (!items.length) return `<p>No related videos from this channel are loaded yet.</p>`;
       return `<div class="related-list">${items.map(item => `
-        <a class="related-item" href="watch.html?v=${encodeURIComponent(item.id)}">
+        <a class="related-item" href="/watch#v=${encodeURIComponent(item.id)}">
           <img src="${safeHtml(item.thumbnail)}" alt="" loading="lazy">
           <span>
             <span class="related-title">${safeHtml(item.title)}</span>
