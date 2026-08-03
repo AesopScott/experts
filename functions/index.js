@@ -161,6 +161,10 @@ function getDiscoveryQueries() {
     "AI coding assistant tutorial",
     "GitHub Copilot tips",
     "Cursor AI coding",
+    "Cursor AI coding workflow",
+    "Cursor AI agent tutorial",
+    "Pi AI coding assistant",
+    "Pi AI assistant workflow",
 
     // Chinese AI models
     `Chinese AI models ${year}`,
@@ -176,8 +180,21 @@ function getDiscoveryQueries() {
     "open source LLM tutorial",
     "Ollama local AI",
     "LM Studio local LLM",
+    "LM Studio tutorial",
+    "LM Studio local model workflow",
     "Llama local model tutorial",
     "run AI locally",
+
+    // Inference engines and model serving
+    "vLLM tutorial",
+    "vLLM inference engine",
+    "LLM inference server",
+    "open source inference engine",
+    "SGLang LLM inference",
+    "llama.cpp local inference",
+    "Hugging Face TGI inference",
+    "LocalAI inference server",
+    "Open WebUI local LLM",
 
     // Local AI hardware
     "local AI hardware",
@@ -453,17 +470,17 @@ const TOPIC_TAGS = [
   { id: "claude",             keywords: ["claude"] },
   { id: "chatgpt",            keywords: ["chatgpt", "gpt-4o", "gpt-4", "gpt4", "openai"] },
   { id: "gemini",             keywords: ["gemini"] },
-  { id: "open-models",        keywords: ["llama", "mistral", "deepseek", "qwen"] },
+  { id: "open-models",        keywords: ["llama", "mistral", "deepseek", "qwen", "vllm", "sglang", "llama.cpp", "tgi inference", "inference engine", "inference server"] },
   { id: "agents",             keywords: ["ai agent", "ai agents", "agentic", "autonomous agent"] },
   { id: "orchestration",      keywords: ["orchestration", "langchain", "crewai", "autogen", "multi-agent"] },
   { id: "rag",                keywords: ["retrieval augmented", "vector database", "vector store"], wordBound: ["rag"] },
   { id: "prompt-engineering", keywords: ["prompt engineering", "system prompt", "prompt engineer"] },
   { id: "automation",         keywords: ["n8n", "zapier", "make.com", "workflow automation"] },
-  { id: "ai-coding",          keywords: ["cursor ai", "github copilot", "ai coding", "code generation"] },
+  { id: "ai-coding",          keywords: ["cursor ai", "cursor agent", "github copilot", "pi ai", "ai coding", "coding assistant", "code generation"] },
   { id: "image-generation",   keywords: ["midjourney", "stable diffusion", "dall-e", "dalle", "image generation", "flux"] },
   { id: "video-ai",           keywords: ["video generation", "ai video", "sora", "kling"] },
   { id: "fine-tuning",        keywords: ["fine-tun", "fine tuning", "finetuning"], wordBound: ["lora"] },
-  { id: "local-ai",           keywords: ["local ai", "local llm", "run locally", "ollama", "on-device ai"] },
+  { id: "local-ai",           keywords: ["local ai", "local llm", "run locally", "ollama", "lm studio", "localai", "open webui", "on-device ai"] },
 ];
 
 function tagTopics(title, description) {
