@@ -3,6 +3,7 @@ const FIREBASE_API_KEY = "AIzaSyAMMMdI12N9scrGrV0CrbIE3Huk04g8vfw";
 const DEFAULT_OG_IMAGE = "https://25experts.com/assets/og-25experts.png";
 
 const SHARE_PATHS = new Set([
+  "/share",
   "/watch",
   "/watch.html",
   "/videos",
@@ -40,7 +41,8 @@ async function renderVideoSharePage(request, env, url, assetPath, videoId) {
     return new Response(html, withHtmlHeaders(assetResponse.headers));
   }
 
-  const shareUrl = `${url.origin}${assetPath}?v=${encodeURIComponent(videoId)}`;
+  const publicPath = url.pathname === "/share" ? "/share" : assetPath;
+  const shareUrl = `${url.origin}${publicPath}?v=${encodeURIComponent(videoId)}`;
   const title = video.title || "Curated AI Video";
   const channel = video.channelName ? ` by ${video.channelName}` : "";
   const description = `Watch ${title}${channel}, curated by 25experts for follow-up learning.`;

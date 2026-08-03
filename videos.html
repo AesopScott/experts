@@ -1051,7 +1051,7 @@
       e.stopPropagation();
       const videoId = btn.dataset.shareId;
       if (!videoId) return;
-      const shareUrl = `${location.origin}${location.pathname.replace(/videos\.html$/i, "watch.html")}?v=${encodeURIComponent(videoId)}`;
+      const shareUrl = `${location.origin}/share?v=${encodeURIComponent(videoId)}`;
       navigator.clipboard.writeText(shareUrl).then(() => {
         showShareToast("✓ Link copied — share it anywhere!");
       }).catch(() => {
