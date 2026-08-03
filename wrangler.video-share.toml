@@ -1,0 +1,7 @@
+name = "25experts-video-share"
+main = "workers/video-share.js"
+compatibility_date = "2026-08-03"
+
+routes = [
+  { pattern = "25experts.com/share/*", zone_name = "25experts.com" }
+]
