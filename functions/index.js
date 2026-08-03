@@ -162,6 +162,31 @@ function getDiscoveryQueries() {
     "GitHub Copilot tips",
     "Cursor AI coding",
 
+    // Chinese AI models
+    `Chinese AI models ${year}`,
+    "DeepSeek AI tutorial",
+    "Qwen AI model tutorial",
+    "Alibaba Qwen LLM",
+    "Moonshot Kimi AI",
+    "Baidu ERNIE AI model",
+
+    // Local and open models
+    "local AI models tutorial",
+    "local LLM setup",
+    "open source LLM tutorial",
+    "Ollama local AI",
+    "LM Studio local LLM",
+    "Llama local model tutorial",
+    "run AI locally",
+
+    // Local AI hardware
+    "local AI hardware",
+    "AI PC local LLM",
+    "NVIDIA GPU local AI",
+    "Apple Silicon local LLM",
+    "edge AI hardware",
+    "NPU AI hardware",
+
     // AI for business verticals
     "AI for marketing strategy",
     "AI business tools",
