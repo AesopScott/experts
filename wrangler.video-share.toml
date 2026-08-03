@@ -5,3 +5,7 @@ compatibility_date = "2026-08-03"
 routes = [
   { pattern = "25experts.com/share/*", zone_name = "25experts.com" }
 ]
+
+[[analytics_engine_datasets]]
+binding = "SHARE_ANALYTICS"
+dataset = "video_share_events"
