@@ -13,9 +13,9 @@ const SHARE_PATHS = new Set([
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    const videoId = normalizeVideoId(url.searchParams.get("v"));
+    const videoId = getShareVideoId(url);
 
-    if (videoId && SHARE_PATHS.has(url.pathname)) {
+    if (videoId && (SHARE_PATHS.has(url.pathname) || url.pathname.startsWith("/share/"))) {
       const assetPath = url.pathname.startsWith("/videos") ? "/videos.html" : "/watch.html";
       return renderVideoSharePage(request, env, url, assetPath, videoId);
     }
@@ -39,8 +39,10 @@ async function renderVideoSharePage(request, env, url, assetPath, videoId) {
 
   const shareVideo = video || {};
 
-  const publicPath = url.pathname === "/share" ? "/share" : assetPath;
-  const shareUrl = `${url.origin}${publicPath}?v=${encodeURIComponent(videoId)}`;
+  const publicPath = url.pathname.startsWith("/share") ? `/share/${encodeURIComponent(videoId)}` : assetPath;
+  const shareUrl = url.pathname.startsWith("/share")
+    ? `${url.origin}${publicPath}`
+    : `${url.origin}${publicPath}?v=${encodeURIComponent(videoId)}`;
   const title = shareVideo.title || "Curated AI Video";
   const channel = shareVideo.channelName ? ` by ${shareVideo.channelName}` : "";
   const description = `Watch ${title}${channel}, curated by 25experts for follow-up learning.`;
@@ -100,6 +102,14 @@ function readFirestoreString(field) {
 function normalizeVideoId(value) {
   const videoId = String(value || "").trim();
   return /^[a-zA-Z0-9_-]{6,20}$/.test(videoId) ? videoId : "";
+}
+
+function getShareVideoId(url) {
+  const queryId = normalizeVideoId(url.searchParams.get("v"));
+  if (queryId) return queryId;
+
+  const pathMatch = url.pathname.match(/^\/share\/([a-zA-Z0-9_-]{6,20})\/?$/);
+  return pathMatch ? normalizeVideoId(pathMatch[1]) : "";
 }
 
 function metaTag([kind, key, value]) {
