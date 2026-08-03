@@ -26,6 +26,7 @@ export default {
 async function renderVideoSharePage(request, env, url, assetPath, videoId) {
   const assetUrl = new URL(request.url);
   assetUrl.pathname = assetPath;
+  assetUrl.search = "";
   const assetResponse = await env.ASSETS.fetch(new Request(assetUrl, request));
 
   if (!assetResponse.ok) return assetResponse;
