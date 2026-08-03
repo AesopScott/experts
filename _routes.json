@@ -2,6 +2,7 @@
   "version": 1,
   "include": [
     "/share",
+    "/share/*",
     "/watch",
     "/watch.html",
     "/videos",
