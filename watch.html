@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Watch AI Video | 25experts</title>
   <meta name="description" content="Watch a curated AI video with Mojo AI Studio context, transcript summary, personal notes, and direct creator engagement links.">
-  <meta name="page-version" content="v2026.08.02.8">
+  <meta name="page-version" content="v2026.08.02.10">
   <meta name="page-updated" content="2026-08-02">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/watch.html">
@@ -60,7 +60,8 @@
       padding: 34px 0 76px;
     }
     .watch-top {
-      display: flex;
+      display: grid;
+      grid-template-columns: auto minmax(360px, 760px);
       justify-content: space-between;
       gap: 16px;
       align-items: center;
@@ -69,13 +70,13 @@
     .learn-banner {
       position: relative;
       display: grid;
-      grid-template-columns: auto minmax(0, 1fr) auto;
+      grid-template-columns: minmax(0, 1fr) auto;
       align-items: center;
       gap: 18px;
-      width: min(860px, 100%);
-      min-height: 96px;
-      margin: 0 auto 18px;
-      padding: 16px 20px;
+      width: 100%;
+      min-height: 78px;
+      margin: 0;
+      padding: 14px 18px;
       border: 1px solid rgba(0, 230, 255, .46);
       border-radius: 10px;
       background:
@@ -106,25 +107,10 @@
       background: var(--cyan);
       box-shadow: -42px 48px 0 rgba(22,102,255,.7), -170px 0 0 rgba(22,102,255,.45);
     }
-    .learn-mark,
     .learn-copy,
     .learn-cta {
       position: relative;
       z-index: 1;
-    }
-    .learn-mark {
-      width: 64px;
-      height: 64px;
-      display: grid;
-      place-items: center;
-      border: 1px solid rgba(0,230,255,.68);
-      border-radius: 8px;
-      color: var(--cyan);
-      background: rgba(10,15,30,.74);
-    }
-    .learn-mark svg {
-      width: 42px;
-      height: 42px;
     }
     .learn-copy {
       display: grid;
@@ -139,13 +125,13 @@
     }
     .learn-title {
       color: var(--white);
-      font-size: clamp(22px, 3vw, 34px);
+      font-size: clamp(18px, 2.2vw, 27px);
       font-weight: 950;
       line-height: 1.05;
     }
     .learn-subtitle {
       color: rgba(255,255,255,.66);
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 750;
     }
     .learn-cta {
@@ -348,6 +334,17 @@
       width: 1px;
       background: rgba(255,255,255,.12);
     }
+    .summit-logo {
+      position: absolute;
+      z-index: 1;
+      top: 16px;
+      left: 16px;
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 0 1px rgba(0,230,255,.5), 0 10px 28px rgba(0,0,0,.34);
+    }
     .ad-card:hover {
       border-color: rgba(0, 230, 255, .72);
       box-shadow: 0 26px 82px rgba(0, 230, 255, .18);
@@ -466,7 +463,7 @@
     }
     @media (max-width: 980px) {
       .watch-layout { grid-template-columns: 1fr; }
-      .watch-top { align-items: flex-start; flex-direction: column; }
+      .watch-top { grid-template-columns: 1fr; align-items: flex-start; }
     }
     @media (max-width: 540px) {
       .watch-shell { width: min(100% - 24px, 1480px); padding-top: 22px; }
@@ -495,24 +492,15 @@
   <main class="watch-shell">
     <div class="watch-top">
       <a class="back-link" href="videos.html">← Back to videos</a>
-      <span class="kicker">Creator-friendly watch page</span>
+      <a class="learn-banner" href="https://mojoaistudio.com/learn" target="_blank" rel="noopener noreferrer" aria-label="Open Mojo AI Studio Learn">
+        <span class="learn-copy">
+          <span class="learn-kicker">Mojo AI Studio</span>
+          <span class="learn-title">Learn the systems behind the signal.</span>
+          <span class="learn-subtitle">Practical AI learning paths for leaders, builders, and operators.</span>
+        </span>
+        <span class="learn-cta">Explore Learn</span>
+      </a>
     </div>
-    <a class="learn-banner" href="https://mojoaistudio.com/learn" target="_blank" rel="noopener noreferrer" aria-label="Open Mojo AI Studio Learn">
-      <span class="learn-mark" aria-hidden="true">
-        <svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M10 40V16l18 18 18-18v24"></path>
-          <path d="M10 16l18 18 18-18"></path>
-          <circle cx="28" cy="34" r="4" fill="currentColor" stroke="none"></circle>
-          <path d="M8 48h40"></path>
-        </svg>
-      </span>
-      <span class="learn-copy">
-        <span class="learn-kicker">Mojo AI Studio</span>
-        <span class="learn-title">Learn the systems behind the signal.</span>
-        <span class="learn-subtitle">Practical AI learning paths for leaders, builders, and operators.</span>
-      </span>
-      <span class="learn-cta">Explore Learn</span>
-    </a>
     <div id="watch-root" class="loading">Loading video...</div>
   </main>
 
@@ -700,6 +688,7 @@
           </section>
 
           <a class="ad-card" href="https://mojoaisummits.com/ai-executive-readiness-online/" target="_blank" rel="noopener noreferrer" aria-label="AI Executive Readiness, September 4 2026, virtual">
+            <img class="summit-logo" src="assets/mojo-ai-summits-circle.png" alt="" aria-hidden="true" loading="lazy">
             <div class="ad-label">Mojo AI Summits</div>
             <svg class="summit-icon" viewBox="0 0 180 150" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="16" y="18" width="148" height="92" rx="7"></rect>
