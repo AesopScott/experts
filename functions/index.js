@@ -258,11 +258,19 @@ function hasText(value) {
   return typeof value === "string" && value.trim().length > 0;
 }
 
-function buildTranscriptSummary(transcript, title = "") {
-  const normalized = String(transcript || "")
+function cleanTranscriptTextForSummary(value) {
+  return String(value || "")
     .replace(/\[[^\]]+\]/g, " ")
+    .replace(/full\s+post\s*:?.*?(?=(?:\s+[A-Z][a-z]+(?:\s+[a-z]+)*\s*:)|$)/gi, " ")
+    .replace(/https?:\/\/\S+/gi, " ")
+    .replace(/\b[\w.-]+\.(?:com|net|org|io|ai|co|newsletter)\S*/gi, " ")
+    .replace(/\b(?:utm_[a-z_]+|showWelcomeOnShare|r)=[^\s]+/gi, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function buildTranscriptSummary(transcript, title = "") {
+  const normalized = cleanTranscriptTextForSummary(transcript);
 
   if (!normalized) return "";
 
