@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "include": [
+    "/watch",
+    "/watch.html",
+    "/videos",
+    "/videos.html"
+  ],
+  "exclude": []
+}
