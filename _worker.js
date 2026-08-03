@@ -37,16 +37,14 @@ async function renderVideoSharePage(request, env, url, assetPath, videoId) {
     fetchVideo(videoId),
   ]);
 
-  if (!video) {
-    return new Response(html, withHtmlHeaders(assetResponse.headers));
-  }
+  const shareVideo = video || {};
 
   const publicPath = url.pathname === "/share" ? "/share" : assetPath;
   const shareUrl = `${url.origin}${publicPath}?v=${encodeURIComponent(videoId)}`;
-  const title = video.title || "Curated AI Video";
-  const channel = video.channelName ? ` by ${video.channelName}` : "";
+  const title = shareVideo.title || "Curated AI Video";
+  const channel = shareVideo.channelName ? ` by ${shareVideo.channelName}` : "";
   const description = `Watch ${title}${channel}, curated by 25experts for follow-up learning.`;
-  const thumbnail = video.thumbnail || `https://i.ytimg.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg`;
+  const thumbnail = shareVideo.thumbnail || `https://i.ytimg.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg`;
 
   const ogTags = [
     ["property", "og:type", "video.other"],
