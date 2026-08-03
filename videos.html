@@ -126,7 +126,15 @@
 
     /* ── HERO ── */
     .hero { padding: 52px clamp(18px,5vw,64px) 32px; }
-    .hero-inner { width: min(1320px,100%); margin: 0 auto; }
+    .hero-inner {
+      width: min(1320px,100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
+      gap: clamp(24px, 4vw, 56px);
+      align-items: start;
+    }
+    .hero-copy { min-width: 0; }
     .eyebrow {
       display: inline-flex; padding: 7px 11px; border-radius: 999px;
       background: #EAF7FF; color: var(--green);
@@ -138,6 +146,76 @@
       color: #fff;
     }
     .hero p { max-width: 700px; margin: 0; color: rgba(255,255,255,0.82); font-size: 17px; }
+    .gain-ad {
+      position: relative;
+      display: block;
+      min-height: 184px;
+      padding: 18px;
+      overflow: hidden;
+      border: 2px solid rgba(79,179,217,0.62);
+      border-radius: 10px;
+      background:
+        radial-gradient(circle at 82% 18%, rgba(79,179,217,0.26), transparent 34%),
+        linear-gradient(145deg, rgba(31,56,100,0.98), rgba(10,15,30,0.98));
+      box-shadow: 0 24px 70px rgba(0,0,0,0.26), inset 0 0 0 1px rgba(255,255,255,0.08);
+      color: #ffffff;
+    }
+    .gain-ad::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(115deg, transparent 0 28px, rgba(79,179,217,0.16) 28px 30px, transparent 30px 66px),
+        linear-gradient(0deg, rgba(255,255,255,0.04), transparent 48%);
+      pointer-events: none;
+    }
+    .gain-ad > * { position: relative; z-index: 1; }
+    .gain-ad-logo {
+      width: 100px;
+      height: auto;
+      display: block;
+      margin-bottom: 13px;
+      filter: drop-shadow(0 10px 24px rgba(0,0,0,0.24));
+    }
+    .gain-ad-title {
+      display: block;
+      max-width: 12ch;
+      margin: 0 0 8px;
+      color: #ffffff;
+      font-size: 27px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+    .gain-ad-copy {
+      display: block;
+      margin: 0 0 14px;
+      max-width: 31ch;
+      color: rgba(255,255,255,0.74);
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 1.42;
+    }
+    .gain-ad-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 32px;
+      padding: 0 11px;
+      border-radius: 8px;
+      background: #4FB3D9;
+      color: #0A0F1E;
+      box-shadow: 0 12px 28px rgba(79,179,217,0.18);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    .gain-ad:hover {
+      border-color: #4FB3D9;
+      transform: translateY(-1px);
+      box-shadow: 0 28px 80px rgba(0,0,0,0.32), 0 0 0 1px rgba(79,179,217,0.22);
+    }
     .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
     .domain-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
     .pill {
@@ -419,6 +497,8 @@
     }
 
     @media (max-width: 1100px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .gain-ad { max-width: 560px; }
       .video-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
     }
     @media (max-width: 760px) {
@@ -509,9 +589,17 @@
 
   <section class="hero">
     <div class="hero-inner">
-      <span class="eyebrow">Curated video library</span>
-      <h1>Useful AI videos, organized for follow-up learning.</h1>
-      <p>Selected videos are grouped by practical AI topic. Each card opens at the original source, with short context for why the signal matters.</p>
+      <div class="hero-copy">
+        <span class="eyebrow">Curated video library</span>
+        <h1>Useful AI videos, organized for follow-up learning.</h1>
+        <p>Selected videos are grouped by practical AI topic. Each card opens at the original source, with short context for why the signal matters.</p>
+      </div>
+      <a class="gain-ad" href="https://governainow.com" target="_blank" rel="noopener sponsored" aria-label="Visit GovernAI Now">
+        <img class="gain-ad-logo" src="assets/gain-logo-dark.svg" alt="GAIN">
+        <strong class="gain-ad-title">Govern AI before AI governs you.</strong>
+        <span class="gain-ad-copy">Build a NIST-centered system of record for inventory, risk, evidence, and review.</span>
+        <span class="gain-ad-cta">Visit governainow.com -></span>
+      </a>
     </div>
   </section>
 
