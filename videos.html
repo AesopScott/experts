@@ -253,7 +253,7 @@
       display: grid;
       grid-template-columns: repeat(5, minmax(130px,1fr)) auto;
       gap: 12px; align-items: end;
-      width: min(1320px,calc(100% - 36px));
+      width: 100%;
       margin: 0 auto 12px;
       padding: 16px 18px;
       border: 1px solid var(--line); border-radius: 10px;
@@ -310,27 +310,6 @@
       border-color: #1666FF;
       color: #ffffff;
       box-shadow: inset 0 0 0 2px rgba(255,255,255,0.34);
-    }
-
-    /* ── FILTER META (result count + active chips) ── */
-    .filter-meta {
-      display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
-      width: min(1320px,calc(100% - 36px));
-      margin: 0 auto 20px;
-      min-height: 22px;
-    }
-    .result-count { color: #1666FF; font-size: 13px; font-weight: 750; }
-    .filter-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-    .chip {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 5px 10px; border-radius: 999px;
-      background: #EAF7FF; color: #1666FF;
-      font-size: 12px; font-weight: 800;
-      border: 1px solid var(--line);
-    }
-    .chip button {
-      min-height: 0; padding: 0; border: 0; background: transparent;
-      color: inherit; font-weight: 900; cursor: pointer; line-height: 1; font-size: 13px;
     }
 
     /* ── MAIN ── */
@@ -594,7 +573,7 @@
       opacity: 1; transform: translateX(-50%) translateY(0);
     }
   </style>
-  <link rel="stylesheet" href="assets/site-nav.css?v=20260802-geist-controls">
+  <link rel="stylesheet" href="assets/site-nav.css?v=20260803-filter-controls">
 </head>
 <body class="video-page">
 
@@ -665,10 +644,6 @@
       </div>
       <button class="primary" id="clear-filters" type="button" style="align-self:end;">Clear filters</button>
     </section>
-    <div class="filter-meta" aria-live="polite">
-      <span class="result-count" id="result-count"></span>
-      <div class="filter-chips" id="filter-chips"></div>
-    </div>
     <section class="empty-state" id="empty-state">No videos match these filters.</section>
     <section class="stats" aria-label="Library summary">
       <article class="stat"><strong id="stat-total">—</strong><span>videos in the library</span></article>
@@ -690,9 +665,6 @@
     const dateFilter     = document.getElementById("date-filter");
     const durationFilter = document.getElementById("duration-filter");
     const favoritesFilter = document.getElementById("favorites-filter");
-    const resultCount    = document.getElementById("result-count");
-    const filterChips    = document.getElementById("filter-chips");
-
     const TOPIC_LABELS = {
       "claude":             "Claude",
       "chatgpt":            "ChatGPT / GPT-4",
@@ -966,47 +938,9 @@
       return sortByDate(filtered, "newest");
     }
 
-    function updateResultCount(count) {
-      const total = allVideos.length;
-      resultCount.textContent = count === total
-        ? `${total} video${total !== 1 ? "s" : ""}`
-        : `Showing ${count} of ${total} videos`;
-    }
-
-    const DATE_LABELS     = { "30": "Last 30 days", "90": "Last 90 days", "180": "Last 6 months", "365": "Last year" };
-    const DURATION_LABELS = { "short": "Under 1 min", "medium": "1 – 5 min", "long": "Over 5 min" };
-
-    function renderFilterChips() {
-      const chips = [];
-      const term = searchInput.value.trim();
-      if (term) chips.push({ key: "search", label: `Search: "${term}"` });
-      if (channelFilter.value !== "all")  chips.push({ key: "channel",  label: `Channel: ${channelFilter.value}` });
-      if (topicFilter.value !== "all")    chips.push({ key: "topic",    label: `Topic: ${TOPIC_LABELS[topicFilter.value] || topicFilter.value}` });
-      if (dateFilter.value !== "all")     chips.push({ key: "date",     label: DATE_LABELS[dateFilter.value] });
-      if (durationFilter.value !== "all") chips.push({ key: "duration", label: DURATION_LABELS[durationFilter.value] });
-      if (favoritesFilter.checked)         chips.push({ key: "favorites", label: "Favorite channels" });
-
-      filterChips.innerHTML = chips.map(c => `
-        <span class="chip">${safeHtml(c.label)}
-          <button type="button" data-clear-chip="${c.key}" aria-label="Remove this filter">x</button>
-        </span>`).join("");
-    }
-
-    function clearChip(key) {
-      if (key === "search")   searchInput.value = "";
-      if (key === "channel")  channelFilter.value = "all";
-      if (key === "topic")    topicFilter.value = "all";
-      if (key === "date")     dateFilter.value = "all";
-      if (key === "duration") durationFilter.value = "all";
-      if (key === "favorites") favoritesFilter.checked = false;
-      applyFilter();
-    }
-
     function applyFilter() {
       const filtered = getFilteredVideos();
       render(filtered);
-      updateResultCount(filtered.length);
-      renderFilterChips();
     }
 
     async function load() {
@@ -1069,10 +1003,6 @@
       durationFilter.value = "all";
       favoritesFilter.checked = false;
       applyFilter();
-    });
-    filterChips.addEventListener("click", (e) => {
-      const btn = e.target.closest("[data-clear-chip]");
-      if (btn) clearChip(btn.dataset.clearChip);
     });
     sectionsRoot.addEventListener("click", (e) => {
       const favoriteBtn = e.target.closest("[data-favorite-channel]");
