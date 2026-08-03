@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin | 25experts</title>
-  <meta name="page-version" content="v2026.08.02.4">
+  <meta name="page-version" content="v2026.08.02.5">
   <meta name="page-updated" content="2026-08-02">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <meta name="robots" content="noindex, nofollow">
@@ -146,6 +146,7 @@
     let allCandidates = [];
     let candidatesPage = 0;
     let candidatesSort = { field: "subscriberCount", dir: "desc" };
+    let followedChannelsSort = { field: "addedAt", dir: "desc" };
 
     function domainSelectHtml(selectedKey = "", id = "") {
       const opts = DOMAINS.map(d =>
@@ -553,8 +554,7 @@
         });
 
         const channels = channelsSnap.docs
-          .map(d => ({ id: d.id, ...d.data() }))
-          .sort((a, b) => (b.addedAt?.toMillis() || 0) - (a.addedAt?.toMillis() || 0));
+          .map(d => ({ id: d.id, ...d.data() }));
 
         const channelsWithVideos = channels.filter(ch => (videoCountByChannelId[ch.channelId] || 0) > 0).length;
         const channelsNoVideos   = channels.length - channelsWithVideos;
@@ -567,72 +567,95 @@
           return;
         }
 
-        // Group by domain
-        const grouped = {};
-        DOMAINS.forEach(d => { grouped[d.key] = []; });
-        grouped["__unassigned"] = [];
-        channels.forEach(ch => {
-          const key = ch.domain && grouped[ch.domain] ? ch.domain : "__unassigned";
-          grouped[key].push(ch);
+        container.innerHTML = "";
+        const sortArrow = field => followedChannelsSort.field === field
+          ? (followedChannelsSort.dir === "desc" ? " v" : " ^")
+          : " -";
+        const domainLabel = key => (DOMAIN_MAP[key]?.label || "Unassigned").toLowerCase();
+        const sortValue = ch => {
+          const videoCount = videoCountByChannelId[ch.channelId] || 0;
+          switch (followedChannelsSort.field) {
+            case "channel": return (ch.channelName || ch.channelId || "").toLowerCase();
+            case "addedAt": return toMs(ch.addedAt);
+            case "lastHarvested": return toMs(ch.lastHarvested);
+            case "videos": return videoCount;
+            case "domain": return domainLabel(ch.domain);
+            default: return toMs(ch.addedAt);
+          }
+        };
+        const sortedChannels = [...channels].sort((a, b) => {
+          const av = sortValue(a);
+          const bv = sortValue(b);
+          let result = typeof av === "number" && typeof bv === "number"
+            ? av - bv
+            : String(av).localeCompare(String(bv));
+          if (result === 0) {
+            result = (a.channelName || a.channelId || "").localeCompare(b.channelName || b.channelId || "");
+          }
+          return followedChannelsSort.dir === "desc" ? -result : result;
         });
 
-        container.innerHTML = "";
-        const domainOrder = [...DOMAINS.map(d => d.key), "__unassigned"];
-        domainOrder.forEach(key => {
-          const list = grouped[key];
-          if (list.length === 0) return;
-          const domainMeta = DOMAIN_MAP[key] || { label: "Unassigned", color: "#888" };
-          const section = document.createElement("div");
-          section.style.cssText = "margin-bottom:20px;";
-          const heading = document.createElement("h3");
-          heading.textContent = domainMeta.label;
-          heading.style.cssText = `font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${domainMeta.color};margin:0 0 8px;border-bottom:2px solid ${domainMeta.color};padding-bottom:4px;`;
-          section.appendChild(heading);
+        const tbody = document.createElement("tbody");
+        sortedChannels.forEach(ch => {
+          const added     = ch.addedAt       ? new Date(ch.addedAt.toMillis()).toLocaleDateString()       : "—";
+          const harvested = ch.lastHarvested ? new Date(ch.lastHarvested.toMillis()).toLocaleDateString() : "never";
+          const videoCount = videoCountByChannelId[ch.channelId] || 0;
 
-          const tbody = document.createElement("tbody");
-          list.forEach(ch => {
-            const added     = ch.addedAt       ? new Date(ch.addedAt.toMillis()).toLocaleDateString()       : "—";
-            const harvested = ch.lastHarvested ? new Date(ch.lastHarvested.toMillis()).toLocaleDateString() : "never";
-            const videoCount = videoCountByChannelId[ch.channelId] || 0;
+          let videoCell;
+          if (videoCount > 0) {
+            videoCell = `<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:var(--mint);color:var(--green);font-size:12px;font-weight:700;">${videoCount}</span>`;
+          } else if (!ch.lastHarvested) {
+            videoCell = `<span title="This channel has never been harvested. It will be picked up on the next scheduled harvest." style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:var(--gold2);color:var(--gold);font-size:12px;font-weight:700;cursor:help;">0 — never harvested</span>`;
+          } else {
+            videoCell = `<span title="Harvested on ${harvested} but no videos met the Jan 1 2026 cutoff, or the channel has no recent uploads." style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:var(--red2);color:var(--red);font-size:12px;font-weight:700;cursor:help;">0 — no qualifying videos</span>`;
+          }
 
-            let videoCell;
-            if (videoCount > 0) {
-              videoCell = `<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:var(--mint);color:var(--green);font-size:12px;font-weight:700;">${videoCount}</span>`;
-            } else if (!ch.lastHarvested) {
-              videoCell = `<span title="This channel has never been harvested. It will be picked up on the next scheduled harvest." style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:var(--gold2);color:var(--gold);font-size:12px;font-weight:700;cursor:help;">0 — never harvested</span>`;
-            } else {
-              videoCell = `<span title="Harvested on ${harvested} but no videos met the Jan 1 2026 cutoff, or the channel has no recent uploads." style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:var(--red2);color:var(--red);font-size:12px;font-weight:700;cursor:help;">0 — no qualifying videos</span>`;
-            }
-
-            const chUrl = `https://www.youtube.com/channel/${encodeURIComponent(ch.channelId)}`;
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-              <td style="font-weight:700;"><a href="${chUrl}" target="_blank" rel="noopener" style="color:inherit;">${safeHtml(ch.channelName) || "—"} ↗</a></td>
-              <td style="font-size:12px;color:var(--muted);">${added}</td>
-              <td style="font-size:12px;color:var(--muted);">${harvested}</td>
-              <td>${videoCell}</td>
-              <td><select class="domain-edit-sel" style="font-size:12px;padding:3px 6px;border:1px solid #F7FBFF;border-radius:6px;">
-                <option value="">— Unassigned —</option>
-                ${DOMAINS.map(d => `<option value="${d.key}"${d.key === ch.domain ? " selected" : ""}>${d.label}</option>`).join("")}
-              </select></td>
-              <td><button class="reject-btn" data-id="${safeHtml(ch.id)}">Remove</button></td>`;
-            tbody.appendChild(tr);
-            tr.querySelector(".reject-btn").addEventListener("click", () => {
-              const name = ch.channelName || ch.channelId;
-              if (!confirm(`Remove "${name}"?\n\nThis will also delete all their videos from the system. This cannot be undone.`)) return;
-              removeChannel(ch.id);
-            });
-            tr.querySelector(".domain-edit-sel").addEventListener("change", async function() {
-              const newDomain = this.value;
-              await updateDoc(doc(db, "followedChannels", ch.id), { domain: newDomain });
-              loadFollowedChannels();
-            });
+          const chUrl = `https://www.youtube.com/channel/${encodeURIComponent(ch.channelId)}`;
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td style="font-weight:700;"><a href="${chUrl}" target="_blank" rel="noopener" style="color:inherit;">${safeHtml(ch.channelName) || "—"} ↗</a></td>
+            <td style="font-size:12px;color:var(--muted);">${added}</td>
+            <td style="font-size:12px;color:var(--muted);">${harvested}</td>
+            <td>${videoCell}</td>
+            <td><select class="domain-edit-sel" style="font-size:12px;padding:3px 6px;border:1px solid #F7FBFF;border-radius:6px;">
+              <option value="">— Unassigned —</option>
+              ${DOMAINS.map(d => `<option value="${d.key}"${d.key === ch.domain ? " selected" : ""}>${d.label}</option>`).join("")}
+            </select></td>
+            <td><button class="reject-btn" data-id="${safeHtml(ch.id)}">Remove</button></td>`;
+          tbody.appendChild(tr);
+          tr.querySelector(".reject-btn").addEventListener("click", () => {
+            const name = ch.channelName || ch.channelId;
+            if (!confirm(`Remove "${name}"?\n\nThis will also delete all their videos from the system. This cannot be undone.`)) return;
+            removeChannel(ch.id);
           });
-          const table = document.createElement("table");
-          table.innerHTML = `<thead><tr><th>Channel</th><th>Added</th><th>Last Harvested</th><th>Videos</th><th>Domain</th><th>Action</th></tr></thead>`;
-          table.appendChild(tbody);
-          section.appendChild(table);
-          container.appendChild(section);
+          tr.querySelector(".domain-edit-sel").addEventListener("change", async function() {
+            const newDomain = this.value;
+            await updateDoc(doc(db, "followedChannels", ch.id), { domain: newDomain });
+            loadFollowedChannels();
+          });
+        });
+        const table = document.createElement("table");
+        table.innerHTML = `<thead><tr>
+          <th><a href="#" data-sort-followed="channel" style="text-decoration:none;color:inherit;cursor:pointer;">Channel${sortArrow("channel")}</a></th>
+          <th><a href="#" data-sort-followed="addedAt" style="text-decoration:none;color:inherit;cursor:pointer;">Added${sortArrow("addedAt")}</a></th>
+          <th><a href="#" data-sort-followed="lastHarvested" style="text-decoration:none;color:inherit;cursor:pointer;">Last Harvested${sortArrow("lastHarvested")}</a></th>
+          <th><a href="#" data-sort-followed="videos" style="text-decoration:none;color:inherit;cursor:pointer;">Videos${sortArrow("videos")}</a></th>
+          <th><a href="#" data-sort-followed="domain" style="text-decoration:none;color:inherit;cursor:pointer;">Domain${sortArrow("domain")}</a></th>
+          <th>Action</th>
+        </tr></thead>`;
+        table.appendChild(tbody);
+        container.appendChild(table);
+
+        container.querySelectorAll("[data-sort-followed]").forEach(link => {
+          link.addEventListener("click", e => {
+            e.preventDefault();
+            const field = link.dataset.sortFollowed;
+            followedChannelsSort = {
+              field,
+              dir: followedChannelsSort.field === field && followedChannelsSort.dir === "asc" ? "desc" : "asc",
+            };
+            loadFollowedChannels();
+          });
         });
       } catch (err) {
         console.error(err);

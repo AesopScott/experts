@@ -8,7 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <title>Curated AI Videos | 25experts</title>
   <meta name="description" content="Browse curated AI videos selected for practical value, with direct source links and Mojo AI Studio editorial context.">
-  <meta name="page-version" content="v2026.08.02.6">
+  <meta name="page-version" content="v2026.08.02.7">
   <meta name="page-updated" content="2026-08-02">
   <meta name="version-policy" content="Update page-version and page-updated on every content, design, SEO, or behavior change.">
   <link rel="canonical" href="https://25experts.com/videos.html">
@@ -164,18 +164,21 @@
       margin: 0 auto 12px;
       padding: 16px 18px;
       border: 1px solid var(--line); border-radius: 10px;
-      background: var(--panel); box-shadow: var(--shadow);
+      background: rgba(10, 15, 30, 0.94); box-shadow: var(--shadow);
+      color: #ffffff;
     }
     .filter-panel .search-field { grid-column: 1 / -1; }
     .field { display: grid; gap: 6px; }
     .field label {
-      color: var(--muted); font-size: 11px; font-weight: 850;
+      color: #ffffff; font-size: 11px; font-weight: 850;
       letter-spacing: 0.06em; text-transform: uppercase;
     }
     select, button, .filter-panel input {
       min-height: 40px; border: 1px solid var(--line); border-radius: 8px;
-      background: #fff; color: var(--ink); font: inherit; font-weight: 750;
+      background: #1666FF; color: #ffffff; font: inherit; font-weight: 750;
     }
+    .filter-panel input::placeholder { color: rgba(255,255,255,0.78); }
+    .filter-panel select option { color: #0A0F1E; background: #ffffff; }
     select { padding: 0 12px; }
     .filter-panel input { padding: 0 12px; font-weight: 600; }
     button { padding: 0 16px; cursor: pointer; }
@@ -187,8 +190,8 @@
       padding: 0 14px;
       border: 1px solid rgba(22, 102, 255, 0.22);
       border-radius: 8px;
-      background: #F7FBFF;
-      color: var(--ink);
+      background: #1666FF;
+      color: #ffffff;
       font-size: 13px;
       font-weight: 850;
       cursor: pointer;
@@ -214,12 +217,12 @@
       margin: 0 auto 20px;
       min-height: 22px;
     }
-    .result-count { color: var(--muted); font-size: 13px; font-weight: 750; }
+    .result-count { color: #ffffff; font-size: 13px; font-weight: 750; }
     .filter-chips { display: flex; flex-wrap: wrap; gap: 8px; }
     .chip {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 5px 10px; border-radius: 999px;
-      background: #EAF7FF; color: var(--green);
+      background: #1666FF; color: #ffffff;
       font-size: 12px; font-weight: 800;
       border: 1px solid var(--line);
     }
@@ -242,10 +245,11 @@
     .stat {
       padding: 16px 18px;
       border: 1px solid var(--line); border-radius: 10px;
-      background: var(--panel); box-shadow: var(--shadow);
+      background: rgba(10, 15, 30, 0.94); box-shadow: var(--shadow);
+      color: #ffffff;
     }
-    .stat strong { display: block; font-size: 26px; line-height: 1; }
-    .stat span { display: block; margin-top: 5px; color: var(--muted); font-size: 13px; font-weight: 750; }
+    .stat strong { display: block; color: #ffffff; font-size: 26px; line-height: 1; }
+    .stat span { display: block; margin-top: 5px; color: #ffffff; font-size: 13px; font-weight: 750; }
 
     /* ── MONTH SECTION ── */
     .month-section {
