@@ -151,6 +151,7 @@
       display: block;
       min-height: 184px;
       padding: 18px;
+      padding-top: 74px;
       overflow: hidden;
       border: 2px solid rgba(79,179,217,0.62);
       border-radius: 10px;
@@ -171,11 +172,23 @@
     }
     .gain-ad > * { position: relative; z-index: 1; }
     .gain-ad-logo {
-      width: 100px;
+      position: absolute;
+      top: 16px;
+      left: 17px;
+      width: 170px;
       height: auto;
       display: block;
-      margin-bottom: 13px;
+      margin-bottom: 0;
       filter: drop-shadow(0 10px 24px rgba(0,0,0,0.24));
+    }
+    .gain-ad-art {
+      position: absolute;
+      top: 18px;
+      right: 12px;
+      width: 116px;
+      height: auto;
+      opacity: 0.88;
+      filter: drop-shadow(0 10px 24px rgba(0,0,0,0.26));
     }
     .gain-ad-title {
       display: block;
@@ -596,6 +609,7 @@
       </div>
       <a class="gain-ad" href="https://governainow.com" target="_blank" rel="noopener sponsored" aria-label="Visit GovernAI Now">
         <img class="gain-ad-logo" src="assets/gain-logo-dark.svg" alt="GAIN">
+        <img class="gain-ad-art" src="assets/gain-ad-nist-quadrants-cutout.png" alt="" aria-hidden="true">
         <strong class="gain-ad-title">Govern AI before AI governs you.</strong>
         <span class="gain-ad-copy">Build a NIST-centered system of record for inventory, risk, evidence, and review.</span>
         <span class="gain-ad-cta">Visit governainow.com -></span>
